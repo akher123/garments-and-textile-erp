@@ -1,0 +1,32 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmBuyOrdStyleViewModel
+@{
+    Layout = null;
+}
+
+<div>
+    <div style="margin:5px 0;">Color & Size Quantity</div>
+    <table id="tableid" class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                @foreach (DataColumn col in Model.AssortTable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.AssortTable.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.AssortTable.Columns)
+                    {
+
+                        <td>@(row[col.ColumnName] ?? "")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,68 @@
+﻿@model SCERP.Web.Areas.Production.Models.DyeingJobOrderViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var inDt in Model.Dictionary)
+{
+    <tr >
+        <td>
+            <span id="ItemName_@inDt.Key">
+                @Html.DisplayFor(x => x.Dictionary[inDt.Key].ItemName)
+            </span>
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].ItemId, new { id = "ItemId_" + inDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[inDt.Key].Gsm)
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].Gsm, new { id = "GSM_" + inDt.Key })
+        </td>
+        <td>
+            <span id="ComponentName_@inDt.Key">
+                @Html.DisplayFor(x => x.Dictionary[inDt.Key].ComponentName)
+            </span>
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].ComponentRefId, new {id = "ComponentRefId_" + inDt.Key})
+        </td>
+        <td>
+            <span id="ColorName_@inDt.Key">
+                @Html.DisplayFor(x => x.Dictionary[inDt.Key].ColorName)
+            </span>
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].ColorRefId, new { id = "ColorRefId_" + inDt.Key })
+        </td>
+        <td>
+            <span id="MdName_@inDt.Key">
+                @Html.DisplayFor(x => x.Dictionary[inDt.Key].MdName)
+            </span>
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].MdSizeRefId, new { id = "MdSizeRefId_" + inDt.Key })
+        </td>
+        <td>
+            <span id="FdName_@inDt.Key">
+                @Html.DisplayFor(x => x.Dictionary[inDt.Key].FdName)
+            </span>
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].FdSizeRefId, new { id = "FdSizeRefId_" + inDt.Key })
+        </td>
+
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[inDt.Key].Rate)
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].Rate, new { id = "Rate_" + inDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[inDt.Key].Quantity)
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].Quantity, new {id = "Quantity_" + inDt.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[inDt.Key].GreyWit)
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].GreyWit, new { id = "GreyWit_" + inDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[inDt.Key].Remarks)
+            @Html.HiddenFor(x => x.Dictionary[inDt.Key].Remarks, new { id = "Remarks_" + inDt.Key })
+        </td>
+        <td>
+            <input type="button" class="addButton" value="Edit" onclick="editFabric('@inDt.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="removeRow(this)" />
+        </td>
+    </tr>
+
+}

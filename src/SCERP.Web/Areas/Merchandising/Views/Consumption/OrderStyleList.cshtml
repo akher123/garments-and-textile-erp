@@ -1,0 +1,108 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionViewModel
+@{
+    Layout = null;
+}
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<div id="buyerOrderStyleInConsumtion">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+            @using (Html.BeginForm("OrderStyleList", "Consumption", FormMethod.Get, new { @class = "ConsumptionSearchForm" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                        </td>
+                        <td>@Html.Label("To")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ToDate,  new {@class = "datepicker", @data_val = "false", @placeholder = "To date"  })
+                        </td>
+
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                        </td>
+                        <td>
+                            <input type="button" class="buyerOrderStyleFind addButton" value="Find" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            footerStyle: "webgrid-footer",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("ShipDate", canSort: false, header: "REPORT", format: @<text>
+
+                    <div class="dropdown">
+                        <a class="dropbtn custom-table-dropbtn">BOM</a>
+                        <div class="dropdown-content custom-table-dropdown-content">
+                            @Html.ActionLink("ACCESORIES", "StyleWiseConsumtionDetail", "Consumption", new { OrderStyleRefId = item.OrderStyleRefId, IsShowReport = true, ReportType = 1 }, new { @target = "_blank" })
+                            @Html.ActionLink("FABRIC", "StyleWiseFabrConsumtionDetail", "Consumption", new { OrderStyleRefId = item.OrderStyleRefId, IsShowReport = true, ReportType = 1 }, new { @target = "_blank" })
+                        </div>
+                    </div>
+                    </text>),
+                           
+                //grid.Column("OrderNo", canSort: false, header: "Order Ref."),
+                //grid.Column("OrderStyleRefId", canSort: false, header: "Style Ref."),
+                grid.Column("RefNo", canSort: false, header: String.Format("{0}", "Order No")),
+                grid.Column("StyleName", canSort: false, header: String.Format("{0}", "Style No")),
+                grid.Column("ShipDate", canSort: false, header: "ShipDate", format: @<text>@(item.ShipDate == null ? "" : item.ShipDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("Quantity", canSort: false, header: "Style Quantity"),
+                grid.Column("TotalFabAccessories", "Fabric", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalFabAccessories > 0 ? "" : "#949ade") + ";font-size:14px;border:1px solid #8d93db;'><text>" + item.TotalFabAccessories + "</text></center>"))),
+                grid.Column("TotalFabQty", "FabricQty", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalFabQty > 0 ? "" : "#8d93db") + ";font-size:14px;border:1px solid #949ade;'><text>" + item.TotalFabQty + "</text></center>"))),
+                grid.Column("TotalPackingAccessories", "Sewing", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalPackingAccessories > 0 ? "" : "#949ade") + ";font-size:14px;border:1px solid #8d93db;'><text>" + item.TotalPackingAccessories + "</text></center>"))),
+                grid.Column("TotalAccessories", "Packing", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalAccessories > 0 ? "" : "#8d93db") + ";font-size:14px;border:1px solid #949ade;'><text>" + item.TotalAccessories + "</text></center>"))),
+                grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="selectConsBuyerOrderRow('@item.OrderNo','@item.OrderStyleRefId',this)" value="✅" /></text>)
+                 ));
+    }
+</div>
+<script type="text/javascript">
+    function selectConsBuyerOrderRow(orderNo, orderStyleRefId, obj) {
+        var button = $(obj);
+        var $tr = button.closest('tr');
+        var $href = $('#styleConsumptionTabHref');
+
+        var url = '/Merchandising/Consumption/Index';
+        url += "?OrderStyleRefId=" + orderStyleRefId;
+        url += "&OrderNo=" + orderNo;
+        $tr.addClass("selected").siblings().removeClass("selected");
+        $('#StyleWiseConsumtionDetailHref').attr('href', '/Merchandising/Consumption/StyleWiseConsumtionDetail?OrderStyleRefId=' + orderStyleRefId);
+        $href.attr('href', url);
+        $('#OrderStyleListTabHref').attr('href', '#temp');
+        $("#buyerOrderDetail").tabs('enable', 1);
+        $("#buyerOrderDetail").tabs('enable', 3);
+    }
+
+    $('.buyerOrderStyleFind').unbind('click').bind('click', function () {
+        var button = $(this);
+        var form = button.parents('form:first');
+        jQuery.Ajax({
+            url: form.attr('action')
+            , type: "GET",
+            data: form.serialize()
+            , container: '#buyerOrderStyleInConsumtion'
+        });
+        $("#buyerOrderDetail").tabs({
+            load: SCERP.AjaxCompleted,
+            disabled: [1, 2, 3]
+        });
+    });
+</script>

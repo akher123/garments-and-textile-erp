@@ -1,0 +1,72 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+    var companyName = (Model.Branches.Any()) ? Model.Branches[0].Company.Name : "";
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">@companyName</td>
+            </tr>
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Branch Unit</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td class="reportTH">
+                        SL. No
+                    </td>
+                    <td class="reportTH">
+                       Company
+                    </td>
+                    <td class="reportTH">
+                        Branch
+                    </td>
+
+                    <td class="reportTH">
+                        Unit
+                    </td>
+                   
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var branchUnit in Model.BranchUnits)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(branchUnit.Branch.Company == null ? "" : @branchUnit.Branch.Company.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@branchUnit.Branch == null ? "" : @branchUnit.Branch.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@branchUnit.Unit == null ? "" : @branchUnit.Unit.Name)
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+

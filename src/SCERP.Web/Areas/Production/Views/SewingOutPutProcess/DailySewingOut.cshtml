@@ -1,0 +1,125 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Daily Sewing Output</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left:160px;margin-bottom:15px;">
+            @using (Html.BeginForm("DailySewingOut", "SewingOutputProcess", FormMethod.Get, new { @class = "DailySewingOutput ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Output Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @style = "width:100px;", id = "OutputDate" })
+                        </td>
+                        <td>@Html.Label("Line")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SewingOutPutProcess.LineId, Model.MachineSelectListItem,"-Select-", new { @class = "Line", id="LineTextBox", style = "width: 180px;" })
+                        </td>
+                        <td style="width: 200px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                     
+                    <td>
+                        @Html.Label("Total Output")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TotalQty, new { @readonly = "readonly", @style = "background-color: #6495ed; width: 50px" })
+                    </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <div class="dropdown">
+                <button class="dropbtn">REPORT▼</button>
+                <div class="dropdown-content">
+                    <a style="cursor: pointer" target="_blank" onclick="dailySewingIutputReport(1)">PDF</a>
+                    <a style="cursor: pointer" target="_blank" onclick="dailySewingIutputReport(3)">Excel</a>
+
+                    <a style="cursor: pointer" target="_blank" onclick="HourlyProductionReprot()">Hourly Production</a>
+                    <a style="cursor: pointer" target="_blank" onclick="DailyUnitWiseHourlyProductionReprot()">Unit Wise Production</a>
+                    <a style="cursor: pointer" target="_blank" onclick="DalilyLineWiseTargetVsProduction()">Target\/Achieved</a>
+
+                </div>
+            </div>
+        </div>
+        <div style="overflow-y: scroll;height: 400px;">
+            @{
+                var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize + 10, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.VwSewingOutputProcesses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("SL", format: item => Model.RowNo += 1, canSort: false),
+                        grid.Column("BuyerName", header: "Buyer", canSort: false),
+                        grid.Column("OrderName", header: "Order", canSort: false),
+                        grid.Column("StyleName", header: "Style", canSort: false),
+                        grid.Column("ColorName", header: "Color", canSort: false),
+                        grid.Column("MachineName", header: "Line", canSort: false),
+                        grid.Column("HourName", header: "Hour", canSort: false),
+                        grid.Column("ManPower", header: "M/P", canSort: false),
+                        grid.Column("OutputQuantity", header: "OutputQty", canSort: false),
+                        grid.Column("SMV", header: "SMV", canSort: false),
+                        grid.Column("Eff", canSort: false, format: @<text>@String.Format("{0:0}", item.Eff ?? "0") </text>),
+                                             grid.Column("Remarks", header: "Remarks", canSort: false)));
+            }
+        </div>
+    </div>
+
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        function dailySewingIutputReport(reportTypeId) {
+            var outputDate = $('#OutputDate').val();
+            var line = $('#LineTextBox').val();
+            var searchurl = '/Production/ProductionReport/DailySewingOutput?SewingOutPutProcess.OutputDate=' + outputDate + '&SewingOutPutProcess.LineId=' + line + '&reportTypeId=' + reportTypeId;
+            window.open(searchurl);
+        }
+        function HourlyProductionReprot() {
+            var outputDate = $('#OutputDate').val();
+            var searchurl = '/Production/ProductionReport/HourlyProductionReprot?outputDate=' + outputDate;
+            window.open(searchurl);
+        }
+        function DailyUnitWiseHourlyProductionReprot() {
+            var outputDate = $('#OutputDate').val();
+            var searchurl = '/Production/ProductionReport/DailyUnitWiseHourlyProductionReprot?outputDate=' + outputDate;
+            window.open(searchurl);
+        }
+        function DalilyLineWiseTargetVsProduction() {
+            var outputDate = $('#OutputDate').val();
+            var searchurl = '/Production/ProductionReport/DalilyLineWiseTargetVsProduction?outputDate=' + outputDate;
+            window.open(searchurl);
+        }
+
+      
+    </script>
+
+}

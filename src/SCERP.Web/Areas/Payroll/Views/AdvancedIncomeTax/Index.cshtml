@@ -1,0 +1,83 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.AdvanceIncomeTaxViewModel 
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+<div style="text-align: center">
+    <h4>ADVANCE IMCOME TAX</h4>
+</div>
+<div style="margin-left: 150px;">
+    @using (Html.BeginForm("Index", "AdvancedIncomeTax", FormMethod.Get, new { @class = "taskForm ignore-validation" }))
+    {
+        @Html.HiddenFor(x => x.IsSearch)
+
+        <table class="tabefont" style="margin-left: 27px;">
+            <tr>
+                <td>
+                    @Html.Label("Criteria :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, new {@style = "width:200px;", @data_val = "false", @placeholder = "Search key"})
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, null, new {@style = "width:200px;", @data_val = "false", @placeholder = "from date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, null, new { @style = "width:200px;", @data_val = "false", @placeholder = "to date" ,@class="datepicker" })
+                </td>
+                <td>@Html.Label("")</td>
+
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+
+            </tr>
+        </table>
+
+    }
+</div>
+<div class="additem">
+
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+        <button class="AjaxPopup" action="/Payroll/AdvancedIncomeTax/Edit">Add New</button>
+
+    </div>
+
+
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.AdvanceIncomeTaxs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("EmployeeCardId", header: "Employee Card Id"),
+                        grid.Column("Amount", header: "Amount"),
+                         //grid.Column("FromDate", header: "From Date"),
+                         //grid.Column("ToDate", header: "To Date"),
+
+                        grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.FromDate)))</text>),
+                        grid.Column("ToDate", header: "To Date", format: @<text>@(item.ToDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ToDate)))</text>),
+                        grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Payroll/AdvancedIncomeTax/Edit?AdvanceTaxId=@item.AdvanceTaxId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Payroll/AdvancedIncomeTax/Delete?AdvanceTaxId=@item.AdvanceTaxId"></button></text>)))
+        ;
+    }
+</div>
+
+
+
+

@@ -1,0 +1,23 @@
+﻿@model SCERP.Web.Areas.Production.Models.StanderdMinValueViewModel
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.SmvDtls[Model.Key].SubProcessRefId">
+    <td>
+        @Html.HiddenFor(x => x.SmvDtls[Model.Key].CompId)
+        @Html.HiddenFor(x => x.SmvDtls[Model.Key].StanderdMinValueId)
+        @Html.HiddenFor(x => x.SmvDtls[Model.Key].StanderdMinValueRefId)
+        @Html.DisplayFor(x => x.SmvDtls[Model.Key].StanderdMinValueRefId)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.SmvDtls[Model.Key].SubProcessRefId)
+        @Html.DisplayFor(x => x.SmvDtls[Model.Key].SubProcessName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.SmvDtls[Model.Key].StMvD)
+        @Html.DisplayFor(x => x.SmvDtls[Model.Key].StMvD)
+    </td>
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>

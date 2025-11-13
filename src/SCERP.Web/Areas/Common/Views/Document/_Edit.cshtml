@@ -1,0 +1,62 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.DocumentViewModel
+@{
+   Layout = null;
+}
+@Html.HiddenFor(model => model.Path, new { @class = "documentPathHidden" })
+<fieldset>
+    <legend>Upload Document</legend>
+    <table class="tabefont">
+        <tr>
+            <td>
+                @Html.Label("Ref No:")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.RefId, new { @style = "width:350px;background-color:#708090", @readonly = "readonly" })
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Name :")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.Name, new { @style = "width:350px;"})
+
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(x => x.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Description :")
+            </td>
+            <td>
+                @Html.TextAreaFor(x => x.Description, new { @style = "width:350px;" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(x => x.Description)
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend> Upload File </legend>
+                    <div id="uploadFile" action="/Common/Document/DocumentFileUpload?RefId=@Model.RefId">Upload</div>
+                </fieldset>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+</fieldset>

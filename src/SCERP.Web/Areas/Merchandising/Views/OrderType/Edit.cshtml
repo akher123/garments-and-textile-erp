@@ -1,0 +1,71 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OrderTypeViewModel
+@{
+    ViewBag.Title = Model.OrderTypeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "OrderType", FormMethod.Post, new { @class = "OrderTypeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.OrderTypeId)
+    <fieldset>
+        <legend>Order Type </legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.OTypeRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order Type :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.OTypeName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.OTypeName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Prefix:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Prefix)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Prefix)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

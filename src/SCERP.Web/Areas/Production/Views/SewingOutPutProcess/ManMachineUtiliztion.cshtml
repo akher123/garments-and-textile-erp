@@ -1,0 +1,46 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Man Machine Utilizationt Report</h3>
+</div>
+<section class="search formCover" style="margin-top: 20px;">
+    <div style="margin-left:10px;margin-bottom:5px;">
+
+        @using (Html.BeginForm("ManMachineUtiliztiont", "ProductionReport", FormMethod.Post, new { @class = "SewingOutputProcessForm ignore-validation" }))
+        {
+          
+            <table class="tabefont" style="margin-left: 60px">
+                <tr>
+                    <td>
+                        @Html.Label("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SewingOutPutProcess.OutputDate, new { id = "textOutputDate", @class = "datepicker" ,data_val="false"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="buttonStyle" id="btnManMachineUtiliztiont" value="PDF" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        $('#btnManMachineUtiliztiont').unbind('click').bind('click', function () {
+            var outputDate = $('#textOutputDate').val();
+            var searchurl = '/Production/ProductionReport/ManMachineUtiliztiont?outputDate=' + outputDate;
+            window.open(searchurl);
+        });
+      
+      
+    </script>
+
+}

@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="19760b8c5e66426aa7472693d056fbe9" Name="Diagram1" ZoomLevel="62">
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_BankReconcilationMaster" Width="1.5" PointX="3" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_BankReconciliationDetail" Width="1.5" PointX="10.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_BankVoucherManual" Width="1.5" PointX="5.25" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_ControlAccounts" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_CostCentre" Width="1.5" PointX="3" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_DepreciationChart" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_FinancialPeriod" Width="1.5" PointX="3.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_OpeningClosing" Width="1.5" PointX="6" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_PermitedChartOfAccount" Width="1.5" PointX="3" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_SalaryMapping" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_VoucherLimit" Width="1.5" PointX="8.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.CompanyOrganogram" Width="1.5" PointX="5.25" PointY="142.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.HolidaysSetup" Width="1.5" PointX="12.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.ModuleFeature" Width="1.5" PointX="5.25" PointY="169" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.SalaryHead" Width="1.5" PointX="3" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserRole" Width="1.5" PointX="7.5" PointY="174.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCERPDBModel.Weekend" Width="1.5" PointX="14.75" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_BankReconcilationMaster_Acc_FinancialPeriod" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_BankReconciliationDetail_Acc_BankReconcilationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_BankVoucherManual_Acc_BankReconcilationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_SalaryMapping_Acc_CostCentre" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_OpeningClosing_Acc_FinancialPeriod" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_SalaryMapping_SalaryHead" ManuallyRouted="false" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserRole_ModuleFeature" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SCERPDBModel.MailInformation" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SMSInformation" Width="1.5" PointX="17.375" PointY="16.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.BloodGroup" Width="1.5" PointX="0.75" PointY="117.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Religion" Width="1.5" PointX="0.75" PointY="128.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.MaritalState" Width="1.5" PointX="0.75" PointY="113.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.EducationLevel" Width="1.5" PointX="19.375" PointY="14" />
+        <EntityTypeShape EntityType="SCERPDBModel.Entitlement" Width="1.5" PointX="20.375" PointY="1" />
+        <EntityTypeShape EntityType="SCERPDBModel.Unit" Width="1.5" PointX="4.5" PointY="49.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Section" Width="1.5" PointX="14.375" PointY="21" />
+        <EntityTypeShape EntityType="SCERPDBModel.Department" Width="1.5" PointX="3" PointY="80.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.UnitDepartment" Width="1.5" PointX="6.75" PointY="53.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_UnitDepartment_Department" />
+        <AssociationConnector Association="SCERPDBModel.FK_UnitDepartment_Unit" />
+        <EntityTypeShape EntityType="SCERPDBModel.Country" Width="1.5" PointX="8.75" PointY="67.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeDocument" Width="1.5" PointX="8.25" PointY="158.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeWorkGroup" Width="1.5" PointX="44.25" PointY="91.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Employment" Width="1.5" PointX="8.25" PointY="154" />
+        <EntityTypeShape EntityType="SCERPDBModel.QuitType" Width="1.5" PointX="3.75" PointY="132.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.WorkGroup" Width="1.5" PointX="42" PointY="53.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeWorkGroup_WorkGroup" />
+        <EntityTypeShape EntityType="SCERPDBModel.BankAccountType" Width="1.5" PointX="19.375" PointY="9" />
+        <EntityTypeShape EntityType="SCERPDBModel.Gender" Width="1.5" PointX="20.375" PointY="5" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeePermanentAddress" Width="1.5" PointX="46.875" PointY="69.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePermanentAddress_Country" />
+        <EntityTypeShape EntityType="SCERPDBModel.OvertimeEligibleEmployee" Width="1.5" PointX="44.875" PointY="59.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeFamilyInfo" Width="1.5" PointX="47.875" PointY="43.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeFamilyInfo_Gender" />
+        <EntityTypeShape EntityType="SCERPDBModel.BranchUnitWorkShift" Width="1.5" PointX="42" PointY="44" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeePresentAddress" Width="1.5" PointX="44.875" PointY="75" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePresentAddress_Country" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeGradeSalaryPercentage" Width="1.5" PointX="7.25" PointY="122.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeBankInfo" Width="1.5" PointX="44.875" PointY="48.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeBankInfo_BankAccountType" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeEntitlement" Width="1.5" PointX="44.875" PointY="43.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeEntitlement_Entitlement" />
+        <EntityTypeShape EntityType="SCERPDBModel.OutStationDuty" Width="1.5" PointX="44.875" PointY="54.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Company" Width="1.5" PointX="34.5" PointY="48.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeCardInfo" Width="1.5" PointX="36.75" PointY="55.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCardInfo_Company" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_SubGroup" Width="1.5" PointX="42" PointY="39.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ItemLedger" Width="2.5" PointX="46.5" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.MeasurementUnit" Width="1.5" PointX="6.375" PointY="1" />
+        <EntityTypeShape EntityType="SCERPDBModel.Currency" Width="1.5" PointX="5" PointY="73.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeWorkGroupDetail" Width="1.5" PointX="21.375" PointY="13.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeWorkShiftDetail" Width="1.5" PointX="22.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VOvertimeEligibleEmployeeDetail" Width="1.5" PointX="18.375" PointY="21.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VOutStationDutyDetail" Width="1.5" PointX="22.375" PointY="21.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeShortLeave" Width="1.75" PointX="10.5" PointY="0.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ApprovalStatus" Width="1.5" PointX="50.5" PointY="69.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_Brand" Width="1.5" PointX="52.75" PointY="30.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialRequisitionDetail" Width="1.5" PointX="52.75" PointY="80.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_PurchaseRequisitionApprovalFlowConfiguration" Width="1.5" PointX="44.875" PointY="133" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_PurchaseType" Width="1.5" PointX="50.5" PointY="87.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_RequsitionType" Width="1.5" PointX="50.5" PointY="90.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_Size" Width="1.5" PointX="52.75" PointY="33.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StorePurchaseRequisitionHistory" Width="1.5" PointX="55" PointY="74.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionHistory_Inventory_ApprovalStatus" />
+        <EntityTypeShape EntityType="SCERPDBModel.AuthorizationType" Width="1.5" PointX="45.625" PointY="65.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeEducation" Width="1.5" PointX="47.875" PointY="48.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SalaryAdvance" Width="1.5" PointX="44.875" PointY="100.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.StampAmount" Width="1.5" PointX="15.375" PointY="8.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeEducation_EducationLevel" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_AuthorizedPerson" Width="1.5" PointX="44.875" PointY="104.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StorePurchaseRequisition" Width="1.5" PointX="55.75" PointY="79.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisition_Inventory_ApprovalStatus" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisition_Inventory_PurchaseType" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisition_Inventory_RequsitionType" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionHistory_Inventory_StorePurchaseRequisitionHistory" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeGrade" Width="1.5" PointX="5" PointY="103" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeSalary" Width="1.5" PointX="44.875" PointY="137.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.SalarySetup" Width="1.5" PointX="7.25" PointY="102.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeGradeSalaryPercentage_EmployeeGrade" />
+        <AssociationConnector Association="SCERPDBModel.FK_SalarySetup_EmployeeGrade" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeSalary_Processed" Width="1.5" PointX="44.875" PointY="116.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeSalary_Processed_Temp" Width="1.5" PointX="44.875" PointY="124.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialIssueRequisition" Width="1.5" PointX="44.875" PointY="28.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialIssueRequisitionDetail" Width="1.5" PointX="47.125" PointY="29" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueRequisitionDetail_Inventory_MaterialIssueRequisition" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialRequisition" Width="1.5" PointX="50.5" PointY="73.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialRequisitionDetail_Inventory_MaterialRequisition" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisition_Inventory_MaterialRequisition" />
+        <EntityTypeShape EntityType="SCERPDBModel.Branch" Width="1.5" PointX="41.75" PointY="58.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.District" Width="1.5" PointX="11" PointY="67.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.PoliceStation" Width="1.5" PointX="14.25" PointY="56.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_Branch_Company" />
+        <AssociationConnector Association="SCERPDBModel.FK_Branch_District" />
+        <AssociationConnector Association="SCERPDBModel.FK_Branch_PoliceStation" />
+        <AssociationConnector Association="SCERPDBModel.FK_Company_District" />
+        <AssociationConnector Association="SCERPDBModel.FK_Company_PoliceStation" />
+        <AssociationConnector Association="SCERPDBModel.FK_District_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_PoliceStation_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePermanentAddress_District" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePresentAddress_District" />
+        <AssociationConnector Association="SCERPDBModel.FK_PoliceStation_District" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePermanentAddress_PoliceStation" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePresentAddress_PoliceStation" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMaterialIssueRequisition" Width="1.5" PointX="22.375" PointY="27.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMaterialRequisition" Width="1.5" PointX="16.375" PointY="28.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VStorePurchaseRequisition" Width="1.5" PointX="28.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMaterialIssueDetail" Width="1.5" PointX="26.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StoreLedger" Width="1.5" PointX="59.875" PointY="44.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Currency" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Inventory_Brand" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Inventory_Size" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_Group" Width="1.5" PointX="39.75" PointY="39.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_SubGroup_Inventory_Group" />
+        <EntityTypeShape EntityType="SCERPDBModel.VStorePurchaseRequisitionDetail" Width="1.5" PointX="25.375" PointY="13.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_QualityCertificate" Width="1.5" PointX="36" PointY="43.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.OvertimeSettings" Width="1.5" PointX="12.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeBonus" Width="1.5" PointX="44.875" PointY="95.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_GLAccounts" Width="1.5" PointX="3.375" PointY="1" />
+        <EntityTypeShape EntityType="SCERPDBModel.CustomSqlQuary" Width="1.5" PointX="7.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeDailyAttendance" Width="1.5" PointX="44.875" PointY="83.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_Currency" Width="1.5" PointX="17.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Color" Width="1.5" PointX="28.375" PointY="19.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMaterialIssue" Width="1.5" PointX="11.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_QualityCertificateDetail" Width="1.5" PointX="46.5" PointY="35.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_QualityCertificateDetailId_Inventory_QualityCertificate" />
+        <EntityTypeShape EntityType="SCERPDBModel.VItemReceiveDetail" Width="1.5" PointX="11.375" PointY="18.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VQualityCertificateDetail" Width="1.5" PointX="24.375" PointY="28.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserReport" Width="1.5" PointX="13.375" PointY="17.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VUserReport" Width="1.5" PointX="24.375" PointY="21.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SqlReportParameter" Width="1.5" PointX="9.625" PointY="33" />
+        <AssociationConnector Association="SCERPDBModel.FK_SqlReportParameter_CustomSqlQuary" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeDailyAttendanceDetail" Width="1.5" PointX="7.375" PointY="19.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_VoucherToCostcentre" Width="1.5" PointX="29.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VInventoryItemStore" Width="1.5" PointX="13.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CRMCollaborator" Width="1.5" PointX="31.375" PointY="4" />
+        <EntityTypeShape EntityType="SCERPDBModel.CRMDocumentationOperation" Width="1.5" PointX="36.625" PointY="86.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Module" Width="1.5" PointX="3" PointY="169.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationOperation_CRMCollaborator" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationOperation_CRMCollaborator1" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationOperation_Module" />
+        <AssociationConnector Association="SCERPDBModel.FK_ModuleFeature_Module" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Style" Width="1.5" PointX="32.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyOrdStyleColor" Width="1.5" PointX="28.375" PointY="33.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Category" Width="1.5" PointX="34.375" PointY="29.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Color" Width="1.5" PointX="34.375" PointY="33.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_OrderType" Width="1.5" PointX="15.375" PointY="35.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Size" Width="1.5" PointX="22.375" PointY="35.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_PaymentTerm" Width="1.5" PointX="24.375" PointY="35.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Season" Width="1.5" PointX="28.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Merchandiser" Width="1.5" PointX="31.375" PointY="35.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Buyer" Width="1.5" PointX="36.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Agent" Width="1.5" PointX="14.375" PointY="12.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Brand" Width="1.5" PointX="30.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_CostCentreMultiLayer" Width="1.5" PointX="7.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyOrdStyleSize" Width="1.5" PointX="9.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_Process" Width="1.5" PointX="38.75" PointY="36.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_ResponsiblePerson" Width="1.5" PointX="38.75" PointY="5.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_TNA" Width="1.5" PointX="44" PointY="5.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_TNA_PLAN_ResponsiblePerson" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyOrdShipDetail" Width="1.5" PointX="26.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ItemMode" Width="1.5" PointX="25.375" PointY="10.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VQualityCertificate" Width="1.5" PointX="22.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VStyle" Width="1.5" PointX="13.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.City" Width="1.5" PointX="17.25" PointY="80.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.State" Width="1.5" PointX="11" PointY="80.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_City_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_City_State" />
+        <AssociationConnector Association="SCERPDBModel.FK_State_Country" />
+        <EntityTypeShape EntityType="SCERPDBModel.AttendanceBonus" Width="1.5" PointX="49.5" PointY="94.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyOrdShip" Width="1.5" PointX="36.375" PointY="17.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Consignee" Width="1.5" PointX="31.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_PortOfLoading" Width="1.5" PointX="11" PointY="63.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_PortOfLoading_Country" />
+        <EntityTypeShape EntityType="SCERPDBModel.Line" Width="1.5" PointX="52.25" PointY="59.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.DepartmentLine" Width="1.5" PointX="45.625" PointY="151.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.DepartmentSection" Width="1.5" PointX="45.625" PointY="142.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeCompanyInfo" Width="1.5" PointX="47.875" PointY="80.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeDesignation" Width="1.5" PointX="45.625" PointY="146.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_AttendanceBonus_EmployeeDesignation" />
+        <AssociationConnector Association="SCERPDBModel.FK_CompanyOrganogram_EmployeeDesignation" />
+        <AssociationConnector Association="SCERPDBModel.FK_DepartmentLine_Line" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_DepartmentLine" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialRequisition_DepartmentLine" />
+        <AssociationConnector Association="SCERPDBModel.FK_DepartmentSection_Section" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_DepartmentSection" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialRequisition_DepartmentSection" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_EmployeeDesignation" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeDesignation_EmployeeGrade" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_ProcessTemplate" Width="1.5" PointX="41" PointY="20.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_ProcessTemplate_PLAN_Process" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_ProcessTemplate_PLAN_ResponsiblePerson" />
+        <EntityTypeShape EntityType="SCERPDBModel.CRMFeedback" Width="1.5" PointX="24.375" PointY="6.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Component" Width="1.5" PointX="28.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Consumption" Width="1.5" PointX="5.375" PointY="32.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ConsumptionGroup" Width="1.5" PointX="36.375" PointY="32.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ConsumptionType" Width="1.5" PointX="38.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_FabConsumption" Width="1.5" PointX="38.375" PointY="16.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_FabricType" Width="1.5" PointX="17.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VConsumption" Width="1.5" PointX="38.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VBuyOrdShipDetail" Width="1.5" PointX="3.375" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VCompConsumption" Width="1.5" PointX="23.375" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CompConsumption" Width="1.5" PointX="40.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VCompConsumptionDetail" Width="1.5" PointX="5.375" PointY="40.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VInvItem" Width="1.5" PointX="40.375" PointY="14.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_VoucherMaster" Width="1.5" PointX="8.25" PointY="1.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_BankReconciliationDetail_Acc_VoucherMaster" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_VoucherMaster_Acc_FinancialPeriod" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_YarnConsumption" Width="1.5" PointX="20.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.BranchUnit" Width="1.5" PointX="50" PointY="54.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeLeave" Width="1.5" PointX="56.25" PointY="86.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeType" Width="1.5" PointX="2.75" PointY="123.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.LeaveSetting" Width="1.5" PointX="53.25" PointY="88.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.LeaveType" Width="1.5" PointX="51" PointY="99.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnit_Branch" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnit_Unit" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnitWorkShift_BranchUnit" />
+        <AssociationConnector Association="SCERPDBModel.FK_LeaveSetting_BranchUnit" />
+        <AssociationConnector Association="SCERPDBModel.FK_WorkGroup_BranchUnit" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeDesignation_EmployeeType" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeGrade_EmployeeType" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeLeave_LeaveType" />
+        <AssociationConnector Association="SCERPDBModel.FK_LeaveSetting_EmployeeType" />
+        <AssociationConnector Association="SCERPDBModel.FK_LeaveSetting_LeaveType" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_ActiveCompanySector" Width="1.5" PointX="17.375" PointY="41.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_ProcessSequence" Width="1.5" PointX="40.375" PointY="33.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_ProcessSequenceDefault" Width="1.5" PointX="41.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_Processor" Width="1.5" PointX="35.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Production_Machine" Width="1.5" PointX="20.375" PointY="43.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMachine" Width="1.5" PointX="24.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StorePurchaseRequisitionDetail" Width="1.5" PointX="60" PointY="51.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Inventory_ApprovalStatus" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Inventory_Brand" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Inventory_Size" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Inventory_StorePurchaseRequisition" />
+        <EntityTypeShape EntityType="SCERPDBModel.VProcessor" Width="1.5" PointX="35.375" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_StanderdMinValDetail" Width="1.5" PointX="42.375" PointY="10.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_StanderdMinValue" Width="1.5" PointX="42.375" PointY="13.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VOrderStyleDetail" Width="1.5" PointX="11.375" PointY="43.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VAccVoucherMaster" Width="1.5" PointX="14.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_SubProcess" Width="1.5" PointX="42.375" PointY="16.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_StanderdMinValDetail_PROD_StanderdMinValue" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_Production" Width="1.5" PointX="44.375" PointY="11" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_ProductionDetaill" Width="1.5" PointX="46.625" PointY="11.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProductionDetaill_PROD_Production" />
+        <EntityTypeShape EntityType="SCERPDBModel.VProductionDetail" Width="1.5" PointX="13.375" PointY="43.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CRMDocumentationReport" Width="1.5" PointX="36.625" PointY="91" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationReport_CRMCollaborator" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationReport_CRMCollaborator1" />
+        <AssociationConnector Association="SCERPDBModel.FK_CRMDocumentationReport_Module" />
+        <EntityTypeShape EntityType="SCERPDBModel.VSubProcess" Width="1.5" PointX="43.375" PointY="35" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ConsumptionDetail" Width="1.5" PointX="7.375" PointY="44.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_TNA_Template" Width="1.5" PointX="15.375" PointY="45.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProduction" Width="1.5" PointX="17.375" PointY="45.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_Activity" Width="1.5" PointX="46.375" PointY="23.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_TNA_PLAN_Activity" />
+        <EntityTypeShape EntityType="SCERPDBModel.Document" Width="1.5" PointX="24.375" PointY="47" />
+        <EntityTypeShape EntityType="SCERPDBModel.VMaterialLoanReturn" Width="1.5" PointX="18.375" PointY="28.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_StyleUF" Width="1.5" PointX="18.375" PointY="33.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.BranchUnitDepartment" Width="1.5" PointX="43.375" PointY="151.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.HeadOfDepartment" Width="1.5" PointX="47.875" PointY="86.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnitDepartment_BranchUnit" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnitDepartment_UnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_DepartmentLine_BranchUnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_DepartmentSection_BranchUnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_BranchUnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_HeadOfDepartment_BranchUnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialRequisition_BranchUnitDepartment" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialIssue" Width="1.5" PointX="47.125" PointY="57.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssue_Inventory_MaterialIssueRequisition" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Inventory_MaterialIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserPermissionForDepartmentLevel" Width="1.5" PointX="58.25" PointY="78.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserPermissionForEmployeeLevel" Width="1.5" PointX="50.125" PointY="65" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForDepartmentLevel_Branch" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForDepartmentLevel_BranchUnit" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForDepartmentLevel_BranchUnitDepartment" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForDepartmentLevel_Company" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForEmployeeLevel_EmployeeType" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwModuleFeature" Width="1.5" PointX="31.375" PointY="41.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ItemStore" Width="1.5" PointX="33.75" PointY="92.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_QualityCertificate_Inventory_ItemStore" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeInOut" Width="1.5" PointX="48.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.COMMLcStyle" Width="1.5" PointX="47.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwStanderdMinValDetail" Width="1.5" PointX="40.375" PointY="48.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommPurchaseOrder" Width="1.5" PointX="46.375" PointY="5" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommPurchaseOrderDetail" Width="1.5" PointX="48.625" PointY="5.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_CM_PurchaseOrderDetail_CM_PurchaseOrder" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwPurchaseOrderDetail" Width="1.5" PointX="9.375" PointY="48.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VYarnConsumption" Width="1.5" PointX="25.375" PointY="40.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommBbLcPurchase" Width="1.5" PointX="43.375" PointY="23.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserMerchandiser" Width="1.5" PointX="49.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_TargetProductionDetail" Width="1.5" PointX="13.625" PointY="50.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCompConsumptionOrderStyle" Width="1.5" PointX="50.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VConsumptionDetail" Width="1.5" PointX="50.375" PointY="43.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommReceive" Width="1.5" PointX="51.375" PointY="1" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommReceiveDetail" Width="1.5" PointX="53.625" PointY="1.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommReceiveDetail_CommReceive" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwAssignedProgram" Width="1.5" PointX="51.375" PointY="5.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_WorkingDay" Width="1.5" PointX="3.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwConsuptionOrderStyle" Width="1.5" PointX="16.375" PointY="50.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Mrc_SupplierCompany" Width="1.5" PointX="25.25" PointY="74" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStore_Mrc_SupplierCompany" />
+        <EntityTypeShape EntityType="SCERPDBModel.VLoanGiven" Width="1.5" PointX="26.375" PointY="46.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DailyFabricReceive" Width="1.5" PointX="3.375" PointY="53.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.ExceptionDay" Width="1.5" PointX="52.25" PointY="110.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_ExceptionDay_BranchUnit" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwReceivedFabricProductionSummary" Width="1.5" PointX="31.375" PointY="52.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommImportExportPerformance" Width="1.5" PointX="55.375" PointY="16" />
+        <EntityTypeShape EntityType="SCERPDBModel.WorkShift" Width="1.5" PointX="27.375" PointY="13" />
+        <AssociationConnector Association="SCERPDBModel.FK_BranchUnitWorkShift_WorkShift" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyerOrder" Width="1.5" PointX="32.75" PointY="21.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_BookingDetail" Width="1.5" PointX="44.875" PointY="61.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommBankAdvice" Width="1.5" PointX="58.625" PointY="1" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwBookingSummaryReport" Width="1.5" PointX="53.375" PointY="5.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_GenericName" Width="1.5" PointX="6.375" PointY="6.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_Item" Width="1.5" PointX="44.25" PointY="156.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_Item_Inventory_SubGroup" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemLedger_Inventory_Item" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_QualityCertificateDetailId_Inventory_Item" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Inventory_Item" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StorePurchaseRequisitionDetail_Inventory_Item" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwStyleFollowupStatus" Width="1.5" PointX="57.375" PointY="23.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmModule" Width="1.5" PointX="55.375" PointY="8.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmSubject" Width="1.5" PointX="57.625" PointY="7.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmTask" Width="1.5" PointX="59.875" PointY="7" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmTaskStatus" Width="1.5" PointX="31.375" PointY="45.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_TmSubject_TmModule" />
+        <AssociationConnector Association="SCERPDBModel.FK_TmTask_TmModule" />
+        <AssociationConnector Association="SCERPDBModel.FK_TmTask_TmSubject" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmAssignee" Width="1.5" PointX="44.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmTaskType" Width="1.5" PointX="49.375" PointY="35.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.vwTmTaskInformation" Width="1.5" PointX="49.375" PointY="10.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackConfirmationMedia" Width="1.5" PointX="57.375" PointY="36.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackMachineAction" Width="1.5" PointX="50.625" PointY="51.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackMachineLog" Width="1.5" PointX="52.875" PointY="63.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackVehicle" Width="1.5" PointX="57.375" PointY="11.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackVehicleGateEntry" Width="1.5" PointX="59.625" PointY="32.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.TrackVisitorGateEntry" Width="1.5" PointX="59.625" PointY="38.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_TrackMachineLog_Production_Machine" />
+        <AssociationConnector Association="SCERPDBModel.FK_TrackVehicleGateEntry_TrackConfirmationMedia" />
+        <AssociationConnector Association="SCERPDBModel.FK_TrackVisitorGateEntry_TrackConfirmationMedia" />
+        <AssociationConnector Association="SCERPDBModel.FK_TrackMachineLog_TrackMachineAction" />
+        <AssociationConnector Association="SCERPDBModel.FK_TrackVehicleGateEntry_TrackVehicle" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StockRegister" Width="1.5" PointX="50.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_BundleCuttingSeqChar" Width="1.5" PointX="50.375" PointY="48.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_LayCutting" Width="1.5" PointX="52.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_RollCutting" Width="1.5" PointX="52.375" PointY="41.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PayrollExcludedEmployeeFromSalaryProcess" Width="1.5" PointX="44.875" PointY="168.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmPenaltyType" Width="1.5" PointX="50.625" PointY="103.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_PartCutting" Width="1.5" PointX="9.375" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmPenalty" Width="1.5" PointX="52.875" PointY="93.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_HrmPenalty_HrmPenaltyType" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommExport" Width="1.5" PointX="45.625" PointY="172.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommExportDetail" Width="1.5" PointX="47.875" PointY="174.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommExportDetail_CommExport" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_BundleCutting" Width="1.5" PointX="52.375" PointY="20.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwLot" Width="1.5" PointX="52.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingSequence" Width="1.5" PointX="35" PointY="99.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingTag" Width="1.5" PointX="37.25" PointY="99.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_CuttingTag_PROD_CuttingSequence" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCuttingSequence" Width="1.5" PointX="52.375" PointY="46.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommPackingListDetail" Width="1.5" PointX="47.875" PointY="179.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommPackingListDetail_CommExport" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingGradding" Width="1.5" PointX="27.5" PointY="115.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillSet" Width="1.5" PointX="54.375" PointY="11.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_SkillSet" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_RejectAdjustment" Width="1.5" PointX="27.5" PointY="119" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialIssueDetail" Width="1.5" PointX="59" PointY="88.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Currency" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Inventory_Brand" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Inventory_Item" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Inventory_MaterialIssue" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Inventory_Size" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueDetail_Production_Machine" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeWorkShift" Width="1.5" PointX="47.875" PointY="62.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeWorkShift_BranchUnitWorkShift" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCuttingProcessStyleActive" Width="1.5" PointX="54.375" PointY="45.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCuttingApproval" Width="1.5" PointX="56.375" PointY="45.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingTagSupplier" Width="1.5" PointX="29.625" PointY="122" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingProcessStyleActive" Width="1.5" PointX="15.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwPartyWiseCuttiongProcess" Width="1.5" PointX="8.375" PointY="58.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_ProcessDelivery" Width="1.5" PointX="29.625" PointY="125.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_ProcessDeliveryDetail" Width="1.5" PointX="31.875" PointY="125.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessDeliveryDetail_PROD_ProcessDelivery" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCuttingBatch" Width="1.5" PointX="59.375" PointY="12.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProcessDelivery" Width="1.5" PointX="16.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_ProcessReceive" Width="1.5" PointX="28.75" PointY="128.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_ProcessReceiveDetail" Width="1.5" PointX="39.5" PointY="89.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessReceiveDetail_PROD_CuttingTag" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessReceiveDetail_PROD_ProcessReceive" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwDailyProductionReport" Width="1.5" PointX="54.375" PointY="38.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwBookingDetailReport" Width="1.5" PointX="61.375" PointY="12.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CutBank" Width="1.5" PointX="52.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCutBank" Width="1.5" PointX="61.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_SewingInputProcess" Width="1.5" PointX="22.625" PointY="96.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_SewingInputProcessDetail" Width="1.5" PointX="24.875" PointY="97" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_SewingInputProcess_Production_Machine" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_SewingInputProcessDetail_PROD_SewingInputProcess" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSewingInputProcessDetail" Width="1.5" PointX="61.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CompConsumptionDetail" Width="1.5" PointX="62.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_Hour" Width="1.5" PointX="61.375" PointY="21.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_SewingOutPutProcess" Width="1.5" PointX="63.625" PointY="21" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_SewingOutPutProcessDetail" Width="1.5" PointX="65.875" PointY="21.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_SewingOutPutProcess_PROD_Hour" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_SewingOutPutProcessDetail_PROD_SewingOutPutProcess" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSewingOutputDetail" Width="1.5" PointX="62.375" PointY="42.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_FabricOrderDetail" Width="1.5" PointX="29.75" PointY="133.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSewingOutputProcess" Width="1.5" PointX="62.375" PointY="49.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProcessDeliveryDetail" Width="1.5" PointX="56.375" PointY="40.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeIDCardInfoInBengali" Width="1.5" PointX="63.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeIDCardInfoInEnglish" Width="1.5" PointX="58.375" PointY="60.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_VoucherDetail" Width="1.5" PointX="13.5" PointY="0.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_VoucherDetail_Acc_GLAccounts" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_VoucherDetail_Acc_VoucherMaster" />
+        <EntityTypeShape EntityType="SCERPDBModel.MailSend" Width="1.5" PointX="52.375" PointY="16.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwMailSend" Width="1.5" PointX="63.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmSkillMatrix" Width="1.5" PointX="63.375" PointY="72.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmSkillMatrixDetail" Width="1.5" PointX="65.625" PointY="64" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmSkillMatrixGrade" Width="2" PointX="63.125" PointY="64.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmSkillMatrixProcess" Width="1.5" PointX="63.375" PointY="68.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_FinishingProcess" Width="1.5" PointX="63.625" PointY="26.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_FinishingProcessDetail" Width="1.5" PointX="65.875" PointY="26.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_HrmSkillMatrixDetail_HrmSkillMatrix" />
+        <AssociationConnector Association="SCERPDBModel.FK_HrmSkillMatrixDetail_HrmSkillMatrixGrade" />
+        <AssociationConnector Association="SCERPDBModel.FK_HrmSkillMatrixDetail_HrmSkillMatrixProcess" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_FinishingProcess_PROD_Hour" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_FinishingProcessDetail_PROD_FinishingProcess" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwFinishingProcess" Width="1.5" PointX="64.375" PointY="31.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSkillMatrix" Width="1.5" PointX="63.375" PointY="17.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSkillMatrixEmployee" Width="1.5" PointX="64.375" PointY="36.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VEmployeeCompanyInfoDetail" Width="1.5" PointX="0.75" PointY="29.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.HrmMaternityPayment" Width="1.5" PointX="64.375" PointY="46.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwPenaltyEmployee" Width="1.5" PointX="36.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BulkBooking" Width="1.5" PointX="33.625" PointY="104.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BulkBookingDetail" Width="1.5" PointX="35.875" PointY="103.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BulkBookingYarnDetail" Width="1.5" PointX="38.125" PointY="104.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_BulBookingDetail_OM_BulkBooking" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_BulkBooking_OM_Merchandiser" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_BulkBookingYarnDetail_OM_BulkBookingDetail" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeHoliday" Width="1.5" PointX="64.375" PointY="51.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Maintenance_ReturnableChallan" Width="1.5" PointX="65.375" PointY="2.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.Maintenance_ReturnableChallanDetail" Width="1.5" PointX="67.625" PointY="4.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.Maintenance_ReturnableChallanReceive" Width="1.5" PointX="69.875" PointY="1.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Maintenance_ReturnableChallanReceiveMaster" Width="1.5" PointX="67.625" PointY="1.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Maintenance_ReturnableChallanDetail_Maintenance_ReturnableChallan" />
+        <AssociationConnector Association="SCERPDBModel.FK_Maintenance_ReturnableChallanReceiveMaster_Maintenance_ReturnableChallan" />
+        <AssociationConnector Association="SCERPDBModel.FK_Maintenance_ReturnableChallanReceive_Maintenance_ReturnableChallanReceiveMaster" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwReturnableChallan" Width="1.5" PointX="64.375" PointY="41.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwChallanReceiveMaster" Width="1.5" PointX="65.375" PointY="9.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwReturnableChallanReceive" Width="1.5" PointX="65.375" PointY="14.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.TmReportImageInfo" Width="1.5" PointX="51.375" PointY="11.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_MachingInterruption" Width="1.5" PointX="13.375" PointY="53.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_CompanySector" Width="1.5" PointX="0.75" PointY="12.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_BankReconcilationMaster_Acc_CompanySector" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_CostCentre_Acc_CompanySector" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_OpeningClosing_Acc_CompanySector" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_PermitedChartOfAccount_Acc_CompanySector" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_SalaryMapping_Acc_CompanySector" />
+        <AssociationConnector Association="SCERPDBModel.FK_Acc_VoucherMaster_Acc_CompanySector" />
+        <EntityTypeShape EntityType="SCERPDBModel.LineOvertimeHour" Width="1.5" PointX="65.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StyleShipmentDetail" Width="1.5" PointX="47.125" PointY="187" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_StyleShipment" Width="1.5" PointX="44.875" PointY="185.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StyleShipmentDetail_Inventory_StyleShipment" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwInventoryStyleShipment" Width="1.5" PointX="66.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_ProgramDetail" Width="1.5" PointX="68.625" PointY="36.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_KnittingRoll" Width="1.5" PointX="41.875" PointY="91" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_KnittingRoll_Production_Machine" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_AdvanceMaterialIssueDetail" Width="1.5" PointX="59.625" PointY="96.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwAdvanceMaterialIssueDetail" Width="1.5" PointX="60.375" PointY="66.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_AdvanceMaterialIssue" Width="1.5" PointX="57.375" PointY="95.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_AdvanceMaterialIssueDetail_Inventory_AdvanceMaterialIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwAdvanceMaterialIssue" Width="1.5" PointX="67.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialReceiveAgainstPoDetail" Width="1.5" PointX="29.75" PointY="109" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CostSheetMaster" Width="1.5" PointX="70.625" PointY="8.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CostSheetTemplate" Width="1.5" PointX="70.625" PointY="18.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ItemType" Width="1.5" PointX="68.375" PointY="19.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_TempGroup" Width="1.5" PointX="68.375" PointY="16.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_CostSheetMaster_OM_CostSheetMaster" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_CostSheetMaster_OM_ItemType" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_CostSheetTemplate_OM_ItemType" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_CostSheetTemplate_OM_TempGroup" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialReceived" Width="1.5" PointX="67.375" PointY="55" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_BatchDetail" Width="1.5" PointX="32.875" PointY="107.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_FabricOrder" Width="1.5" PointX="27.5" PointY="144.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwFabricOrder" Width="1.5" PointX="3.375" PointY="67.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_FabricOrder_Mrc_SupplierCompany" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_FabricOrderDetail_OM_FabricOrder" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwFabricOrderDetail" Width="1.5" PointX="42.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Pro_Batch" Width="1.5" PointX="44.625" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VProBatch" Width="1.5" PointX="68.375" PointY="27.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_Pro_Batch_Color" />
+        <AssociationConnector Association="SCERPDBModel.FK_Pro_Batch_Production_Machine" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_BatchDetail_Pro_Batch" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProdBatchDetail" Width="1.5" PointX="5.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VBuyerOrder" Width="1.5" PointX="68.375" PointY="43.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DyeingSpChallan" Width="1.5" PointX="29.625" PointY="14.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DyeingSpChallanDetail" Width="1.5" PointX="55.875" PointY="60" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_GroupSubProcess" Width="1.5" PointX="53.625" PointY="98.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingSpChallanDetail_Pro_Batch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingSpChallanDetail_PROD_BatchDetail" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingSpChallanDetail_PROD_DyeingSpChallan" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingSpChallanDetail_PROD_GroupSubProcess" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProdDyeingSpChallanDetail" Width="1.5" PointX="7.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialReceiveAgainstPo" Width="1.5" PointX="27.5" PointY="106.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialReceiveAgainstPo_Mrc_SupplierCompany" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialReceiveAgainstPoDetail_Inventory_MaterialReceiveAgainstPo" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwMaterialReceiveAgainstPo" Width="1.5" PointX="68.375" PointY="60.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_FinishFabDetailStore" Width="1.5" PointX="52.875" PointY="69" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_FinishFabStore" Width="1.5" PointX="31.875" PointY="15.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabDetailStore_Inventory_FinishFabStore" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabDetailStore_Pro_Batch" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabDetailStore_PROD_BatchDetail" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabStore_PROD_DyeingSpChallan" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_TargetProduction" Width="1.5" PointX="22.625" PointY="101.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_TargetProduction_PLAN_TargetProduction" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_TargetProductionDetail_PLAN_TargetProduction" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_FinishFabricIssueDetail" Width="1.5" PointX="31.875" PointY="150.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_StylePayment" Width="1.5" PointX="0.75" PointY="37.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_FinishFabricIssue" Width="1.5" PointX="29.625" PointY="149.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabricIssueDetail_Inventory_FinishFabricIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.AdvanceIncomeTax" Width="1.5" PointX="55.375" PointY="31.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_BatchRoll" Width="1.5" PointX="46.875" PointY="90.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_BatchRoll_Pro_Batch" />
+        <EntityTypeShape EntityType="SCERPDBModel.VStylePayment" Width="1.5" PointX="62.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwBatchRoll" Width="1.5" PointX="5.375" PointY="67.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_BatchRoll_PROD_KnittingRoll" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ConsumptionSupplier" Width="1.5" PointX="39.5" PointY="56.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_ConsumptionSupplier_Mrc_SupplierCompany" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_ConsumptionSupplier_OM_Consumption" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_KnittingRollIssue" Width="1.5" PointX="65.375" PointY="70" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_KnittingRollIssueDetail" Width="1.5" PointX="67.625" PointY="71.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_KnittingRollIssueDetail_PROD_KnittingRollIssueDetail" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_KnittingRollIssueDetail_PROD_KnittingRoll" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_BatchRoll_PROD_KnittingRollIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.GatePassDetail" Width="1.5" PointX="72.625" PointY="23.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.GatePass" Width="1.5" PointX="70.375" PointY="70" />
+        <AssociationConnector Association="SCERPDBModel.FK_GatePassDetail_GatePass" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeManualOverTime" Width="1.5" PointX="5.375" PointY="57.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_GoodsReceivingNote" Width="1.5" PointX="38.25" PointY="108" />
+        <EntityTypeShape EntityType="SCERPDBModel.VGoodsReceivingNote" Width="1.5" PointX="70.375" PointY="27.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_GoodsReceivingNote_Inventory_QualityCertificate" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_StoreLedger_Inventory_GoodsReceivingNote" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeIncrementManual" Width="1.5" PointX="70.375" PointY="42.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommBank" Width="1.5" PointX="57.375" PointY="19.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommBbLcInfo" Width="1.5" PointX="47.625" PointY="123.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.COMMLcInfo" Width="1.5" PointX="43.375" PointY="173.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommBbLcInfo_COMMLcInfo" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommBbLcInfo_Mrc_SupplierCompany" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommExport_COMMLcInfo" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ThreadConsumption" Width="1.5" PointX="70.375" PointY="60" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ThreadConsumptionDetail" Width="1.5" PointX="72.625" PointY="60.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_ThreadConsumptionDetail_OM_ThreadConsumption" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_NonProductiveTime" Width="1.5" PointX="41.375" PointY="64.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DownTimeCategory" Width="1.5" PointX="36.375" PointY="13.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DyeingJobOrder" Width="1.5" PointX="29.625" PointY="155.625" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_DyeingJobOrderDetail" Width="1.5" PointX="31.875" PointY="156" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingJobOrderDetail_PROD_DyeingJobOrder" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommCashBbLcPaymentMode" Width="1.5" PointX="7.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommCashBbLcInfo" Width="1.5" PointX="72.375" PointY="28.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommCashBbLcDetail" Width="1.5" PointX="74.625" PointY="31.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommCashBbLcDetail_CommCashBbLcInfo" />
+        <EntityTypeShape EntityType="SCERPDBModel.VOM_BuyOrdStyle" Width="1.5" PointX="55.375" PointY="64.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeJobCard_10PM" Width="1.5" PointX="72.375" PointY="37.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeJobCard_10PM_NoWeekend" Width="1.5" PointX="72.375" PointY="63.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeJobCardGrossDeduction" Width="1.5" PointX="74.375" PointY="34.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeInOut_10PM" Width="1.5" PointX="73.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeInOut_10PM_NoWeekend" Width="1.5" PointX="74.375" PointY="63.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_Inquiry" Width="1.5" PointX="57.375" PointY="68.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeWeekend" Width="1.5" PointX="73.375" PointY="17.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ItemStoreDetail" Width="1.5" PointX="62" PointY="86.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Country" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Currency" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Inventory_Brand" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Inventory_Item" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Inventory_ItemStore" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ItemStoreDetail_Inventory_Size" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillMatrix" Width="1.5" PointX="55.375" PointY="51.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillMatrixDetail" Width="1.5" PointX="74.375" PointY="54.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillMatrixMachineType" Width="1.5" PointX="54.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillMatrixPointTable" Width="1.5" PointX="67.375" PointY="74.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmailTemplate" Width="1.5" PointX="74.375" PointY="76.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.EMailTemplateComp" Width="1.5" PointX="76.625" PointY="79.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmailTemplateUser" Width="1.5" PointX="76.625" PointY="76.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmailUser" Width="1.5" PointX="74.375" PointY="83.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_EMailTemplateComp_EmailTemplate" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmailTemplateUser_EmailTemplate" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmailTemplateUser_EmailUser" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommCashLc" Width="1.5" PointX="0.75" PointY="73.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.SkillMatrixProcessName" Width="1.5" PointX="56.375" PointY="55.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommCashLCDyesChemical" Width="1.5" PointX="75.375" PointY="1.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommSalseContact" Width="1.5" PointX="45.625" PointY="193.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommSalseContact_COMMLcInfo" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommPackingCredit" Width="1.5" PointX="45.625" PointY="181.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommPackingCredit_COMMLcInfo" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCommLcInfo" Width="1.5" PointX="75.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttFabReject" Width="1.5" PointX="75.375" PointY="18.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwCuttFabReject" Width="1.5" PointX="75.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ReDyeingFabricReceiveDetail" Width="1.5" PointX="31.875" PointY="161.875" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_ReDyeingFabricReceive" Width="1.5" PointX="29.625" PointY="161.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ReDyeingFabricReceiveDetail_Inventory_ReDyeingFabricReceive" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_RedyeingFabricIssue" Width="1.5" PointX="29.625" PointY="166" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_RedyeingFabricIssueDetail" Width="1.5" PointX="31.875" PointY="166.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_RedyeingFabricIssueDetail_Inventory_RedyeingFabricIssueDetail" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CostDefination" Width="1.5" PointX="36.375" PointY="10" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_CostOrdStyle" Width="1.5" PointX="38.375" PointY="10" />
+        <EntityTypeShape EntityType="SCERPDBModel.VCostOrderStyle" Width="1.5" PointX="76.375" PointY="34.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_Booking" Width="1.5" PointX="42.625" PointY="30" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_Booking_Mrc_SupplierCompany" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_Booking_OM_Buyer" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_Booking_OM_Merchandiser" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_BookingDetail_Inventory_Booking" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_DailyLineLayout" Width="1.5" PointX="22.625" PointY="107.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_DailyLineLayout_Production_Machine" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_MaterialReceivedDetail" Width="1.5" PointX="69.625" PointY="54.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialReceivedDetail_Inventory_MaterialReceived" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_GLAccounts_Hidden" Width="1.5" PointX="75.375" PointY="59.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_GLAccounts_Hidden_Status" Width="1.5" PointX="40.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.HouseKeepingItem" Width="1.5" PointX="49.375" PointY="59.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_RejectYarnIssue" Width="1.5" PointX="29.625" PointY="171.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_RejectYarnIssueDetail" Width="1.5" PointX="31.875" PointY="172.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_RejectYarnIssueDetail_Inventory_RejectYarnIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.HouseKeepingRegister" Width="1.5" PointX="60.625" PointY="78" />
+        <AssociationConnector Association="SCERPDBModel.FK_HouseKeepingRegister_HouseKeepingItem" />
+        <EntityTypeShape EntityType="SCERPDBModel.PLAN_Program" Width="1.5" PointX="29.625" PointY="137.25" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_ProgramDetail_PLAN_Program" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_KnittingRoll_PLAN_Program" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwProgram" Width="1.5" PointX="76.375" PointY="39.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_GreyIssue" Width="1.5" PointX="29.625" PointY="176.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_GreyIssueDetail" Width="1.5" PointX="31.875" PointY="176.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_GreyIssueDetail_Inventory_GreyIssue" />
+        <EntityTypeShape EntityType="SCERPDBModel.MarketingStatus" Width="1.5" PointX="22.375" PointY="44.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_TNA" Width="1.5" PointX="76.375" PointY="53.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommBbLcItemDetails" Width="1.5" PointX="49.875" PointY="127" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommBbLcItemDetails_CommBbLcInfo" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_TnaActivity" Width="1.5" PointX="37.375" PointY="51.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommTNA" Width="1.5" PointX="69.375" PointY="76.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommImport" Width="1.5" PointX="77.375" PointY="1.25" />
+        <EntityTypeShape EntityType="SCERPDBModel.CommImportDetails" Width="1.5" PointX="79.625" PointY="1.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_CommImportDetails_CommImport" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserTnaResponsible" Width="1.5" PointX="25.375" PointY="64.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwOM_BuyOrdShip" Width="1.5" PointX="63.375" PointY="76.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwKnittingRoll" Width="1.5" PointX="77.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_FabricReturn" Width="1.5" PointX="31.875" PointY="138.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FabricReturn_Inventory_FabricReturn" />
+        <EntityTypeShape EntityType="SCERPDBModel.MarketingPerson" Width="1.5" PointX="76.375" PointY="87" />
+        <EntityTypeShape EntityType="SCERPDBModel.MarketingInquiry" Width="1.5" PointX="79.625" PointY="78.5" />
+        <EntityTypeShape EntityType="SCERPDBModel.MarketingInstitute" Width="1.5" PointX="76.375" PointY="71" />
+        <AssociationConnector Association="SCERPDBModel.FK_MarketingInquiry_MarketingInstitute" />
+        <AssociationConnector Association="SCERPDBModel.FK_MarketingInquiry_MarketingPerson" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_RejectReplacement" Width="1.5" PointX="27.5" PointY="133.375" />
+        <EntityTypeShape EntityType="SCERPDBModel.Inventory_GroupChallan" Width="1.5" PointX="37.375" PointY="47.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.PROD_CuttingBatch" Width="1.5" PointX="7.125" PointY="82" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_BundleCutting_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_CuttingGradding_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_LayCutting_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_PartCutting_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessReceiveDetail_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_RejectAdjustment_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_RejectReplacement_PROD_CuttingBatch" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_RollCutting_PROD_CuttingBatch" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_EmbWorkOrder" Width="1.5" PointX="29.625" PointY="182" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_EmbWorkOrderDetail" Width="1.5" PointX="31.875" PointY="182.125" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_EmbWorkOrderDetail_OM_EmbWorkOrder" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyerTnaTemplate" Width="1.5" PointX="25.375" PointY="51.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_SampleStyle" Width="1.5" PointX="79.625" PointY="17.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_SampleOrder" Width="1.5" PointX="38.625" PointY="20.5" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_SampleOrder_OM_SampleOrder" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_SampleOrder_OM_Merchandiser" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_SampleStyle_OM_SampleOrder" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_ActivityResponsible" Width="1.5" PointX="65.375" PointY="60.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_NotificationTemplate" Width="1.5" PointX="41.375" PointY="69.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_NotificationTemplate_OM_TnaActivity" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSewingInputProcess" Width="1.5" PointX="77.375" PointY="23.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_BuyOrdStyle" Width="1.5" PointX="78.375" PointY="30.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VOMBuyOrdStyle" Width="1.5" PointX="0.75" PointY="41.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.ProFormaInvoice" Width="1.5" PointX="27.5" PointY="187.875" />
+        <AssociationConnector Association="SCERPDBModel.FK_ProFormaInvoice_Mrc_SupplierCompany" />
+        <EntityTypeShape EntityType="SCERPDBModel.Messaging" Width="1.5" PointX="32.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Acc_PartyAccount" Width="1.5" PointX="33.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Party" Width="1.5" PointX="19.5" PointY="99.125" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwParty" Width="1.5" PointX="33.375" PointY="7.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_FinishFabricIssue_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_GreyIssue_Inventory_GreyIssue" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_RedyeingFabricIssue_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_ReDyeingFabricReceive_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_RejectYarnIssue_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_OM_EmbWorkOrder_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PLAN_Program_PLAN_Program" />
+        <AssociationConnector Association="SCERPDBModel.FK_Pro_Batch_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_CuttingTagSupplier_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingJobOrder_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_DyeingSpChallan_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_KnittingRoll_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessDelivery_Party" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_ProcessReceive_Party" />
+        <EntityTypeShape EntityType="SCERPDBModel.OM_TnaActivityLog" Width="1.5" PointX="26.375" PointY="6.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.User" Width="1.5" PointX="44.875" PointY="18.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForDepartmentLevel_User" />
+        <AssociationConnector Association="SCERPDBModel.FK_UserPermissionForEmployeeLevel_User" />
+        <AssociationConnector Association="SCERPDBModel.FK_Maintenance_ReturnableChallanReceive_Maintenance_ReturnableChallanDetail" />
+        <AssociationConnector Association="SCERPDBModel.FK_PROD_CuttingTagSupplier_PROD_CuttingTagSupplier" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwReceiveDetail" Width="1.5" PointX="38.375" PointY="43.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwSewingInputDetail" Width="1.5" PointX="60.375" PointY="59.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.VProgramDetail" Width="1.5" PointX="77.375" PointY="60.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Contact" Width="1.5" PointX="49.375" PointY="30" />
+        <AssociationConnector Association="SCERPDBModel.FK_User_Contact" />
+        <EntityTypeShape EntityType="SCERPDBModel.VwTargetProduction" Width="1.5" PointX="68.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.UserLogTime" Width="1.5" PointX="70.375" PointY="14.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.BonusRule" Width="1.5" PointX="78.375" PointY="68.75" />
+        <EntityTypeShape EntityType="SCERPDBModel.Employee" Width="1.5" PointX="22.625" PointY="63.625" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employee_BloodGroup" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employee_Gender" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employee_MaritalStatus" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employee_QuitType" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employee_Religion" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeBonus_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeCompanyInfo_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeEducation_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeLeave_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePermanentAddress_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeePresentAddress_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeSalary_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeSalary_Processed_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeSalary_Processed_Temp_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeWorkGroup_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_Employment_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_HeadOfDepartment_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_HouseKeepingRegister_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_AuthorizedPerson_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssue_Inventory_MaterialIssue" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_MaterialIssueRequisition_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_Inventory_PurchaseRequisitionApprovalFlowConfiguration_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_OutStationDuty_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_OvertimeEligibleEmployee_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_SalaryAdvance_Employee" />
+        <AssociationConnector Association="SCERPDBModel.FK_User_Employee" />
+        <EntityTypeShape EntityType="SCERPDBModel.AuthorizedPerson" Width="1.5" PointX="47.875" PointY="74.75" />
+        <AssociationConnector Association="SCERPDBModel.FK_AuthorizedPerson_AuthorizationType" />
+        <AssociationConnector Association="SCERPDBModel.FK_AuthorizedPerson_Employee" />
+        <EntityTypeShape EntityType="SCERPDBModel.EmployeeShortLeave" Width="1.5" PointX="24.875" PointY="68.375" />
+        <AssociationConnector Association="SCERPDBModel.FK_EmployeeShortLeave_Employee" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,81 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeFamilyInfoViewModel
+
+@{
+    ViewBag.Title = (Model.EmployeeFamilyInfoId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmployeeFamilyInfo", FormMethod.Post, new { @class = "EmployeeFamilyInfoform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmployeeFamilyInfoId)
+    
+    <fieldset>
+        <legend>Family Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Name of Child:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.NameOfChild)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NameOfChild)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Name of Child (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(m => m.NameOfChildInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NameOfChildInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Date of Birth:</td>
+                <td>                   
+                    @Html.TextBoxFor(x => x.DateOfBirth, new { @class = "datepicker", @data_val = "false", @placeholder = "Date Of Birth" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.DateOfBirth)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Gender:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.GenderId, Model.GenderSelectListItem, "--Select--")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.GenderId)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeFamilyInfoDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

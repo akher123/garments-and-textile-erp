@@ -1,0 +1,248 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GreyIssueViewModel
+@{
+    ViewBag.Title = (Model.GreyIssue.GreyIssueId > 0 ? "Edit " : "Add ");
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<section class="search formCover tabefont">
+    @using (Html.BeginForm("Save", "GreyIssue", FormMethod.Post, new { @class = "KnittingFabIssueForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.GreyIssue.GreyIssueId)
+        @Html.ValidationSummary(true)
+        <div class="additem">
+            <div style="font-size:12px; margin-bottom: 10px;">
+                <fieldset>
+                    <legend>Knitted Grey Fabric Issue</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Ref No")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.RefId, new {@readonly = "readonly", @style = "background-color: #EEEEEE"})
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "Party")
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.GreyIssue.PartyId, Model.PartySelectListItem, new { id = "party_dropdown" })
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "Challan No")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.ChallanNo)
+                                            @Html.Label("*", new {@class = "labelInstruction"})
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "Date")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.ChallanDate, new {@class = "datepicker"})
+                                            @Html.Label("*", new {@class = "labelInstruction"})
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Through")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.Through)
+                                            @Html.Label("*", new {@class = "labelInstruction"})
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "VheicalNo")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.VheicalNo)
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "Mobile")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.Mobile)
+                                            @Html.Label("*", new {@class = "labelInstruction"})
+                                        </td>
+                                        <td>
+                                            @Html.Label("", "Remarks")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.GreyIssue.Remarks)
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "Program")
+                                                @Html.TextBoxFor(x => x.GreyIssueDetail.ProgramRegId, new { @class = "knittingProgrmAutocomplite", @action = "/YarnDelivery/GetProgramAutocomplite" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table class="webgrid webgrid-table" id="knitingDeliveryOrderTable">
+                                                    <thead style="background-color: #ff8c00">
+                                                        <tr>
+                                                            <th>Program No</th>
+                                                            <th>Fabric Type</th>
+                                                            <th>Color</th>
+                                                            <th>M/C Dia</th>
+                                                            <th>F Dia</th>
+                                                            <th>SLength</th>
+                                                            <th>GSM</th>
+                                                            <th>OrdQty(Kg)</th>
+                                                            <th>ProdQty(Kg)</th>
+                                                            <th>ProdBlnc(Kg)</th>
+                                                            <th>IQty(Kg)</th>
+                                                            <th>SIH(Kg)</th>
+                                                            <th>TRoll</th>
+                                                            <th>IRoll</th>
+                                                            <th>SIHR</th>
+                                                            <th>Role</th>
+                                                            <th>Qty</th>
+                                                            <th>Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <table class="webgrid webgrid-table" id="knitingDeliveryTable">
+                                                    <thead style="background-color:#9370db">
+                                                        <tr>
+                                                            <th>Program No</th>
+                                                            <th>Fabric Type</th>
+                                                            <th>Color</th>
+                                                            <th>M/C Dia</th>
+                                                            <th>F Dia</th>
+                                                            <th>SLength</th>
+                                                            <th>GSM</th>
+                                                            <th>OrdQty(Kg)</th>
+                                                            <th>ProdQty(Kg)</th>
+                                                            <th>ProdBlnc(Kg)</th>
+                                                            <th>IQty(Kg)</th>
+                                                            <th>SIH(Kg)</th>
+                                                            <th>TRoll</th>
+                                                            <th>IRoll</th>
+                                                            <th>SIHR</th>
+                                                            <th>Role</th>
+                                                            <th>Qty</th>
+                                                            <th>Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       @Html.Partial("~/Areas/Inventory/Views/GreyIssue/_KnittingOrderDelivery.cshtml",Model)
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                        
+                                <div style="float: right">
+                                    <input type="button" class="addButton" id="btnSveGereIssue" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+
+        </div>
+    }
+</section>
+
+<script type="text/javascript">
+
+    $('#party_dropdown').on('change', function() {
+        $("#knitingDeliveryOrderTable > tbody ").html('');
+        $("#knitingDeliveryTable > tbody ").html('');
+    });
+
+    $('.knittingProgrmAutocomplite').autocomplete({
+        source: function (request, response) {
+            // var datatarget = this.element.attr('data-target');
+            var url = this.element.attr('action');
+            var option = {
+                url: url,
+                type: "GET",
+                data: { searchString: request.term, partyId: $('#party_dropdown').val(), processRefId: "010" },
+            };
+            $.Ajax(option)
+                .done(function (data) {
+                    //   $(datatarget).val('');
+
+                    response($.map(data, function (item) {
+                        return { label: item.ProgramRefId, value: item.ProgramRefId, ProgramId: item.ProgramId };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var programId = ui.item.ProgramId;
+            findKinittingGreyDetail(programId);
+        },
+    });
+
+    function findKinittingGreyDetail(programId) {
+        var url = '/GreyIssue/GetKnittingOrderDelivery/';
+        var option = {
+            url: url,
+            type: "GET",
+            data: { programId: programId },
+        };
+        $.Ajax(option)
+            .done(function (htnl) {
+                $("#knitingDeliveryOrderTable > tbody ").html(htnl);
+            });
+    }
+
+
+    function addKinittingGreyDetail(event, obj) {
+        var $tr = $(obj).closest('tr');
+        var $clone = $tr.clone();
+        if (event.which == 13 || event.keyCode == 13) {
+            $("#knitingDeliveryTable > tbody ").append($clone);
+            removeRow(obj);
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    function removeRow(obj) {
+        var $tr = $(obj).closest('tr');
+        $tr.remove();
+
+    }
+    $('#btnSveGereIssue').click(saveBtn);
+    function saveBtn(e) {
+        var form = $(this).parents('form:first');
+        var option= {
+            success:function() {
+                form.DialogClose();
+            },
+        }
+        form.Post(option);
+  
+    };
+
+
+</script>

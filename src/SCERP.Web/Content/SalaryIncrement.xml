@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+   <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+     
+	  <tr>
+	     <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;প্লামি ফ্যাশনস্ লিমিটেড 
+        </td>
+		 <td align="right" valign="bottom">
+          
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+		 <td align="right">
+          
+        </td>
+      </tr>	  
+    </table>
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td align="right">তারিখ : {DATE_TODAY}</td>      
+      </tr>
+  
+      <tr>
+        <td align="middle">পদোন্নতি/বর্ধিত বেতনসহ পদোন্নতি/বেতন বৃদ্ধি পত্র/পদবী পরিবর্তন পত্র</td>      
+      </tr>
+      
+       <tr>
+        <td height="20px"></td>      
+      </tr>
+    </table>
+    
+    
+                                       
+<table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+         
+    <tr>
+        <td width="130px"> কার্ড নং : </td>
+        <td></td>
+        <td>{EMP_CARDNO}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td> নাম :</td>
+        <td></td>
+        <td> {EMP_NAME} </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td> পদবী :</td>
+        <td></td>
+        <td> {EMP_DESIGNATION} </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>গ্রেড :</td>
+        <td></td>
+        <td>{EMP_GRADE}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>বিভাগ :</td>
+        <td></td>
+        <td>{EMP_DEPARTMENT}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>যোগদানের তারিখ :</td>   
+        <td></td>
+        <td>{JOINING_DATE}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td height="20px"></td>   
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6">বিষয়ঃ পদোন্নতি/বর্ধিত বেতনসহ পদোন্নতি/বেতন বৃদ্ধি প্রসঙ্গে।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td height="20px"></td>   
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>জনাব/জনাবা,</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6">আমরা অত্যন্ত আনন্দের সাথে জানাচ্ছি যে, কর্তৃপক্ষ আপনার কর্ম দক্ষতা, কাজের গুণগত মান, উৎপাদন ক্ষমতা, আচার-আচরণ ও কর্মস্থলে <br/> উপস্থিতির উপর সন্তুষ্ট হয়ে আপনাকে নিম্নে উল্লেখিত বিবরণে মূল্যায়ন করা হল।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </table>
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="130px">পূর্বের পদবী :</td>
+        <td></td>
+        <td  width="220px">{EMP_DESIGNATION} </td>
+        <td width="130px">বর্তমান পদবী :</td>
+        <td width="2px"></td>
+        <td>{EMP_DESIGNATION}</td>
+      </tr>
+      <tr>
+        <td>পূর্বের গ্রেড :</td>
+        <td></td>
+        <td>{EMP_GRADE}</td>
+        <td>বর্তমান গ্রেড :</td>
+        <td></td>
+        <td>{EMP_GRADE}</td>
+    </tr>
+    <tr>
+        <td>পূর্বের বেতন :</td>
+        <td></td>
+        <td>{GROSS_SALARY}</td>
+        <td>বর্ধিত বেতন :</td>
+        <td></td>
+        <td>{INCREMENT}</td>
+    </tr>
+    <tr>
+        <td>আপনার বেতন :</td>
+        <td></td>
+        <td colspan="4">টাকা বৃদ্ধি করে {NEW_SALARY} টাকায় উন্নিত করেছেন</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6" style="font-weight:bold;">বেতন বৃদ্ধির প্রেক্ষিতে আপনার বেতনের পূণঃ বিন্যাস নিম্নরূপ :</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+       <tr>
+        <td height="20px"></td>   
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>     
+    <tr>
+        <td>মূল বেতন : </td>
+        <td></td>
+        <td align="right" width="130px">{NEW_BASIC_SALARY} টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>বাড়ী ভাড়া : </td>
+        <td></td>
+        <td align="right">{NEW_HOUSE_RENT}	টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>চিকিৎসা ভাতা :</td>
+        <td></td>
+        <td align="right">{MEDICINE}	টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>যাতায়াত ভাড়া :</td>
+        <td></td>
+        <td align="right">{TRANSPORT}	টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>খাদ্য ভাতা :</td>
+        <td></td>
+        <td align="right">{FOOD}	টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6"><hr/></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>মোট :</td>
+        <td></td>
+        <td align="right">{NEW_GROSS}	টাকা</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>   
+    <tr>
+        <td height="10px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6">যা  {EFFECTIVE_DATE} ইং তারিখ হতে কার্যকর হবে।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td height="10px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6">কর্তৃপক্ষ আশা করছে যে, আপনি অতীতে যে কর্মদক্ষতা দেখিয়েছেন, বেতন বৃদ্ধির পরও তা অব্যাহত রেখে প্রতিষ্ঠানের <br> প্রতি একনিষ্ট থেকে  অত্র প্রতিষ্ঠানের উন্নতিকল্পে আপনাকে নিয়োজিত করবেন। কর্তৃপক্ষ আপনার উত্তরোত্তর উন্নতি কামনা করে।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td height="10px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>ধন্যবাদান্তে-</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td height="30px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>কর্তৃপক্ষ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="2">শ্রমিকের স্বাক্ষর</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td height="30px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>অনুলিপি:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>০১) হিসাব বিভাগ।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>        
+    <tr>
+        <td>০২) ব্যক্তিগত নথি।</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+                          
+   ]]>
+ </EmployeeSpecificInfo>
+
+</AppointmentLetter>

@@ -1,0 +1,174 @@
+﻿@using Microsoft.Ajax.Utilities
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.QualityCertificateViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    var qualityCertificateDetailIds = Model.VQualityCertificateDetails;
+    ViewBag.Title = "Update Quality Certificate";
+}
+
+@using (Html.BeginForm("Save", "QualityCertificate", FormMethod.Get, new { @class = "QualityCertificateSearchForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QualityCertificateId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Quality Certificate</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td>Q.C Ref :</td>
+                <td>
+                    @Html.TextBoxFor(model => model.QCReferenceNo, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+
+                <td>Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.SendingDate,new{@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+        </table>
+        <hr/>
+        <div style="width: 1024px; overflow: auto">
+            <table id="ItemStoreDetail" class="tabefont gridtable " style="width: auto">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label("SL#")
+                        </th>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Brand")
+                        </th>
+                        <th>
+                            @Html.Label("Origin")
+                        </th>
+                        <th>
+                            @Html.Label("Unit")
+                        </th>
+                        <th>
+                            @Html.Label("Specification")
+                        </th>
+                        <th>
+                            @Html.Label("SuppQty")
+                        </th>
+                        <th>
+                            @Html.Label("RecQty")
+                        </th>
+
+
+                        <th>
+                            @Html.Label("Ok Qty")
+                        </th>
+                        <th>
+                            @Html.Label("RejQty")
+                        </th>
+                        <th>
+                            @Html.Label("Remarks")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var index = 0; index < qualityCertificateDetailIds.Count(); index++)
+                    {
+                        <tr>
+                            <td>
+                                @(index + 1)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].QualityCertificateDetailId)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].QualityCertificateId)
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].ItemName)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].ReceivedQuantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].SizeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].BrandName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].CountryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].UnitName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].Specification)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].SuppliedQuantity)
+                            </td>
+                            <td class="ReceivedQuantity">
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].ReceivedQuantity)
+                            </td>
+
+                            <td>
+                               @Html.TextBoxFor(x => x.VQualityCertificateDetails[index].CorrectQuantity, new {@class = " CorrectQuantity", @style = "width:80px;background-color: #b0e0e6", @readonly = "readonly" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VQualityCertificateDetails[index].RejectedQuantity, new { @class = "RejectedQuantity", @style = "width:80px", @placeholder = "Rejected Qty", })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VQualityCertificateDetails[index].Remarks, new { @class = "Remarks", @placeholder = "Remarks" })
+                            </td>
+
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p class="tabefont" style="float: right">
+                <input type="submit" value="Update" />
+            </p>
+        </div>
+    </fieldset>
+}
+
+<script type="text/javascript">
+    $('.RejectedQuantity').on('input', function (event) {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+    $(".RejectedQuantity").each(function () {
+        var $this = $(this);
+
+        $this.keyup(function () {
+            GetOkQuantity($this);
+        });
+    });
+    function GetOkQuantity($this) {
+        var result = 0;
+        var $tr = $this.closest("tr");
+        var $RejectedQuantityTextBox = $tr.find('td:eq(8)').find("input[type=text]");
+        var $ReceivedQuantityTextBox = $tr.find('.ReceivedQuantity');
+        var receivedQuantity = $ReceivedQuantityTextBox.html();
+        $this.each(function () {
+            if (!isNaN($this.val()) && $this.val().length != 0) {
+
+                result = parseFloat(receivedQuantity) - parseFloat((this.value));
+            }
+            if (result >= 0) {
+
+                $RejectedQuantityTextBox.css('background-color', '#b0e0e6');
+                $ReceivedQuantityTextBox.css('background-color', '');
+                $tr.find('.CorrectQuantity').val(result);
+            } else {
+                $RejectedQuantityTextBox.css('background-color', 'red');
+                $ReceivedQuantityTextBox.css('background-color', 'red');
+
+            }
+        });
+
+    }
+    
+</script>

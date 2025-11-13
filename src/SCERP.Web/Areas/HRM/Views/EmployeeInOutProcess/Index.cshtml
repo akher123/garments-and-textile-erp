@@ -1,0 +1,157 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeInOutProcessViewModel
+
+@{
+    ViewBag.Title = "Employee In Out Processed Info";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "EmployeeInOutProcess", FormMethod.Get, new { @class = "EmployeeInOutProcessSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee In Out Processed Info</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@data_val = true, @class = "SearchByCompanyId", @action = "/HRM/EmployeeInOutProcess/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@data_val = true, @class = "SearchByBranchId", @action = "/HRM/EmployeeInOutProcess/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @data_val = true, @class = "SearchByBranchUnitId", @action = "/HRM/EmployeeInOutProcess/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeInOutProcess/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentSection" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee Type: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new {@data_val = false, @class = "Hrm_EmployeeTypeId",})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Card:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("From :")
+                    </td>
+                    <td>                        
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Start Date" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("To :")
+                    </td>
+                    <td>                       
+                        @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "End Date" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input type="button" class="addButton" onclick="search('@Url.Action("Process", "EmployeeInOutProcess", new { IsSearch = true })','EmployeeInOutProcessSearchForm')" value="Process" />           
+        </div>
+        <fieldset>
+            <legend>Employes</legend>
+            <div>              
+                    @{
+                        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+                        grid.Bind(Model.EmployeeInOutRecords, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                        grid.Pager(WebGridPagerModes.All);
+                        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                            grid.Column("EmployeeCardId", header: "Card Id ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                            grid.Column("EmployeeName", header: "Name", format: @<text>@(item.EmployeeName ?? "- - -")</text>),
+                            grid.Column("EmployeeDesignation", header: "Designation", format: @<text>@(item.EmployeeDesignation ?? "- - -")</text>),
+                            grid.Column("DepartmentName", header: "Department", format: @<text>@(item.DepartmentName ?? "")</text>),
+                            grid.Column("SectionName", header: "Section", format: @<text>@(item.SectionName ?? "")</text>),
+                            grid.Column("LineName", header: "Line", format: @<text>@(item.LineName ?? "")</text>),
+                            grid.Column("TransactionDate", header: "Transaction Date ", format: @<text>@(item.TransactionDate ?? "")</text>),
+                            grid.Column("WorkShiftName", header: "Work Shift", format: @<text>@(item.WorkShiftName ?? "- - -")</text>),
+                            grid.Column("InTime", header: "In Time", format: @<text>@(item.InTime ?? "- - -")</text>),
+                            grid.Column("OutTime", header: "Out Time", format: @<text>@(item.OutTime ?? "- - -")</text>),
+                            grid.Column("LateInMinutes", header: "Late(In Minutes)", format: @<text>@(item.LateInMinutes ?? "- - -")</text>),
+                            grid.Column("Status", header: "Status", format: @<text>@(item.Status ?? "- - -")</text>),
+                            grid.Column("OTHours", header: "OT Hours", format: @<text>@(item.OTHours ?? "- - -")</text>),
+                            grid.Column("ExtraOTHours", header: "Extra OT Hours", format: @<text>@(item.ExtraOTHours ?? "- - -")</text>),
+                            grid.Column("WeekendOTHours", header: "Weekend OT Hours", format: @<text>@(item.WeekendOTHours ?? "- - -")</text>)));
+                    }              
+            </div>
+        </fieldset>
+    </div>
+</section>
+

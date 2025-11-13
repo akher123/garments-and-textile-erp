@@ -1,0 +1,160 @@
+﻿@model  SCERP.Model.Acc_GLAccounts
+@{
+    ViewBag.Title = "Add account head";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<style type="text/css">
+    input[readonly="readonly"] {
+        background-color: #b0c4de;
+    }
+</style>
+@using (Html.BeginForm("SaveControlAccount", "ControlAccount", new { @class = "GLAccountsForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IsActive)
+    <div>
+        <table style="width: 400px;" class="tabefont">
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Control Code</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ControlCode, new {@readonly = "readonly"})
+                    @Html.ValidationMessageFor(model => model.ControlCode)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Parent Name</td>
+                <td>
+                    @Html.TextBox("ParentName", null, new { @class = "ParentNameClass" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Account Code</td>
+                <td>
+                    @Html.TextBoxFor(model => model.AccountCode, new { @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.AccountCode)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Account Name</td>
+                <td>
+                    @Html.TextBoxFor(model => model.AccountName)
+                    @Html.ValidationMessageFor(model => model.AccountName)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">BalanceType</td>
+                <td>
+                    @Html.DropDownListFor(model => model.BalanceType, null, "-select-")
+                    @Html.ValidationMessageFor(model => model.BalanceType)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">AccountType</td>
+                <td>
+                    @Html.DropDownListFor(model => model.AccountType, null, "-select-")
+                    @Html.ValidationMessageFor(model => model.AccountType)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="button" id="saveGLAccount" value="save" />
+                </td>
+            </tr>
+            @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+        </table>
+    </div>
+
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#AccountName').keyup(function () {
+
+            $(this).css('border-color', "");
+        });
+        $('#BalanceType').change(function () {
+            $(this).val().length != 0 ? $(this).css('border-color', '') : $(this).css('border-color', 'red');
+        });
+        $('#AccountType').change(function () {
+            $(this).val().length != 0 ? $(this).css('border-color', '') : $(this).css('border-color', 'red');
+        });
+        $('#saveGLAccount').click(function () {
+            var glAccount =
+            {
+                "Id": $('#Id').val(),
+                "ControlCode": $('#ControlCode').val(),
+                "AccountCode": $('#AccountCode').val(),
+                "AccountName": $('#AccountName').val(),
+                "BalanceType": $('#BalanceType').val(),
+                "AccountType": $('#AccountType').val()
+            };
+
+            if ($('#AccountCode').val().length == 0 && $('#BalanceType').val().length == 0 && $('#AccountType').val().length > 0) {
+                $('#AccountName, #BalanceType, #AccountType').css('border-color', 'red');
+            } else {
+                $.ajax({
+                    url: '/Accounting/ControlAccount/SaveGlAccount',
+                    data: glAccount,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Success == false && data.Success != 'undefined' && data.Error == true && data.Error != 'undefined') {
+                            $('.errorMessage').append(data.Message);
+
+                        } else {
+                            //var li = '<li id="' +
+                            //    data.AccountCode +
+                            //    '" class="parent"><span style="color:brown">' +
+                            //    data.AccountCode +
+                            //    '-</span><span id="' +
+                            //    data.Id +
+                            //    '_' +
+                            //    data.AccountCode +
+                            //    '_' +
+                            //    data.ControlCode +
+                            //    '" class="chartofAcc" style="color: blue"> ' +
+                            //    data.AccountName +
+                            //    '</span>';
+                            //if (glAccount.Id.length > 0) {
+                            //    $(this).replaceWith(li);
+                            //} else {
+                            //    $('#' + data.ControlCode).append(li);
+                            //}
+                            loadAction("/Accounting/ControlAccount/ChartOfAccount?searchKey=" + glAccount.AccountName);//for reload
+                            $('#event_result').dialog('destroy').remove();
+                        }
+                    }
+                });
+            }
+
+        });
+
+        var parentCode = $('#ControlCode').val();
+
+        $.ajax({
+            url: '/Accounting/ControlAccount/GetParentName',
+            data: {
+                "parentCode": parentCode
+            },
+
+            type: 'POST',
+            success: function (data) {
+                if (data.Success)
+                    $('#ParentName').val(data.Message);
+            }
+        });
+
+
+    </script>
+}
+

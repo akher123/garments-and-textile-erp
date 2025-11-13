@@ -1,0 +1,60 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeQuitInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<fieldset style="margin-top:10px; margin-right: 10px; margin-bottom: 20px;">
+    <legend>Quit Information</legend>
+    @using (Html.BeginForm("EditEmployeeQuitInfo", "Employees", FormMethod.Post, new { @ID = "EmployeeQuitInfo", @class = "EmployeeQuitInfo" }))
+    {
+        <table class="tabefont">
+            
+            <tr>
+                <td class="fieldTitleCls">Quit Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.QuitTypeId, Model.QuitTypeSelectListItem, "--Select--")
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Quit Date:</td>
+                <td>              
+                    @Html.TextBoxFor(x => x.QuitDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Quit Date" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>    
+            <tr>
+                <td class="fieldTitleCls">Service Duration:</td>
+                <td>
+                    @Html.EditorFor(m => m.ServiceDuration)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>       
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" class="SubmitButton addButton" value="Save" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</fieldset>
+

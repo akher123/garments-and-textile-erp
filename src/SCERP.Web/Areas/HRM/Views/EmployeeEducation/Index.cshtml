@@ -1,0 +1,49 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeEducationInfoViewModel
+
+@{
+    Layout = null;
+}
+<div class="EmployeeEducationInfoDetailContainner">
+
+    @using (Html.BeginForm("Index", "EmployeeEducation", FormMethod.Get, new { @class = "EmployeeEducationSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+            <legend>Educational Information</legend>
+
+            <div class="additem">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/HRM/EmployeeEducation/Edit">Add New</button>
+                </div>
+                @{
+        var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.EmployeeEducations, autoSortAndPage: false);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                           grid.Column("EducationLevel.Title", header: "Education Level", format: @<text>@(item.EducationLevel == null ? "" : item.EducationLevel.Title)</text>),
+                           grid.Column("ExamTitle", header: "Exam Title"),
+                           grid.Column("Institute", header: "Institute Name"),
+                           grid.Column("Result"),
+                           grid.Column("PassingYear", header: "Passing Year"),
+                           grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeEducation/Edit/@item.Id"></button></text>),
+                           grid.Column("Delete", format:@<text><button class="delete" action="/HRM/EmployeeEducation/Delete/@item.Id"></button></text>, canSort: false)))
+                }
+            </div>
+        </fieldset>
+    }
+
+</div>

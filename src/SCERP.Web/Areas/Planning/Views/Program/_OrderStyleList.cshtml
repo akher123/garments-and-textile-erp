@@ -1,0 +1,47 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+<div>
+    <table class="webgrid-table webgrid gridSelect">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Order Ref.</th>
+                <th>Style Ref.</th>
+                <th>Style</th>
+                <th>Quantity</th>
+                <th>Ship Date</th>
+                <th>P.Sequence</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var style in Model.BuyOrdStyles)
+            {
+                <tr class="webgrid-row-style webgrid-alternating-row">
+                    <td>@style.OrderNo</td>
+                    <td>@style.OrderStyleRefId</td>
+                    <td>@style.StyleName</td>
+                    <td>@style.Quantity</td>
+                    <td>@String.Format("{0:d/M/yyyy}", style.EFD) </td>
+                    <td><button class="btnDetail" targentclass="StyleProgramLsit" action="/Planning/Program/ProgramList?OrderStyleRefId=@style.OrderStyleRefId"></button></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<hr />
+<div class="title-tag">PROGRAM LIST</div>
+<div class="StyleProgramLsit">
+    @{
+        Html.RenderPartial("~/Areas/Planning/Views/Program/_ProgramList.cshtml", Model);
+    }
+</div>
+<script type="text/javascript">
+    $('.buyerOrderStyle-row').unbind('click').bind('click', function (e) {
+        e.preventDefault();
+        var $tr = $(this);
+        $tr.addClass("selected").siblings().removeClass("selected");
+    });
+
+</script>

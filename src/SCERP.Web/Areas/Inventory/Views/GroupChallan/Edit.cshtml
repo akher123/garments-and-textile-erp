@@ -1,0 +1,91 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GroupChallanViewModel
+@{
+
+    ViewBag.Title = Model.GroupChallan.GroupChallanId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "GroupChallan", FormMethod.Post, new { @class = "GroupChallanForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GroupChallan.GroupChallanId)
+    <fieldset>
+        <legend>Group Challan</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupChallan.RefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+          
+                <td>
+                    @Html.Label("Group Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupChallan.Name, new { @placeholder = "Group Challan Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupChallan.GDate, new {@placeholder = "Group Challan Name", @class = "datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+
+                <td>
+                    @Html.Label("Party:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.GroupChallan.PartyId, Model.PartySelectListItem, "-Select-", new { id = "groupChallan_partyId",onchange ="findStyleListByOrder()" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div id="challanList">
+                        @Html.Partial("~/Areas/Inventory/Views/GroupChallan/_ChallanList.cshtml", Model)
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        function findStyleListByOrder() {
+            var partyId = $('#groupChallan_partyId').val();
+            $.Ajax({
+                url: '/Inventory/GroupChallan/GeChallanListByPartyId?partyId=' + partyId,
+                type: 'get',
+                container:'#challanList'
+        });
+    }
+    </script>
+}

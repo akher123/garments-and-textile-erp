@@ -1,0 +1,54 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.GatePassViewModel
+@{
+    ViewBag.Title = "Sample Gate Pass";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="sampleGatePassDetails">
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/Merchandising/SampleGatePass/Edit?SearchString=@Model.SearchString">Add New</button>
+            </div>
+            <div>
+                @{
+                    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                    grid.Bind(Model.GatePasses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                    grid.Pager(WebGridPagerModes.All);
+                    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                            grid.Column("RefId", header: "Ref Id"),
+                            grid.Column("BillNo", header: "Sample Order", canSort: false),
+                            grid.Column("ChallanNo", header: "ChallanNo", canSort: false),
+                            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ChallanDate ?? ""), header: "Challan Date"),
+                            grid.Column("PartyName", header: "M/S", canSort: false),
+                            grid.Column("Designation", header: "Through", canSort: false),
+                            grid.Column("Remarks", header: "Remarks", canSort: false),
+                            grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/SampleGatePass/Edit?GatePass.GatePassId=@item.GatePassId"></button></text>),
+                            grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/SampleGatePass/Delete?GatePassId=@item.GatePassId"></button></text>),
+                            grid.Column("Gate Pass", format:@<text> <a href="/Merchandising/SampleGatePass/GatePassReport?GatePassId=@item.GatePassId" target="_blank">Print</a> </text>, canSort: false)))
+
+                }
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+

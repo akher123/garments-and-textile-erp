@@ -1,0 +1,160 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.ProductionReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>MONTHLY PRODUCTION STATUS</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("MonthlyProductionStatus", "ProductionReport", FormMethod.Post, new {@class = "MonthlyStatusReportForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Year")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.YearId, Model.YearSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label("Month")
+                    </td>
+                    <td>
+                        @Html.EnumDropDownListFor(x => x.MonthId, "-Slect-")
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="MontyProductionStatus()">Cutting</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MontySewingProductionStatus()">LineWiseSewing</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MontyDayWiseSewingProductionStatus()">DayWiseSewing</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MontyPlanningVsProduction('b')">TargetVsAchieve(Bar Chart)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MontyPlanningVsProduction('l')">TargetVsAchieve(Line Chart)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MontyLossTimeSummary()">Monthly Loss Time</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MonthlyStyleWiseProductionReport()">  Monthly Production</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MonthlyOtherCuttingProductionReport()">Montly Cutting(Extra)</a>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script type="text/javascript">
+        function MontyProductionStatus() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MonthlyProductionStatus?' + data ;
+                    window.open(searchurl);
+                }
+            }
+        }
+        function MontySewingProductionStatus() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MonthlySewingProductionStatus?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+        function MontyDayWiseSewingProductionStatus() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MonthlyDayWiseSewingProductionStatus?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+
+        function MontyPlanningVsProduction(rId) {
+            var url = '';            if (rId === 'l') {
+                url = '/ProductionReport/TargetVProductionSpLine?';
+            } else {
+                 url = '/ProductionReport/MontyPlanningVsProduction?';
+            }
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = url + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+
+        function MontyLossTimeSummary() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MontyLossTimeSummaryReport?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+
+        function MonthlyStyleWiseProductionReport() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MonthlyStyleWiseProductionReport?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+        function MonthlyOtherCuttingProductionReport() {
+            var form = $('.MonthlyStatusReportForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MonthlyOtherCuttingProductionReport?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+    </script>
+}

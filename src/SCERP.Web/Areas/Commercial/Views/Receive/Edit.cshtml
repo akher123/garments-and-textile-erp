@@ -1,0 +1,142 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ReceiveViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReceiveId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "Receive", FormMethod.Post, new {@class = "receiveform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ReceiveId)
+
+    <fieldset>
+        <legend> Receive </legend>
+        <table class="tabefont">
+
+            <tr>
+                <td> </td>
+                <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"}) </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Receive Ref No : ") </td>
+                <td> @Html.TextBoxFor(p => p.ReceiveRefNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BbLc No: ") </td>
+                <td> @Html.TextBoxFor(p => p.BbLcNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Page No: ") </td>
+                <td> @Html.TextBoxFor(p => p.PassBookPageNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Receive Date : ") </td>
+                <td> @Html.EditorFor(p => p.ReceiveDate) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Challan No: ") </td>
+                <td> @Html.TextBoxFor(p => p.MushakChallanNo) </td>
+                <td> </td>
+            </tr>     
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Challan Date : ") </td>
+                <td> @Html.EditorFor(p => p.MushakChallanDate) </td>
+                <td> </td>
+            </tr>  
+                  
+            <tr>
+                <td> <br/> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr> 
+
+            <tr>
+                <td colspan="3"> <hr /> </td>             
+            </tr> 
+                  
+            <tr>
+                <td colspan="4">
+
+                    <table>
+                        <tr>
+                            <td> @Html.DisplayName("Item Code") </td>                                                           
+                            <td> @Html.DisplayName("Quantity") </td>                                                           
+                            <td> @Html.DisplayName("Rate") </td>     
+                            <td> </td>                                                                                                            
+                        </tr>
+
+                        <tr>
+                            <td> @Html.TextBoxFor(x => x.ReceiveDetail.ItemCode, new {@style = " width: 300px;", @id = "rd_ItemCode"}) </td>                                                                                         
+                            <td> @Html.TextBoxFor(x => x.ReceiveDetail.Quantity, new {@style = " width: 150px;", @id = "rd_Quantity"}) </td>                                                            
+                            <td> @Html.TextBoxFor(x => x.ReceiveDetail.Rate, new {@style = " width: 100px;", @id = "rd_Rate"}) </td>                                                                                     
+                            <td> </td>                                                   
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+                              
+            <tr>
+                <td width="800px" colspan="10">
+                    <table width="700px" class="gridtable tabefont" id="ReceiveDetailTable">
+                        <thead>
+                            <tr>                              
+                                <th>Item Code</th>
+                                <th>Quantity</th>
+                                <th>Rate</th>   
+                                <th>Delete</th>                              
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var t in Model.ReceiveDetails)
+                            {
+                                <tr id="row-@Model.ReceiveDetails[t.Key].ReceiveId">
+                                    <td>
+                                        @Html.HiddenFor(x => x.ReceiveDetails[t.Key].ItemCode)
+                                        @Html.DisplayFor(x => x.ReceiveDetails[t.Key].ItemCode)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.ReceiveDetails[t.Key].Quantity)
+                                        @Html.DisplayFor(x => x.ReceiveDetails[t.Key].Quantity)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.ReceiveDetails[t.Key].Rate)
+                                        @Html.DisplayFor(x => x.ReceiveDetails[t.Key].Rate)
+                                    </td>                               
+                                    <td>
+                                        <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+                                                                                                                                                                                                                                                                                 
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> @Html.SaveButton() </td>
+                <td> </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{  
+    <script src="~/Scripts/SCERP/Commercial/ReceiveDetail.js"></script>
+}

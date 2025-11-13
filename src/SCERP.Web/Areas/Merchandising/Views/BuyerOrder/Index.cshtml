@@ -1,0 +1,88 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    ViewBag.Title = "BuyerOrder";
+    Layout = null;
+}
+<div id="buyerOrderIndex" style="width: 100%">
+    <div id="collapseDiv">
+        <div class="top-categories-section">
+            <div class="top-categories-wrapper">
+                @using (Html.BeginForm("Index", "BuyerOrder", FormMethod.Get, new { @class = "BuyerOrderSearchForm" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @class = "datepicker", @placeholder = "From date" })
+                        </td>
+                        <td>@Html.Label("To")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @class = "datepicker", @placeholder = "To date" })
+                        </td>
+                        <td>
+                            @Html.Label("Status")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.Closed, Model.StatusSelectListItem)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                        </td>
+                        <td>
+                            <input type="button" id="BuyerOrderSearch" class="addButton" value="Find" />
+                        </td>
+                    </tr>
+                </table>
+
+        }
+            </div>
+        </div>
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Merchandising/BuyerOrder/Edit">Add New</button>
+            <div class="addButton-wrapper" style="float:right">
+                <input onclick="search('/Merchandising/FollowUp/Index')" value="Go Order Activity" class="addButton" type="button" />
+            </div>
+        </div>
+    </div>
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.BuyerOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            footerStyle: "webgrid-footer",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("Status", "Status", format: (item) => Html.DropDownListFor(x => x.Closed, Model.StatusSelectListItem, new { id = item.BuyerOrderId, @onchange = "changedOrderStataus(this)", style = "width:100px;" })),
+                    grid.Column("OrderNo", canSort: false, header: "Order Ref."),
+                    grid.Column("OrderDate", canSort: false, header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("RefNo", canSort: false, header: String.Format("{0}", "Order#")),
+                    grid.Column("BuyerName", canSort: false, header: String.Format("{0}", "Buyer")),
+                    grid.Column("SeasonName", canSort: false, header: "Season"),
+                    grid.Column("SMode", canSort: false, header: "ShipMode"),
+                    grid.Column("TotalStyleInOrder", canSort: false, header: "Style Qty"),
+                    grid.Column("Quantity", canSort: false, header: "Quantity"),
+                    grid.Column("ShipQty", canSort: false, header: "ShipQty"),
+                    grid.Column("MeasurementUnit", canSort: false, header: "Unit"),
+                    grid.Column("EmpName", canSort: false, header: "Merchandiser"),
+                    grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="selectBuyerOrderRow('@item.OrderNo',this)" value="✅" /></text>),
+                    grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/BuyerOrder/Edit?BuyerOrderId=@item.BuyerOrderId"></button></text>),
+                    grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Merchandising/BuyerOrder/Delete?OrderNo=@item.OrderNo"></button></text>),
+                    grid.Column(columnName: "Report", format: @<text><a href="@Url.Action("DetailOrderSheet", "BuyerOrder", new { OrderNo = item.OrderNo })" target="_blank">PDF</a></text>)));
+    }
+
+</div>
+
+
+<script src="~/Scripts/SCERP/Merchandising/BuyerOrder.js"></script>

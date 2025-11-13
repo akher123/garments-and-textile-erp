@@ -1,0 +1,471 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaterialIssue.AdvanceMaterialIssueId > 0 ? "Edit" : "Add");
+}
+@using (Html.BeginForm("Save", "YarnReturn", FormMethod.Post, new { @class = "YarnReturnForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.MaterialIssue.AdvanceMaterialIssueId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Yarn Return</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("IRef#:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.Label("Party :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssue.PartyId, Model.PartySelectListItem, "-Select-")
+                </td>
+
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Challan No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteNo)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.DisplayName("Challan Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteDate, new {@class = "datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Driver:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.DriverName)
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("VehicleNo:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.VehicleNo)
+                </td>
+                <td></td>
+            </tr>
+            <tr >
+                
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td colspan="5">
+                    @Html.TextBoxFor(x => x.MaterialIssue.Remarks, new { @style = "width:95%" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <table class="tabefont" id="yarnDeliveryTable">
+            <tr>
+                <td>
+                    @Html.DisplayName("Item :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false", @placeholder = "Serach Item" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ItemId, new { @class = "AdvanceYarnIssueItemld" })
+                </td>
+                <td>
+                    @Html.DisplayName("Rate :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueRate, new { id = "issue_Rat", Value = "", @data_val = "false", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+              
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Lot No")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ColorName, new { @class = "Color_SearchString", @placeholder = "Serach Key" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ColorRefId, new { @class = "Color_ColorRef" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.Brand, new { id="lotBrand" })
+                </td>
+               
+                <td>
+                    @Html.Label("SinH")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SinH, new { id = "yarnSinH", @style = "background-color: #b0c4de;", @readonly = "readonly", @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Count")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.SizeName, new { @class = "Size_SearchString", @placeholder = "Serach Key" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.SizeRefId, new { @class = "Size_SizeRef" })
+                </td>
+                <td>
+                    @Html.DisplayName("Qty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueQty, new { @class = "issue_QuantityEnterEvent", Value = "", @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "Color")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.FColorName, new { @class = "autocompliteColorSerach", @data_target = "#Color_FColorRef", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01", @placeholder = "Color" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.FColorRefId, new { @id = "Color_FColorRef" })
+                </td>
+                <td>
+                    @Html.Label("Wrapper")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssueDetail.Wrapper, Model.WrapperSelectListItem, new { @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "F.Color")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.GColorName, new { @class = "autocompliteColorSerach", @data_target = "#Color_GColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01", @placeholder = "Finish Color" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.GColorRefId, new { @id = "Color_GColorRefId" })
+                </td>
+
+                <td>
+                    @Html.Label("Wrapping Qty")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.QtyInBag, new { @class = "issue_QtyInBag", Value = "", @data_val = "false" })
+                </td>
+
+            </tr>
+        </table>
+        <hr />
+        <div>
+
+            <table id="yarnIssueDetail" class="webgrid-table" style="width:650px;">
+                <thead style="text-align: center" class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("Brand")
+                        </th>
+                      
+                        <th>
+                            @Html.Label("Lot No")
+                        </th>
+                        <th>
+                            @Html.Label("Count")
+                        </th>
+                        <th>
+                            @Html.Label("Color")
+                        </th>
+                        <th>
+                            @Html.Label("FColor")
+                        </th>
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("Qty")
+                        </th>
+                        <th>
+                            @Html.Label("Wrapping Qty")
+                        </th>
+                        <th>
+                            @Html.Label("Wrapping")
+                        </th>
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var m in Model.MaterialIssueDetails)
+                    {
+                        <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId">
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueDetailId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].Brand)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)
+
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].FColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].FColorName)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].FColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].GColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].GColorName)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].GColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].QtyInBag)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].QtyInBag)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].Wrapper)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].Wrapper)
+                            </td>
+                            <td>
+                                <input type="button" value="-" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div style="float: right">
+                <table class="tabefont">
+                 
+                    <tr>
+                        <td>
+                          @Html.SaveButton()
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+    $('.autocompliteColorSerach').autocomplete({
+        source: function (request, response) {
+            var datatarget = this.element.attr('data-target');
+            var url = this.element.attr('action');
+            var option = {
+                url: url,
+                type: "GET",
+                data: { serachString: request.term },
+            };
+
+            $.Ajax(option)
+                .done(function (data) {
+                    $(datatarget).val('');
+                    response($.map(data, function (color) {
+                        return { label: color.ColorName, value: color.ColorName, ColorRefId: color.ColorRefId, datatarget: datatarget };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var colorRefId = ui.item.ColorRefId;
+            $(ui.item.datatarget).val(colorRefId);
+        },
+    });
+
+    $('.Color_SearchString').autocomplete({
+        source: function (request, response) {
+            var option = {
+                url: "/Lot/LotAutocomplite",
+                type: "POST",
+                datatype: "html",
+                data: { serachString: request.term, typeId: '02' },
+            };
+
+            $.Ajax(option)
+                .done(function (data) {
+                    $('.Color_ColorRef').val('');
+                    response($.map(data, function (color) {
+                        return { label: "Lot No :" + color.ColorName + " Brand :" + color.BrandName, value: color.ColorName, ColorRefId: color.ColorRefId, Brand: color.BrandName };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var colorRefId = ui.item.ColorRefId;
+            $('.Color_ColorRef').val(colorRefId);
+            $('#lotBrand').val(ui.item.Brand);
+            var itemId = $('.AdvanceYarnIssueItemld').val();
+            $.Ajax({
+                url: "/YarnDelivery/YarnStockStatus",
+                type: 'GET',
+                dataType: 'JSON',
+                data: { itemId: itemId, colorRefId: colorRefId }
+            }).done(function (response) {
+                $('#yarnSinH').val(response.SinH);
+                $('#issue_Rat').val(response.Rate);
+            });
+
+
+        },
+    });
+
+    $('.Size_SearchString').autocomplete({
+        source: function (request, response) {
+            var option = {
+                url: "/BuyerOrderColorSize/SizeAutoComplite",
+                type: "POST",
+                datatype: "html",
+                data: { serachString: request.term, typeId: '05' },
+            };
+
+            $.Ajax(option)
+                .done(function (data) {
+                    $('.Size_SizeRef').val('');
+                    response($.map(data, function (size) {
+                        return { label: size.SizeName, value: size.SizeName, SizeRefId: size.SizeRefId };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var sizeRefId = ui.item.SizeRefId;
+            $('.Size_SizeRef').val(sizeRefId);
+        },
+    });
+
+    function itemAutocomplite(obj, index) {
+        $(obj).autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: "/ItemStore/AutocompliteItemByBranch",
+                    type: "POST",
+                    data: { itemName: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        response($.map(data, function (item) {
+                            return { label: +item.ItemCode + "_" + item.ItemName, value: item.ItemName, ItemId: item.ItemId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                $('.AdvanceYarnIssueItemld').val(ui.item.ItemId);
+
+            },
+        });
+    }
+
+    function deleteRow(buttonObj) {
+        var $tr = $(buttonObj).closest("tr");
+        $tr.remove();
+    }
+
+    $('.issue_QtyInBag').unbind("keypress").bind("keypress", function (e) {
+        var key = e.which;
+
+        if (key == 13)  //the enter key code
+        {
+            e.preventDefault();
+            var $table = $('table#yarnIssueDetail tbody');
+            var addNewItem = $('#yarnDeliveryTable :input');
+            var itemId = $('.AdvanceYarnIssueItemld').val();
+
+            var option = {
+                url: "/YarnReturn/AddNewRow",
+                type: "POST",
+                data: addNewItem.serialize()
+            };
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                addNewItem.validate();
+                if (!addNewItem.valid()) {
+                    return false;
+                } else {
+                    var message = "";
+                    if (itemId.length <= 0) {
+                        message += "Invalid Item Name";
+                    }
+                    if ($('#issue_Rat').val().length <= 0) {
+                        message += "Item Rate Required";
+                    }
+                    if ($(this).val().length <= 0) {
+
+                        message += "tem Quantity Required";
+                    }
+                    if (message.length > 0) {
+                        alert(message);
+                    }
+                    else {
+                        $.Ajax(option).done(function (htmlResponse) {
+                            $('table#yarnDeliveryTable tbody tr#newRow-' + itemId).remove();
+                            $table.append(htmlResponse);
+                            addNewItem.val('');
+                            $('.itemName').focus();
+                        });
+                    }
+                }
+
+            }
+
+        }
+
+    })
+    ;
+
+    $('.itemName').unbind('keypress').bind('keypress', function (e) {
+        var key = e.which;
+        if (key == 13)  //the enter key code
+        {
+            e.preventDefault();
+            $('.Color_SearchString').focus();
+        }
+    });
+
+    $('.Color_SearchString').unbind('keypress').bind('keypress', function (e) {
+        var key = e.which;
+        if (key == 13)  //the enter key code
+        {
+            e.preventDefault();
+            $('.Size_SearchString').focus();
+        }
+    });
+    $('.Size_SearchString').unbind('keypress').bind('keypress', function (e) {
+        var key = e.which;
+        if (key == 13)  //the enter key code
+        {
+            e.preventDefault();
+            $('.issue_QuantityEnterEvent').focus();
+        }
+    });
+
+
+    </script>
+}

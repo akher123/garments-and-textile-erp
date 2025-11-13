@@ -1,0 +1,97 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitWorkShiftViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Branch Unit WorkShift</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        <b>SL. No</b>
+                    </td>
+                    <td align="center">
+                        <b>Company</b>
+                    </td>
+                    <td align="center">
+                        <b>Branch</b>
+
+                    </td>
+
+                    <td  align="center">
+                        <b>Unit</b>
+
+                    </td>
+                    <td align="center">
+                        <b>WorkShift</b>
+
+                    </td>
+                    <td align="center">
+                        <b>From Date</b>
+
+                    </td>
+                    <td align="center">
+                        <b>To Date</b>
+
+                    </td>
+                    <td align="center">
+                        <b>Description</b>
+
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var branchUniteWorkShift in Model.BranchUnitWorkShifts)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.BranchUnit.Branch.Company == null ? "" : branchUniteWorkShift.BranchUnit.Branch.Company.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.BranchUnit.Branch == null ? "" : branchUniteWorkShift.BranchUnit.Branch.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.BranchUnit.Unit == null ? "" : branchUniteWorkShift.BranchUnit.Unit.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.WorkShift == null ? "" : branchUniteWorkShift.WorkShift.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.FromDate == null ? "" : branchUniteWorkShift.FromDate.GetValueOrDefault().ToString("dd-MM-yyyy"))
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.ToDate == null ? "" : branchUniteWorkShift.ToDate.GetValueOrDefault().ToString("dd-MM-yyyy"))
+                        </td>
+                        <td class="reportTD">
+                            @(branchUniteWorkShift.Description)
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+

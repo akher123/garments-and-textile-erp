@@ -1,0 +1,34 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabConsumptionViewModel
+@{
+    Layout = null;
+}
+
+@{
+    var grid = new WebGrid(canPage: true, canSort: false, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model.CompConsumptions, rowCount: Model.CompConsumptions.Count, autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+           grid.Columns(
+           grid.Column("ComponentSlNo", canSort: false, header: String.Format("{0}", "SL")),
+           grid.Column("EnDate", canSort: false, header: String.Format("{0}", "Date"), format: @<text>@(item.EnDate == null ? "" : item.EnDate.ToString("dd-MM-yyyy"))</text>),
+           grid.Column("ComponentName", canSort: false, header: String.Format("{0}", "Component")),
+           grid.Column("TCompQty", canSort: false, header: String.Format("{0}", "CompQty")),
+           grid.Column("NParts", canSort: false, header: String.Format("{0}", "Part")),
+           grid.Column("FabricName", canSort: false, header: String.Format("{0}", "Fabric")),
+           grid.Column("FabricTypeName", canSort: false, header: String.Format("{0}", "Type")),
+           grid.Column("Description", canSort: false, header: String.Format("{0}", "Remarks")),
+           grid.Column("Select", canSort: false, format: @<text> <input type="button" data="@item.CompType"  onclick="selectComConsumptionRow('@item.CompConsumptionId',this)" value="✅" /></text>),
+           grid.Column("Select", canSort: false, format: @<text> <input type="button" onclick="EditComConsumption('@item.CompConsumptionId')" value="Edit" /></text>),
+           grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="FabcomponentContainer" action="@Url.Action("Delete", "FabConsumption", new { CompConsumptionId = item.CompConsumptionId,  Model.OrderStyleRefId,Model.OrderNo })"></button></text>)));
+}

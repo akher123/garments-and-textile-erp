@@ -1,0 +1,94 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "LockedProgram";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width: 500px; padding-left: 340px;">
+    <h2>Approved Knitting Program</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 250px; margin-bottom: 10px;">
+            @using (Html.BeginForm("LockedProgram", "KnittingProgram", FormMethod.Get, new { @class = "LockedProgramListForm" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Status")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.IsLock, Model.LockedProgramSelectListItem, "-Select-", new {@class = "form-control"})
+                        </td>
+                        <td>
+                            @Html.Label("Program No")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString,new { @placeholder = "Program No" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VPrograms, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                grid.Columns(
+                grid.Column("ProgramRefId", header: "ProgNo"),
+                grid.Column("PrgDate", header: "PrgDate", format: @<text>@(item.PrgDate == null ? "" : item.PrgDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("ExpDate", header: "ExpDate",format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("Attention", header: "Attention"),
+                grid.Column("Buyer", header: "Buyer"),
+                grid.Column("PartyName", header: "Party"),
+                grid.Column("RefNo", header: "Order"),
+                grid.Column("StyleName", header: "Style"),
+                grid.Column("ReqYarnQty", header: "ReqYarn"),
+                grid.Column("ReqFabQty", header: "ReqFab"),
+                grid.Column(header: "IsLocked",format: @<input class="IsLockedcbx" onclick="IsLockedFun(this)" name="IsLockedCheckBox" @(item.IsLock == true ? "checked" : "") type="checkbox" value="@item.ProgramId" />) ));
+        }
+    </div>
+</section>
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsLockedFun(chechBox) {
+            var $chechBox = $(chechBox);
+            var programId = $chechBox.val();
+            $.Ajax({
+                url: '/KnittingProgram/IsLockedProgram',
+                data: { ProgramId: programId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Lock Program.");
+                }
+            });
+        }
+
+    </script>
+}
+

@@ -1,0 +1,151 @@
+﻿@using AutoMapper.Internal
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+<fieldset>
+    <legend>Output Dyed Yarn </legend>
+    <table id="tableOutputDetail">
+        <tr>
+            <td>
+                @Html.Label("", "Yarn")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ItemName, new { @placeholder = "Search Yarn", id = "dyedYarnItemName", @class = "itemautocompliteItem", @data_target = "#dyedYarnItemCode", @action = "/Consumption/AutocompliteItem" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ItemCode, new { id = "dyedYarnItemCode" })
+            </td>
+            <td>
+                @Html.Label("", "Count")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.SizeName, new { @placeholder = "Search Count", id = "dyedYarnCountSizeName", @class = "autocompliteSizeSerach", @data_target = "#dyedYarnCountSizeRefId", @action = "/BuyerOrderColorSize/SizeAutoComplite?typeId=05" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.SizeRefId, new { id = "dyedYarnCountSizeRefId" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "F.Color")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ColorName, new { @placeholder = "Search Finish Color", id = "dyedYarnColorName", @class = "autocompliteColorSerach", @data_target = "#dyedYarnColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ColorRefId, new { id = "dyedYarnColorRefId" })
+            </td>
+            <td>
+                @Html.Label("", "Lot")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.LotName, new { @placeholder = "Search Lot No", id = "dyedYarnLotName", @class = "autocompliteLotWithBrandSerach", @data_target = "#dyedYarnLotRefId", @action = "/Lot/LotAutocomplite?typeId=02" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.LotRefId, new { id = "dyedYarnLotRefId" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Pantone")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.GSM, new {@placeholder = "Approved L/D or Panton No", id = "Pentone"})
+            </td>
+            <td>
+                @Html.Label("", "Cone")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.NoOfCone, new {@placeholder = "Number of Cone", id = "numberOfCone"})
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Combo")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.FinishSizeName, new { @placeholder = "Search Combo", id = "ComboSizeName", @class = "autocompliteSizeSerach", @data_target = "#combotSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.FinishSizeRefId, new { id = "combotSizeId" })
+            </td>
+            <td>
+                @Html.Label("", "Repeat")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.SleeveLength, new { @placeholder = "Repeat Measurement", id = "repeateMesue" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Rate")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Rate, new {@placeholder = "Rate/Kg", id = "dyedyarnRate"})
+            </td>
+            <td>
+                @Html.Label("", "Qty(Kg)")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Quantity, new {@data_val = "false", id = "dyedYarnQty"})
+            </td>
+
+        </tr>
+     
+        <tr>
+            <td>
+                @Html.Label("", "Remarks")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Remarks, new { @placeholder = "Remarks", id = "dayedYanRemarks" })
+            </td>
+            <td>
+                <button value="+" class="addButton" id="btnOutputProgDtl">+</button>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <table class="webgrid-table" id="outputProgramDtlTable">
+        <thead style="background-color:#cd853f">
+            <tr>
+
+                <th>
+                    DYarn
+                </th>
+                <th>
+                    Combo
+                </th>
+                <th>
+                    F.Color
+                </th>
+                <th>
+                    Count
+                </th>
+                <th>
+                    Lot
+                </th>
+                <th>
+                    Pantone
+                </th>
+                <th>
+                    Cone
+                </th>
+                <th>
+                    Repeat
+                </th>
+               
+                
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Qty(Kg)
+                </th>
+                <th>Remarks</th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.Partial("_OutputDetailRow",Model)
+        </tbody>
+    </table>
+</fieldset>

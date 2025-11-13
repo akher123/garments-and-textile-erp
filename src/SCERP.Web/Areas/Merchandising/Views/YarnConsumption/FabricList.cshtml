@@ -1,0 +1,124 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = null;
+}
+<div class="order-notes-wrapper">
+    <table>
+        <tr>
+            <td>
+                Style:
+            </td>
+            <td>@Model.OrdStyle.StyleName</td>
+        </tr>
+        <tr>
+            <td>
+                Item :
+            </td>
+            <td>@Model.OrdStyle.ItemName</td>
+        </tr>
+        <tr>
+            <td>
+                Quantity :
+            </td>
+            <td>@Model.OrdStyle.Quantity</td>
+        </tr>
+    </table>
+</div>
+<div class="table-style-wrapper">
+    <fieldset>
+        <legend>GREY FABRIC TO YARN BREAKDOWN </legend>
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Cons. Ref."))
+                    </th>
+                    <th>
+                        @Html.Label(String.Format("{0}", "Item"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "F.Fabric"))
+                    </th>
+
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Gr.Fabric"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "YConsQty"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Balance"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Color"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Unit"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Select"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cons in Model.VCompConsumptionDetails)
+                {
+                <tr class="buyerOrderStyle-row" id="@cons.ConsRefId">
+                    <td>
+                        @cons.ConsRefId
+                    </td>
+                    <td>
+                        @cons.ItemName
+                    </td>
+                    <td style="text-align:right">
+                        @String.Format("{0:0.00}", cons.TQty)
+                    </td>
+
+                    <td style="text-align:right">
+                        @String.Format("{0:0.00}", cons.GreyQty)
+                    </td>
+                    <td style="text-align:right">
+                        @String.Format("{0:0.00}", cons.YConsQty)
+                    </td>
+                    <td style="text-align:right">
+                        @String.Format("{0:0.00}",cons.GreyQty-cons.YConsQty)
+                    </td>
+                    <td>
+                        @cons.GColorName
+                    </td>
+
+                    <td>Kg</td>
+
+                    <td>
+                        @*<input type="button" onclick="SelectYarnConsumptionRow('@cons.ConsRefId', '@cons.GreyQty', '@cons.GColorRefId', this)" value="✅" />*@
+                        <button class="btnDetail" targentclass="YarConsOrdStyleLsit" action="/Merchandising/YarnConsumption/Index?ConsRefId=@cons.ConsRefId&TQty=@cons.GreyQty&GrColorRefId=@cons.GColorRefId"></button>
+                    </td>
+
+                </tr>
+                }
+            <tr>
+                <td colspan="2">Total Fabric</td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.TQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.GreyQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.YConsQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.GreyQty-x.YConsQty))
+                </td>
+                <td>Kg</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <div class="YarConsOrdStyleLsit">
+
+    </div>
+</div>
+
+
+<script src="~/Scripts/SCERP/Merchandising/YarnConsumptionSelectRow.js"></script>

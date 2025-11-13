@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[OM_Inquiry] (
+    [InquiryId]      INT              IDENTITY (1, 1) NOT NULL,
+    [InquiryRef]     CHAR (6)         NOT NULL,
+    [CompId]         VARCHAR (3)      NOT NULL,
+    [BuyerName]      VARCHAR (150)    NULL,
+    [Season]         VARCHAR (150)    NULL,
+    [DesignRef]      VARCHAR (150)    NULL,
+    [Designer]       VARCHAR (250)    NULL,
+    [Photo]          VARCHAR (250)    NULL,
+    [Description]    VARCHAR (250)    NULL,
+    [FabricationGsm] VARCHAR (250)    NULL,
+    [Colour]         VARCHAR (100)    NULL,
+    [SampleType]     VARCHAR (150)    NULL,
+    [SampleSize]     VARCHAR (100)    NULL,
+    [RecvedDate]     DATETIME         NULL,
+    [SubmissionDate] DATETIME         NULL,
+    [PriceUSD]       FLOAT (53)       NULL,
+    [Remarks]        VARCHAR (250)    NULL,
+    [CreatedBy]      UNIQUEIDENTIFIER NULL,
+    [CreatedDate]    DATETIME         NULL,
+    [EditedBy]       UNIQUEIDENTIFIER NULL,
+    [EditedDate]     DATETIME         NULL,
+    [Merchandiser]   VARCHAR (50)     NULL,
+    [IsActive]       BIT              NOT NULL,
+    CONSTRAINT [PK_OM_Inquiry] PRIMARY KEY CLUSTERED ([InquiryId] ASC)
+);
+

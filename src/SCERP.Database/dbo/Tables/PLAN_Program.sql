@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[PLAN_Program] (
+    [ProgramId]       BIGINT           IDENTITY (1, 1) NOT NULL,
+    [CompId]          VARCHAR (3)      NOT NULL,
+    [ProgramRefId]    VARCHAR (10)     NOT NULL,
+    [PrgDate]         DATE             NULL,
+    [ExpDate]         DATE             NULL,
+    [ProcessRefId]    VARCHAR (3)      NOT NULL,
+    [ProcessorRefId]  VARCHAR (3)      NULL,
+    [Attention]       VARCHAR (150)    NULL,
+    [BuyerRefId]      VARCHAR (3)      NULL,
+    [OrderNo]         VARCHAR (12)     NULL,
+    [OrderStyleRefId] VARCHAR (7)      NULL,
+    [ProgramType]     CHAR (2)         NULL,
+    [CID]             CHAR (3)         NULL,
+    [xStatus]         VARCHAR (1)      NOT NULL,
+    [Rmks]            NVARCHAR (100)   NULL,
+    [CGRID]           VARCHAR (250)    NULL,
+    [PartyId]         BIGINT           NOT NULL,
+    [IsApproved]      BIT              NOT NULL,
+    [ApprovedBy]      UNIQUEIDENTIFIER NULL,
+    [PrepairedBy]     UNIQUEIDENTIFIER NULL,
+    [IsLock]          BIT              NULL,
+    CONSTRAINT [PK_Plan_Program] PRIMARY KEY CLUSTERED ([ProgramId] ASC),
+    CONSTRAINT [FK_PLAN_Program_Party] FOREIGN KEY ([PartyId]) REFERENCES [dbo].[Party] ([PartyId])
+);
+

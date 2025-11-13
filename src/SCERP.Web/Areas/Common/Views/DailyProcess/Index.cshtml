@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Daily Process</h2>
+</div>
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-left: 20px;">
+            <input type="button" class="addButton" id="tna_notification_sms" action="/Common/DailyProcess/Save" value="Sand TNA Notificaation SMS" />
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $('#tna_notification_sms').unbind('click').bind('click', function (e) {
+        $.Ajax({
+            url: $(this).attr('action'),
+            type: 'POST'
+        });
+    });
+</script>
+

@@ -1,0 +1,109 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "UPDATE CASH INCENTIVE ";
+}
+
+@using (Html.BeginForm("Save", "LcCashIncentive", FormMethod.Post, new { @class = "lcCashIncentiveform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CommLcInfo.LcId)
+    <fieldset>
+        <legend>Cash Incentive</legend>
+        <table class="tabefont">
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LC NO : ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.LcNo, new { @style = "background-color:#b0c4de", @readonly = "readonly" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LC DATE : ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.LcDate, "{0:dd/MM/yyyy}", new { @style = "background-color:#b0c4de", @readonly = "readonly" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("EXPORT LC VALUE($) : ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.LcAmount, new { @style = "background-color:#b0c4de", @readonly = "readonly" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("APPLIED DATE : ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.AppliedDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("INCENTIVE CLAIM VALUE($): ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.IncentiveClaimValue) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("NEW MERKET CLAIM: ") </td>
+                <td> @Html.EditorFor(p => p.CommLcInfo.NewMarketCliam) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BTMA CERTIFICATE: ") </td>
+                <td> @Html.DropDownListFor(p => p.CommLcInfo.BTMACertificate, Model.CashIntensiveStatusSelectedItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BKMEA CERTIFICATE: ") </td>
+                <td> @Html.DropDownListFor(p => p.CommLcInfo.BkmeaCertificat, Model.CashIntensiveStatusSelectedItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BANK/FIRST AUDIT: ") </td>
+                <td> @Html.DropDownListFor(p => p.CommLcInfo.FirstAuditStatus, Model.CashIntensiveStatusSelectedItem, "-Select-") </td>
+
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("CA FIRM/CERTIFICATE OVSERVATION: ") </td>
+                <td> @Html.DropDownListFor(p => p.CommLcInfo.CertificateOvservation, Model.CashIntensiveStatusSelectedItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("FINAL CLAIM AMOUNT: ") </td>
+                <td> @Html.EditorFor(p => p.CommLcInfo.FinalClaimAmount) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("RECEIVE AMOUNT: ") </td>
+                <td> @Html.EditorFor(p => p.CommLcInfo.ReceiveAmount) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("RECEIVE DATE: ") </td>
+                <td> @Html.TextBoxFor(p => p.CommLcInfo.ReceiveDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("REMARKS: ") </td>
+                <td> @Html.TextAreaFor(p => p.CommLcInfo.CashIncentiveRemarks) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> @Html.SaveButton() </td>
+                <td> </td>
+            </tr>
+        </table>
+    </fieldset>
+}

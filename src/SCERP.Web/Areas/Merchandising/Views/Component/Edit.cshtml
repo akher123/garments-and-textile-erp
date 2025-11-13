@@ -1,0 +1,77 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ComponentViewModel
+@{
+    ViewBag.Title = Model.ComponentId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Component", FormMethod.Post, new { @class = "Componentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ComponentId)
+    <fieldset>
+        <legend>Component </legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ComponentRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Component Name:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ComponentName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ComponentName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  @Html.Label("Component Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompType, Model.ComponentTypeSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.CompType)
+                </td>
+              
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Panel:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Pannel)
+
+                </td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+              
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

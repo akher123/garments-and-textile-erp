@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.OutStationDutyViewModel
+@{
+    ViewBag.Title = "Leave Type";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.VOutStationDutyDetails.Count > 0) ? "" : "none";
+    string startDate = null;
+    string endDate = null;
+    if (Model.SearchFieldModel.StartDate.HasValue && Model.SearchFieldModel.EndDate.HasValue)
+    {
+        startDate = Model.SearchFieldModel.StartDate.GetValueOrDefault().ToString("dd/MM/yyyy");
+        endDate = Model.SearchFieldModel.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy");
+    }
+    var searchKey = new {SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId,
+                         SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId,
+                         StartDate = startDate,
+                         EndDate = endDate,
+                         SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId,
+                         SearchByBranchId = Model.SearchFieldModel.SearchByBranchId,
+                         SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId,
+                         SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId,
+                         SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId};
+}
+
+@using (Html.BeginForm("Index", "OutStationDuty", FormMethod.Get, new { @class = "OutStationDutySearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Out Station Duty</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                @Html.Partial("~/Areas/HRM/Views/OutStationDuty/_SearchOutStationDuty.cshtml", Model)
+            </table>
+        </div>
+    </section>
+
+}
+<section class="search formCover">
+    <div class="addButton-wrapper">
+        <button class="AjaxPopup addButton" action="/HRM/OutStationDuty/Edit">Add New</button>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VOutStationDutyDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                    grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.EmployeeName ?? "")</text>),
+                    grid.Column("DutyDate", header: "Duty Date ", format: @<text>@(item.DutyDate == null ? "" : item.DutyDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Location", header: "Location ", format: @<text>@(item.Location ?? "")</text>),
+                    grid.Column("Purpose", header: "Purpose ", format: @<text>@(item.Purpose ?? "")</text>),
+                    grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                    grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                    grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                    grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                    grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                    grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>),
+                    grid.Column("Detail/Edit", format:@<text><button class="edit" action="/HRM/OutStationDuty/Edit?OutStationDutyId=@item.OutStationDutyId"></button></text>, canSort: false),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/OutStationDuty/Delete?OutStationDutyId=@item.OutStationDutyId"></button></text>, canSort: false)));
+    }
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "OutStationDuty", searchKey)"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "OutStationDuty", searchKey)" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>
+
+
+
+
+

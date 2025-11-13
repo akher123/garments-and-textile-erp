@@ -1,0 +1,103 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabricIssueViewModel
+@{
+    ViewBag.Title = "Finish Fabric Issue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Daily Bill Approved</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("FabricChallanApproval", "FinishFabricIssue", FormMethod.Get, new {@class = "FinishFabricIssueForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From Date"})
+                    </td>
+                    <td>
+                        @Html.Label("To Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To Date"})
+                    </td>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.IsSelected, Model.ApprovedStatusSelectListItem, new {@style = "width:100px;"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.FinishFabricIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("Approved", format: @<text> <input type="checkbox" onclick="ApprovedChallan(this)" @(item.IsApproved ? "checked" : "") value="@item.FinishFabIssueId"/> </text>),
+                        grid.Column("FinishFabIssureRefId", canSort: false, header: "IssueRefId"),
+                        grid.Column("Party.Name", canSort: false, header: "Party"),
+                        grid.Column("ChallanNo", canSort: false, header: "Challan No"),
+                        grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("Remarks", canSort: false, header: "Remarks"),
+                        grid.Column("Issue", canSort: false, header: "Report", format: @<text><a href="/Inventory/FinishFabricIssue/FinishFabricIssueReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Issue</a></text>),
+                        grid.Column("Delivery", canSort: false, header: "Report", format: @<text><a href="/Inventory/FinishFabricIssue/FinishFabricDeliveryReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Delivery</a></text>),
+                        grid.Column("Bill", canSort: false, header: "Report", format: @<text><a href="/Inventory/FinishFabricIssue/DyeingBillReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Bill</a></text>)))
+            ;
+        }
+    </div>
+</section>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function ApprovedChallan(chechBox) {
+            var $chechBox = $(chechBox);
+            var finishFabIssueId = $chechBox.val();
+            $.Ajax({
+                url: '/FinishFabricIssue/SaveApprovedChallan/',
+                data: { FinishFabIssueId: finishFabIssueId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}

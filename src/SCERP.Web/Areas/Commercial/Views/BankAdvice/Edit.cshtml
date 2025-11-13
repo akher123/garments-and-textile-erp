@@ -1,0 +1,143 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.BankAdviceViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BankAdviceId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "BankAdvice", FormMethod.Post, new {@class = "bankadviceform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ExportId)
+
+    <fieldset>
+        <legend> Bank Advice </legend>
+        <table class="tabefont">
+          
+            <tr>
+                <td width="800px" colspan="10">
+                    <table width="700px" class="gridtable tabefont" id="BankAdviceTableFixed">
+                        <thead>
+                            <tr>
+                                <th>EId</th>
+                                <th>AId</th>
+                                <th>Head Name</th>
+                                <th>Particulars</th>
+                                <th>Currency</th>
+                                <th>Amount</th>
+                                <th>Rate</th>                          
+                                <th>Amount In Taka</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for (int i = 0; i < Model.BankAdviceFixeds.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => Model.BankAdviceFixeds[i].ExportId)
+                                        @Html.DisplayFor(modelItem => Model.BankAdviceFixeds[i].ExportId, new {style = "width:20px;"})
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => Model.BankAdviceFixeds[i].AccHeadId)
+                                        @Html.DisplayFor(modelItem => Model.BankAdviceFixeds[i].AccHeadId, new {style = "width:20px;"})
+                                    </td>
+                                    <td>
+                                        <div style="width: 170px;">
+                                            @Html.HiddenFor(modelItem => Model.BankAdviceFixeds[i].AccHeadName)
+                                            @Html.DisplayFor(modelItem => Model.BankAdviceFixeds[i].AccHeadName)
+                                        </div>
+                                       
+                                    </td>
+                                    <td>                                       
+                                        @Html.TextBoxFor(modelItem => Model.BankAdviceFixeds[i].Particulars, new {style = "width:200px;"})
+                                    </td>                                    
+                                    <td>                                     
+                                        @Html.DisplayFor(modelItem => Model.BankAdviceFixeds[i].CurrencyId, new {style = "width:100px;"})
+                                    </td>
+                                    <td>                                       
+                                        @Html.TextBoxFor(modelItem => Model.BankAdviceFixeds[i].Amount, new {@class="amountcc", style = "width:140px;"})
+                                    </td>
+                                    <td>                                       
+                                        @Html.TextBoxFor(modelItem => Model.BankAdviceFixeds[i].Rate, new { @class = "ratecc", style = "width:50px;" })
+                                    </td>                                   
+                                    <td>                                      
+                                        @Html.TextBoxFor(modelItem => Model.BankAdviceFixeds[i].AmountInTaka, new { @class = "amountInTakacc", style = "width:140px;" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr> 
+                              
+            <tr>
+                <td style="height: 30px;"> </td>                                  
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+                                                                     
+            <tr>
+                <td width="800px" colspan="10">
+                    <table width="700px" class="gridtable tabefont" id="BankAdviceTable">
+                        <thead>
+                            <tr>
+                                <th>EId</th>
+                                <th>AId</th>
+                                <th>Head Name</th>
+                                <th>Particulars</th>
+                                <th>Bank Ref No</th>
+                                <th>Amount In Taka</th>                             
+                            </tr>
+                        </thead>
+                        <tbody>                                                     
+                            @for (int i = 0; i < Model.BankAdvices.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => Model.BankAdvices[i].ExportId)
+                                        @Html.DisplayFor(modelItem => Model.BankAdvices[i].ExportId, new {style = "width:20px;"})
+                                    </td>                                                                                                                                                                 
+                                    <td>
+                                        @Html.HiddenFor(modelItem => Model.BankAdvices[i].AccHeadId)
+                                        @Html.DisplayFor(modelItem => Model.BankAdvices[i].AccHeadId, new {style = "width:20px;"})
+                                    </td>                                                                                                                                                     
+                                    <td>
+                                    <div style="width: 170px;">
+                                        @Html.HiddenFor(modelItem => Model.BankAdvices[i].AccHeadName)
+                                        @Html.DisplayFor(modelItem => Model.BankAdvices[i].AccHeadName, new {style = "width:250px;"})
+                                    </div>
+                                                                                                                                                                                                                                     
+                                    <td>                                   
+                                        @Html.TextBoxFor(modelItem => Model.BankAdvices[i].Particulars, new {style = "width:200px;"})
+                                    </td>                                                                                                                                                     
+                                    <td>                                    
+                                        @Html.TextBoxFor(modelItem => Model.BankAdvices[i].BankRefNo, new {style = "width:200px;"})
+                                    </td>                                                                                                                                                                                          
+                                    <td>                                    
+                                        @Html.TextBoxFor(modelItem => Model.BankAdvices[i].AmountInTaka, new {@class="amountInTakacc2", style = "width:200px;"})
+                                    </td>                                                                                                   
+                                </tr>
+                            }                         
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+                                                                                                                                     
+            <tr>
+                <td> @Html.SaveButton() </td>                                                                 
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{       
+    <script src="~/Scripts/SCERP/Commercial/BankAdvice.js"></script>        
+}

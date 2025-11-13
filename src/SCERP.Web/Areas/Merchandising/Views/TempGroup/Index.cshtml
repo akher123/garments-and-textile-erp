@@ -1,0 +1,63 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.TempGroupViewModel
+@{ ViewBag.Title = "TempGroup";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Template Group List</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 250px;">
+            @using (Html.BeginForm("Index", "TempGroup", FormMethod.Get, new { @class = "TempGroupForm submit-allow" }))
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Group Name")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.TempGroup.TempGroupName, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/Merchandising/TempGroup/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TempGroups, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("TempGroupId", header: "Template Group Id"),
+                  grid.Column("TempGroupName", header: "Template Group"),
+                  grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/TempGroup/Edit?TempGroup.TempGroupId=@item.TempGroupId"></button></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/TempGroup/Delete?TempGroupId=@item.TempGroupId"></button></text>)));
+        }
+    </div>
+</section>
+
+
+
+
+

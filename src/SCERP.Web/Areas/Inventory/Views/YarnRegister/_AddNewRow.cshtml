@@ -1,0 +1,66 @@
+﻿
+@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialReceivedViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.MaterialReceivedDetailDictionary)
+{
+    <tr id="@Model.MaterialReceivedDetailDictionary[m.Key].Item.RemoveWhiteSpace()_@Model.MaterialReceivedDetailDictionary[m.Key].Color.RemoveWhiteSpace()_@Model.MaterialReceivedDetailDictionary[m.Key].Size.RemoveWhiteSpace()">
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].BuyerNameDtl)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].BuyerNameDtl, new {id = "BuyerNameDtl_" + m.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].OrderNameDtl)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].OrderNameDtl, new {id = "OrderNameDtl_" + m.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].StyleNameDtl)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].StyleNameDtl, new { id = "StyleNameDtl_" + m.Key })
+        </td>
+         <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].Item)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].Item, new { id = "Item_" + m.Key })
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].MaterialReceivedDetailId)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].Color)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].Color, new { id = "Color_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].Size)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].Size, new { id = "Size_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].Brand)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].Brand, new { id = "Brand_" + m.Key })
+        </td>
+
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].LotNo)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].LotNo, new { id = "LotNo_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].UnitName)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].UnitName, new { id = "UnitName_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].ReceivedQty)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].ReceivedQty, new { id = "ReceivedQty_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.MaterialReceivedDetailDictionary[m.Key].Rate)
+            @Html.HiddenFor(x => x.MaterialReceivedDetailDictionary[m.Key].Rate, new { id = "Rate_" + m.Key })
+        </td>
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@m.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}
+
+
+

@@ -1,0 +1,62 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    ViewBag.Title = "Income Statement MFG";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "VoucherEntry", FormMethod.Post, new { @class = "VoucherEntrySearchForm ignore-validation" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Income Statement MFG</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                <tr>
+                    <td>@Html.Label("Company: ")</td>
+                    <td>@Html.DropDownList("sectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "", @disabled = "disabled" })</td>
+
+                    <td>@Html.DisplayName("Print Format: ")</td>
+                    <td>@Html.DropDownList("PrintFormatId", null, new { style = "" })</td>
+
+                    <td>@Html.Label("From date: ")</td>
+                    <td>@Html.EditorFor(x => x.VoucherList.FromDate)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.Label("To date: ")</td>
+                    <td>@Html.EditorFor(x => x.VoucherList.ToDate)</td>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Show Report" onclick="javascript: PrintReport();" class="showReport addButton" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var sectorId = $('#sectorId').val();
+            var fromDate = $('#VoucherList_FromDate').val();
+            var toDate = $('#VoucherList_ToDate').val();
+            var FileType = $('#PrintFormatId option:selected').text();
+            window.open("/Accounting/Report/IncomeStatementMfgPrint?&fromDate=" + fromDate + "&toDate=" + toDate + "&sectorId=" + sectorId + "&ExportType=" + FileType);
+        }
+
+    </script>
+}

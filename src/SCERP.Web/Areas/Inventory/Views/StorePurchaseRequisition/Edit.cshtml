@@ -1,0 +1,374 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseRequisitionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var sprdetails = Model.InventoryStorePurchaseRequisitionDetails;
+}
+
+
+<div style="width:500px; padding-left:340px;">
+    @switch (Model.AuthonticatedProcessId)
+    {
+        case (int)StorePurchaseRequisition.Purchases:
+            <h2>Purchase Requisition  </h2>
+
+            break;
+        case (int)StorePurchaseRequisition.Approval:
+
+        <h2> Purchase Requisition Approval</h2>
+
+            break;
+        default:
+        <h2>Store Purchase Requisition </h2>
+
+
+            break;
+    }
+</div>
+@using (Html.BeginForm("Save", "StorePurchaseRequisition", FormMethod.Post, new { @class = "StorePurchaseRequisition ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.StorePurchaseRequisitionId)
+    @Html.HiddenFor(x => x.MaterialRequisitionId)
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(x => x.BranchId, new { @class = "brandchHiddenId" })
+    <section class="search formCover">
+        <span style="font-size: 12px; color: #191970; padding: 5px;">General details</span><hr>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Req Note No :")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.RequisitionNoteNo)
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Req Note Date :")
+                </td>
+                <td>
+                    @Html.ValueFor(x => x.RequisitionNoteDate, "{0:dd/MM/yyyy}")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("ReqNo :")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.RequisitionNo)
+                    @Html.HiddenFor(x => x.RequisitionNo)
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Req date :")
+                </td>
+                <td>
+                    @if (Model.AuthonticatedProcessId == (int)StorePurchaseRequisition.Store)
+                    {
+                        @Html.TextBoxFor(x => x.RequisitionDate,new {@class="datepicker"})
+                    }
+                    else
+                    {
+                        <span> @Html.ValueFor(x => x.RequisitionDate, "{0:dd/MM/yyyy}") </span>
+                        if (Model.RequisitionDate != null)
+                        {
+                            @Html.HiddenFor(x => x.RequisitionDate, new { @Value = Model.RequisitionDate.Value.ToString("dd/MM/yyyy") })
+                        }
+                    }
+
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Approval status :")
+                </td>
+                <td>
+                    @switch (Model.AuthonticatedProcessId)
+                    {
+                        case (int)StorePurchaseRequisition.Approval:
+                            @Html.DropDownListFor(x => x.ApprovalStatusId, Model.ApprovalStatuSelectListItem, "-Select-")
+                            break;
+                        case (int)StorePurchaseRequisition.Purchases:
+                        @Html.DisplayFor(x => x.ApprovalStausName)
+                        @Html.HiddenFor(x => x.ApprovalStatusId)
+                            break;
+                        default:
+                        @Html.DropDownListFor(x => x.ApprovalStatusId, Model.ApprovalStatuSelectListItem, "-Select-")
+                            break;
+                    }
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Approval date:")
+                </td>
+
+                <td>
+
+                    @if (Model.AuthonticatedProcessId == (int)StorePurchaseRequisition.Approval || Model.AuthonticatedProcessId == (int)StorePurchaseRequisition.Store)
+                    {
+                        @Html.TextBoxFor(x => x.ApprovalDate,new{@class="datepicker"})
+                    }
+                    else
+                    {
+                        <span> @Html.ValueFor(x => x.ApprovalDate, "{0:dd/MM/yyyy}") </span>
+                        if (Model.ApprovalDate != null)
+                        {
+                            @Html.HiddenFor(x => x.ApprovalDate, new { @Value = Model.ApprovalDate.Value.ToString("dd/MM/yyyy") })
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+        @if (Model.AuthonticatedProcessId == (int)StorePurchaseRequisition.Store)
+        {
+            <span style="font-size: 12px; color: #191970; padding: 5px;"> Material Requisition Details</span><hr>
+            <div>
+                @{Html.RenderPartial("~/Areas/Inventory/Views/StorePurchaseRequisition/_MaterialRequsitionDetails.cshtml", Model.InventoryMaterialRequisitionDetails);}
+            </div>
+            <span style="font-size: 12px; color: #191970; padding: 5px;">Store purchase pequisition details</span>
+            <hr>
+            <div>
+                <input type="button" onclick="addNewRow()" value="+" />
+            </div>
+        }
+        <div style="width: 1024px; overflow: auto">
+            @switch (Model.AuthonticatedProcessId)
+            {
+                case (int)StorePurchaseRequisition.Approval:
+                    Html.RenderPartial("~/Areas/Inventory/Views/StorePurchaseRequisition/_StorePurchaseDetailForApproval.cshtml", Model);
+                    break;
+                case (int)StorePurchaseRequisition.Purchases:
+                    Html.RenderPartial("~/Areas/Inventory/Views/StorePurchaseRequisition/_StorePurchaseDetailForPurchase.cshtml", Model);
+                    break;
+                default:
+                    Html.RenderPartial("~/Areas/Inventory/Views/StorePurchaseRequisition/_StorePurchaseDetailForStor.cshtml", Model);
+                    break;
+            }
+            <span style="font-size: 12px; color: #191970; padding-bottom: 5px;">Refernce details</span>
+            <hr>
+            <table>
+                @if (Model.AuthonticatedProcessId != (int)StorePurchaseRequisition.Purchases && Model.AuthonticatedProcessId != (int)StorePurchaseRequisition.Approval)
+                {
+                    <tr>
+                        <td>
+                            @Html.Label("Purchase Type :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.PurchaseTypeId, Model.PurchaseTypeSelectListItem, "-Select-")
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            &nbsp;   &nbsp;  &nbsp;
+                            @Html.Label("Req Type :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.RequisitionTypeId, Model.RequisitionTypeSelectListItem, "-Select-")
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.Label("Purchase Type :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.PurchaseTypeTitle, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+
+                            @Html.HiddenFor(x => x.PurchaseTypeId)
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            &nbsp;   &nbsp;  &nbsp;
+                            @Html.Label("Req Type :")
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.RequisitionTypeId)
+                            @Html.TextBoxFor(x => x.RequsitionTypeTitle, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                        @Html.Label("Send For :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessId, Model.InventoryProcessSelectListItem, "--Select--", new { @class = "Common_ProcessKeyId", @action = "/Inventory/StorePurchaseRequisition/GetAllAuthorizedPersonsByProcessId", @TargetClass = "Common_AuthorizedPerson" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        &nbsp;   &nbsp;  &nbsp;
+                        @Html.Label("Send To :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SubmittedTo, Model.AuthorizedPersonSelectListItem, "--Select--", new { @class = "Common_AuthorizedPerson" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Remarks")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(x => x.Remarks)
+                    </td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+        <div>
+            @if (Model.IsComeFromRequsition)
+            {
+                <input type="button" onclick="search('@Url.Action("Index", "MaterialRequisition")','StorePurchaseRequisition')" value="Back" />
+            }
+            else
+            {
+                <input type="button" onclick="search('@Url.Action("Index", "StorePurchaseRequisition")','StorePurchaseRequisition')" value="Back" />
+            }
+            <input type="button" onclick="search('@Url.Action("Report", "StorePurchaseRequisition")','StorePurchaseRequisition')" value="Show Report" />
+
+            <input type="submit" class="SubmitButton" value="Save" />
+        </div>
+        <hr>
+
+    </section>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('.edit-mode').hide();
+        $('.edit-button').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+        function addNewRow() {
+            var $table = $('table#StorePurchaseRequisitionDetail tbody');
+            var rowCount = $('#StorePurchaseRequisitionDetail tr').length;
+            var option = {
+                url: '@Url.Action("AddRow", "StorePurchaseRequisition")',
+                type: "get",
+                dataType: "html",
+                data: { Key: rowCount },
+            };
+            $.Ajax(option).done(function (htmResult) {
+                $table.append(htmResult);
+                RefrashModelState();
+            });
+        }
+        function itemAutocomplite(obj, index) {
+            var $tr = $(obj).closest("tr");
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/ItemStore/AutocompliteItemByBranch",
+                        type: "POST",
+                        data: { itemName: request.term },
+                    };
+                     $.Ajax(option)
+                                .done(function (data) {
+                                    response($.map(data, function (item) {
+                                        return { label: item.ItemName+"_"+ item.ItemCode , value: item.ItemName, ItemId: item.ItemId };
+                                    }));
+                                });
+                },
+                select: function (event, ui) {
+                    var itemId = ui.item.ItemId;
+                    $('.ItemHiddenField-' + index).val(itemId);
+                    $.Ajax({
+                        type: 'GET',
+                        dataType: "json",
+                        url: '/StorePurchaseRequisition/PresentStockInfo',
+                        data: { itemId: itemId },
+                        success: function (result) {
+                            $tr.find('td:eq(9)').find("input").val(result.StockInHand);
+                            $tr.find('td:eq(8)').find("input").val(result.SuppliedUptoDate);
+                            $tr.find('td:eq(10)').find("input").val(result.LastUnitPrice);
+                        }, onError: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                },
+            });
+        }
+        function RefrashModelState() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+
+        function SizePresentStockInfo(obj) {
+            var $sizeDropropdown = $(obj);
+            var $tr = $sizeDropropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var sizeId = $sizeDropropdown.val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/StorePurchaseRequisition/PresentStockInfo',
+                data: { itemId: itemId, sizeId: sizeId},
+                success: function (result) {
+                    $tr.find('td:eq(9)').find("input").val(result.StockInHand);
+                    $tr.find('td:eq(8)').find("input").val(result.SuppliedUptoDate);
+                    $tr.find('td:eq(10)').find("input").val(result.LastUnitPrice);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function BrandPresentStockInfo(obj) {
+            var $brndDropropdown = $(obj);
+            var $tr = $brndDropropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var brandId = $brndDropropdown.val();
+            var sizeId = $tr.find('td:eq(2)').find("select").val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/StorePurchaseRequisition/PresentStockInfo',
+                data: { itemId: itemId, sizeId: sizeId ,brandId:brandId},
+                success: function (result) {
+                    $tr.find('td:eq(9)').find("input").val(result.StockInHand);
+                    $tr.find('td:eq(8)').find("input").val(result.SuppliedUptoDate);
+                    $tr.find('td:eq(10)').find("input").val(result.LastUnitPrice);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function OriginPresentStockInfo(obj) {
+            var $originDropropdown = $(obj);
+            var $tr = $originDropropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var orignId = $originDropropdown.val();
+            var sizeId = $tr.find('td:eq(2)').find("select").val();
+            var brandId = $tr.find('td:eq(3)').find("select").val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/StorePurchaseRequisition/PresentStockInfo',
+                data: { itemId: itemId, sizeId: sizeId, brandId: brandId, originId: orignId },
+                success: function (result) {
+                    $tr.find('td:eq(9)').find("input").val(result.StockInHand);
+                    $tr.find('td:eq(8)').find("input").val(result.SuppliedUptoDate);
+                    $tr.find('td:eq(10)').find("input").val(result.LastUnitPrice);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+}

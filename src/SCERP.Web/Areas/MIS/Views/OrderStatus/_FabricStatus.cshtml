@@ -1,0 +1,175 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.FabricStatusViewModel
+@using System.Data
+@{
+    Layout = null;
+}
+
+<section class="formCover">
+    <div class="mis-title">Yarn Delivery for  Knitting</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Yarn")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("Count")
+                </th>
+                <th>
+                    @Html.Label("Booking(Kg)")
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.YDeliveryDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Yarn"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["Count"]</td>
+                    <td>@row["Quantity"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section class="formCover">
+    <div class="mis-title">Knitting Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Grey Fabric")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("M/C Dia")
+                </th>
+                <th>
+                    @Html.Label("Finish Dia")
+                </th>
+                <th>
+                    @Html.Label("GSM")
+                </th>
+                <th>
+                    @Html.Label("Grey Qty(Kg)")
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.RollRcvDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Fabric"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["McDia"]</td>
+                    <td>@row["FDia"]</td>
+                    <td>@row["GSM"]</td>
+                    <td>@row["Quantity"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section class="formCover">
+    <div class="mis-title">Dyeing Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Grey Fabric")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("M/C Dia")
+                </th>
+                <th>
+                    @Html.Label("Finish Dia")
+                </th>
+                <th>
+                    @Html.Label("GSM")
+                </th>
+                <th>
+                    @Html.Label("Grey Qty(Kg)")
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.DyeingDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Fabric"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["McDia"]</td>
+                    <td>@row["FDia"]</td>
+                    <td>@row["GSM"]</td>
+                    <td>@row["Quantity"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section class="formCover">
+    <div class="mis-title">Finishing Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Fabric")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("M/C Dia")
+                </th>
+                <th>
+                    @Html.Label("Finish Dia")
+                </th>
+                <th>
+                    @Html.Label("GSM")
+                </th>
+                <th>@Html.Label("GreyWt(Kg)")</th>
+                <th>@Html.Label("FinishWt(Kg)")</th>
+                <th>@Html.Label("PL(%)")</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.FinishingDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Fabric"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["McDia"]</td>
+                    <td>@row["FDia"]</td>
+                    <td>@row["GSM"]</td>
+                    <td>@row["GQuantity"]</td>
+                    <td>@row["FQuantity"]</td>
+                    <td>@row["PLQuantity"]</td>
+                </tr>
+            }
+        </tbody>
+
+
+
+
+    </table>
+</section>

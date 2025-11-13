@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>@Page.Title</title>
+        @RenderSection("head", required: false)
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Soft-Code ERP Presentation</title>
+        <link rel="shortcut icon" href="~/Content/ReportImageContent/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+        <link rel="stylesheet" href="~/Content/ReportImageContent/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/Content/ReportImageContent/css/bootstrap.min.css"/>
+        <!-- STYLESHEET -->
+        <link rel="stylesheet" href="~/Content/ReportImageContent/style.css" />
+    </head>
+<body>
+    <div class="container-fluid custom-fluid">
+       
+            
+                    @RenderBody()
+                
+    </div>
+    <script src="~/Content/ReportImageContent/js/jquery-1.11.3.min.js"></script>
+    <script src="~/Content/ReportImageContent/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

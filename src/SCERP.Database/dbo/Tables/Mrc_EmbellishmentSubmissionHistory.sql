@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Mrc_EmbellishmentSubmissionHistory] (
+    [EmbellishmentSubmissionHistoryId] INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]                      INT              NOT NULL,
+    [KeyProcessId]                     INT              NOT NULL,
+    [SendingStatusId]                  INT              NULL,
+    [DepartmentId]                     INT              NULL,
+    [ResponsiblePersonId]              UNIQUEIDENTIFIER NULL,
+    [CurrencyId]                       INT              NULL,
+    [SubmissionPrice]                  NUMERIC (18, 3)  NULL,
+    [PlannedStartDate]                 DATETIME         NULL,
+    [PlannedEndDate]                   DATETIME         NULL,
+    [ActualStartDate]                  DATETIME         NULL,
+    [ActualEndDate]                    DATETIME         NULL,
+    [CreatedDate]                      DATETIME         NULL,
+    [CreatedBy]                        UNIQUEIDENTIFIER NULL,
+    [EditedDate]                       DATETIME         NULL,
+    [EditedBy]                         UNIQUEIDENTIFIER NULL,
+    [IsActive]                         BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_EmbellishmentSubmissionHistory] PRIMARY KEY CLUSTERED ([EmbellishmentSubmissionHistoryId] ASC),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Currency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([CurrencyId]),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Department] FOREIGN KEY ([DepartmentId]) REFERENCES [dbo].[Department] ([Id]),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Employee] FOREIGN KEY ([ResponsiblePersonId]) REFERENCES [dbo].[Employee] ([EmployeeId]),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Mrc_SendingStatus] FOREIGN KEY ([SendingStatusId]) REFERENCES [dbo].[Mrc_SendingStatus] ([SendingStatusId]),
+    CONSTRAINT [FK_Mrc_EmbellishmentSubmissionHistory_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId])
+);
+

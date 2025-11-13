@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[Inventory_AdvanceMaterialIssue] (
+    [AdvanceMaterialIssueId] BIGINT           IDENTITY (1, 1) NOT NULL,
+    [CompId]                 VARCHAR (3)      NOT NULL,
+    [IRefId]                 VARCHAR (10)     NOT NULL,
+    [SlipNo]                 VARCHAR (150)    NULL,
+    [IRNoteNo]               VARCHAR (20)     NOT NULL,
+    [IRNoteDate]             DATETIME         NOT NULL,
+    [BuyerRefId]             VARCHAR (3)      NULL,
+    [OrderNo]                VARCHAR (100)    NULL,
+    [StyleNo]                VARCHAR (100)    NULL,
+    [StoreId]                INT              NOT NULL,
+    [IType]                  INT              NOT NULL,
+    [Remarks]                NVARCHAR (150)   NULL,
+    [IssuedBy]               UNIQUEIDENTIFIER NOT NULL,
+    [Amount]                 DECIMAL (18, 5)  NOT NULL,
+    [RefPerson]              UNIQUEIDENTIFIER NULL,
+    [PartyId]                INT              NULL,
+    [ProcessRefId]           VARCHAR (3)      NULL,
+    [VehicleNo]              VARCHAR (50)     NULL,
+    [DriverName]             NVARCHAR (50)    NULL,
+    [LockStatus]             BIT              NULL,
+    [OrderStyleRefId]        VARCHAR (7)      NULL,
+    [ProgramRefId]           VARCHAR (10)     NULL,
+    [ApprovedBy]             UNIQUEIDENTIFIER NULL,
+    [GroupChallanId]         INT              NULL,
+    CONSTRAINT [PK_Inventory_AdvanceMaterialIssue] PRIMARY KEY CLUSTERED ([AdvanceMaterialIssueId] ASC)
+);
+

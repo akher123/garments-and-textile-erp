@@ -1,0 +1,82 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.HouseKeepingRegisterViewModel
+@{
+    ViewBag.Title = "House Keeping Goods Issue Register";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@using (Html.BeginForm("Index", "HouseKeepingRegister", FormMethod.Get, new { @class = "HouseKeepingRegisterForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div class="header-title">
+        <h2>House Keeping Goods Issue Register</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                        <input type="button" onclick="HkRegisterReport()"  value="REPORT"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        <div  class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/HouseKeepingRegister/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.HouseKeepingRegisters, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("Employee.Name", header: "Employee"),
+            grid.Column("Employee.EmployeeCardId", header: "Card ID"),
+            grid.Column("HouseKeepingItem.Name", header: "Goods"),
+            grid.Column("Quantity", header: "IQty"),
+            grid.Column("Rate", header: "Rate"),
+            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.IusseDate ?? ""), header: "Issue Date"),
+            grid.Column("ReturnQty", header: "Return Qty"),
+            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ReturnDate ?? ""), header: "Return Date"),
+            grid.Column("Remarks", header: "Remarks"),
+            grid.Column("Return/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/HouseKeepingRegister/Edit?houseKeepingRegisterId=@item.HouseKeepingRegisterId"></button></text>),
+            grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/HRM/HouseKeepingRegister/Delete?HouseKeepingRegisterId=@item.HouseKeepingRegisterId"></button></text>)));
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function HkRegisterReport() {
+            var cardId = $('#SearchString').val();
+            var searchurl = '/HRM/HouseKeepingRegister/HouseKeepingIssueReport?cardId=' + cardId;
+            window.open(searchurl);
+
+
+        }
+    </script>
+}

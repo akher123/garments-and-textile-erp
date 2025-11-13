@@ -1,0 +1,31 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Bulk Yarn Booking</h2>
+</div>
+<div id="bulkBookingTab">
+    <ul>
+        <li><a id="bulkBookingHref" href="/Merchandising/BulkBooking/BulkBookingList">Booking</a></li>
+        <li><a id="bulkBookingDetailHref" href="/Merchandising/BulkBooking/BulkBookingDetailLsit?BulkBooking.BulkBookingId=">Fabrication</a></li>
+        <li><a id="bulkBookingYarnDetailHref" href="/Merchandising/BulkBooking/BulkBookingYarnDetailLsit?BulkBookingDetail.BulkBookingDetailId=">Yarn</a></li>
+    </ul>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $("#bulkBookingTab").tabs({
+            load: SCERP.AjaxCompleted,
+           disabled: [1, 2]
+        });
+    </script>
+}
+
+
+
+
+
+
+

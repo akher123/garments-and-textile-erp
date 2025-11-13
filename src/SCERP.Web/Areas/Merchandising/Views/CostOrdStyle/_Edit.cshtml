@@ -1,0 +1,59 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostOrdStyleViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Save", "CostOrdStyle"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.CostOrderStyleId)
+    @Html.HiddenFor(x => x.OrderStyleRefId)
+    @Html.ValidationSummary(true)
+    <table>
+
+        <tr>
+            <td>
+                @Html.Label("Category")
+            </td>
+            <td>
+
+                @Html.DropDownListFor(x => x.CostGroup, Model.CostGroupsSelectListItem, "-Select-", new { onchange = "GetCostDefinationByCostGroup(this)" })
+            </td>
+            <td>
+                @Html.Label("Item")
+            </td>
+            <td>
+
+                @Html.DropDownListFor(x => x.CostRefId, Model.ConsDefinationSeasonsSelectListItem, "-Select-", new { id = "CostDefinationId" }  )
+            </td>
+            <td>
+                @Html.Label("Unit")
+            </td>
+
+            <td>
+
+                @Html.TextBoxFor(x => x.Unit, new { @placeholder = "Cons Unit", @style = "width: 70px;" })
+            </td>
+     
+            <td>
+                @Html.Label("Qty")
+            </td>
+            <td>
+
+                @Html.TextBoxFor(x => x.Qty, new { @placeholder = "Qty",@style="width: 85px;" })
+            </td>
+            <td>
+                @Html.Label("Rate")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.CostRate, new { @placeholder = "Rate", @style = "width: 85px;" })
+            </td>
+            <td>
+                @Html.Button(Model.ButtinName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "CostOrdStyleLsit" } })
+            </td>
+
+        </tr>
+
+    </table>
+}
+

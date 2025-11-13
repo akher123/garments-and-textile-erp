@@ -1,0 +1,122 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryAuthorizedPersonViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    //var dispaly = (Model.Id > 0) ? "none" : "";
+
+    var dispaly = (Model.AuthorizedPersonId > 0) ? "" : "none";
+    var dispalyForEdit = (Model.AuthorizedPersonId > 0) ? "none" : "";
+    ViewBag.Title = (Model.AuthorizedPersonId > 0) ? "Edit" : "Add";
+}
+<fieldset>
+    <legend>Authorized Person</legend>
+    @using (Html.BeginForm("Save", "InventoryAuthorizedPerson", FormMethod.Post, new { @class = "InventoryAuthorizedPersonForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.AuthorizedPersonId)
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+         
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Process Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.ProcessTypeId, Model.InventoryProcessTypeSelectListItem, "--Select--", new { @class = "InventoryprocessType", @action = "/Inventory/InventoryAuthorizedPerson/GetInventoryProcessByProcessTypeId", @TargetClass = "InventoryProcess" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ProcessTypeId)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Process:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.ProcessId, Model.InventoryProcessSelectListItem, "--Select--", new { @class = "InventoryProcess" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ProcessId)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">EmpCardID:</td>
+                <td>
+                    @Html.TextBoxFor(p => p.EmployeeCardId, new { @class = "employeeCardId" })
+                    @Html.ValidationMessageFor(m => m.EmployeeCardId)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/Inventory/InventoryAuthorizedPerson/GetEmployeeDetailByEmployeeCadId" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+            <tr id="employeeDetail_containner">
+
+                @if (Model.EmployeeCompanyInfo.EmployeeCompanyInfoId > 0)
+                {
+                    @Html.Partial("~/Areas/HRM/Views/AuthorizedPerson/_EmployeeDetails.cshtml", Model.EmployeeCompanyInfo, new ViewDataDictionary { { "AuthorizedPersonId", Model.AuthorizedPersonId } })
+                }
+            </tr>
+            <tr>
+                <td></td>
+                <td id="displayButton" style="display: @dispaly">
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+
+            </tr>
+        </table>
+    }
+</fieldset>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/FilterEmployee.js"></script>
+    <script type="text/javascript">
+        $('.InventoryprocessType').on("change").bind("change", populateProcess);
+        function populateProcess() {
+            var $this = $(this);
+            var targetClass = $this.attr('TargetClass');
+            var processTypeId = $this.val();
+            $.ajax({
+                url: $this.attr('action'),
+                type: "GET",
+                dataType: "JSON",
+                data: { processTypeId: processTypeId },
+                success: function (respons) {
+                    if (respons.Success == true && respons.ProcessTypes.length > 0) {
+                        ClearDropDownList(targetClass);
+                        for (var i = 0; i < respons.ProcessTypes.length; i++) {
+
+                            $('.' + targetClass)
+                                .append($('<option>').text(respons.ProcessTypes[i].ProcessName).attr('value', respons.ProcessTypes[i].ProcessId));
+                        }
+                    } else {
+                        $('.' + targetClass)
+                            .append($('<option>').text("NotFound").attr('value', ""));
+                    }
+                }
+            });
+        };
+
+        function ClearDropDownList(selector) {
+
+            $('.' + selector)
+                .find('option').remove()
+                .end().append($('<option>').text("-select-").attr('value', ""));
+        }
+
+
+    </script>
+}

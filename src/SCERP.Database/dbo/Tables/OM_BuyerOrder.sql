@@ -1,0 +1,50 @@
+﻿CREATE TABLE [dbo].[OM_BuyerOrder] (
+    [BuyerOrderId]      BIGINT          IDENTITY (1, 1) NOT NULL,
+    [CompId]            VARCHAR (3)     NULL,
+    [OrderNo]           VARCHAR (12)    NULL,
+    [OrderDate]         DATETIME        NULL,
+    [RefNo]             VARCHAR (30)    NULL,
+    [RefDate]           DATETIME        NULL,
+    [SampleOrdNo]       VARCHAR (12)    NULL,
+    [BuyerRefId]        VARCHAR (3)     NULL,
+    [DGRefNo]           VARCHAR (40)    NULL,
+    [BuyerRef]          VARCHAR (25)    NULL,
+    [Quantity]          INT             NULL,
+    [ManagerId]         VARCHAR (4)     NULL,
+    [MerchandiserId]    VARCHAR (4)     NULL,
+    [AgentRefId]        VARCHAR (3)     NULL,
+    [ShipagentRefId]    VARCHAR (5)     NULL,
+    [ConsigneeRefId]    VARCHAR (3)     NULL,
+    [PayTermRefId]      VARCHAR (2)     NULL,
+    [CurrencyId]        INT             NULL,
+    [Exchange]          NUMERIC (10, 4) NULL,
+    [AgencyPer]         NUMERIC (5, 2)  NULL,
+    [GUOMId]            INT             NULL,
+    [GUOMConv]          SMALLINT        NULL,
+    [BasUnit]           INT             NULL,
+    [Remarks]           VARCHAR (1000)  NULL,
+    [OrderCategoryId]   INT             NULL,
+    [OrderTypeRefId]    VARCHAR (2)     NULL,
+    [SystemRefId]       VARCHAR (2)     NULL,
+    [SMode]             VARCHAR (10)    NULL,
+    [StyleType]         VARCHAR (1)     NULL,
+    [OrdStyleTypeRefId] INT             NULL,
+    [TeamRefId]         INT             NULL,
+    [PaymentModeRefId]  INT             NULL,
+    [CommittedDate]     DATETIME        NULL,
+    [Closed]            VARCHAR (1)     NULL,
+    [CloseDate]         DATETIME        NULL,
+    [OAmount]           DECIMAL (18, 2) NULL,
+    [Fab]               VARCHAR (100)   NULL,
+    [SCont]             VARCHAR (1)     NULL,
+    [SeasonRefId]       VARCHAR (2)     NULL,
+    [LcRefId]           INT             NULL,
+    [OrderStatus]       VARCHAR (150)   NULL,
+    CONSTRAINT [PK_OM_BuyerOrder] PRIMARY KEY CLUSTERED ([BuyerOrderId] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_OM_BUYER_ORDER_ORDERNO]
+    ON [dbo].[OM_BuyerOrder]([OrderNo] ASC);
+

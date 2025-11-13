@@ -1,0 +1,96 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanViewModel
+@{
+    ViewBag.Title = "ApprovedReturnableChallan";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Approved Returnable Challan</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("ApprovedReturnableChallanList", "FabSubProcessDeliveryChallan", FormMethod.Get, new { @class = "ApprovedReturnableChallanListForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReturnableChallan.IsApproved, Model.ApprovedReturnableChallanSelectListItem, "-Select-", new {@class = "form-control"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ReturnableChallans, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("ReturnableChallanRefId", canSort: false, header: "RefId"),
+                  grid.Column("Messrs", canSort: false, header: "Messrs"),
+                  grid.Column("Address", canSort: false, header: "Address"),
+                  grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("RefferancePerson", canSort: false, header: "RefferancePerson"),
+                  grid.Column("EmployeeCardId", canSort: false, header: "VehicleNo"),
+                  grid.Column("Department", canSort: false, header: "Department"),
+                  grid.Column("Designation", canSort: false, header: "Designation"),
+                  grid.Column(header: "IsApproved", format: @<input class="IsApprovedcbx" onclick="IsApprovedFabSpChallan(this)" name="IsApprovedCheckBox" @(item.IsApproved == true ? "checked" : "") type="checkbox" value="@item.ReturnableChallanId" />),
+                  grid.Column("Report", canSort: false, header: "REPORT", format: @<text><a href="/Inventory/FabSubProcessDeliveryChallan/FabSubProcessDeliveryChallanReport?ReturnableChallan.ReturnableChallanId=@item.ReturnableChallanId" target="_blank">PDF</a></text>)));
+        }
+    </div>
+</section>
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsApprovedFabSpChallan(chechBox) {
+            var $chechBox = $(chechBox);
+            var returnableChallanId = $chechBox.val();
+            $.Ajax({
+                url: '/FabSubProcessDeliveryChallan/ApprovedReturnableChallan',
+                data: { ReturnableChallanId: returnableChallanId },
+                type: 'post'
+            }).done(function(status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Approved/Not Approved.");
+                }
+            });
+        }
+       
+    </script>
+}
+
+
+
+
+

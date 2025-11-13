@@ -1,0 +1,70 @@
+﻿
+@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeManualOverTimeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.EmployeeManualOverTimeId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "EmployeeManualOT", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.EmployeeManualOT.EmployeeManualOverTimeId)
+
+
+    <fieldset>
+        <legend> Advance Income Tax </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+
+            <tr>
+
+                <td class="fieldTitleCls">Employee Card Id:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeManualOT.EmployeeCardId)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Employee Manual OT Hours:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeManualOT.OverTimeHours)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Date:</td>
+                <td>                    
+                    @Html.TextBoxFor(x => x.EmployeeManualOT.Date, new { @class = "datepicker", @data_val = "false", @placeholder = "Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+            
+            <tr>
+
+                <td>
+                    @Html.SaveButton()
+                </td>
+
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

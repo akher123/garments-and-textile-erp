@@ -1,0 +1,110 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.DyeingSpChallanViewModel
+@{
+    ViewBag.Title = "DyeingSpChallan";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Approved Dyeing Subprocess</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("ApprovedSp", "DyeingSpChallan", FormMethod.Get, new {@class = "dyeingSpChallanForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.IsActive, Model.ApprovedSpSelectListItem, new {@class = "form-control"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.DyeingSpChallans, rowCount: Model.DyeingSpChallans.Count, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("DyeingSpChallanRefId", canSort: false, header: "RefId"),
+                        grid.Column("Party.Name", canSort: false, header: "Factory"),
+                        grid.Column("ChallanNo", canSort: false, header: "Challan No"),
+                        grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ExpDate", canSort: false, header: "Exp Date", format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+
+                        grid.Column(header: "IsApproved", format: @<input class="IsApprovedcbx" onclick="IsApprovedFun(this)" name="IsApprovedCheckBox" @(item.IsApproved == true ? "checked" : "") type="checkbox" value="@item.DyeingSpChallanId"/>),
+                        grid.Column("Report", format:@<text>
+                                                         <div class="dropdown">
+                                                             <a class="dropbtn custom-table-dropbtn">Challan</a>
+                                                             <div class="dropdown-content custom-table-dropdown-content">
+
+                                                                 @if (item.ParyId != 30216)
+                                                                 {
+                                                                     <a href="/Production/ProductionReport/GetDyeingSpChallan?DyeingSpChallanId=@item.DyeingSpChallanId&&reportName=EX" target="_blank">Party Challan</a>
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                     <a href="/Production/ProductionReport/GetDyeingSpChallan?DyeingSpChallanId=@item.DyeingSpChallanId&&reportName=IN" target="_blank">Store Challan</a>
+                                                                 }
+
+                                                             </div>
+                                                         </div>
+                                                      </text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsApprovedFun(chechBox) {
+            var $chechBox = $(chechBox);
+            var dyeingSpChallanId = $chechBox.val();
+            $.Ajax({
+                url: '/DyeingSpChallan/UpdateApprovedSp',
+                data: { DyeingSpChallanId: dyeingSpChallanId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Approved/Not Approved.");
+                }
+            });
+        }
+
+    </script>
+}

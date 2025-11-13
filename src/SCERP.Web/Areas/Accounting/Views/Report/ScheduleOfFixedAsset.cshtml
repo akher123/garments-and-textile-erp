@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.TrialBalanceViewModel
+@{
+    ViewBag.Title = "Schedule Of Fixed Asset";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Schedule Of Fixed Asset</h2>
+</div>
+
+@using (Html.BeginForm("ScheduleOfFixedAsset", "Report", FormMethod.Get, new { @class = "ControlTrialBalanceForm submit-allow ignore-validation" }))
+{
+    <div>
+        <section class="search" style="width:1015px;">
+            <table class="tabefont">
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+                <tr>
+                    <td>
+                        @Html.DisplayName("Company Name ")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("sectorId", null, "- Select -", new { style = "width:320px;" })
+                    </td>
+
+                    <td><button class="search" type="button" onclick="search('/Accounting/Report/ScheduleOfFixedAsset', 'ControlTrialBalanceForm')" /></td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </section>
+    </div>
+}
+
+<div class="additem" style="margin-top: 20px;margin-bottom: 20px; width: 1015px;">
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.TrialBalance, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                                     firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    grid.Column("ClasslHead", header: "Class Head"),
+                    grid.Column("GrouplHead", header: "Group Head"),
+                    grid.Column("SubGrouplHead", header: "Sub Group Head"),
+                    grid.Column("ControlHead", header: "Control Head"),
+                    grid.Column("ClosingBalance", header: "Balance"),
+                    grid.Column("RateOfDep", header: "Depreciation Rate"),
+                    grid.Column("Depreciation", header: "Depreciation Amount")
+                    ));
+    }
+    <div style="height:10px;"></div>
+    <button class="AjaxPopup btn btn-primary" action="/Accounting2/CompanySector/Edit">Save</button>
+</div>
+@*@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintTrialBalance() {
+            var FpId = $('#FpId').val();
+            var SectorId = $('#sectorId').val();
+            var OpOption = $('#OpeningOption').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var SectorText = $("#sectorId option:selected").text();
+            window.open("/Accounting/Report/PrintTrialBalance?FpId=" + FpId + "&SectorId=" + SectorId + "&SectorText=" + SectorText + "&fromDate=" + fromDate + "&toDate=" + toDate + "&openingOption=" + OpOption + "&TrialBalanceLebel=4&ExportType=DOC");
+        }
+        var columns = $('.additem td:nth-child(6),td:nth-child(9),th:nth-child(6),th:nth-child(9)');
+        $('#OpeningOption').openingOptionState(columns);
+        $('#OpeningOption').openingOption(columns);
+
+    </script>
+
+}*@

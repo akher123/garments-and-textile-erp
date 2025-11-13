@@ -1,0 +1,60 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var exp in Model.CommPackingListDetail)
+{
+    <tr id="row-@Model.CommPackingListDetail[exp.Key].OrderStyleRefId">
+
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].OrderStyleRefId)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].OrderStyleRefId)
+        </td>
+
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].Block)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].Block)
+        </td>
+
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].CountryName)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].CountryName)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].ColorName)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].ColorName)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].SizeName)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].SizeName)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].CartonQuantity)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].CartonQuantity)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].CartonCapacity)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].CartonCapacity)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].CartonFrom)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].CartonFrom)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommPackingListDetail[exp.Key].ContainerNo)
+            @Html.DisplayFor(x => x.CommPackingListDetail[exp.Key].ContainerNo)
+        </td>
+
+        <td>
+            <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+        </td>
+    </tr>
+}

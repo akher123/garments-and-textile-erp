@@ -1,0 +1,58 @@
+﻿
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var m in Model.Dictionary)
+{
+    <tr id="newRow-@Model.Dictionary[m.Key].ItemId">
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].PurchaseOrderRefId)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].PurchaseOrderDetailId)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoId)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoDetailId)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].ItemId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].GColorName)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].FColorRefId)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].GSizeName)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].GSizeRefId)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].ColorRefId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].ColorName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].SizeRefId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].UnitName)
+        </td>
+        <td style="width: 65px;">
+            @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedRate)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedRate)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].TotalRcvQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].BalanceQty)
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Dictionary[m.Key].ReceivedQty,new{style="width:80px;"})
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Dictionary[m.Key].Location, new { style = "width:100px;" })
+        </td>
+        <td>
+            <input type="button" value="-" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

@@ -1,0 +1,120 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabConsumptionViewModel
+@{
+    Layout = null;
+    ViewBag.Title = (Model.CompConsumptionId > 0) ? "Edit" : "Add";
+}
+<style type="text/css">
+    div.ui-datepicker {
+        font-size: 80.5%;
+    }
+</style>
+
+<div style="font-size: 12px;">
+    
+    @using (Html.BeginForm("Save", "FabConsumption", FormMethod.Post, new { @class = "FabConsumptionSearchForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CompConsumptionId, new { @id = "CompConsumptionId" })
+        @Html.HiddenFor(model => model.OrderStyleRefId, new { @id = "OrderStyleRefId" })
+   
+        <fieldset>
+            <legend>Component for  Order : <span style="text-decoration: underline">@Model.BuyOrdStyle.RefNo  and  Style : @Model.BuyOrdStyle.StyleName</span></legend>
+           
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "SL #"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.ComponentSlNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("Fabric")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ConsRefId, Model.ConsumptionFabSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label(" ", "Ent.Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.EnDate,new { @placeholder = " DATE" ,@class="datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="addButton" value="Refresh" id="refreshButton" />
+                    </td>
+               
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(" ", "Style Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OrderStyleRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Component")
+                    </td>
+                    <td>
+
+                        @Html.DropDownListFor(model => model.ComponentRefId, Model.CompSeasonsSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label(" ", "No. of Parts")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.NParts, new { @placeholder = "NParts" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(" ", "Order Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly", @id = "OrderNumber" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label(" ", "Type")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.FabricType, Model.FabTypeSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(model => model.Description)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Description, new { @placeholder = "Remarks" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.Button(Model.ButtonName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "FabcomponentContainer" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+    }
+</div>
+
+<script src="~/Scripts/SCERP/Merchandising/FabConsumption.js"></script>

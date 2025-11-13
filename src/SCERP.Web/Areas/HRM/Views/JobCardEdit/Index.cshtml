@@ -1,0 +1,168 @@
+﻿@using SCERP.Common
+@model SCERP.Model.Custom.JobCardEditView
+
+@{
+    ViewBag.Title = "Job Card Edit";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Save", "JobCardEdit", FormMethod.Post, new { @class = "JobCardEditForm ignore-validation" }))
+{
+    <div class="header-title">
+        <h2>Job Card Edit</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Job Card Name: ") </td>
+                    <td>@Html.DropDownList("JobCardName")</td>
+                    <td> @Html.Label("Employee Card Id: ") </td>
+                    <td> @Html.TextBoxFor(x => x.EmployeeCardId) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("From Date: ") </td>
+                    <td> @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>
+                    <td> @Html.Label("To Date: ") </td>
+                    <td> @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>
+
+                    <td style="float: right">
+                        <input type="button" class="FindPartial addButton" action="/JobCardEdit/Index/" target="#contentRight" value="Find" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <td> Date </td>
+                        <td> Date Name </td>
+                        <td> Shift </td>
+                        <td> Status </td>
+                        <td> In Time </td>
+                        <td> Out Time </td>
+                        <td> Delay </td>
+                        <td> OT Hours </td>
+                        <td> Extra OT </td>
+                        <td> Weekend OT </td>
+                        <td> Holiday OT </td>
+                        <td> Remarks </td>
+                    </tr>
+                </thead>
+             
+                @for (int i = 0; i < Model.Inout.Count; i++)
+                {
+                    <tr>                       
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].TransactionDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:80px", @readonly = "readonly" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].TransactionDate, new { @Value = Model.Inout[i].TransactionDate.ToString("dddd"), style = "width:80px", @readonly = "readonly" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].WorkShiftName, new { style = "width:60px", @readonly = "readonly" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].Status, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].InTime, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].OutTime, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].LateInMinutes, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].OTHours, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].ExtraOTHours, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].WeekendOTHours, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].HolidayOTHours, new { style = "width:60px" }) </td>
+                        <td> @Html.TextBoxFor(x => Model.Inout[i].Remarks, new { style = "width:80px" }) </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </section>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Present Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.PresentDays) </td>
+                    <td> @Html.Label("Pay Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.PayDays) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Late Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.LateDays) </td>
+                    <td> @Html.Label("Total OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("OSD Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.OSDDays) </td>
+                    <td> @Html.Label("Total Extra OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalExtraOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Absent Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.AbsentDays) </td>
+                    <td> @Html.Label("Total Weekend OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalWeekendOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Leave Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.LeaveDays) </td>
+                    <td> @Html.Label("Total Holiday OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalHolidayOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("LWP Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.LWPDays) </td>
+                    <td> @Html.Label("Total Penalty OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalPenaltyOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Weekend Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.WeekendDays) </td>
+                    <td> @Html.Label("Total Penalty Attendance Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalPenaltyAttendanceDays) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Holidays: ") </td>
+                    <td> @Html.TextBoxFor(x => x.Holidays) </td>
+                    <td> @Html.Label("Total Penalty Leave Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalPenaltyLeaveDays) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Total Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalDays) </td>
+                    <td> @Html.Label("Total Penalty Amount: ") </td>
+                    <td> @Html.TextBoxFor(x => x.TotalPenaltyFinancialAmount) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Working Days: ") </td>
+                    <td> @Html.TextBoxFor(x => x.WorkingDays) </td>
+                    <td> </td>
+                    <td> <input type="button" class="SubmitButton addButton" value="Save" /> </td>
+                    <td> </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+}

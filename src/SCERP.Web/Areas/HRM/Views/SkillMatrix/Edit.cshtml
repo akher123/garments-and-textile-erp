@@ -1,0 +1,243 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SkillMatrix.SkillMatrixId > 0 ? "Edit" : "Add");
+    var dispalyForEdit = (Model.SkillMatrix.SkillMatrixId > 0) ? "none" : "";
+    bool isReadOnly = Model.SkillMatrix.SkillMatrixId > 0;
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+
+    #batchInfo {
+        width: auto;
+        height: auto;
+        background: #add8e6;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "SkillMatrix", FormMethod.Post, new { @class = "SkillMatrix ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.SkillMatrix.SkillMatrixId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Skill Matrix</legend>
+
+        <table class="tabefont" style="background-color: gainsboro">
+            <tr>
+                <td>
+                    @Html.Label("EmployeeId :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #6495ed" } : new { @class = "employeeCardId" })
+                </td>
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/SkillMatrix/GetEmployeeDetailByEmployeeCardID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr id="employeeDetail_containner">
+                @if (Model.EmployeeCompanyInfo != null)
+                {
+                    {
+                        Html.RenderPartial("~/Areas/HRM/Views/SkillMatrix/_EmployeeDetails.cshtml", Model);
+                    }
+                }
+            </tr>
+        </table>
+        <hr />
+        <table class="tabefont" id="skillMatrixTable">
+            <tr>
+                <td>
+                    @Html.Label("Process Name :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VwSkillMatrix.SkillMatrixProcessId, Model.SkillMatrixProcessesSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "ddlSkillMatrixProcess" } })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Process (%):")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VwSkillMatrix.ProcessPercentage, new { @class = "processPercentageEnterVent", Value = "", @data_val = "false" })
+                    @Html.ValidationMessageFor(m => m.VwSkillMatrix.ProcessPercentage)
+                </td>
+            </tr>
+        </table>
+        <div id="batchInfo" style="font-size: 12px;"></div>
+        <hr />
+
+
+        <table id="skillMatrixDetail" class="tabefont webgrid-table" style="width:540px;">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label("Process Name ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Process % ")
+                    </th>
+                    <th>
+                        @Html.Label("Grade")
+                    </th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.SkillMatrixDictionary)
+                {
+                    <tr id="newRow-@Model.SkillMatrixDictionary[m.Key].SkillMatrixProcessId">
+                        <td>
+                            @Html.DisplayFor(x => x.SkillMatrixDictionary[m.Key].ProcessName)
+                            @Html.HiddenFor(x => x.SkillMatrixDictionary[m.Key].ProcessName)
+                            @Html.HiddenFor(x => x.SkillMatrixDictionary[m.Key].SkillMatrixProcessId)
+                            @Html.HiddenFor(x => x.SkillMatrixDictionary[m.Key].SkillMatrixGradeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.SkillMatrixDictionary[m.Key].ProcessPercentage)
+                            @Html.HiddenFor(x => x.SkillMatrixDictionary[m.Key].ProcessPercentage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.SkillMatrixDictionary[m.Key].GradeName)
+                            @Html.HiddenFor(x => x.SkillMatrixDictionary[m.Key].GradeName)
+                        </td>
+                        <td>
+                            <input type="button" value="X" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        <div style="float: right">
+            <table class="tabefont">
+                <tr>
+
+                    <td>
+                        <input type="submit" id="btnSave" value="Save" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </fieldset>
+}
+@section scripts
+{
+
+
+    <script>
+        $('#filterbyEmployeeCadrId').unbind("click").bind("click", clickEventHendeler);
+        function clickEventHendeler() {
+            var employeeCadrIdTextBox = $('.employeeCardId');
+            var employeeCardId = employeeCadrIdTextBox.val();
+            var $this = $(this);
+            var option = {
+                url: $this.attr('action'),
+                type: 'GET',
+                data: { EmployeeCardId: employeeCardId }
+            };
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                employeeCadrIdTextBox.validate();
+                if (!employeeCadrIdTextBox.valid()) {
+                    return false;
+                }
+                loadEmployeeDetail(option);
+            }
+        }
+        function loadEmployeeDetail(option) {
+            return $.Ajax(option).done(function (respons) {
+                if (respons.Success && respons.Success != 'undefined') {
+                    $('#employeeDetail_containner').html(respons.EmployeeDetailView);
+                    $("#displayButton").removeAttr("style");
+                }
+                if (respons.ValidStatus == false) {
+                    $("#displayButton").css("display", "none");
+                    alert(respons.Message);
+                }
+            });
+        }
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        } 
+        $("#btnSave").each(function () {
+            $(this).click(function () {
+                if (employeeCardId <= 0) {
+                    alert("Please Find Out An Employee."); 
+                }
+            });
+        });
+
+        $(".processPercentageEnterVent").each(function () {
+            $(this).keyup(function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        $('.processPercentageEnterVent').unbind("keypress").bind("keypress", function (e) {
+            var key = e.which;
+
+            if (key == 13)  //the enter key code
+            {
+                e.preventDefault();
+                var addNewItem = $('#skillMatrixTable :input');
+                var $table = $('table#skillMatrixDetail tbody');
+                var skillMatrixProcessId = $('.ddlSkillMatrixProcess').val();
+                var processPercentage = $('.processPercentageEnterVent').val();
+                var employeeCardId = $('.txtEmployeeCardId').val();
+
+                var option = {
+                    url: "/SkillMatrix/AddNewRow/",
+                    type: "POST",
+                    data: addNewItem.serialize()
+                };
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    addNewItem.validate();
+                    if (!addNewItem.valid()) {
+                        return false;
+                    } else {
+                        var message = "";
+                        if (employeeCardId <= 0) {
+                            message += "Please Find Out An Employee.";
+                        }
+                        if (skillMatrixProcessId.length <= 0) {
+                            message += "Select Process Name.";
+                        }
+                        if (processPercentage <= 0 || processPercentage <50 || processPercentage >100) {
+                            message += "Ener Process Percentage between 50 to 100.";
+                        }
+                        if (message.length > 0) {
+                            alert(message);
+                        }
+                        else {
+                            $.Ajax(option).done(function (htmlResponse) {
+                                $('table#skillMatrixDetail tbody tr#newRow-' + skillMatrixProcessId).remove();
+                                $table.append(htmlResponse);
+                                addNewItem.val('');
+                                $('.processPercentageEnterVent').focus();
+                            });
+                        }
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+}
+
+

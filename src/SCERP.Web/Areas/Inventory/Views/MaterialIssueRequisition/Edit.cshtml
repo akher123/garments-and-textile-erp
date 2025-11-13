@@ -1,0 +1,350 @@
+﻿@using SCERP.Model
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueRequisitionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var mrdetails = Model.MaterialIssueRequisitionDetails;
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>Material Issue Requisition</h2>
+</div>
+@using (Html.BeginForm("Save", "MaterialIssueRequisition", FormMethod.Post, new { @class = "MaterialIssueRequisition ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.MaterialIssueRequisitionId)
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(x => x.BranchId, new { @class = "brandchHiddenId" })
+    <section class="search formCover">
+        <span style="font-size: 12px; color: #191970; padding: 5px;">General details</span><hr>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+          
+                <td>
+                    &nbsp;  &nbsp;   &nbsp;
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Section :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                </td>
+                <td></td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Line :")
+                </td>
+                <td >
+                    @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Issue Req Note No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteNo, new { @placeholder = "IRN No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" ,})
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Issue Req Note Date :")
+                </td>
+                <td >
+                    @Html.EditorFor(x => x.IssueReceiveNoteDate, new {htmlAttributes=new{@placeholder = "IRN date" }})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+        </table>
+        <span style="font-size: 12px; color: #191970; padding-bottom: 5px;">Metarial details</span>
+        <hr>
+        <div>
+            <input type="button" onclick="addNewRow()" value="+" />
+        </div>
+        
+        <div style="width: 1024px; overflow: auto">
+            <table id="MaterialIssueRequisitionDetail" class="tabefont webgrid-table webgrid " style="width: auto">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+
+                        <th>
+                            @Html.Label("Description")
+                        </th>
+                        <th>
+                            @Html.Label("Machine")
+                        </th>
+                        <th>
+                            @Html.Label("Qantity")
+                        </th>
+                        <th>
+                            @Html.Label("Unit")
+                        </th>
+
+                        <th>
+                            @Html.Label("Uses Area")
+                        </th>
+                        <th>
+                            @Html.Label("Desired Date")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Brand")
+                        </th>
+                        <th>
+                            @Html.Label("Origin")
+                        </th>
+                      
+                      
+                        <th>
+                            @Html.Label("Remarks")
+                        </th>
+
+
+                        <th>
+                            @Html.Label("Edit")
+                        </th>
+
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    
+                    @foreach (var m in Model.MaterialIssueRequisitionDetails??new Dictionary<string, Inventory_MaterialIssueRequisitionDetail>()) { 
+                 
+                        <tr class="webgrid-row-style webgrid-alternating-row">
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueRequisitionDetails[m.Key].MaterialIssueRequisitionDetailId)
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].ItemName)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].ItemName, new { @class = "edit-mode" })
+                                @Html.ValidationMessageFor(x => x.MaterialIssueRequisitionDetails[m.Key].ItemName)
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].ItemDescription)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].ItemDescription, new { @class = "edit-mode" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].Machine)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].Machine, new { @class = "edit-mode" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].RequiredQuantity)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].RequiredQuantity, new { @class = "edit-mode" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].MeasurementUnit)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].MeasurementUnit, new { @class = "edit-mode" })
+                            </td>
+
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].FunctionalArea)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].FunctionalArea, new { @class = "edit-mode", @style = "width:100px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.ValueFor(x => x.MaterialIssueRequisitionDetails[m.Key].DesiredDate, "{0:dd/MM/yyyy}")</span>
+                                @Html.EditorFor(x => x.MaterialIssueRequisitionDetails[m.Key].DesiredDate, new { htmlAttributes = new { @class = "edit-mode" } })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].Size)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].Size, new { @class = "edit-mode" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].Brand)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].Brand, new { @class = "edit-mode" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].Origin)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[m.Key].Origin, new { @class = "edit-mode" })
+                            </td>
+                         
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueRequisitionDetails[m.Key].Remarks)</span>
+                                @Html.EditorFor(x => x.MaterialIssueRequisitionDetails[m.Key].Remarks, new { htmlAttributes = new { @class = "edit-mode", @style = "width:100px" } })
+                            </td>
+                            <td>
+                                <input type="button" class="edit-button " value="Edit" />
+                            </td>
+                            <td>
+                                <button class="delete" action="/Inventory/MaterialIssueRequisition/DeleteMaterialIssueRequisitionDetail?MaterialIssueRequisitionDetailId=@Model.MaterialIssueRequisitionDetails[m.Key].MaterialIssueRequisitionDetailId"></button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <span style="font-size: 12px; color: #191970; padding-bottom: 5px;">Refernce details</span>
+            <hr>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Prepared By:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PreparedByIssueRequsition, new { @class = "autocompliteEmployeeInfo" ,@placeholder="Seaech by Card ID"})
+                        @Html.HiddenFor(x => x.PreparedBy, new { @class = "PreparedByIssueRequsition" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.PreparedBy)
+                    </td>
+
+                    <td>
+                        @Html.Label("Send To :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SubmittedTo, Model.AuthorizedPersonSelectListItem)                   
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SubmittedTo)
+                    </td>
+                </tr>
+                <tr>
+                 
+                    <td>@Html.Label("Remarks")</td>
+                    <td>
+                        @Html.TextAreaFor(x => x.Remarks)
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @Html.Label("Is Send:")
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(x => x.IsSentToStore)
+                    </td>
+
+                    <td></td>
+                    <td></td>
+                  
+                </tr>
+            </table>
+        </div>
+        <div>
+            <input type="button" onclick="search('@Url.Action("Index", "MaterialIssueRequisition")','MaterialIssueRequisition')" value="Back" />
+            <input type="submit" class="SubmitButton" value="Save" />
+        </div>
+        <hr>
+     </section>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('.edit-mode').hide();
+        $('.edit-button').on('click', function() {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        function addNewRow() {
+            var $table = $('table#MaterialIssueRequisitionDetail tbody');
+            var rowCount = $('#MaterialIssueRequisitionDetail tr').length;
+            var option = {
+                url: '@Url.Action("AddRow", "MaterialIssueRequisition")',
+                type: "get",
+                dataType: "html",
+                data: { Key: rowCount },
+            };
+            $.Ajax(option).done(function(htmResult) {
+                $table.append(htmResult);
+                RefrashModelState();
+            });
+        }
+        function RefrashModelState() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+        $('.autocompliteEmployeeInfo').autocomplete({
+            source: function (request, response) {
+                var branchUnitDepartmentTextBox= $('.Hrm_BranchUnitDepartmentForDepartmentSectionAndLine');
+                var branchUnitDepartmentId = branchUnitDepartmentTextBox.val();
+                var option = {
+                    url: "/MaterialIssueRequisition/AutocompliteGetEmployeeInfo",
+                    type: "POST",
+                    data: { employeeCardId: request.term, branchUnitDepartmentId: branchUnitDepartmentId },
+                };
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    branchUnitDepartmentTextBox.validate();
+                    if (!branchUnitDepartmentTextBox.valid()) {
+                        return false;
+                    } else {
+                        $.Ajax(option)
+                            .done(function (data) {
+                                response($.map(data, function (employeeInfo) {
+                                    return { label: employeeInfo.EmployeeCardId + "_" + employeeInfo.EmployeeName, value: employeeInfo.EmployeeName, EmployeeId: employeeInfo.EmployeeId };
+                                }));
+                            });
+                    }
+                }
+            },
+            select: function (event, ui) {
+                $('.PreparedByIssueRequsition').val(ui.item.EmployeeId);
+                $("#autocompliteEmployeeInfo").val(ui.item.value);
+
+            },
+        });
+        
+    </script>
+}

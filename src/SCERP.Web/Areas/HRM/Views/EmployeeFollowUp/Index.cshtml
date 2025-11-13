@@ -1,0 +1,315 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeFollowUpViewModel
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Index", "EmployeeFollowUp", FormMethod.Get, new { @class = "EmployeeFollowUpSearchForm submit-allow" }))
+{
+    <div class="header-title">
+        <h2> Employee Follow Up </h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Employee Id: ") </td>
+                    <td> @Html.EditorFor(model => model.EmployeeCardId) </td>
+                    <td> <input type="button" class="searchAction" />  </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Employee Id: ") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.EmployeeCardId) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Name:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.EmployeeName) </td>
+                    <td width="20px"> </td>
+                </tr>
+            </table>
+
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Company:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Company) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Branch:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Branch) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Unit:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Unit) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Department:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Department) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Section:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Section) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Line:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.Line) </td>
+                    <td width="20px"> </td>
+                </tr>
+            </table>
+
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Type:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.EmployeeType) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Grade:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.EmployeeGrade) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Designation:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.EmployeeDesignation) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Joining Date:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.JoiningDate) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Confirm Date:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.ConfirmationDate) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Quit Date:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.QuitDate) </td>
+                    <td width="20px"> </td>
+                </tr>
+            </table>
+            
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Gross:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.GrossSalary) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Last Increment:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.LastIncrementDate) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Shift:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.ShiftName) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Age:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.AgeInYear) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Marital State:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.MaritalState) </td>
+                    <td width="20px"> </td>
+                    <td> @Html.Label("Blood Group:") </td>
+                    <td> @Html.DisplayTextFor(model => model.employeeBasicInfo.BloodGroup) </td>
+                    <td width="20px"> </td>
+                </tr>
+            </table>
+
+        </div>
+    </section>
+
+    <div class="EmployeeSalayDetailContainner">
+        @using (Html.BeginForm("Index", "EmployeeFollowUp", FormMethod.Get, new { @class = "EmployeeFollowUpForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend>Employee Salary Info</legend>
+
+                <div class="additem">
+
+                    @{
+                        var grid = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+                        grid.Bind(Model.EmployeeSalaries, autoSortAndPage: false);
+                        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+         tableStyle: "webgrid-table webgrid",
+         headerStyle: "webgrid-header",
+         footerStyle: "webgrid-footer",
+         alternatingRowStyle: "webgrid-alternating-row",
+         selectedRowStyle: "webgrid-selected-row",
+         rowStyle: "webgrid-row-style",
+         firstText: "First",
+         lastText: "Last",
+         nextText: "Next",
+         mode: WebGridPagerModes.All,
+         previousText: "Previous",
+         columns: grid.Columns(
+             grid.Column("GrossSalary", header: "Gross", format: @<text>@(item.GrossSalary ?? "---")</text>),
+             grid.Column("BasicSalary", header: "Basic", format: @<text>@(item.BasicSalary ?? "---")</text>),
+             grid.Column("HouseRent", header: "House Rent", format: @<text>@(item.HouseRent ?? "---")</text>),
+             grid.Column("MedicalAllowance", header: "Medical", format: @<text>@(item.MedicalAllowance ?? "---")</text>),
+             grid.Column("FoodAllowance", header: "Food", format: @<text>@(item.FoodAllowance ?? "---")</text>),
+             grid.Column("Conveyance", header: "Conveyance", format: @<text>@(item.Conveyance ?? "---")</text>),
+             grid.Column("EntertainmentAllowance", header: "Entertainment", format: @<text>@(item.EntertainmentAllowance ?? "---")</text>),
+             grid.Column("FromDate", header: "From ", format: @<text>@(item.FromDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.FromDate)))</text>),
+             grid.Column("ToDate", header: "To ", format: @<text>@(item.ToDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ToDate)))</text>)
+        ))
+                    }
+                </div>
+            </fieldset>
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend>Employee Company Info</legend>
+
+                <div class="additem">
+
+                    @{
+                        var gridCompany = new WebGrid(canPage: false, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                        gridCompany.Bind(Model.EmployeeCompanyInfos, autoSortAndPage: false);
+                        @gridCompany.GetHtml(htmlAttributes: new { id = "gridCompany" },
+                 tableStyle: "webgrid-table webgrid",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 firstText: "First",
+                 lastText: "Last",
+                 nextText: "Next",
+                 mode: WebGridPagerModes.All,
+                 previousText: "Previous",
+                 columns: gridCompany.Columns(
+                     gridCompany.Column("Department", header: "Department ", format: @<text>@(item.Department == null ? "---" : item.Department.Name)</text>),
+                     gridCompany.Column("Section", header: "Section ", format: @<text>@(item.DepartmentSection == null ? "---" : item.DepartmentSection.Section.Name)</text>),
+                     gridCompany.Column("Line", header: "Line ", format: @<text>@(item.DepartmentLine == null ? "---" : item.DepartmentLine.Line.Name)</text>),
+                     gridCompany.Column("EmployeeType", header: "Employee Type", format: @<text>@(item.EmployeeType == null ? "---" : item.EmployeeType.Title)</text>),
+                     gridCompany.Column("EmployeeGrade", header: "Employee Grade", format: @<text>@(item.EmployeeGrade == null ? "---" : item.EmployeeGrade.Name)</text>),
+                     gridCompany.Column("EmployeeDesignation", header: "Employee Designation", format: @<text>@(item.EmployeeDesignation == null ? "---" : item.EmployeeDesignation.Title)</text>),
+                     gridCompany.Column("IsEligibleForOvertime", header: "Eligible For Overtime", format: @<text>@(item.IsEligibleForOvertime == true ? "YES" : "NO")</text>),
+                     gridCompany.Column("FromDate", header: "From ", format: @<text>@(item.FromDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.FromDate)))</text>),
+                     gridCompany.Column("ToDate", header: "To ", format: @<text>@(item.ToDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ToDate)))</text>)
+                                                                                                                                                                                        ))
+                    }
+                </div>
+            </fieldset>
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend>Employee Leave History</legend>
+
+                <div class="additem">
+                    @{
+                        var gridLeave = new WebGrid(canPage: false, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                        gridLeave.Bind(Model.leaveDatas, autoSortAndPage: false);
+                        @gridLeave.GetHtml(htmlAttributes: new { id = "gridLeave" },
+                 tableStyle: "webgrid-table webgrid",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 firstText: "First",
+                 lastText: "Last",
+                 nextText: "Next",
+                 mode: WebGridPagerModes.All,
+                 previousText: "Previous",
+                 columns: gridLeave.Columns(
+                     gridLeave.Column("EmployeeCardId", header: "EmployeeCardId "),
+                     gridLeave.Column("LeaveTypeTitle", header: "LeaveTypeTitle "),
+                     gridLeave.Column("Year", header: "Year "),
+                     gridLeave.Column("TotalConsumed", header: "TotalConsumed"),
+                     gridLeave.Column("TotalAllowed", header: "TotalAllowed"),
+                     gridLeave.Column("TotalAvailable", header: "TotalAvailable")
+      ))
+                    }
+                </div>
+            </fieldset>
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend> Employee Paid Salary </legend>
+
+                <div class="additem">
+                    @{
+                        var gridSalary = new WebGrid(canPage: false, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                        gridSalary.Bind(Model.salaries, autoSortAndPage: false);
+                        @gridSalary.GetHtml(htmlAttributes: new { id = "gridSalary" },
+                 tableStyle: "webgrid-table webgrid",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 firstText: "First",
+                 lastText: "Last",
+                 nextText: "Next",
+                 mode: WebGridPagerModes.All,
+                 previousText: "Previous",
+                 columns: gridSalary.Columns(
+                     gridSalary.Column("EmployeeCardId", header: "EmployeeCardId "),
+                     gridSalary.Column("Year", header: "Year "),
+                     gridSalary.Column("NetSalary", header: "NetSalary "),
+                     gridSalary.Column("OTAmount", header: "OTAmount"),
+                     gridSalary.Column("ExtraOTAmount", header: "ExtraOTAmount"),
+                     gridSalary.Column("WeekendOTAmount", header: "WeekendOTAmount"),
+                     gridSalary.Column("HolidayOTAmount", header: "HolidayOTAmount"),
+                     gridSalary.Column("Bonus", header: "Bonus")
+      ))
+                    }
+                </div>
+            </fieldset>
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend>Employee Attendance Summary </legend>
+                <div class="additem">
+                    @{
+                        var gridAttendance = new WebGrid(canPage: false, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                        gridAttendance.Bind(Model.attendances, autoSortAndPage: false);
+                        @gridAttendance.GetHtml(htmlAttributes: new { id = "gridAttendance" },
+                 tableStyle: "webgrid-table webgrid",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 firstText: "First",
+                 lastText: "Last",
+                 nextText: "Next",
+                 mode: WebGridPagerModes.All,
+                 previousText: "Previous",
+                 columns: gridAttendance.Columns(
+                     gridAttendance.Column("EmployeeCardId", header: "EmployeeCardId "),
+                     gridAttendance.Column("Year", header: "Year "),
+                     gridAttendance.Column("Present", header: "Present "),
+                     gridAttendance.Column("Late", header: "Late"),
+                     gridAttendance.Column("Absent", header: "Absent"),
+                     gridAttendance.Column("Leave", header: "Leave")
+      ))
+                    }
+                </div>
+            </fieldset>
+
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <legend>Employee Penalty Summary </legend>
+                <div class="additem">
+                    @{
+                        var gridPenalty = new WebGrid(canPage: false, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                        gridPenalty.Bind(Model.penalties, autoSortAndPage: false);
+                        @gridPenalty.GetHtml(htmlAttributes: new { id = "gridPenalty" },
+                                             tableStyle: "webgrid-table webgrid",
+                                             headerStyle: "webgrid-header",
+                                             footerStyle: "webgrid-footer",
+                                             alternatingRowStyle: "webgrid-alternating-row",
+                                             selectedRowStyle: "webgrid-selected-row",
+                                             rowStyle: "webgrid-row-style",
+                                             firstText: "First",
+                                             lastText: "Last",
+                                             nextText: "Next",
+                                             mode: WebGridPagerModes.All,
+                                             previousText: "Previous",
+                                             columns: gridPenalty.Columns(
+                                                 gridPenalty.Column("EmployeeCardId", header: "EmployeeCardId "),
+                                                 gridPenalty.Column("Year", header: "Year "),
+                                                 gridPenalty.Column("PenaltyAmount", header: "PenaltyAmount "),
+                                                 gridPenalty.Column("Type", header: "Type")
+                                  ))
+                    }
+                </div>
+            </fieldset>
+
+                        }
+    </div>
+                        }

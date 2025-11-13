@@ -1,0 +1,16 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+  
+}
+<td>
+    @Html.DisplayName("PI")
+</td>
+<td>
+
+    @Html.DropDownListFor(x => x.ReceiveAgainstPo.PoNo, Model.PiBookingSelectListItem, "-ALL-", new { onchange = "loadPiBooking(this)" })
+</td>
+<td>
+    @Html.Label("*", new { @class = "labelInstruction" })
+</td>
+

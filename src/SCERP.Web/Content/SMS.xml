@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Email>
+  <Subject>
+    <![CDATA[
+      {PROCESS_NAME} of Order : {ORDER_NO}
+    ]]>
+  </Subject>
+  <Body>
+    <![CDATA[
+    Dear {EMP_NAME}, {PROCESS_NAME} of Style : {STYLE_NO} has Planned end date : {PLANNED_END_DATE}. Please take necessary steps to complete the process, Thank you -SCERP    
+    ]]>
+  </Body>
+</Email>

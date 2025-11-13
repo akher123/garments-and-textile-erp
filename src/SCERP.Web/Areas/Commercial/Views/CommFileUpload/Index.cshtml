@@ -1,0 +1,36 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.DocumentViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Uploaded Documnets";
+}
+<div class="OrderDocumentList">
+    <section class="search formCover">
+        <div class=" additem" style="font-size: 12px;">
+            <div style="margin-bottom: 3px;">
+                <button class="AjaxPopup addButton" action="/Commercial/CommFileUpload/Edit?RefId=@Model.RefId&SrcType=@Model.SrcType">Add new</button>
+            </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.Documents, rowCount: Model.Documents.Count(), autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("RefId", header: "RefID", canSort: false),
+                    grid.Column("Name", header: "Title", canSort: false),
+                    grid.Column("Description", header: "Description", canSort: false),
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/CommFileUpload/Edit?DocumentId=@item.DocumentId"></button></text>),
+                    grid.Column("Download", format: @<text><a href="/Common/Document/DownLoad?Path=@item.Path"><img src="~/Content/icons/16x16/download.jpg" /> </a></text>),
+                    grid.Column("Delete", format: @<text><button class="deleteAction" targentclass="OrderDocumentList" action="/Commercial/CommFileUpload/Delete?DocumentId=@item.DocumentId&RefId=@Model.RefId&SrcType=@Model.SrcType"></button></text>)))
+            }
+        </div>
+
+
+    </section>
+</div>

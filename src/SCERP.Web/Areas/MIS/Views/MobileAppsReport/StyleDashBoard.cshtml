@@ -1,0 +1,177 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    //Layout = "~/Views/Shared/_Layout2.cshtml";
+    Layout = null;
+    var buyerName1 = "";
+    var buyerName2 = "";
+}
+@*<div class="header-title">
+        <h2>SHIPMENT STATUS (DASHBOARD)</h2>
+    </div>
+    <section class="formCover">
+        <div class="mis-title">SHIPMENT STATUS</div>
+        <table class="webgrid-table" style="text-align: center">
+            <thead class="webgrid-header mis-header">
+                <tr>
+                    @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                        {
+                            if (row[col.ColumnName].ToString() == "0")
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+
+                                <td>
+                                    @row[col.ColumnName]
+                                </td>
+
+                            }
+
+
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </section>*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .my-3 {
+            margin-top: 10%;
+        }
+
+        .custab {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin: 5% 0;
+            box-shadow: 3px 3px 2px #ccc;
+            transition: 0.5s;
+        }
+
+            .custab:hover {
+                box-shadow: 3px 3px 0px transparent;
+                transition: 0.5s;
+            }
+    </style>
+</head>
+<body class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 custyle">
+                <h2>SHIPMENT STATUS (DASHBOARD)</h2>
+                <table class="table table-striped custab" style="text-align: center">
+                    <thead class="webgrid-header mis-header">
+                        <tr>
+                            @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                            {
+                                <th>@col.ColumnName</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+    {
+                    <tr>
+
+                        @{
+
+        buyerName2 = row.ItemArray[0].ToString();
+        if (buyerName1 == buyerName2)
+        {
+                    <td class="tr_@row.ItemArray[1]" style="border-top: none; border-bottom: none; "></td>
+
+}
+else
+{
+buyerName1 = buyerName2;
+                    <td class="tr_@row.ItemArray[1]" style="border-bottom: none">@buyerName2</td>
+}
+switch (row.ItemArray[1].ToString())
+{
+case "0":
+                    <td class="tr_@row.ItemArray[1]">B/F. Qty (Pcs)</td>
+break;
+case "1":
+                    <td class="tr_@row.ItemArray[1]">Ord. Qty (Pcs)</td>
+break;
+case "2":
+                    <td class="tr_@row.ItemArray[1]">Value ($)</td>
+break;
+case "3":
+                    <td class="tr_@row.ItemArray[1]">Shipped (Pcs)</td>
+break;
+case "4":
+                    <td class="tr_@row.ItemArray[1]">Blance (Pcs)</td>
+break;
+
+}
+for (int i = 2; i < row.ItemArray.Length; i++)
+{
+if (row.ItemArray[i].ToString() == "0")
+{
+                    <td style="color: #444444"></td>
+}
+else
+{
+switch (row.ItemArray[1].ToString())
+{
+
+
+    case "0":
+                    <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+break;
+case "1":
+                    <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+break;
+case "2":
+                    <td style="background-color: lightblue;color: #444444">@row.ItemArray[i].ToString()</td>
+break;
+case "3":
+                    <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+break;
+case "4":
+                    <td class="tr_@row.ItemArray[1]" style="background-color: lightseagreen;color: #ffffff">@row.ItemArray[i].ToString()</td>
+break;
+
+}
+
+}
+
+}
+
+                        }
+                    </tr>
+}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

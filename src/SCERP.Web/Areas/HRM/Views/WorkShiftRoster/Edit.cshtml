@@ -1,0 +1,50 @@
+﻿@model SCERP.Model.HRMModel.WorkShiftRoster
+
+@{
+    ViewBag.Title = "Change Workshift Roster ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "WorkShiftRoster", FormMethod.Post, new { @class = "WorkShiftRosterForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend> Change Work Shift Roster </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+            </tr>    
+              
+            <tr>
+                <td class="fieldTitleCls"> Employee Card Id: </td>
+                <td> @Html.TextAreaFor(model => model.EmployeeCardId, new { @class = "form-control", @rows = 7 }) </td>                                                     
+                <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>                                   
+                <td> @Html.ValidationMessageFor(x => x.EmployeeCardId) </td>                                   
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls"> Unit Name: </td>
+                <td> @Html.DropDownList("UnitName") </td>                                                  
+                <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>                                   
+                <td> </td>                              
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls"> Group Name: </td>
+                <td> @Html.DropDownList("GroupName") </td>                                                  
+                <td> </td>                                    
+                <td> </td>                                   
+            </tr>
+
+            <tr>
+                <td> </td>
+                <td> @Html.SaveButton() </td>                                    
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+    </fieldset>
+}

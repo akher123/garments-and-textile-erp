@@ -1,0 +1,85 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    Layout = null;
+}
+<style>
+    .TextBoxStyle {
+        border-color: rgb(00, 150, 80) rgb(00, 150, 80) rgb(00, 150, 80);
+        box-shadow: #8CC451 1px 1px 1px 1px inset;
+    }
+</style>
+    @Html.HiddenFor(x => x.RollCutting.CuttingBatchRefId)
+    <table class="webgrid-table webgrid" >
+        <thead>
+            <tr class="webgrid-header">
+               <th></th>
+                <th>Batch</th>
+                <th>Roll</th>
+                <th>PLY</th>
+                <th></th>
+                <th></th>
+                <th>Add</th>
+            </tr>
+            <tr>
+               <th></th>
+                <th>
+                    @Html.HiddenFor(x => x.RollCutting.ColorRefId)
+                    @Html.TextBoxFor(x => x.RollCutting.BatchNo, new { @class = "TextBoxStyle", id="cutting_batch_no", @placeholder = "SearchBy Batch No",  @action = "/CuttFabricReceive/GetBatchAutoCompliteByParty" })
+                </th>
+                <th>@Html.TextBoxFor(x => x.RollCutting.RollName, new { @class = "TextBoxStyle allowNumeric" })</th>
+                <th>@Html.TextBoxFor(x => x.RollCutting.Quantity, new { @class = "TextBoxStyle allowNumeric"})</th>
+                <th></th>
+                <th></th>
+                <th>
+                    <input type="button" class="FindPartial" action="/JobCard/AddNewRoll/" target="#rollCutting" value="+" />
+                </th>
+            </tr>
+            <tr class="webgrid-header">
+                 <th>SL</th>
+                <th>Batch</th>
+                <th>Roll</th>
+                <th>Ply</th>
+                <th>Roll Start</th>
+                <th>Roll End</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rollCutting in Model.VwRollCuttingDictionary)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].CuttingBatchRefId)
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].ColorRefId)
+                        @Html.DisplayFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].RollNo)
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].RollNo)
+                    </td>
+                    <td>
+                        @rollCutting.Value.BatchNo
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].BatchNo)
+                    </td>
+                    <td>
+                        @rollCutting.Value.RollName
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].RollName)
+                    </td>
+                    <td>
+                        @rollCutting.Value.Quantity
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].Quantity)
+                    </td>
+                    <td>
+                        @rollCutting.Value.RollSart
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].RollSart)
+                    </td>
+                    <td>
+                        @rollCutting.Value.RollEnd
+                        @Html.HiddenFor(x => Model.VwRollCuttingDictionary[rollCutting.Key].RollEnd)
+                    </td>
+                    <td>
+                        <input type="button" class="addButton" onclick="deleteRollCutting(this)" value="X" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

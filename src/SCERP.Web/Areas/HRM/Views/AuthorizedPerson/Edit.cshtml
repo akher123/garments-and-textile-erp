@@ -1,0 +1,74 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AuthorizedPersonViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    //var dispaly = (Model.Id > 0) ? "none" : "";
+
+    var dispaly = (Model.Id > 0) ? "" : "none";
+    var dispalyForEdit = (Model.Id > 0) ? "none" : "";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+<fieldset>
+    <legend>Authorized Person</legend>
+    @using (Html.BeginForm("Save", "AuthorizedPerson", FormMethod.Post, new { @class = "AuthorizedPersonform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Authorized Person :</td>
+                <td>
+                    @Html.TextBoxFor(p => p.EmployeeCardId, new { @class = "employeeCardId" })
+                    @Html.ValidationMessageFor(m => m.EmployeeCardId)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/AuthorizedPerson/GetEmployeeDetailByEmployeeCadID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Authorized Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.AuthorizationTypeId, Model.AuthorizationTypeSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.AuthorizationTypeId)
+                </td>
+            </tr>
+            <tr id="employeeDetail_containner">
+              
+                @if (Model.EmployeeCompanyInfo.EmployeeCompanyInfoId > 0)
+                {
+                    @Html.Partial("~/Areas/HRM/Views/AuthorizedPerson/_EmployeeDetails.cshtml", Model.EmployeeCompanyInfo, new ViewDataDictionary { { "AuthorizedPersonId", Model.Id } })
+                }
+            </tr>
+            <tr>
+                <td></td>
+                <td id="displayButton" style="display: @dispaly">
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+
+            </tr>
+        </table>
+    }
+</fieldset>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/FilterEmployee.js"></script>
+}

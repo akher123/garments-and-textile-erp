@@ -1,0 +1,56 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.GenderViewModel
+    @{
+        ViewBag.Title = Model.GenderId > 0 ? "Edit " : "Add ";
+        Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    }
+    @using (Html.BeginForm("Save", "Gender", FormMethod.Post, new { @class = "Genderform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.GenderId)
+        <fieldset>
+            <legend>Gender</legend>
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                <tr>
+                    <td class="fieldTitleCls">Gender:</td>
+                    <td>
+                        @Html.EditorFor(x => x.Title)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.Title)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Gender(In Bengali):</td>
+                    <td>
+                        @Html.EditorFor(x => x.TitleInBengali)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.TitleInBengali)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        @Html.SaveButton()
+                    </td>
+
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+

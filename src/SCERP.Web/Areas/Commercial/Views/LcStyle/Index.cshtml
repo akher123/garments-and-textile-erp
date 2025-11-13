@@ -1,0 +1,85 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcStyleViewModel
+
+@{
+    ViewBag.Title = "LC Style Integration";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.LcStyles.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "LcStyle", FormMethod.Get, new { @class = "lcStyleSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width: 400px; padding-left: 340px;">
+        <h2>LC Style Integration</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+           
+            <tr>
+                <td> @Html.Label("Lc No : ") </td>
+                <td> @Html.TextBoxFor(x => x.LcNo) </td>
+                <td> </td>
+                <td> @Html.Label("Order No : ")  </td>
+                <td>
+                    @Html.TextBoxFor(x => x.OrderNo)
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem" style="overflow-x: auto">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Commercial/LcStyle/Edit/0">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.vWLcStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/LcStyle/Edit/@item.LcId"></button></text>, canSort: false),
+                    grid.Column("LcNo", header: "LC No", canSort: false),
+                    grid.Column("OrderNo", header: "Order No", canSort: false),
+                    grid.Column("Quantity", header: "Quantity", canSort: false),          
+                    grid.Column("Delete", format: @<text><button class="delete" action="/Commercial/LcStyle/Delete/@item.LcId"></button></text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#LcNo').autocomplete(
+            {
+                source: '@Url.Action("TagLcSearch", "LcStyle")'
+            });
+
+        $('#OrderNo').autocomplete(
+            {
+                source: '@Url.Action("TagOrderSearch", "LcStyle")'
+            });
+
+    </script>
+}

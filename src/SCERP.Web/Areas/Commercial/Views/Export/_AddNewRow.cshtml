@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var exp in Model.CommExportDetail)
+{
+    <tr id="row-@Model.CommExportDetail[exp.Key].OrderStyleRefId">
+
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].OrderStyleRefId)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].OrderStyleRefId)
+        </td>
+
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].CartonQuantity)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].CartonQuantity)
+        </td>
+
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].ItemQuantity)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].ItemQuantity)
+        </td>
+
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].Rate)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].Rate)
+        </td>
+       
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].ItemDescription)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].ItemDescription)
+        </td>
+        
+        <td>
+            @Html.HiddenFor(x => x.CommExportDetail[exp.Key].ExportCode)
+            @Html.DisplayFor(x => x.CommExportDetail[exp.Key].ExportCode)
+        </td>
+
+        <td>
+            <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+        </td>
+    </tr>
+}

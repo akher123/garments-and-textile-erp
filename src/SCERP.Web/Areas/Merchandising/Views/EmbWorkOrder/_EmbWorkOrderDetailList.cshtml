@@ -1,0 +1,46 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.EmbWorkOrderViewModel
+@{ ViewBag.Title = "Work Order Details";
+ Layout = null;
+}
+<div class="embWorkOrderDetailList">
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/Merchandising/EmbWorkOrder/EditDetail?EmbWorkOrderDetailId=0&&EmbWorkOrderId=@Model.EmbWorkOrderDetail.EmbWorkOrderId">Add New</button>
+            </div>
+            @{
+                var grid = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.EmbWorkOrderDetails);
+
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                columns:
+                    grid.Columns(
+                         grid.Column("Buyer", header: "Buyer"),
+                         grid.Column("Order", header: "Order"),
+                         grid.Column("Style", header: "Style"),
+                         grid.Column("GColorName", header: "Style Color"),
+                         grid.Column("FabricType", header: "FabricType"),
+                         grid.Column("ItemName", header: "Item"),
+                         grid.Column("EmbellishmentType", header: "PEM Type"),
+                         grid.Column("FinishColor", header: "Color"),
+                         grid.Column("FinishSize", header: "Measurement"),
+                         grid.Column("Sequance", header: "Part"),
+                         grid.Column("Qty", header: "Qty"),
+                         grid.Column("Rate", header: "Rate"),
+                         grid.Column("Amount", header: "Amount"),
+                         grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/EmbWorkOrder/EditDetail?EmbWorkOrderDetailId=@item.EmbWorkOrderDetailId&&EmbWorkOrderId=@item.EmbWorkOrderId"></button></text>),
+                        grid.Column("Delete", canSort: false, format: @<text><button class="deleteAction" targentclass="embWorkOrderDetailList" action="/Merchandising/EmbWorkOrder/DeleteDetail?EmbWorkOrderDetailId=@item.EmbWorkOrderDetailId&&EmbWorkOrderId=@item.EmbWorkOrderId"></button></text>))) ;
+            }
+        </div>
+    </section>
+
+
+
+</div>

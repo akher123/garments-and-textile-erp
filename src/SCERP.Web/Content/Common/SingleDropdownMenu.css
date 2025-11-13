@@ -1,0 +1,72 @@
+﻿/* Style The Dropdown Button */
+.dropbtn {
+    background-color: #0f467a;
+    color: white;
+    padding: 5px 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    /*display: inline-block;*/
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 106px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: #282828;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid #dfdfdd;
+    }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #68217a;
+            color: #ffffff;
+            border-bottom: 1px solid #600660;
+        }
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #800080;
+    color: #ffffff;
+}
+
+
+.custom-table-dropbtn {
+    padding: 2px 8px;
+    font-size: 14px;
+}
+
+.custom-table-dropdown-content {
+    margin-top: 2px;
+    z-index: 2;
+}
+.custom-table-dropdown-content a {
+    padding: 5px 15px;
+    border-bottom: 1px solid #00e170;
+}
+.custom-table-dropdown-content.dropdown-content a:hover {
+    background-color: #68217a;
+    color: #ffffff;
+    border-bottom: 1px solid #600660;
+}

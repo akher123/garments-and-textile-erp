@@ -1,0 +1,83 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.ReceiveViewModel
+
+@{
+    ViewBag.Title = "Receive";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.Receives.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "Receive", FormMethod.Get, new {@class = "receiveSearchForm submit-allow ignore-validation"}))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width: 400px; padding-left: 340px;">
+        <h2>Receive Information</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+
+            <tr>
+                <td> @Html.Label("Receive Ref No : ") </td>
+                <td> @Html.TextBoxFor(model => model.ReceiveRefNo)</td>
+                <td> </td>
+                <td> @Html.Label("BbLc No : ") </td>
+                <td> @Html.TextBoxFor(model => model.BbLcNo)</td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Page No : ") </td>
+                <td> @Html.TextBoxFor(model => model.PassBookPageNo) </td>
+                <td> </td>
+                <td> @Html.Label("Receive Date : ") </td>
+                <td> @Html.EditorFor(x => x.ReceiveDate) </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Challan No: ") </td>
+                <td> @Html.TextBoxFor(x => x.MushakChallanNo) </td>
+                <td> </td>
+                <td> @Html.Label("Challan Date : ")  </td>
+                <td>
+                    @Html.EditorFor(x => x.MushakChallanDate)
+                    <input type="button" class="searchAction" />                 
+                </td>
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem" style="overflow-x: auto">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Commercial/Receive/Edit/0">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Receives, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/Receive/Edit/@item.ReceiveId"></button></text>, canSort: false),
+                    grid.Column("ReceiveRefNo", header: "ReceiveRefNo", canSort: false),
+                    grid.Column("BbLcNo", header: "BbLcNo", canSort: false),
+                    grid.Column("PassBookPageNo", header: "Page No", canSort: false),
+                    grid.Column("ReceiveDate", "Receive Date", format: @<text>@(item.ReceiveDate == null ? "" : item.ReceiveDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("MushakChallanNo", header: "Challan No", canSort: false),
+                    grid.Column("MushakChallanDate", "Challan Date", format: @<text>@(item.MushakChallanDate == null ? "" : item.MushakChallanDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("Delete", format: @<text><button class="delete" action="/Commercial/Receive/Delete/@item.ReceiveId"></button></text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>

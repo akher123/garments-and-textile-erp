@@ -1,0 +1,68 @@
+﻿@model IEnumerable<SCERP.Model.EmployeeLeaveData>
+
+@{
+    Layout = null;
+}
+
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size: 12px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        width: 70%;
+        margin-left: 0px;
+    }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+</style>
+
+
+
+<table class="gridtable tabefont">
+    <tr>
+        <th>
+            Leave Type
+        </th>
+
+        <th>
+            Allowable
+        </th>
+
+        <th>
+            Taken
+        </th>
+
+        <th>
+            Available
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Allowed </td>
+            <td>@item.Total </td>
+            <td>@item.Available </td>
+        </tr>
+    }
+
+</table>
+

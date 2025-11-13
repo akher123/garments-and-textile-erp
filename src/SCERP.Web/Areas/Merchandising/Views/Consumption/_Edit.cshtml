@@ -1,0 +1,128 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionViewModel
+@{
+    Layout = null;
+    ViewBag.Title = (Model.ConsumptionId > 0) ? "Edit" : "Add";
+}
+<style type="text/css">
+    div.ui-datepicker {
+        font-size: 80.5%;
+    }
+</style>
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+    <div style="font-size: 12px;">
+        <div class="dropdown" style="float: right;margin-left: 10px;margin-top: 10px;">
+            <button class="dropbtn">Dropdown▼</button>
+            <div class="dropdown-content">
+                <a href="#" class="AjaxPopup" action="/Inventory/InventoryItem/CreatePartialItem">Item</a>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.OrderStyleRefId, new { @id = "OrderStyleRefIdHidden" })
+        @using (Html.BeginForm("Save", "Consumption", FormMethod.Post, new { @class = "ConsumptionSearchForm" }))
+        {@Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.ConsumptionId)
+            <fieldset>
+                <legend>Consumption</legend>
+                <table>
+                    <tr style="color: red">
+                        <td> Order :@Model.BuyOrdStyle.RefNo </td>
+                  
+                        <td> Style :@Model.BuyOrdStyle.StyleName </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("", String.Format("{0}", "Cons. Ref. #"))
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.ConsRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.Label("Item")
+                        </td>
+                        <td>
+                            @Html.HiddenFor(model => model.ItemCode, new { @class = "itemCodeHiddenField" })
+                            @Html.TextBoxFor(model => model.SearchItemKey, new { @onkeyup = "itemAutocomplite(this)", @placeholder = "Search Item name" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Sourcing")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.ConsGroup, Model.ConsGroupSeasonsSelectListItem)
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            @Html.Label(" ", "Style Ref.")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.OrderStyleRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.Label(" ", "Cons.Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.ConsDate,  new { @placeholder = "Consumption date" ,@class="datepicker"})
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+
+                        <td>
+                            @Html.Label(" ", "Cons.Type")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.ConsTypeRefId, Model.ConsTypeSelectListItem)
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label(" ", "Order Ref.")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.Label("Consumption")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Quantity, new { @placeholder = "Consumption" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Remarks")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @placeholder = "Remarks/Composition" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td>
+                            @Html.Button(Model.ButtonName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "consumtionContainer" } })
+                            <input type="button" id="refreshButton" class="addButton" value="Refresh" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+        }
+    </div>
+<script src="~/Scripts/SCERP/Merchandising/ConsumptionAnalysis.js"></script>

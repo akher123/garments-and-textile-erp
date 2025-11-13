@@ -1,0 +1,42 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MerchandisingReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Season wise Order Summary</h2>
+</div>
+<section class="search formCover">
+    <div style="margin-bottom: 10px;margin-left: 80px;">
+      @using (Html.BeginForm("SeasonWiseOrderSummary", "Report", FormMethod.Get))
+      {
+          @Html.HiddenFor(x => x.IsShowReport)
+          <table class="tabefont" style="background-color: #9400d3;">
+             
+              <tr>
+                  <td>@Html.Label("From")</td>
+                  <td>
+                      @Html.TextBoxFor(x => x.FromDate, new {  @class = "datepicker", @data_val = "false", @placeholder = "From date"  })
+                  </td>
+                  <td>@Html.Label("To")</td>
+                  <td>
+                      @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                  </td>
+                  <td>
+                      <input type="button" id="btnOrderSummary" value="PDF" />
+                  </td>
+              </tr>
+          </table>
+      }
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    $('#btnOrderSummary').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var data = form.serialize();
+        var searchurl = '/Merchandising/Report/SeasonWiseOrderSummary?' + data;
+        window.open(searchurl);
+    });
+</script>

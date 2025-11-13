@@ -1,0 +1,40 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    ViewBag.Title = "CuttingBatch";
+    Layout =null;
+}
+
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage:50, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.CuttingBatchList, rowCount: Model.CuttingBatchList.Count, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        columns: grid.Columns(
+                  grid.Column("CuttingBatchRefId", canSort: false, header: "RefId"),
+                  grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.CuttingDate ?? ""), header: "Cutting Date"),
+                  grid.Column("JobNo", canSort: false, header: "JobNo"),
+                  grid.Column("ColorName", header: "Color", canSort: false),
+                  grid.Column("ComponentName", canSort: false, header: "Sequence"),
+                  grid.Column("MarkerPcs", canSort: false, header: "Marker Pces"),
+                  grid.Column("PLY", canSort: false, header: "PLY"),
+                  grid.Column("BundleQuantity", canSort: false, header: "Bundle Qty"),
+                  grid.Column("Total", canSort: false, header: "Total"),
+                  grid.Column("RejectQty", canSort: false, header: "RejectQty"),
+                  grid.Column("FinalQty", canSort: false, header: "FinalQty"),
+                  grid.Column("Total", canSort: false, header: "BunChart", format: @<text><a href="/Production/ProductionReport/BundleChartReport?CuttingBatchRefId=@item.CuttingBatchRefId" target="_blank">PDF</a></text>),
+                  grid.Column("Total", canSort: false, header: "BunSlip", format: @<text><a href="/Production/ProductionReport/BundleSlip?CuttingBatchRefId=@item.CuttingBatchRefId" target="_blank">PDF</a></text>),
+                  grid.Column("Edit", canSort: false, format: @<text><input class="addButton" type="button" onclick="search('/Production/JobCard/Index?CuttingBatch.CuttingBatchId=@item.CuttingBatchId&CuttingBatch.CuttingBatchRefId=@item.CuttingBatchRefId')" value="Edit" /> </text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Production/JobCard/Delete?CuttingBatch.CuttingBatchId=@item.CuttingBatchId&CuttingBatch.CuttingBatchRefId=@item.CuttingBatchRefId"></button></text>)));
+        }
+

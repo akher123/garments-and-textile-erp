@@ -1,0 +1,245 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.GatePassViewModel
+@{
+    ViewBag.Title = Model.GatePass.GatePassId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("SaveGeneralYarnReceive", "GeneralYarnDelivery", FormMethod.Post, new { @class = "GeneralYarnDeliveryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GatePass.GatePassId)
+    @Html.HiddenFor(x => x.GatePass.CompId)
+    <fieldset>
+        <legend>General Yarn Receive</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.RefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Bill No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.BillNo, new { @placeholder = "Entry Bill No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.Label("Challan No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.ChallanNo, new { @placeholder = "Entry Challan No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Challan Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.ChallanDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Entry Challan Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("M/S :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.PartyName, new { @placeholder = "Entry M/S Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>@Html.Label("Address  :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Address, new { @placeholder = "Entry M/S Address" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Through:")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Through, new { @placeholder = "Entry Through Person Name" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Designation :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Designation, new { @placeholder = "Entry Through Person Designation" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>@Html.Label("Buyer:")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.BuyerName, new { @placeholder = "Entry Buyer Name" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Order :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.OrderName, new { @placeholder = "Entry Order No" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>@Html.Label("Style:")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.StyleName, new { @placeholder = "Entry Style Name" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Driver :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.DriverName, new { @placeholder = "Entry Driver Name" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Vehicle No :")
+                </td>
+                <td colspan="5">
+                    @Html.TextBoxFor(x => x.GatePass.VehicleNo, new { @style = "width: 95.5%", @placeholder = "Entry VehicleNo" })
+                </td>
+            </tr>
+        </table>
+
+        <hr />
+        <table id="gatePassDetailTable" class="webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label("Item ")
+                    </th>
+                    <th>
+                        @Html.Label("Color ")
+                    </th>
+                    <th>
+                        @Html.Label("Count ")
+                    </th>
+                    <th>
+                        @Html.Label("Brand ")
+                    </th>
+                    <th>
+                        @Html.Label("Lot ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Unit")
+                    </th>
+                    <th>
+                        @Html.Label("Qty ")
+                    </th>
+                    <th>
+                        @Html.Label("Wrapper ")
+                    </th>
+                    <th>
+                        @Html.Label("Wrapper Qty ")
+                    </th>
+                    <th>
+                        @Html.Label("Remarks")
+                    </th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.GatePassDetails)
+                {
+
+
+                    <tr id="row_'@Model.GatePassDetails[m.Key].Item.Replace(" ", "")'">
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Item)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Item, new { id = "Item_" + m.Key })
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].GatePassDetailId)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].ParentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].FColorName)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].FColorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Size)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Size)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Description)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Color)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Color)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Unit)
+                            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Unit)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.GatePassDetails[m.Key].Quantity, new { @style = "width:80px;" })
+                        </td>
+                        <td>
+
+                            @Html.TextBoxFor(x => x.GatePassDetails[m.Key].Wrapper, new { @style = "width:80px;" })
+                        </td>
+                        <td>
+
+                            @Html.TextBoxFor(x => x.GatePassDetails[m.Key].WrappingQty, new { @style = "width:80px;" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Remarks)
+                            @Html.TextBoxFor(x => x.GatePassDetails[m.Key].Remarks, new { @style = "width:100px;" })
+                        </td>
+                        <td>
+                            <input type="button" value="X" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        <div class="custom-modal-btn">
+            <input type="submit" class="addButton" id="btnSave" value="Save" />
+        </div>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script>
+     
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+﻿@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var m in Model.RollDictionary)
+{
+    <tr>
+        <td>@m.Key</td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].ProgramId)
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].PartyId)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].PartyName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].MachineId)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].MachineName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].ItemCode)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].ItemName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].ColorRefId)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].ColorName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].GSM)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].GSM)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].SizeRefId)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].SizeName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.RollDictionary[m.Key].FinishSizeRefId)
+            @Html.DisplayFor(x => x.RollDictionary[m.Key].FinishSizeName)
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.RollDictionary[m.Key].StLength, new { @style = "width:95%;border:none;"})
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.RollDictionary[m.Key].RollDate, "{0:dd/MM/yyyy}", new { @style = "width:95%;border:none;", @readonly = "readonly" })
+        </td>
+        <td >
+            @Html.TextBoxFor(x => x.RollDictionary[m.Key].CharllRollNo, new { @style = "width:95%;border:none;", @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.RollDictionary[m.Key].Quantity, new { @style = "width:95%;border:none;", @Value = "" })
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.RollDictionary[m.Key].Rmks, new { @style = "width:95%;border:none;" })
+        </td>
+        <td>
+            <input type="button" value="-" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

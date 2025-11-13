@@ -1,0 +1,161 @@
+﻿@model SCERP.Web.Areas.Production.Models.StanderdMinValueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.StanderdMinValueId > 0) ? "Edit" : "Add";
+}
+@using (Html.BeginForm("Save", "StanderdMinValue"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>SMV</legend>
+        <div class="tabefont" id="smvDetaliMaster">
+            @Html.HiddenFor(x => x.StanderdMinValueId)
+            @Html.HiddenFor(x => x.CompId)
+            <table>
+
+                <tr>
+                    <td>
+                        @Html.Label(" ", "Style Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.OrderStyleRefId, new { @id = "OrderStyleRefId", @readonly = "readonly", @style = "background-color: #778899;" })
+                    </td>
+
+                    <td>
+                        @Html.Label(" ", "SMV Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.StanderdMinValueRefId, new { @readonly = "readonly", @style = "background-color: #778899;" })
+                    </td>
+                    <td>
+                        @Html.Label(" ", "SMV")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.StMv)
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Sub Process")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SmvDetail.SubProcessRefId, Model.ProcessesSeasonsSelectListItem, "-Select-",new{@id="subProcessId"})
+                    </td>
+                    <td>
+                        @Html.Label("Sub SMV")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SmvDetail.StMvD, new { @id = "smvMasterDetailAddnew" })
+                    </td>
+                    <td>
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "smvList" } })
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr />
+        <table id="SmvDetailGrid" class="tabefont gridtable" style="width: 820px;">
+            <thead style="text-align: center">
+                <tr>
+
+                    <th>
+                        @Html.Label(" ", "SMV Ref.")
+                    </th>
+
+                    <th>
+                        @Html.Label(" ", "SubProcess")
+                    </th>
+                    <th>
+                        @Html.Label(" ", "Sub SMV")
+                    </th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.SmvDtls)
+                {
+                    <tr id="newRow-@Model.SmvDtls[m.Key].SubProcessRefId">
+
+                        <td>
+                            @Html.HiddenFor(x => x.SmvDtls[m.Key].CompId)
+                            @Html.HiddenFor(x => x.SmvDtls[m.Key].StanderdMinValueRefId)
+                            @Html.HiddenFor(x => x.SmvDtls[m.Key].StanderdMinValueId)
+                            @Html.DisplayFor(x => x.SmvDtls[m.Key].StanderdMinValueRefId)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.SmvDtls[m.Key].SubProcessRefId)
+                            @Html.DisplayFor(x => x.SmvDtls[m.Key].SubProcessName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.SmvDtls[m.Key].StMvD)
+                            @Html.DisplayFor(x => x.SmvDtls[m.Key].StMvD)
+                        </td>
+                        <td>
+                            <input type="button" value="-" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <hr />
+
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#smvMasterDetailAddnew').unbind('keypress').bind('keypress', function(e) {
+            var key = e.which;
+            var divElements = $('#smvDetaliMaster :input');
+            if (key == 13) {
+                var option = {
+                    url: '/StanderdMinValue/AddNewRow',
+                    type: "GET",
+                    dataType: "html",
+                    data: divElements.serialize(),
+                };
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    divElements.validate();
+                    if (!divElements.valid()) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        $.Ajax(option).done(function(htmResult) {
+
+                            var rowId = $('#newRow-' + $('#subProcessId').val());
+                            if ($('table#SmvDetailGrid tbody').find(rowId).length > 0) {
+                               // $(rowId).remove();
+                                $(rowId).replaceWith(htmResult);
+                            } else {
+                                $('table#SmvDetailGrid tbody').append(htmResult);
+                            }
+                        });
+                    }
+                }
+
+            }
+        });
+
+        function RefrashModelState() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+
+    </script>
+}

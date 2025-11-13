@@ -1,0 +1,92 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+    @using (Html.BeginForm("Save", "Program",FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ProgramId)
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.OrderStyleRefId, new { @Class = "BuyerOrderStyleRefId" })
+        <div class="additem">
+            <div style="font-size:12px; margin-bottom: 10px; background-color: #a9a9a9;">
+                <fieldset>
+                    <legend>Program</legend>
+
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("", "Program #")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ProgramRefId)
+                            </td>
+
+                            <td>
+                                @Html.Label("", "Prg Date")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.PrgDate)
+                            </td>
+
+                            <td>
+                                @Html.Label("", "Exp Date")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.ExpDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("", "Style")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.OrderStyleRefId, new { @class = "BuyerOrderStyleRefId", @readonly = "readonly", @style = "background-color: #778899;width:200px;" })
+                            </td>
+                        
+                            <td>
+                                @Html.Label("", "Process")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.ProcessRefId, Model.ProcessesSeasonsSelectListItem, "-Select-", new { @class = "ProcessRefIdInPSequenc" })
+                            </td>
+
+                            <td>
+                                @Html.Label("", "Remarks")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Rmks)
+                            </td>
+                      
+                            <td>
+                                @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "StyleProgramLsit" } })
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <hr/>
+            <div id="InputOutputProgram">
+                @Html.Partial("~/Areas/Planning/Views/Program/_ProgramInOut.cshtml",Model)
+            </div>
+         
+        </div>
+    }
+@section scripts
+{
+    <script type="text/javascript">
+    $('.ProcessRefIdInPSequenc').unbind('change').bind('change', function (e) {
+        var processRefId = $(this).val();
+        var orderStyleRefId = $('.BuyerOrderStyleRefId').val();
+        jQuery.Ajax({
+            url: '/Program/InputOutputProgram/',
+            type: "GET",
+            data: { ProcessRefId: processRefId, OrderStyleRefId: orderStyleRefId }
+          , container: '#InputOutputProgram'
+        });
+    });
+
+</script>
+
+}

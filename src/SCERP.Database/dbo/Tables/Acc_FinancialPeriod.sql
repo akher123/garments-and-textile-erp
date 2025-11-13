@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Acc_FinancialPeriod] (
+    [Id]              INT              IDENTITY (1, 1) NOT NULL,
+    [PeriodName]      NVARCHAR (50)    NOT NULL,
+    [PeriodStartDate] DATE             NULL,
+    [PeriodEndDate]   DATE             NULL,
+    [ActiveStatus]    BIT              NULL,
+    [SortOrder]       INT              NULL,
+    [IsActive]        BIT              NULL,
+    [CDT]             DATETIME         NULL,
+    [CreatedBy]       UNIQUEIDENTIFIER NULL,
+    [EDT]             DATETIME         NULL,
+    [EditedBy]        UNIQUEIDENTIFIER NULL,
+    CONSTRAINT [PK_Acc_FinancialPeriod] PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    CONSTRAINT [UQ__Acc_Fina__D748F8F23C246673] UNIQUE NONCLUSTERED ([PeriodName] ASC),
+    CONSTRAINT [UQ__Acc_Fina__D748F8F2A9B32FCB] UNIQUE NONCLUSTERED ([PeriodName] ASC)
+);
+

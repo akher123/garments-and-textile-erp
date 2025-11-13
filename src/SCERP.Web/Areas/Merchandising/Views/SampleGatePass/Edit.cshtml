@@ -1,0 +1,292 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.GatePassViewModel
+@{
+    ViewBag.Title = Model.GatePass.GatePassId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "SampleGatePass", FormMethod.Post, new { @class = "SampleGatePassForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GatePass.GatePassId)
+    @Html.HiddenFor(x => x.GatePass.CompId)
+    <fieldset>
+        <legend>Sample Gate Pass and Delivery Entry Section</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.RefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Order No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.BillNo, new { @readonly = "readonly", @style = "background-color: #F0DCE7" })
+                </td>
+                <td>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.Label("Challan No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.ChallanNo, new { @placeholder = "Entry Challan No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Challan Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.ChallanDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Entry Challan Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("M/S :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.PartyName, new { @placeholder = "Entry M/S Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>@Html.Label("Address  :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Address, new { @placeholder = "Entry M/S Address" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Through:")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Through, new { @placeholder = "Entry Through Person Name" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Designation :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.Designation, new { @placeholder = "Entry Through Person Designation" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.BuyerName, new { @placeholder = "Buyer" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Order  :")</td>
+                <td>@Html.TextBoxFor(x => x.GatePass.OrderName, new { @placeholder = "Order" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Style :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePass.StyleName, new { @placeholder = "Style" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td colspan="2">
+                    @Html.TextBoxFor(x => x.GatePass.Remarks, new { @style = "width: 95%", @placeholder = "Entry Remarks" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        <table class="tabefont" id="gatePassDetailInput" style="width: 100%">
+            <tr>
+                <td>
+                    @Html.Label("Item :")
+                </td>
+
+                <td>
+                    @Html.TextBoxFor(x => x.GatePassDetail.Item, new { id = "Item", @placeholder = "Entry Item name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.GatePassDetail.Description, new { id = "Description", @placeholder = "Entry Item Description" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Unit")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePassDetail.Unit, new { id = "Item_Unit", @placeholder = "Entry Item unit" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Quantity :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GatePassDetail.Quantity, new { id = "Quantity", @placeholder = "Entry Item Qty" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td colspan="3">
+                    @Html.TextBoxFor(x => x.GatePassDetail.Remarks, new { id = "Remarks", @style = "width: 164%", @placeholder = "Entry Remarks and Entrer To Add Item" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <table id="gatePassDetailTable" class="webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label("Item ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Description ")
+                    </th>
+                    <th>
+                        @Html.Label("Unit")
+                    </th>
+                    <th>
+                        @Html.Label("Qty ")
+                    </th>
+                    <th>
+                        @Html.Label("Remarks")
+                    </th>
+                    <th>@Html.Label("Edit")</th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("~/Areas/Common/Views/GatePass/_AddNewRow.cshtml", Model)
+            </tbody>
+
+        </table>
+
+        <div class="custom-modal-btn">
+            @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "sampleGatePassDetails" } })
+        </div>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script>
+        $('#Remarks').unbind("keypress").bind("keypress", function (e) {
+            var key = e.which;
+
+            if (key == 13)  //the enter key code
+            {
+                e.preventDefault();
+                var addNewItem = $('#gatePassDetailInput :input');
+                var $table = $('table#gatePassDetailTable tbody');
+                var $item = $('#Item').val();
+
+                var $unit = $('#Item_Unit').val();
+                var $description = $('#Description').val();
+                var $receivedQty = $('#Quantity').val();
+                var option = {
+                    url: "/Common/GatePass/AddNewRow/",
+                    type: "POST",
+                    data: addNewItem.serialize()
+                };
+
+                var message = "";
+                if ($item.length <= 0) {
+                    message += "Enter Item .";
+                }
+                if ($unit.length <= 0) {
+                    message += "Enter Unit Name.";
+                }
+                if ($description.length <= 0) {
+                    message += "Description missing .";
+                }
+                if ($receivedQty.length <= 0) {
+                    message += "Quantity missing .";
+                }
+
+                if (message.length > 0) {
+                    alert(message);
+                }
+                else {
+                    $.Ajax(option).done(function (htmlResponse) {
+                        //   var trId = '#row_' + $item.replace(" ", "");
+                        //  $('table#gatePassDetailTable tbody tr'+trId).remove();
+                        $table.append(htmlResponse);
+                        addNewItem.val('');
+                        $('#Item').focus();
+                    });
+                }
+            }
+        });
+
+
+        $("#Quantity").each(function () {
+            $(this).keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+        function editRow(key) {
+            $('#Item').val($('#Item_' + key).val());
+            $('#Description').val($('#Description_' + key).val());
+            $('#Unit').val($('#Unit_' + key).val());
+            $('#Quantity').val($('#Quantity_' + key).val());
+            $('#Remarks').val($('#Remarks_' + key).val());
+
+        }
+    </script>
+}
+
+
+
+
+
+
+
+

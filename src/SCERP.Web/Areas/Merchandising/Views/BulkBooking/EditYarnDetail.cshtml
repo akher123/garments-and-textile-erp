@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BulkBookingYarnDetail.BulkBookingYearnDetailId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("SaveYarnDetail", "BulkBooking", FormMethod.Post, new { @class = "BulkBookingYarnDetailSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BulkBookingYarnDetail.BulkBookingYearnDetailId)
+        @Html.HiddenFor(model => model.BulkBookingYarnDetail.BulkBookingDetailId)
+        <fieldset>
+            <legend>Yarn Detail</legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Yarn")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingYarnDetail.ItemName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Color")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingYarnDetail.ColorName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Count")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingYarnDetail.CountName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Garments Qty")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingYarnDetail.OrdQty)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Consumption Qty")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingYarnDetail.ConsQty)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Remarks")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.BulkBookingYarnDetail.Remarks)
+                    </td>
+                    <td>
+                      
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "BulkBookingYarnDetailList" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>

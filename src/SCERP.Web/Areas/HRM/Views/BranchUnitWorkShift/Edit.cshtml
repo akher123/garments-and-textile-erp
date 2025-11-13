@@ -1,0 +1,100 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitWorkShiftViewModel
+@{
+    ViewBag.Title = (Model.BranchUnitWorkShiftId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "BranchUnitWorkShift", FormMethod.Post, new { @class = "BranchUnitWorkShiftform" }))
+{  @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.EditedDate)
+    @Html.HiddenFor(model => model.BranchUnitWorkShiftId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Branch Unit and Workshift</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SerchCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/BranchUnitWorkShift/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.SerchCompanyId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SerchBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/BranchUnitWorkShift/GetAllBranchUnitByBranchId", @TargetClass = "BranchUnitId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.SerchBranchId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "BranchUnitId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.BranchUnitId)
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("WorkShift :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.WorkShiftId, Model.WorkShiftSelectListItem, "--Select--")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.WorkShiftId)
+                </td>
+            <tr>
+            <tr>
+
+                <td>
+                    @Html.Label("From :")
+                </td>
+                <td>                
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From Date" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.FromDate)
+                </td>
+            <tr>
+            <tr>
+                <td>
+                    @Html.Label("To :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "to Date" })
+                </td>
+            <tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description)
+                </td>
+            <tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

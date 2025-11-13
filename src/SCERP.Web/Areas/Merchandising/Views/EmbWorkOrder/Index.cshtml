@@ -1,0 +1,31 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.EmbWorkOrderViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Print Embroidery Work Order</h2>
+</div>
+<div id="bulkBookingTab">
+    <ul>
+        <li><a id="bulkBookingHref" href="/Merchandising/EmbWorkOrder/EmbWorkOrderList">Work Order</a></li>
+        <li><a id="bulkBookingDetailHref" href="/Merchandising/EmbWorkOrder/EmbWorkOrderDetailList?EmbWorkOrderId=0">Work Order Detail</a></li>
+    </ul>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $("#bulkBookingTab").tabs({
+            load: SCERP.AjaxCompleted,
+           disabled: [1]
+        });
+    </script>
+}
+
+
+
+
+
+
+

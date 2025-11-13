@@ -1,0 +1,115 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.EmbWorkOrderViewModel
+@{
+
+    ViewBag.Title = Model.EmbWorkOrder.EmbWorkOrderId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "EmbWorkOrder", FormMethod.Post, new { @class = "EmbWorkOrderForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmbWorkOrder.EmbWorkOrderId)
+    <fieldset>
+        <legend>Embellishment Work order</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrder.RefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Factory:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrder.PartyId, Model.PartySelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Process:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrder.ProcessRefId, Model.ProcessSelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Booking Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrder.BookingDate, new {@placeholder = "Booking Date",@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Expected Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrder.ExpectedDate, new { @placeholder = "Expected Date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Merchandiser:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrder.MerchandiserRefId,Model.MerchandiserSelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Attention:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrder.Attention, new {@placeholder = "Attention"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.EmbWorkOrder.Remarks, new { @placeholder = "Remarks" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

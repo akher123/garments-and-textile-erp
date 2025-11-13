@@ -1,0 +1,168 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CompConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+<div class="CompConsDetailList" >
+    <div>
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS Color"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS Size"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS Qty"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Fabric Color"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "M/C DIA"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Finsh DIA"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "GSM"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Length"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Width"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Lay Qty"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/DZ"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/Pcs"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Weight"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Allow(%)"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Finish Qty"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "P.Loss(%)"))
+                    </th>
+                    <th>
+                        @Html.DisplayName("Grey Qty")
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Gray Color"))
+                    </th>
+                  
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "L/D"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var compConsDetail in Model.CompConsumptionDetails)
+                {
+                    <tr>
+                        <td>
+                            @compConsDetail.GColorName
+                        </td>
+                        <td>
+                            @compConsDetail.GSizeName
+
+                        </td>
+                        <td>
+                            @compConsDetail.QuantityP
+                        </td>
+                        <td>
+                            @compConsDetail.PColorName
+                        </td>
+                        <td>
+                            @compConsDetail.TableWidth
+                        </td>
+                        <td>
+                            @compConsDetail.PSizeName
+                        </td>
+                        <td>
+                            @compConsDetail.GSM
+                        </td>
+                        <td>
+                            @compConsDetail.Length
+                        </td>
+
+                        <td>
+                            @compConsDetail.Width
+                        </td>
+                        <td>
+                            @compConsDetail.LayQty
+                        </td>
+                        <td>
+                            @compConsDetail.PDzCons
+                        </td>
+
+                        <td>
+                            @compConsDetail.PPQty
+                        </td>
+                        <td>
+                            @compConsDetail.Weight
+                        </td>
+                        <td>
+                            @compConsDetail.PAllow
+                        </td>
+                        <td>
+                            @compConsDetail.TQty
+                        </td>
+                        <td>
+                            @compConsDetail.ProcessLoss
+                        </td>
+                        <td>
+                            @Math.Round(compConsDetail.GreyQty.GetValueOrDefault(), 3)
+                        </td>
+                        <td>
+                            @compConsDetail.BaseColorName
+                        </td>
+                      
+                        <td>
+                            @compConsDetail.ApprovedLD
+                        </td>
+                    </tr>
+                }
+
+                <tr style="background-color: goldenrod">
+                    <td></td>
+                    <td>
+                        Σ (T.QTY.)
+                    </td>
+                    <td>
+                        @Model.CompConsumptionDetails.Sum(x => (decimal?)x.QuantityP)
+                    </td>
+
+                    <td colspan="9"></td>
+                    <td>
+                        Σ (T.Cons.)
+                    </td>
+                    <td>
+                        @Model.CompConsumptionDetails.Sum(x => (decimal?)x.TQty)
+                    </td>
+
+                    <td>
+                        Σ (T.Grey.)
+                    </td>
+                    <td>
+                        @Math.Round(Model.CompConsumptionDetails.Sum(x => (decimal?)x.GreyQty).GetValueOrDefault(), 3)
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

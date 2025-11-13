@@ -1,0 +1,158 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.CustomSqlQuaryViewModel
+@{
+    ViewBag.Title = (Model.CustomSqlQuaryId > 0 ? "Edit" : "Add");
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "CustomSqlQuary", FormMethod.Post, new { @class = "CustomSqlQuaryForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CustomSqlQuaryId,new{@class="customSqlQueryId"})
+    @Html.HiddenFor(model => model.IsActive)
+    <fieldset>
+        <legend>Sql Quary</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref ID :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SqlQuaryRefId, new { htmlAttributes = new { @readonly = "readonly" } })
+                </td>
+                <td>
+                 
+                </td>
+                <td>
+                   
+                </td>
+                <td >
+                    @Html.Label("SqlQuary :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SqlQuary, new { htmlAttributes = new { @readonly = "readonly" } })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SqlQuary)
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.Label("Name :")
+                </td>
+                <td>
+
+                    @Html.EditorFor(x => x.Name, new { htmlAttributes = new { @autofocus = "autofocus" } })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Name)
+                </td>
+          
+                <td >
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description, new { @style = "width:300px" })
+                </td>
+                <td colspan="1"></td>
+            </tr>
+        
+        </table>
+       
+        <hr />
+        <div>
+            <input type="button" onclick="addNewRow()" value="+" />
+        </div>
+        <table id="Reportparameters" class="tabefont gridtable" style="width:800px;">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Pname")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Pvalue")
+                    </th>
+                    <th>
+                        @Html.DisplayName("LabelFor")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Querystring")
+                    </th>
+                    <th>
+                        @Html.DisplayName("ControlType")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Parameters)
+                {
+                    <tr id="newRow-@Model.Parameters[m.Key].ReportParameterId">
+                        <td>
+                            @Html.HiddenFor(x => x.Parameters[m.Key].CustomSqlQuaryId)
+                            @Html.TextBoxFor(x => x.Parameters[m.Key].Pname, new { @style = "width:120px;" })
+                        </td>
+                        <td>
+
+                            @Html.TextBoxFor(x => x.Parameters[m.Key].Pvalue, new { @style = "width:120px;" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Parameters[m.Key].LabelFor, new { @style = "width:120px;" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Parameters[m.Key].Querystring, new { @style = "width:150px;" })
+                        </td>
+                        <td>
+                             @Html.DropDownListFor(x => x.Parameters[m.Key].ControlType, new SelectList(Model.ControlTypes, "ControlType", "Value", m.Value.ControlType), new { @style = "width:120px;" })
+                        </td>
+                        <td>
+                            <input type="button" value="X" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+        <div>
+            <div style="float: right">
+                <input type="submit" value="Save" />
+            </div>
+        </div>
+    </fieldset>
+}
+
+<script type="text/javascript">
+    function deleteRow(buttonObj) {
+        var $tr = $(buttonObj).closest("tr");
+        $tr.remove();
+    }
+    function addNewRow() {
+        var $table = $('table#Reportparameters tbody');
+        jQuery.ajax({
+           url: "/CustomSqlQuary/ReportParameter/"
+               , type: "GET"
+               , dataType: 'html',
+               data: { CustomSqlQuaryId: $('.customSqlQueryId').val() }
+               , success: function(respons) {
+                   $table.append(respons);
+               }
+        });
+
+    }
+    function RefrashModelState() {
+        $('form').removeData('validator');
+        $('form').removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse('form');
+    }
+
+
+</script>

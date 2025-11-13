@@ -1,0 +1,239 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReceiveAgainstPo.MaterialReceiveAgstPoId > 0 ? "Edit" : "Add");
+}
+@section styles
+{
+
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<div>
+    @using (Html.BeginForm("Save", "PiYarnReceive", FormMethod.Post, new { @class = "PiYarnReceiveForm ignore-validation" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ReceiveAgainstPo.MaterialReceiveAgstPoId)
+        @Html.HiddenFor(x => x.IsSearch)
+        <fieldset>
+            <legend>PI Wise Yarn Received </legend>
+
+            <table class="tabefont" style="max-height: 150px;">
+                <tr>
+                    <td>
+                        @Html.DisplayName("RefNo:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Supplier:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReceiveAgainstPo.SupplierId, Model.SupplierSelectListItem,"Select", new { id = "drd_booKing_Supplier" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("PI:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReceiveAgainstPo.PoNo, Model.PiNoSelectListItem,"Select", new { id = "drd_booKing_PiRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        @Html.Label("Invoice No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Invoice Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Rcv Reg No :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.ReceiveAgainstPo.ReceiveRegNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.DisplayName("Rcv Reg Date :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.ReceiveRegDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("GEN :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("GEDate:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.Remarks, new { @class = "booKing_remarks" })
+                    </td>
+                    <td colspan="5">
+                        <div class="dropdown">
+                            <button class="dropbtn">Dropdown▼</button>
+                            <div class="dropdown-content">
+                                <a href="#" class="AjaxPopup" action="/Inventory/Lot/Edit?IsSearch=true">Lot</a>
+                                <a href="#" class="AjaxPopup" action="/Inventory/YarnCount/Edit?IsSearch=true">Count</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+
+            </table>
+
+            <hr />
+            <div>
+                <table id="ReceivedAgstPoDetail" class="webgrid-table">
+                    <thead style="text-align: center" class="webgrid-header">
+                        <tr>
+                            <th>
+                                @Html.Label("Style")
+                            </th>
+                            <th>
+                                @Html.Label("Yarn")
+                            </th>
+
+
+                            <th>
+                                @Html.Label("Color")
+                            </th>
+                            <th>
+                                @Html.Label("Lot No")
+                            </th>
+                            <th>
+                                @Html.Label("Count")
+                            </th>
+                            <th>
+                                @Html.Label("Booking Qty")
+                            </th>
+                            <th>
+                                @Html.Label("Total Rcv")
+                            </th>
+                            <th>
+                                @Html.Label("Balance Qty")
+                            </th>
+                            <th>
+                                @Html.Label("Rate")
+                            </th>
+                            <th>
+                                @Html.Label("Qty")
+                            </th>
+                            <th>
+                                @Html.Label("Delete")
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="purchaseBookingDetailContainer">
+                         @Html.Partial("~/Areas/Inventory/Views/PiYarnReceive/_PiBookingList.cshtml",Model)
+                    </tbody>
+                </table>
+                <div style="float: right">
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                <input type="submit" value="Save" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </fieldset>
+
+
+    }
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#drd_booKing_Supplier').change(loadPiRefBySupplier)
+        function loadPiRefBySupplier() {
+            var supplierId = $(this).val();
+            jQuery.ajax({
+                url: '/Inventory/PiYarnReceive/GetApporovedBookingBySupplier/',
+                type: "GET",
+                data: { supplierId: supplierId }
+            }).done(function (respons) {
+                var $drdn = $('#drd_booKing_PiRefId');
+                $drdn.empty();
+                 $drdn.append(
+                        $('<option/>')
+                            .attr('value','')
+                            .text('Select')
+                    );
+                $.each(respons, function (pi) {
+                    $drdn.append(
+                        $('<option/>')
+                            .attr('value', this.PiRefId)
+                            .text(this.PiNo)
+                    );
+                });
+            });
+        }
+        $('#drd_booKing_PiRefId').unbind('change').bind('change',loadYarnBookingsByPiRefId)
+        function loadYarnBookingsByPiRefId() {
+            var piRefId = $(this).val();
+            jQuery.Ajax({
+                url: '/Inventory/PiYarnReceive/GetBookedYarnsByPi/',
+                type: "GET",
+                data: { piRefId: piRefId}
+                , container: '#purchaseBookingDetailContainer'
+            });
+        }
+    </script>
+    <script src="~/Scripts/SCERP/Inventory/yarnReceive.js"></script>
+}

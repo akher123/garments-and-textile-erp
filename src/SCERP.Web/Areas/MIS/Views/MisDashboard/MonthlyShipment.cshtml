@@ -1,0 +1,46 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Shipment Status</h2>
+</div>
+<section class="formCover">
+    <div>
+        @using (Html.BeginForm("MonthlyShipment", "MisDashboard", FormMethod.Post, new { @class = "MonthlyShipmentSearchForm" }))
+        {
+        
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("From")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate,  new {@class="datepicker", @placeholder = "From date"  })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate,  new {@class="datepicker",  @placeholder = "To date"  })
+                    </td>
+
+                    <td>
+                        <input type="button" class="buttonStyle" onclick="MonthlyShipment()" value="PDF" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+   
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function MonthlyShipment() {
+            var data = $('.MonthlyShipmentSearchForm').serialize();
+            var searchurl = '/Inventory/Report/MonthlyShipmentSummary?' + data;
+            window.open(searchurl);
+        }
+    </script>
+}

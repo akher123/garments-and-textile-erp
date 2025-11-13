@@ -1,0 +1,68 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Weekend Bill";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("WeekendBill", "Report", FormMethod.Get, new {@class = "ReportSearchForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3> Weekend Bill </h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td> </td>
+                <td align="left" colspan="3"> @Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"}) </td>
+            </tr>    
+            <tr>
+                <td> @Html.Label("Date:") </td>                                    
+                <td>           
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>                                                
+                <td> <input type="button" value="Process" onclick=" javascript: ProcessWeekendBill(); " />  </td>  
+                <td> <input type="button" id="showReport" value="Show Report" /> </td>                                              
+            </tr>          
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+        </table>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#showReport').click(function(e) {
+            var $form = $(this).parents('form:first');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                $form.validate();
+                if (!$form.valid()) {
+                    return false;
+                } else {
+                    window.open($form.attr('action') + '?' + $form.serialize());
+                    e.preventDefault();
+                }
+            }
+        });
+
+        function ProcessWeekendBill() {
+
+            var fromDate = $('#FromDate').val();
+            window.open("/Payroll/Report/WeekendBillProcess?&FromDate=" + fromDate + "&ExportType=DOC");
+        }
+
+    </script>
+}

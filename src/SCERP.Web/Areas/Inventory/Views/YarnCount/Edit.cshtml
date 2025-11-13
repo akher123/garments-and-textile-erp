@@ -1,0 +1,55 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmSizeViewModel
+@{
+    ViewBag.Title = Model.SizeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "YarnCount", FormMethod.Post, new { @class = "YarnCountform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SizeId)
+    @Html.HiddenFor(x=>x.TypeId)
+    <fieldset>
+        <legend>Yarn Count</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SizeRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Count :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.SizeName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SizeName)
+                </td>
+            </tr>
+      
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

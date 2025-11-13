@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.TaskManagement.Models.ReportImageViewModel
+@{
+    ViewBag.Title = "Task List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Task List</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: gray; ">
+        <div style="margin-left: 150px;">
+            @using (Html.BeginForm("Index", "ReportImage", FormMethod.Get, new { @class = "taskForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Criteria :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @style = "width:200px;", @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>@Html.Label("Assignee : ")</td>
+                        
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+
+        <div style="margin-top: 5px; margin-bottom: 5px;">
+            <button class="AjaxPopup" action="/TaskManagement/ReportImage/Edit">Add New</button>
+            <div style="float: right;">
+                <a href="/TaskManagement/ReportImage/ShowReportImageNew" target="_blank">Viwe Presentation</a>
+            </div>
+        </div>
+
+
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ReportImages, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ReportImageId", header: "Report Id"),
+                        grid.Column("SubjectId", header: "Subject Id"),
+                        grid.Column("ReportName", header: "Report Name"),
+                        grid.Column("ReportNo", header: "Report No"),
+                        grid.Column("Remarks", header: "Remarks"),
+                        grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/TaskManagement/ReportImage/Edit?ReportImageId=@item.ReportImageId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/TaskManagement/ReportImage/Delete?ReportImageId=@item.ReportImageId"></button></text>)))
+            ;
+        }
+    </div>
+
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+    function TaskSummary() {
+                var form = $('.taskForm');
+                var data = form.serialize();
+                var searchurl = '/TaskManagement/Task/TaskSummaryReport?' + data;
+                window.open(searchurl);
+    }
+    </script>
+}

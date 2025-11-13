@@ -1,0 +1,217 @@
+﻿@using Microsoft.Ajax.Utilities
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TimeAndActionViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("TnaStatus", "TimeAndAction", FormMethod.Get, new { @class = "TimeAndActionForm ignore-validation" }))
+        {
+            <table>
+                <tr>
+
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "CostOrderStyle_BuyerId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "CostOrderStyle_OrderNo_ID", @class = "CostOrderStyle_Order" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "CostOrderStyle_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.IndicationKey, Model.InidicatorsSelectListItem)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        <table class="webgrid-table" style="font-size: 11px">
+            <thead class="webgrid-header">
+            <tr>
+                <th>
+                    Buyer
+                </th>
+                <th>
+                    Order
+                </th>
+                <th>
+                    Style
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Merchandiser
+                </th>
+                <th>
+                    ActivityName
+                </th>
+                <th>
+                    PlanStart
+                </th>
+                <th>
+                    PlanEnd
+                </th>
+                <td>Alert</td>
+                <th>
+                    What
+                </th>
+                <th>
+                    Who
+                </th>
+                <th>
+                    When
+                </th>
+                <th>
+                    ActualStart
+                </th>
+                <th>
+                    ActualEnd
+                </th>
+                <th>
+                    Responsible
+                </th>
+             
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var tna in Model.Tnas)
+            {
+                <tr>
+                    <td>@tna.BuyerName</td>
+                    <td>@tna.OrderNo</td>
+                    <td>@tna.StyleName</td>
+
+                    <td>@tna.Quantity</td>
+                    <td>@tna.Merchandiser</td>
+                    <td style="background-color: @ViewBag.Color">@tna.ActivityName</td>
+                    <td style="background-color: @ViewBag.Color">@tna.PSDate</td>
+                    <td style="background-color: @ViewBag.Color">@tna.PEDate</td>
+                    <td style="background-color: @ViewBag.Color">@tna.Status</td>
+                    <td>@tna.Rmks</td>
+                    <td>@tna.XWho</td>
+                    <td>@tna.XWhen</td>
+                    <td>@tna.ASDate</td>
+                    <td>@tna.AEDate</td>
+                    <td>@tna.Responsible</td>
+                 
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+    $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+
+            removeDependentDropdown();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "-Select Order-" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+    function populateDropDown(obj) {
+        $('.CostOrderStyle_Order').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+    $('#CostOrderStyle_OrderNo_ID').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('#CostOrderStyle_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("-Select Style-")
+                );
+                $.each(styleList, function (style) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    $('#Copy_CostOrderStyle_Order_ID').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('#Copy_CostOrderStyle_StyleNo_ID').empty();
+            if (styleList.length > 0) {
+                $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                    $('<option/>').attr('value', '').text("-Select Style-")
+                );
+                $.each(styleList, function (style) {
+                    $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+    function removeDependentDropdown() {
+
+        $('.CostOrderStyle_Order').empty();
+        $('#CostOrderStyle_StyleNo').empty();
+        $('#Copy_CostOrderStyle_StyleNo_ID').empty();
+
+    }
+
+   
+    </script>
+}

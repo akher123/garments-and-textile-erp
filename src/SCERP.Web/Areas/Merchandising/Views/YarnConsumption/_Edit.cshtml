@@ -1,0 +1,85 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = null;
+}
+
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("Save", "YarnConsumption", FormMethod.Post, new { @class = "YarnConsumptionSearchForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.YarnConsumptionId)
+        @Html.HiddenFor(model => model.ConsRefId)
+        @Html.HiddenFor(model => model.TQty)
+        @Html.HiddenFor(model => model.GrColorRefId)
+        
+        <fieldset>
+            <legend>YEARN CONSUMPTION FOR <span style="text-decoration: underline">@Model.VConsumption.ItemName GREY FABRIC</span></legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Y.CODE"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.YCRef, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("YARN")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ItemName, new { @placeholder = "Search Item name", @onkeyup = "itemAutocomplite(this)" })
+                        @Html.HiddenFor(x => x.ItemCode, new { @class = "Item_ItemCode" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("COUNT")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.KSizeName,new{@class="KSize_SearchString",@placeholder="Search Count"})
+                        @Html.HiddenFor(x => x.KSizeRefId, new { @class = "KSize_SizeRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(" ", "COLOR.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.KColorName,new{@class="KColor_SearchString",@placeholder="Search Color"})
+                        @Html.HiddenFor(x=>x.KColorRefId,new{@class="KColor_KSizeRefId"})
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label(" ", "YARN CONS(%)")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.CPercent)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label(" ", "WASTAGE(%)")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.PLoss)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+              
+                    <td>
+                        @Html.Button(Model.ButtonName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "yarnListDiv" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+    }
+</div>
+<script src="~/Scripts/SCERP/Merchandising/YarnConsumption.js"></script>

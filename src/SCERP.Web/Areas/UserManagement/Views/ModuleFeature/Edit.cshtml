@@ -1,0 +1,174 @@
+﻿@model SCERP.Web.Areas.UserManagement.Models.ViewModels.NewModuleFeatureViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("SaveModuleFeature", "ModuleFeature", FormMethod.Post, new { @class = "modulefeatureform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div>
+        <fieldset>
+            <legend>Module Feature</legend>
+            <table class="tabefont" style="width:570px;">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="fieldTitleCls">Module</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ModuleId, Model.ModuleSelectListItem, "-Select-", new { @class = "ModuleDropDownList" })
+                    </td>
+                    <td>
+                        @*@Html.Label("*", new { @class = "labelInstruction" })*@
+                    </td>
+                    <td>
+                        @*@Html.ValidationMessageFor(x => x.ModuleId, "Required")*@
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="fieldTitleCls">Parent Feature</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ParentFeatureId, Model.ModuleFeatureSelectListItem, "-Select-", new { @class = "ModuleFeatureDropDownList" })
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="fieldTitleCls">Order Id</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.OrderId, new { @class = "OrderIdTextBox" })
+                    </td>
+                    <td>
+                        @*@Html.Label("*", new { @class = "labelInstruction" })*@
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.OrderId, "Required")
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="fieldTitleCls">Feature Name</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FeatureName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.FeatureName, "Required")
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="fieldTitleCls">Navigation URL</td>
+                    <td>
+                        @Html.EditorFor(x => x.NavURL)
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td style="color: GrayText; font-size: 12px;">
+                        @Html.CheckBox("ShowInMenu", Model.ShowInMenu.HasValue ? Model.ShowInMenu : false)
+                        &nbsp;<label>Show in menu</label>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td style="width: 5px;">
+                        &nbsp;
+                    </td>
+                    <td style="width: 50px;">
+                        &nbsp;
+                    </td>
+                    <td style="width:300px;">
+                        @Html.SaveButton()
+                    </td>
+                    <td style="width: 1px;">
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+
+            </table>
+        </fieldset>
+    </div>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('.ModuleDropDownList').unbind('change').bind('change', function () {
+            var moduleId = $(this).val();
+            $.Ajax({
+                url: '/ModuleFeature/GetFeaturesByModule/',
+                data: { ModuleId: moduleId }
+            }).done(function (featureNames) {
+                $('.ModuleFeatureDropDownList').empty();
+                if (featureNames.length > 0)
+                {
+                    populateDropDown({ Id: "", FeatureName: "-Select-" });
+                    $.each(featureNames, function (feature)
+                    {
+                        populateDropDown({ Id: this.Id, FeatureName: this.FeatureName });
+                    });
+                }
+                else
+                {
+                    populateDropDown({ Id: "", FeatureName: "No FeatureName Found" });
+                }
+            });
+        });
+        function populateDropDown(obj)
+                 {
+            $('.ModuleFeatureDropDownList').append(
+                      $('<option/>')
+                          .attr('value', obj.Id)
+                          .text(obj.FeatureName)
+                  );
+                }
+       
+
+        $('.ModuleFeatureDropDownList').unbind('change').bind('change', function () {
+            var parentFeatureId = $(this).val();
+            $.Ajax({
+                url: '/ModuleFeature/GetMaxOrderIdByParentFeatureId/',
+                data: { ParentFeatureId: parentFeatureId }
+            }).done(function (orderId) {
+                $('.OrderIdTextBox').val(orderId);
+            });
+        });
+   
+
+    </script>
+}

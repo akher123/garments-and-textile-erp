@@ -1,0 +1,84 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ShipmentViewModel
+@{
+    Layout = null;
+}
+<div class="BuyOrdShipContainner">
+    <div>
+
+        <table id="grid" class="webgrid-table webgrid webgrid-alternating-row">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        <strong>OrderNo</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Style Ref.")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Ship Ref.")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Date")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Quantity")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Ship Qty")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Ex.Factory Date")</strong>
+                    </th>
+
+                    <th>
+                        <strong>@String.Format("{0}", "Detail")</strong>
+                    </th>
+                    <th>
+                        <strong>@String.Format("{0}", "Update")</strong>
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var ship in Model.OmBuyOrdShips)
+                {
+                    <tr id="@ship.OrderShipRefId ">
+                        <td>
+                            @ship.OrderNo
+                        </td>
+                        <td>
+                            @ship.OrderStyleRefId
+                        </td>
+                        <td>
+                            @ship.OrderShipRefId
+                        </td>
+
+                        <td>@String.Format("{0:dd/MM/yyyy}", ship.ShipDate)</td>
+                        <td>
+                            @ship.Quantity
+                        </td>
+                        <td>
+                            @ship.DespatchQty
+                        </td>
+                        <td>
+                            @ship.DeliveryDate
+                        </td>
+                        <td><input type="button" value="+" class="btnDetail" targentclass="buyerOrderShipAssortment" action="/Merchandising/Shipment/GetShipAssort?OrderStyleRefId=@ship.OrderStyleRefId&OrderShipRefId=@ship.OrderShipRefId" /></td>
+                        <td>
+
+                            <input type="button" class="AjaxPopup" action="/Merchandising/Shipment/Edit?OrderShipId=@ship.OrderShipId" value="Shipment" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div class="buyerOrderShipAssortment" style="margin-bottom: 50px;">
+
+        </div>
+    </div>
+
+</div>

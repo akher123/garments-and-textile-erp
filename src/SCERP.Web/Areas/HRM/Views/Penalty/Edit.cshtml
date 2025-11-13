@@ -1,0 +1,171 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.PenaltyViewModel
+@{
+    ViewBag.Title = "Penalty";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.PenaltyId > 0) ? "Edit" : "Add";
+    var dispalyForEdit = (Model.PenaltyId > 0) ? "none" : "";
+    var dispaly = (Model.PenaltyId > 0) ? "" : "none";
+    bool isReadOnly = Model.PenaltyId > 0;
+}
+@using (Html.BeginForm("Save", "Penalty", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.PenaltyId)
+    <fieldset>
+        <legend>Penalty</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>   
+            <tr>
+                <td>Employee ID :</td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #6495ed" } : new { @class = "employeeCardId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/Penalty/GetEmployeeDetailByEmployeeCardID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+        </table>
+
+        <table class="tabefont">
+            <tr id="employeeDetail_containner">
+                @if (Model.EmployeeCompanyInfo != null)
+                {
+                    {
+                        Html.RenderPartial("~/Areas/HRM/Views/Penalty/_EmployeeDetails.cshtml", Model.EmployeeCompanyInfo);
+                    }
+                }
+            </tr>
+        </table>
+
+        <table class="tabefont">
+            <tr>
+                <td>Penalty Type: </td>
+                <td>
+                    @Html.DropDownListFor(model => model.PenaltyTypeId, Model.PenaltyTypeSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>Penalty: </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Penalty, new { @class = "Penalty" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>Penalty Date: </td>
+                <td> 
+                    @Html.TextBoxFor(x => x.PenaltyDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>Reason: </td>
+                <td>@Html.TextAreaFor(x => x.Reason)</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>Claimer:</td>
+                <td>
+                    @Html.HiddenFor(x => x.ClaimerId, new { @class = "EmployeeIdHiddenFor" })
+                    @Html.TextBoxFor(x => x.ClaimerName, new { @class = "ClaimerTextBoxFor" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td id="displayButton">
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script>
+        $('#filterbyEmployeeCadrId').unbind("click").bind("click", clickEventHendeler);
+        function clickEventHendeler() {
+            var employeeCadrIdTextBox = $('.employeeCardId');
+            var employeeCardId = employeeCadrIdTextBox.val();
+            var $this = $(this);
+            var option = {
+                url: $this.attr('action'),
+                type: 'GET',
+                data: { EmployeeCardId: employeeCardId }
+            };
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                employeeCadrIdTextBox.validate();
+                if (!employeeCadrIdTextBox.valid()) {
+                    return false;
+                }
+                loadEmployeeDetail(option);
+            }
+        }
+        function loadEmployeeDetail(option) {
+            return $.Ajax(option).done(function (respons) {
+                if (respons.Success && respons.Success != 'undefined') {
+                    $('#employeeDetail_containner').html(respons.EmployeeDetailView);
+                    $("#displayButton").removeAttr("style");
+                }
+                if (respons.ValidStatus == false) {
+                    $("#displayButton").css("display", "none");
+                    alert(respons.Message);
+                }
+            });
+        }
+
+
+        $('.ClaimerTextBoxFor').autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: '/Penalty/GetEmployeesByCardIdAndName/',
+                    type: "GET",
+                    datatype: "html",
+                    data: { SerachString: request.term },
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        $('.EmployeeIdHiddenFor').val('');
+                        response($.map(data, function (employee) {
+                            return { label: employee.EmployeeCardId + "_" + employee.Name, value: employee.Name, EmployeeId: employee.EmployeeId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var employeedId = ui.item.EmployeeId;
+                $('.EmployeeIdHiddenFor').val(employeedId);
+                $('.ClaimerTextBoxFor').val(ui.item.label);
+            },
+
+        });
+
+
+        jQuery('.OtHour').on('input', function () {
+            $('.AttendanceDays').val("");
+        });
+
+        jQuery('.AttendanceDays').on('input', function () {
+            $('.OtHour').val("");
+        });
+        
+    </script>
+}

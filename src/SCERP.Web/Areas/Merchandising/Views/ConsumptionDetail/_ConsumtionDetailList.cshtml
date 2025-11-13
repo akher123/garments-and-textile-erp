@@ -1,0 +1,102 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+<div class="consumtionContainerDetail">
+    <div>
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS.Color"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS.Size"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS.Qty"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "PrductColor"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Spec/Art No"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/DZ"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/Pcs"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Allow(%)"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "T.Cons."))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Code"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var consDetail in Model.ConsumptionDetails)
+                {
+                    <tr>
+                        <td>
+                            @consDetail.GColorName
+                        </td>
+                        <td>
+                            @consDetail.GSizeName
+                        </td>
+                        <td>
+                            @consDetail.QuantityP
+                        </td>
+                        <td>
+                            @consDetail.PColorName
+                        </td>
+                        <td>
+                            @consDetail.PSizeName
+                        </td>
+                        <td>
+                       
+                            @Math.Round(consDetail.PDzQty, 5)
+                        </td>
+                        <td>
+                           
+                            @Math.Round(consDetail.PPQty.GetValueOrDefault(), 5)
+                            
+                        </td>
+                        <td>
+                           @Math.Round(consDetail.PAllow.GetValueOrDefault(),5) 
+                        </td>
+                        <td>
+                            @consDetail.TotalQty
+                        </td>
+                        <td>
+                            @consDetail.Remarks
+                        </td>
+                    </tr>
+
+                }
+                <tr style="background-color: goldenrod">
+                    <td colspan="1"></td>
+                    <td>
+                        Σ(T.Qty.)
+                    </td>
+                    <td>
+                        @Model.TotalQuantityP
+                    </td>
+                    <td colspan="4"></td>
+                    <td>
+                        Σ (T.Cons.)
+                    </td>
+                    <td>
+                        @Model.TotalConsQty
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

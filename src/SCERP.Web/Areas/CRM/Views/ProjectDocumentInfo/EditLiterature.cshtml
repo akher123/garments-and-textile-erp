@@ -1,0 +1,47 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.ProjectDocumentInfoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit Literature" : "Add";
+}
+
+@using (Html.BeginForm("SaveLiterature", "ProjectDocumentInfo", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend> Edit Literature </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Literature:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Literature, new { style = "width: 400px; height: 400px;" })
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Literature)
+                </td>
+            </tr>
+                              
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

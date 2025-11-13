@@ -1,0 +1,39 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "STYLE WISE SEWING PRODUCTION";
+}
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+            {
+                <th>@col.ColumnName</th>
+            }
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.BuyerOrderMasterDataTable.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                {
+
+                    <td>@row[col.ColumnName]</td>
+                }
+            </tr>
+        }
+        @if (Model.ViewType!="L")
+        {
+            <tr style="background-color:#b0c4de">
+            <td colspan="5">TOTAL </td>
+          
+            <td>@Model.BuyerOrderMasterDataTable.Compute("sum([" + "SEWING QTY" + "])", "").ToString()</td>
+  
+        </tr>
+        }
+        
+    </tbody>
+</table>

@@ -1,0 +1,33 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>YARN CONSUMPTION ANALYSIS</h2>
+</div>
+
+@section styles
+{
+    <link href="~/Content/CSS/Merchandising/RowSelectStyle.css" rel="stylesheet" />
+}
+<div id="YarnConsumptionTab">
+    <ul>
+        <li><a id="YarnOrderStyleListTabHref" href="/Merchandising/YarnConsumption/OrderStyleList?SearchString=@Model.OrderStyleRefId">Style</a></li>
+        <li><a id="YarnStyleConsumptionTabHref" href="/Merchandising/YarnConsumption/FabricList?OrderStyleRefId">Fabric</a></li>
+        <li><a id="YarnConsumptionTabHref" href="/Merchandising/YarnConsumption/Index?ConsRefId">Yarn Consumption</a></li>
+        <li><a id="YarnConsumptionCostTabHref" href="/Merchandising/YarnConsumptionCost/YarnConsumptionList">Rate</a></li>
+        <li><a id="YarnBookingTabHref" href="/Commercial/YarnBooking/YarnBookingList">Booking</a></li>
+    </ul>
+
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $("#YarnConsumptionTab").tabs({
+            load: SCERP.AjaxCompleted,
+          disabled: [1,2]
+        });
+    </script>
+
+}

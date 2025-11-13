@@ -1,0 +1,356 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.ContraVoucherEntryViewModel
+
+@{
+    ViewBag.Title = "Contra Voucher";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@*<style type="text/css">
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size: 12px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        width: 70%;
+        margin-left: 0px;
+    }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+</style>*@
+
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Contra Voucher </h2>
+</div>
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+<table style="margin-left: 70px;" class="tabefont">
+
+    <tr>
+        <td>@Html.DisplayName("Financial Year")</td>
+        <td>@Html.DisplayName("Voucher Type")</td>
+        <td>@Html.DisplayName("Date")</td>
+        <td>@Html.DisplayName("Sector Name")</td>
+        <td>@Html.DisplayName("Cost Centre")</td>
+        <td>@Html.DisplayName("Transaction Code")</td>
+    </tr>
+
+    <tr>
+        <td>@Html.TextBoxFor(model => model.FinancialPeriodId, new { style = "width:100px;" })</td>
+
+        <td>@Html.DropDownList("VoucherTypeId", null, new { @class = "VoucherType", @onchange = "ChangeAccountType(this.value)", style = "width:160px;" })</td>
+
+        <td>          
+            @Html.TextBoxFor(x => x.VoucherDate, new { @class = "datepicker", style = "width:100px;", @data_val = "false", @placeholder = "To" })
+        </td>
+        <td>@Html.DropDownList("SectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "width:160px;" })</td>
+        <td>@Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px;" })</td>
+        <td><input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 100px;" class="TransactionCode" /></td>
+    </tr>
+
+    <tr>
+        <td style="height: 30px;"></td>
+    </tr>
+
+    <tr>
+        <td colspan="2"><label class="AccHead">Bank Account Head</label></td>
+        <td colspan="2"><label class="PaidLabel">Paid To:</label></td>
+        <td colspan="1">@Html.DisplayName("Cheque No:")</td>
+        <td colspan="1">@Html.DisplayName("Cheque Date:")</td>
+    </tr>
+
+    <tr>
+        <td colspan="2"><input type="text" style=" width: 300px;" class="ContraAccountHead" /></td>
+        <td colspan="2"><input type="text" style=" width: 200px;" class="PaidTo" /></td>
+        <td colspan="1">@Html.TextBoxFor(model => model.CheckNo, new { @class = "CheckNo", style = "width:100px;" })</td>
+        <td colspan="1">      
+            @Html.TextBoxFor(x => x.CheckDate, new { @class = "datepicker", style = "width:100px;", @data_val = "false", @placeholder = "To" })
+        </td>
+    </tr>
+    
+    <tr>
+        <td><input type="button" style="width:100px;" value="Cash In Hand" class="cashbutton"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td style="height: 10px;" colspan="6"></td>
+    </tr>
+
+    <tr>
+        <td align="center" colspan="6"><h3>Transaction Detail</h3></td>
+    </tr>
+
+    <tr>
+        <td colspan="6"> <hr /> </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <table>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Account Name")
+                    </td>
+                    <td>
+                        @Html.DisplayName("Particulars")
+                    </td>
+                    <td>
+                        @Html.DisplayName("AMOUNT (TAKA)")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" style=" width: 300px;" class="AccountName" />
+                        <br/>
+                       <strong> @Html.DisplayTextFor(model=>model.Balance) </strong>
+                    </td>
+                    <td>
+                        <input type="text" style=" width: 150px;" class="Particulars" />
+                    </td>
+                    <td>
+                        <input type="text" style=" width: 100px;" class="Amount" />
+                    </td>
+
+                    <td>
+                        <input type="button" style="width:70px; height: 35px;" onclick="AppendTable()" value="Add" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6" style="height: 10px;"></td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <table width="500px" class="gridtable tabefont" id="VoucherDetail">
+                <tr>
+                    <th>SL</th>
+                    <th>Account Name</th>
+                    <th>Particulars</th>
+                    <th>DEBIT (TAKA)</th>
+                    <th>CREDIT (TAKA)</th>
+                    @*<th>Edit</th>*@
+                    <th>Delete</th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6" style="height: 10px;"></td>
+    </tr>
+
+    <tr>
+        <td align="right" colspan="6">
+            <table>
+                <tr>
+                    <td>
+                        Total:
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalAmount" />
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalDebitAmount" />
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalCreditAmount" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <hr />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayName("Total BDT In Words")
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width:500px;" colspan="6">
+            <input type="text" style="width:500px;" readonly="readonly" class="AmountInWords" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayName("Particulars")
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            @Html.TextBoxFor(model => model.Particulars, new { @class = "VoucherParticulars", style = "width: 500px;" })
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <input type="button" value="Save" onclick="SaveContraVoucher()" />
+        </td>
+    </tr>
+
+</table>
+
+<script src="~/Scripts/SCERP/Acc_ContraVoucherEntry.js"></script>
+
+<script type="text/javascript">
+
+        $('.ContraAccountHead').autocomplete(
+            {
+                source: '@Url.Action("GetBankAccountNames", "ContraVoucherEntry")'
+            });
+        
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("GetCashAccountNames", "ContraVoucherEntry")'
+            });
+
+        var Id = @Model.Id;
+
+        if (Id > 0) {
+
+            jQuery.ajax({
+                url: "/ContraVoucherEntry/GetContraVoucherDetail",
+                data: { "Id": Id },
+                type: "GET",
+                success: function(r) {
+                    if (!r.Success) {
+                        alert('Detail data did not found');
+                    } else if (r.Success) {
+
+                        var temp = r.data;
+
+                        $('.TotalDebitAmount').val(r.tDr.toFixed(2));
+                        $('.TotalCreditAmount').val(r.tCr.toFixed(2));
+                        $('.TotalAmount').val(r.tbc.toFixed(2));
+
+                        amountInWord(r.tDr);
+
+                        $(temp).each(function(index, t) {
+                            bindRow(t);
+                        });
+                    }
+                }
+            });
+        }
+
+
+        function ChangeAccountType(voucherType) {
+
+            if (voucherType == 'BC' || voucherType == 'BB')
+                $('.AccHead').text('Bank Account Head');
+
+            else if (voucherType == 'CB')
+                $('.AccHead').text('Cash Account Head');
+
+            $('.ContraAccountHead').val('');
+            $('.AccountName').val('');
+
+            var count = 0;
+            $('#VoucherDetail tr').each(function(row, tr) {
+                if (count > 0)
+                    $(this).closest('tr').remove();
+
+                $('.TotalCreditAmount').val('');
+                $('.TotalDebitAmount').val('');
+                $('.TotalAmount').val('');
+                $('.AmountInWords').val('');
+
+                count++;
+            });
+
+            if ($('.VoucherType option:selected').val() == 'BC') {
+
+                $('.ContraAccountHead').autocomplete(
+                    {
+                        source: '@Url.Action("GetBankAccountNames", "ContraVoucherEntry")'
+                    });
+                $('.AccountName').autocomplete(
+                    {
+                        source: '@Url.Action("GetCashAccountNames", "ContraVoucherEntry")'
+                    });
+            } else if ($('.VoucherType option:selected').val() == 'CB') {
+
+                $('.AccountName').autocomplete(
+                    {
+                        source: '@Url.Action("GetBankAccountNames", "ContraVoucherEntry")'
+                    });
+                $('.ContraAccountHead').autocomplete(
+                    {
+                        source: '@Url.Action("GetCashAccountNames", "ContraVoucherEntry")'
+                    });
+            } else if ($('.VoucherType option:selected').val() == 'BB') {
+
+                $('.AccountName').autocomplete(
+                    {
+                        source: '@Url.Action("GetBankAccountNames", "ContraVoucherEntry")'
+                    });
+                $('.ContraAccountHead').autocomplete(
+                    {
+                        source: '@Url.Action("GetBankAccountNames", "ContraVoucherEntry")'
+                    });
+            }
+        }
+
+        function bindRow(t) {
+
+            var tr = '';
+            tr = $('<tr  id="' + t.Id + '" >');
+            tr.append('<td>' + t.Id + '</td>');
+            tr.append('<td>' + t.GlName + '</td>');
+            tr.append('<td>' + t.Particulars + '</td>');
+            tr.append('<td>' + t.Debit.toFixed(2) + '</td>');
+            tr.append('<td>' + t.Credit.toFixed(2) + '</td>');
+            // tr.append('<td><input type="button" class="edit" onClick="showReportjoining(' + '1' + ')"  value="Edit" /></td>');
+            tr.append('<td><input type="button" class="del"  value="Delete" /></td>');
+            tr.append('</tr>');
+
+            $('#VoucherDetail').append(tr);
+        }
+
+        function amountInWord(tDr) {
+            jQuery.ajax({
+                url: "/ContraVoucherEntry/GetInWords",
+                data: { "amount": tDr },
+                type: "POST",
+                success: function(r) {
+                    if (!r.Success) {
+                        alert("Amount did not find !");
+                    } else if (r.Success) {
+                        $('.AmountInWords').val(r.data);
+                    }
+                }
+            });
+        }
+
+</script>

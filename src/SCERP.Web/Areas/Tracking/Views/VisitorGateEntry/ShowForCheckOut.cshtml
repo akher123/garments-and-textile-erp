@@ -1,0 +1,185 @@
+﻿@*@using SCERP.Model.Tracking*@
+@model SCERP.Web.Areas.Tracking.Models.ViewModels.VisitorGateEntryViewModel
+@{
+
+    ViewBag.Title = Model.VisitorGateEntry.VisitorGateEntryId > 0 ? "Check Out" : "Add ";
+    bool isReadOnly = Model.VisitorGateEntry.VisitorGateEntryId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "VisitorGateEntry", FormMethod.Post, new { @class = "VisitorGateEntryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VisitorGateEntry.VisitorGateEntryId)
+    <fieldset>
+        <legend>Visitor Gate Entry</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.Phone, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.VisitorName, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.Address, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Purpose:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.Purpose, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Confirm Way:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VisitorGateEntry.ConfirmationMediaId, Model.ConfirmationMediaListSelectListItem, "-Select-", isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Card Id:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.VisitorCardId, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Check Out:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VisitorGateEntry.CheckOutStatus, Model.CheckOutStatusSelectListItem, "-Select-", new { @style = "width:316px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Check Out Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.ExitDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Check Out Time"})
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Check Out Time:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VisitorGateEntry.CheckOutTime, new { @class = "timePicker", @placeholder = "Check Out Time" })
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td>
+                    @Html.TextAreaFor(x => x.VisitorGateEntry.Remarks, new { @readonly = "readonly", @style = "background-color: #F0ECE7;display:none" })
+                </td>
+            </tr>
+            <tr>
+                <td><img id="imgCapture" src="@Url.Content(Model.VisitorGateEntry.ImagePath)" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+              
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('.PhoneTextBoxFor').unbind('change').bind('change', function () {
+            var phone = $(this).val();
+            $.Ajax({
+                url: '/VisitorGateEntry/GetVisitorGateEntryByPhone/',
+                data: { Phone: phone }
+            }).done(function (visitor) {
+                $('.VisitorNameTextBoxFor').val(visitor.VisitorName);
+                $('.AddressTextBoxFor').val(visitor.Address);
+            });
+        });
+
+        $('.ToWhomTextBoxFor').autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: '/VisitorGateEntry/GetEmployeesByName/',
+                    type: "GET",
+                    datatype: "html",
+                    data: { SerachString: request.term },
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        $('.EmployeeIdHiddenFor').val('');
+                        response($.map(data, function (employee) {
+                            return { label: employee.Name, value: employee.Name, EmployeeId: employee.EmployeeId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var employeedI = ui.item.EmployeeId;
+                $('.EmployeeIdHiddenFor').val(employeedI);
+            },
+
+        });
+
+        $('.ToWhomTextBoxFor').unbind('change').bind('change', function () {
+            var employeeName = $(this).val();
+            $.Ajax({
+                url: '/VisitorGateEntry/GetEmployeeByName/',
+                data: { EmployeeName: employeeName }
+            }).done(function (employee) {
+                $('.ConfirmedByTextBoxFor').val(employee.Name);
+            });
+        });
+    </script>
+}
+
+
+
+

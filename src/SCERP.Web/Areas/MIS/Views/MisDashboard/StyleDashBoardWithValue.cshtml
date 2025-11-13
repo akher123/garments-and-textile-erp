@@ -1,0 +1,85 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var buyerName1 = "";
+    var buyerName2 = "";
+}
+<div class="header-title">
+    <h2>MANAGEMENT INFORMATION SYSTEM(ORDER STATUS)</h2>
+</div>
+<section class="formCover">
+    <div class="mis-title">BUYER WISE ORDER STATUS DETAIL</div>
+    <table class="webgrid-table" style="text-align: center;">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+            {
+                <tr>
+
+                    @{
+
+                buyerName2 = row.ItemArray[0].ToString();
+                if (buyerName1 == buyerName2)
+                {
+                    <td style="border-top: none; border-bottom: none; "></td>
+
+                }
+                else
+                {
+                    buyerName1 = buyerName2;
+                    <td style="border-bottom: none">@buyerName2</td>
+                }
+                switch (row.ItemArray[1].ToString())
+                {
+
+                    case "1":
+                        <td style="background-color: lightsalmon">Order Qty</td>
+                        break;
+                    case "2":
+                    <td style="background-color: darkseagreen;color: #ffffff">Value</td>
+                        break;
+                
+
+                }
+                for (int i = 2; i < row.ItemArray.Length; i++)
+                {
+                    @*switch (row.ItemArray[1].ToString())
+                    {
+                       
+                        case "1":
+                        <td >@row.ItemArray[i].ToString()</td>
+                            break;
+                        case "2":
+                        <td>@row.ItemArray[i].ToString()</td>
+                            break;
+
+                    }*@
+                         if (@row.ItemArray[i].ToString() == "0")
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@row.ItemArray[i].ToString()</td>
+                            }
+
+                }
+
+}
+                </tr>
+            }
+            <tr>
+                <td style="border-bottom: none;border-left: none;border-right: none"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</section>

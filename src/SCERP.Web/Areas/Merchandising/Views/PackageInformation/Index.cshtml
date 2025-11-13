@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SCERP.Model.Mrc_PackageInformation>
+@{
+    ViewBag.Title = "Package Information";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class=" additem">
+    @using (@Html.BeginForm("Index", "PackageInformation", FormMethod.Post, new { @class = "PackageInformationSearchForm", name = "PackageInformationForm" }))
+    {
+        <div style="width: 500px; padding-left: 340px;">
+            <h2>Package Information</h2>
+        </div>
+        <section class="search formCover" style="margin-bottom: 7px;; font-size: 12px;">
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer Name")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("buyerId", null, "--select--", new {@class = "PackageInformation_Buyer", @action = "/Merchandising/PackageInformation/GetSepcSheetByBuyerId", @TargetClass = "PackageInformation_StyleNo"})
+                    </td>             
+
+                    <td>
+                        @Html.Label("Style No")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("StyleNo", null, "--select--", new {@class = "PackageInformation_StyleNo", @action = "/Merchandising/PackageInformation/GetJobNumberByStyleNo", @TargetClass = "PackageInformation_JobNumber"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Job Number")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("jobNo", null, "--select--", new { @class = "PackageInformation_JobNumber", @action = "/Merchandising/PackageInformation/GetOrderNoByJobNo", @TargetClass = "PackageInformation_OrderNumber" })
+                    </td>
+                    
+                    <td>
+                        @Html.Label("Order Number")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("OrderId", null, "--select--", new { @class = "PackageInformation_OrderNumber" })
+                    </td>
+                           
+                    <td></td>      
+                    <td>
+                        <button class="search" type="button" onclick=" search('/Merchandising/PackageInformation/Search', 'PackageInformationSearchForm') " />
+                    </td>
+                </tr>
+            </table>
+        </section>
+    }
+
+    <section class="search formCover">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Merchandising/PackageInformation/Edit">Add new</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model, rowCount: Model.Count(), autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+
+                        grid.Column("Mrc_PackageInformation.Mrc_OrderInformation.OrderNo", header: "Order No", format: @<text>@(item.Mrc_OrderInformation == null ? "" : item.Mrc_OrderInformation.OrderNo)</text>),
+                        grid.Column("PackageName", header: "Package Name"),                       
+                        grid.Column("Mrc_PackageInformation.Mrc_StyleSize.StyleSizeTitle", header: "Style Size", format: @<text>@(item.Mrc_StyleSize == null ? "" : item.Mrc_StyleSize.StyleSizeTitle)</text>),
+                        grid.Column("Mrc_PackageInformation.Mrc_StyleColor.Name", header: "Color Name", format: @<text>@(item.Mrc_StyleColor == null ? "" : item.Mrc_StyleColor.Name)</text>),
+
+                        grid.Column("Quantity", header: "Quantity"),
+
+                        grid.Column("Edit", format: @<text><button class="edit" action="/Merchandising/PackageInformation/Edit?PackageInfoId=@item.PackageInfoId"></button></text>),
+                        grid.Column("Delete", format: @<text><button class="delete" action="/Merchandising/PackageInformation/Delete/@item.PackageInfoId"></button></text>)
+                        ))
+            ;
+        }
+    </section>
+
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/PackageInformation.js"></script>
+}
+
+
+
+

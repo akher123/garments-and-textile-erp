@@ -1,0 +1,74 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Accessories Booking</h2>
+</div>
+<section class="common-search-section">
+    @*<strong>ORDER STYLE LIST</strong>*@
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("Index", "AccessoriesBooking", FormMethod.Get, new { @class = "AccessoriesBookingSearchForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td class="custom-tag">ORDER STYLE LIST</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@data_val = "false", @placeholder = "To date",@class="datepicker"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid gridSelect",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "buyerOrderStyle-row",
+            selectedRowStyle: "buyerOrderStyle-row",
+            rowStyle: "buyerOrderStyle-row",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("RefNo", canSort: false, header: "Order#"),
+                    grid.Column("StyleName", canSort: false, header: "Style NO"),
+                    grid.Column("SeasonName", canSort: false, header: "Season"),
+                    grid.Column("ItemName", canSort: false, header: String.Format("{0}", "ItemName")),
+                    grid.Column("Quantity", canSort: false, header: "Quantity"),
+                    grid.Column("EFD", canSort: false, header: "Ship Date", format: @<text>@(item.EFD == null ? "" : item.EFD.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Select", canSort: false, format: @<text><button class="btnDetail" targentclass="accessoriesBookingContainer" action="/Commercial/AccessoriesBooking/AccessoriesBookingList?OrderNo=@item.OrderNo&OrderStyleRefId=@item.OrderStyleRefId"></button></text>)));
+        }
+    </div>
+
+    <br/>
+
+    <div class="accessoriesBookingContainer"></div>
+
+</section>
+
+
+

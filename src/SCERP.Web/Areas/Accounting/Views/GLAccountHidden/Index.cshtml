@@ -1,0 +1,133 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GLAccountHiddenViewModel
+
+@{
+    ViewBag.Title = "GL Account Head Hidden";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<section class="search formCover">
+    <div class="header-title">
+        <text>
+            <b>
+                Hide GL Accounts :
+                @Html.RadioButton("RadioButton", "true")  Yes
+                @Html.RadioButton("RadioButton", "false", true)  No
+            </b>
+        </text>
+        <input type="submit" class="AjaxPopup  addButton" value="Save" id="save" name="save" onclick="Save()" />
+    </div>
+</section>
+
+
+<section class="search formCover">
+
+    <div class="header-title">
+        <h2> GL Account Head (Hidden List) </h2>
+    </div>
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Accounting/GLAccountHidden/Edit"> Add new </button>
+        </div>
+        @{
+            var gridHidden = new WebGrid(canPage: true, rowsPerPage: 10, canSort: true, ajaxUpdateContainerId: "grid");
+            gridHidden.Bind(Model.GLAccountHidden, rowCount: Model.totalRecordsHidden, autoSortAndPage: false);
+            gridHidden.Pager(WebGridPagerModes.All);
+            @gridHidden.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: gridHidden.Columns(
+                    gridHidden.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    gridHidden.Column("ControlCode", header: "Control Code"),
+                    gridHidden.Column("AccountCode", header: "Account Code"),
+                    gridHidden.Column("AccountName", header: "Account Name"),
+                    gridHidden.Column(header: "Make Visible", format:@<text><button class="edit" action="/Accounting/GLAccountHidden/MakeVisible/@item.Id"></button></text>)
+                 ));
+        }
+
+    </div>
+</section>
+
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="header-title">
+            <h2> GL Account Head (Visible List) </h2>
+        </div>
+        @{
+            var gridVisible = new WebGrid(canPage: true, rowsPerPage: 10, canSort: true, ajaxUpdateContainerId: "gridVisible");
+            gridVisible.Bind(Model.GLAccountVisible, rowCount: Model.totalRecordsVisible, autoSortAndPage: false);
+            gridVisible.Pager(WebGridPagerModes.All);
+            @gridVisible.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: gridVisible.Columns(
+                        gridVisible.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                        gridVisible.Column("ControlCode", header: "Control Code"),
+                        gridVisible.Column("AccountCode", header: "Account Code"),
+                        gridVisible.Column("AccountName", header: "Account Name"),
+                        gridVisible.Column(header: "Make Hidden", format:@<text><button class="edit" action="/Accounting/GLAccountHidden/MakeHidden/@item.Id"></button></text>)
+                 ));
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var output = 2;
+
+            $.ajax({
+                url: '/GLAccountHidden/GetStatus',
+                type: 'Get',
+                dataType: "json",
+
+                success: function (result) {
+                    output = result;
+                    if (output == 1) {
+                        $('#RadioButton').prop('checked', true);
+                    }
+                },
+                error: function failCallBk(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("An error occurred while processing your request. Please try again.");
+                }
+            });
+        });
+
+
+        function Save(response) {
+
+            var temp = $('input:radio[name=RadioButton]:checked').val();
+
+            var url = "/GLAccountHidden/SaveStatus";
+
+            $.Ajax({
+                url: url,
+                type: "get",
+                data: { "status": temp }
+            });
+        }
+
+    </script>
+}

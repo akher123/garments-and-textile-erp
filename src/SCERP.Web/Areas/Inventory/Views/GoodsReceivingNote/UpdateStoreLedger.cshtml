@@ -1,0 +1,174 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GoodsReceivingNoteViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    var qualityCertificateDetailIds = Model.VQualityCertificateDetails;
+    ViewBag.Title = "Update Store Ledger ";
+}
+
+@using (Html.BeginForm("SendToStoreLager", "GoodsReceivingNote", FormMethod.Get, new { @class = "GoodsReceivingNoteSearchForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GoodsReceivingNotesId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Goods Receiving Note</legend>
+        <table class="tabefont">
+            <tr>
+                <td>GRN Ref No:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.GRNNumber, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td>GRN Date:</td>
+                <td>
+                    @(Model.GRNDate != null ? Html.TextBoxFor(x => x.GRNDate, new { @Value = Model.GRNDate.Value.ToString("dd/MM/yyyy"), @style = "background-color: #40e0d0", @readonly = "readonly" }) : Html.TextBoxFor(x => x.GRNDate))
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Transaction Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.TransactionDate, new { @placeholder = "Transaction date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Deduction")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.DeductionAmt)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Remarks)
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+        <hr />
+        <div style="overflow: auto">
+            <table id="ItemStoreDetail" class="tabefont webgrid-table " style="width: auto">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("SL#")
+                        </th>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("Specification")
+                        </th>
+                        <th>
+                            @Html.Label("SuppQty")
+                        </th>
+                        <th>
+                            @Html.Label("RecQty")
+                        </th>
+
+                        <th>
+                            @Html.Label("RejQty")
+                        </th>
+                        <th>
+                            @Html.Label("OkQty")
+                        </th>
+                        <th>
+                            @Html.Label("Unit")
+                        </th>
+                        <th>
+                            @Html.Label("Unit Cost")
+                        </th>
+                        <th>
+                            @Html.Label("Amount")
+                        </th>
+                        <th>
+                            @Html.Label("Currency")
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var index = 0; index < qualityCertificateDetailIds.Count(); index++)
+                    {
+                        <tr class="webgrid-row-style">
+                            <td>
+                                @(index + 1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].ItemName)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].ItemId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].Specification)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].SuppliedQuantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].ReceivedQuantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].RejectedQuantity)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].CorrectQuantity)
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].CorrectQuantity)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].UnitName)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].MeasurementUnitId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].UnitPrice)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].UnitPrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.VQualityCertificateDetails[index].CureencyName)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].CurrencyId)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].SizeId)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].BrandId)
+                                @Html.HiddenFor(x => x.VQualityCertificateDetails[index].OriginId)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="9">
+                            <b style="float: right">
+                                Grand Total:
+                            </b>
+
+                        </td>
+                        <td>
+                            <b style="float: right">
+                                @Model.GetTotalAmount()
+                            </b>
+                        </td>
+                        <td>
+                            @Model.CurrencyName
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="tabefont" style="float: right">
+                <input type="submit" value="Send to Store Ledger" />
+            </p>
+        </div>
+    </fieldset>
+
+}

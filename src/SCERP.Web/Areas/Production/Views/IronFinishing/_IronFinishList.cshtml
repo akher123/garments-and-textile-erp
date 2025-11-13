@@ -1,0 +1,39 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.FinishingProcessViewModel
+@{
+    Layout = null;
+}
+
+<div class="additem" style="overflow-y: scroll; overflow-x: scroll;width: 970px; height: 308px;">
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VwFinishingProcess, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                grid.Columns(
+                          grid.Column("FinishingProcessRefId", header: "RefId", canSort: false),
+                          grid.Column("BuyerName", header: "Buyer", canSort: false),
+                          grid.Column("OrderName", header: "OrderNumber", canSort: false),
+                          grid.Column("StyleName", header: "Style", canSort: false),
+                          grid.Column("ColorName", header: "Color", canSort: false),
+                          grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.InputDate ?? ""), header: "Input-Date"),
+                          grid.Column("HourName", header: "Hour", canSort: false),
+                          grid.Column("InputQuantity", header: "InputQty", canSort: false),
+                          grid.Column("Edit", canSort: false, format: @<text><button class="btnDetail" targentclass="Finishingplate" action="/Production/IronFinishing/Find?FinishingProcess.FinishingProcessId=@item.FinishingProcessId"></button></text>),
+                          grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Production/IronFinishing/Delete?FinishingProcessId=@item.FinishingProcessId"></button></text>)));
+    }
+</div>
+
+

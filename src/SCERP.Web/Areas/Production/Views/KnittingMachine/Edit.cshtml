@@ -1,0 +1,123 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Production.Models.MachineViewModel
+@{
+    ViewBag.Title = Model.MachineId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "KnittingMachine", FormMethod.Post, new { @class = "KnittingMachineform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MachineId)
+    <fieldset>
+        <legend>Machine</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Processor :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.ProcessorRefId, Model.ProcessorsSeasonsSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Name)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("No Of Machine")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NoMachine)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.NoMachine)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Efficiency(%):")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EfficiencyPer)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EfficiencyPer)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Idel(%):")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IdelPer)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.IdelPer)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description)
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Inventory_ItemStore] (
+    [ItemStoreId]             BIGINT           IDENTITY (1, 1) NOT NULL,
+    [RequisitionNo]           NVARCHAR (100)   NOT NULL,
+    [ReceiveType]             INT              NULL,
+    [IsProcessRequsition]     BIT              NOT NULL,
+    [PurchaseReferencePerson] UNIQUEIDENTIFIER NULL,
+    [LCNo]                    NVARCHAR (100)   NULL,
+    [InvoiceNo]               NVARCHAR (100)   NULL,
+    [InvoiceDate]             DATETIME         NULL,
+    [GateEntry]               NVARCHAR (100)   NULL,
+    [GateEntryDate]           DATETIME         NULL,
+    [SupplierId]              INT              NULL,
+    [ReceivedDate]            DATETIME         NULL,
+    [ReceivedRegisterNo]      NVARCHAR (100)   NULL,
+    [SuppliedStatus]          CHAR (1)         NULL,
+    [QCStatus]                TINYINT          NOT NULL,
+    [CreatedDate]             DATETIME         NULL,
+    [CreatedBy]               UNIQUEIDENTIFIER NULL,
+    [EditedDate]              DATETIME         NULL,
+    [EditedBy]                UNIQUEIDENTIFIER NULL,
+    [IsActive]                BIT              CONSTRAINT [DF_InvItemStore_IsActive] DEFAULT ((1)) NOT NULL,
+    [Requisitor]              UNIQUEIDENTIFIER NULL,
+    CONSTRAINT [PK_InvItemStore] PRIMARY KEY CLUSTERED ([ItemStoreId] ASC),
+    CONSTRAINT [FK_Inventory_ItemStore_Mrc_SupplierCompany] FOREIGN KEY ([SupplierId]) REFERENCES [dbo].[Mrc_SupplierCompany] ([SupplierCompanyId])
+);
+

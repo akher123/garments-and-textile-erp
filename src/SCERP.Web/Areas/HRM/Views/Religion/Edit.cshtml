@@ -1,0 +1,64 @@
+﻿@model SCERP.Model.Religion
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReligionId > 0) ? "Edit" : "Add";
+}
+
+
+@using (Html.BeginForm("Save", "Religion", FormMethod.Post, new { @class = "religionform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ReligionId)
+
+    <fieldset>
+        <legend>Religion</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Religion:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Religion (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NameInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NameInBengali)
+                </td>
+            </tr>
+           
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}

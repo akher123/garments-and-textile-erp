@@ -1,0 +1,53 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProductionLineViewModel
+
+<section class="search formCover" style="margin-bottom: 3px;">
+    <table class="tabefont">
+
+        <tr>
+            <td>
+                @Html.Label("Company :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/Planning/ProductionLine/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.Label("Branch :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Planning/ProductionLine/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Unit :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Planning/ProductionLine/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.Label("Department :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.DepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                <input type="button" class="searchAction" />
+            </td>
+        </tr>     
+    </table>
+
+</section>
+
+

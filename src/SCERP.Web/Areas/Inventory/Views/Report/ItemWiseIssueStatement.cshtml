@@ -1,0 +1,85 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Item Wise Issue Statement</h2>
+</div>
+
+@using (Html.BeginForm("ItemWiseIssueStatement", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+       @Html.HiddenFor(x => x.ItemCode, new { @class = "ItemCodeHiddenField" })
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class="datepicker", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @placeholder = "To date" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Item Name")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ItemName, new { @onkeyup = "itemAutocomplite(this)", @placeholder = "All" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+
+<section>
+    @if (Model.ReprotUrl!=null)
+    {
+        Html.RenderPartial("~/Areas/Inventory/Views/Shared/_SSRSReportContorl.cshtml",new ViewDataDictionary
+        {
+           {"ReportUrl",Model.ReprotUrl}
+        });
+    }
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        function itemAutocomplite(obj) {
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/ItemStore/AutocompliteItemByBranch",
+                        type: "POST",
+                        data: { itemName: request.term },
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ItemName + "_" + item.ItemCode, value: item.ItemName, ItemCode: item.ItemCode };
+                            }));
+                        });
+                },
+                select: function (event, ui) {
+                    $('.ItemCodeHiddenField').val(ui.item.ItemCode);
+
+                },
+            });
+        }
+    </script>
+}

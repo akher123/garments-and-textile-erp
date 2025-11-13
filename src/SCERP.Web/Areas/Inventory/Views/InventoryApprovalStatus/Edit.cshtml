@@ -1,0 +1,54 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryApprovalStatusViewModel
+@{
+    ViewBag.Title = Model.ApprovalStatusId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "InventoryApprovalStatus", FormMethod.Post, new { @class = "InventoryApprovalStatuform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ApprovalStatusId)
+    <fieldset>
+        <legend>Approval Status</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Status:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.StatusName, new { htmlAttributes = new { @class = "text ui-widget-content ui-corner-all" } })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.StatusName)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description, new { @class = "text ui-widget-content ui-corner-all" })
+                </td>
+                <td class="1"></td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+

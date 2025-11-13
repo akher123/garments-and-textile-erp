@@ -1,0 +1,102 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.OvertimeEligibleEmployeeViewModel
+@{
+    ViewBag.Title = "EmployeeSection";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.OvertimeEligibleEmployeeDetails.Count > 0) ? "" : "none";
+    string StartDate = null;
+    string EndDate = null;
+    if (Model.SearchFieldModel.StartDate.HasValue && Model.SearchFieldModel.EndDate.HasValue)
+    {
+        StartDate = Model.SearchFieldModel.StartDate.GetValueOrDefault().ToString("dd/M/yyyy");
+        EndDate = Model.SearchFieldModel.EndDate.GetValueOrDefault().ToString("dd/M/yyyy");
+    }
+}
+@using (Html.BeginForm("Index", "OvertimeEligibleEmployee", FormMethod.Get, new { @class = "OvertimeEligibleEmployeeSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="header-title">
+        <h2>Overtime Ineligible Employee</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                @{Html.RenderPartial("~/Areas/HRM/Views/OvertimeEligibleEmployee/_SearchOvertimeEligibleEmployee.cshtml", Model); }
+                <tr>
+                    <td>
+                        @Html.Label("Employee ID :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new { @class = "SearchByEmployeeCardId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("From: ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To: ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+                }
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input type="button" class="addButton" onclick="search('@Url.Action("IneligibleCreate", "OvertimeEligibleEmployee",new{IsSearch=true})','OvertimeEligibleEmployeeSearchForm')" value="Delete Overtime" />
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.OvertimeEligibleEmployeeDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                     grid.Column("EmployeeName", header: "Employee Name", format: @<text>@(item.EmployeeName ?? "")</text>),
+                    grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+               grid.Column("OvertimeDate", header: "OT Date", format: @<text>@(item.OvertimeDate == null ? "" : item.OvertimeDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("OvertimeHour", header: "OT"),
+                    grid.Column("Designation", header: "Designation ", format: @<text>@(item.Designation ?? "")</text>),
+                    grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                    grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                    grid.Column("UnitName", header: "Unit", format: @<text>@(item.UnitName ?? "")</text>),
+                    grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                    grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                    grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>),
+
+                    grid.Column("Edit", format:@<text><button class="edit" action="/HRM/OvertimeEligibleEmployee/Create?OvertimeEligibleEmployeeId=@item.OvertimeEligibleEmployeeId"></button></text>, canSort: false),
+                    grid.Column("Delete", format:@<text><button class="delete" action="/HRM/OvertimeEligibleEmployee/Delete?OvertimeEligibleEmployeeId=@item.OvertimeEligibleEmployeeId"></button></text>, canSort: false)
+
+                 ));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "OvertimeEligibleEmployee", new { SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, StartDate = StartDate, EndDate = EndDate, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "OvertimeEligibleEmployee", new { SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, StartDate = StartDate, EndDate = EndDate, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId })" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>

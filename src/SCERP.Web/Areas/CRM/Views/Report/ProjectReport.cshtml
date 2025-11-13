@@ -1,0 +1,62 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.CRM.Models.ViewModels.ProjectDocumentInfoViewModel
+
+@{
+    ViewBag.Title = "Project Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.DocumentationReport.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "ProjectDocumentInfo", FormMethod.Get, new {@class = "ProjectDocumentInfoSearchForm submit-allow ignore-validation"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Project Report</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>Module Name: </td>
+                    <td>@Html.DropDownListFor(model => model.ModuleId, Model.ModuleSelectListItem, "-Select-")</td>
+
+                    <td>@Html.Label("Search Field: ")</td>
+                    <td>@Html.TextBoxFor(x => x.SearchKey)</td>
+
+                    <td>@Html.Label("From Date: ")</td>
+                    <td>@Html.EditorFor(x => x.FromDate)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.Label("To Date: ")</td>
+                    <td>@Html.EditorFor(x => x.ToDate)</td>
+
+                    <td></td>
+                    <td><input type="button" class="addButton" value="Show Report" onclick=" javascript: PrintReport(); " /></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var moduleId = $('#ModuleId option:selected').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var searchString = $('#SearchKey').val();
+
+            window.open("/CRM/Report/ProjectReportPrint?&moduleId=" + moduleId + "&fromDate=" + fromDate + "&toDate=" + toDate + "&searchString=" + searchString + "&ExportType=DOC");
+        }
+
+    </script>
+}

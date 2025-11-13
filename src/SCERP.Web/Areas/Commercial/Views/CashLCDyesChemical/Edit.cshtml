@@ -1,0 +1,273 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashLCDyesChemicalViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.CashLcId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "CashLCDyesChemical", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.CommCashLc.CashLcId)
+
+
+<fieldset>
+    <legend> Cash Lc Dyes Chemical </legend>
+    @*<table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+
+            <tr>
+
+                <td class="fieldTitleCls">Cash Lc No:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.CashLcNo)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Bank Ref:</td>
+
+                <td> @Html.DropDownListFor(model => model.CommCashLc.BankRef, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" }) </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Cash Lc Value:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.LcValue)
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="fieldTitleCls">Lc Date:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.LcDate, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Item:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.Item)
+                </td>
+
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Quantity:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.Quantity)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Supplier Name:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.SupplierName)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Port Of Delivery:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.PortOfDelivery)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Country Of Origin:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.CountryOfOrigin)
+                </td>
+
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Payment Terms:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.PaymentTerms)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Bill Of Import:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.BillOfImportCode)
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td class="fieldTitleCls">Date of Bill:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.DateOfBill, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="fieldTitleCls">Payment Date:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.PaymentDate, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="fieldTitleCls">Date of B/L:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.DateOfBL, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+
+
+
+            <tr>
+                <td class="fieldTitleCls">Remarks:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.Remarks)
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    @Html.SaveButton()
+                </td>
+
+            </tr>
+        </table>*@
+
+    <table class="tabefont">
+        <tr>
+            <td> </td>
+            <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Cash LC Machinary No: ") </td>
+            <td> @Html.TextBoxFor(model => model.CommCashLc.CashLcNo) </td>
+            <td>@Html.Label("*", new { @class = "labelInstruction" })</td>
+            <td> </td>
+            <td> @Html.Label("Cash LC Value : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.LcValue, new { @placeholder = "LC Value" }) </td>
+            <td>@Html.Label("*", new { @class = "labelInstruction" })</td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("LC Date : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.LcDate, new { @placeholder = "LC Date", @class = "datepicker" }) </td>
+            <td></td>
+
+            <td> </td>
+            <td> @Html.Label("Item : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.Item, new { @placeholder = "item", id = "lcQuantityId" }) </td>
+            <td>@Html.Label("*", new { @class = "labelInstruction" })</td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Quantity: ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.Quantity) </td>
+            <td>@Html.Label("*", new { @class = "labelInstruction" })</td>
+
+
+            <td> </td>
+            <td> @Html.Label("Supplier Name: ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.SupplierName) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Shipment Mode : ") </td>
+            <td> @Html.DropDownListFor(p => p.CommCashLc.ShipmentMode, Model.ShipModeSelectListItem, "-Select-") </td>
+            <td></td>
+
+
+            <td> </td>
+            <td> @Html.Label("Port Of Develary: ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.PortOfDelivery) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Country Of Origin") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.CountryOfOrigin) </td>
+            <td></td>
+
+            <td> </td>
+            <td> @Html.Label("Payment Terms : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.PaymentTerms) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Bill of Import: ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.BillOfImportCode) </td>
+            <td></td>
+
+            <td> </td>
+            <td> @Html.Label("Date Of Bill: ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.DateOfBill, new { @placeholder = "Date Of Bill", @class = "datepicker" }) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Payment Date : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.PaymentDate, new { @placeholder = "Payment Date", @class = "datepicker" }) </td>
+            <td> </td>
+
+            <td> </td>
+            <td> @Html.Label("Date of B/L : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.DateOfBL) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Bank Ref: ") </td>
+            <td> @Html.DropDownListFor(model => model.CommCashLc.BankRef, Model.BankSelectListItem, "-Select-") </td>
+            <td></td>
+
+            <td> </td>
+            <td> @Html.Label("Bill Of Entry : ") </td>
+            <td> @Html.TextBoxFor(p => p.CommCashLc.BillOfEntry) </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> @Html.Label("Remarks:") </td>
+            <td>  @Html.TextAreaFor(x => x.CommCashLc.Remarks) </td>
+            <td></td>
+
+            <td> </td>
+            <td>  </td>
+            <td>
+                @Html.SaveButton()
+            </td>
+            <td></td>
+
+        </tr>
+
+    </table>
+</fieldset>
+}
+
+

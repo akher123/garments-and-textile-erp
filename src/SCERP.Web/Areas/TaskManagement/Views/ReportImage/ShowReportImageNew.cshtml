@@ -1,0 +1,170 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.TaskManagement.Models.ReportImageViewModel
+@{
+    ViewBag.Title = "ShowReportImageNew";
+    Layout = "~/Views/Shared/_LayoutReportImage.cshtml";
+}
+
+@{
+
+    var query = from m1 in Model.Subjects join m2 in Model.Modules on m1.ModuleId equals m2.ModuleId select new { subjectid = m1.SubjectId, sname = m1.SubjectName,moduleid=m2.ModuleId, mname = m2.ModuleName };
+    var hrm = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid==1 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname};
+    var payroll = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid==11 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var accountingandfinance = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid==3 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var inventory = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid==4 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var merchandising = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid==5 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var production = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid == 7 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var commercial = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid == 8 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var taskmanagement = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid == 12 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var planningandmaint = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid == 6 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+    var maintenance = from t1 in Model.ReportImages join t2 in query on t1.SubjectId equals t2.subjectid where t2.moduleid == 13 select new { reportid = t1.ReportImageId, reportname = t1.ReportName, reporturl = t1.ReportImageUrl, subject = t2.sname, module = t2.mname };
+
+
+
+}
+<div class="row">
+    <div class="col-sm-2">
+        <div class="nav-side-menu">
+            <div class="brand"><a href="/TaskManagement/ReportImage/ShowReportImageNew"><img src="~/Content/ReportImageContent/images/logo.png" width="120px" alt="Logo"></a></div>
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+
+                    <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <a href="#"><i class="fa fa-header"></i> HRM <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="products">
+                        @foreach (var item in hrm)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                        
+                        
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#service" class="collapsed">
+                        <a href="#"><i class="fa fa-table"></i> Payroll <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="service">
+                        @foreach (var item in payroll)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#new" class="collapsed">
+                        <a href="#"><i class="fa fa-indent"></i> Accounting & Finance <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new">
+                        @foreach (var item in accountingandfinance)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#new1" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Inventory <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new1">
+                        @foreach (var item in inventory)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new2" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Merchandising <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new2">
+                        @foreach (var item in merchandising)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new3" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Production <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new3">
+                        @foreach (var item in production)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new4" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Commercial <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new4">
+                        @foreach (var item in commercial)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new5" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Task Management<span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new5">
+                        @foreach (var item in taskmanagement)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new6" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Planning & Maintenance <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new6">
+                        @foreach (var item in planningandmaint)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    <li data-toggle="collapse" data-target="#new7" class="collapsed">
+                        <a href="#"><i class="fa fa-globe"></i> Maintenance <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new7">
+                        @foreach (var item in maintenance)
+                        {
+                            <li class="" id="@item.reportid"><a href="#">@item.reportname</a></li>
+                        }
+                    </ul>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <div class="main-content" id="imageDisplay">
+            
+            
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function() {
+
+            $(".sub-menu li").click(function () {
+                var imageid = this.id;
+               
+                $('.sub-menu li').removeClass("active");
+                $(this).addClass("active");
+               
+                
+                $.ajax({
+                    url: "/TaskManagement/ReportImage/ShowReportImageAjax?id=" + imageid,
+                    
+                    success: function (result) {
+                        
+                      
+                        $("#imageDisplay").html(result);
+                    }
+                });
+            });
+            
+           
+        });
+        
+    </script>
+}

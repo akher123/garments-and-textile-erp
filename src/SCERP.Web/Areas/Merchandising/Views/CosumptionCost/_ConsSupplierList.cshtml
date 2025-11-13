@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SCERP.Model.MerchandisingModel.OM_ConsumptionSupplier>
+@{
+    Layout = null;
+}
+<table class="webgrid-table webgrid" id="webgrid">
+    <thead class="webgrid-header">
+    <tr>
+        <th>Supplier</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        
+        <th>Remarks</th>
+   
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var consSup in Model)
+    {
+        <tr>
+            <td>@consSup.Mrc_SupplierCompany.CompanyName</td>
+            <td>@consSup.Quantity</td>
+            <td>@consSup.Rate</td>
+           
+            <td>@consSup.Remarks</td>
+         
+            <td><input type="button"  onclick="deleteConsSupplier(this)"  action="/CosumptionCost/Delete?ConsumptionSupplierId=@consSup.ConsumptionSupplierId" value="delete"/></td>
+        </tr>
+    }
+
+    </tbody>
+
+</table>
+
+<script type="text/javascript">
+
+
+    $('#btnConsSupplier').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var url = form.attr('action');
+        var type = form.attr('method');
+        var data = form.serialize();
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                // e.preventDefault();
+                return false;
+            } else {
+                $.Ajax({
+                    url: url,
+                    type: type,
+                    data: data
+                }).done(function (resp) {
+                    if (resp === true) {
+                        form.DialogClose();
+                    }
+                });
+            }
+           
+        }
+       
+    });
+
+    function deleteConsSupplier(obj) {
+        var button = $(obj);
+        var form = button.parents('form:first');
+        var url = button.attr('action');
+        var type = "POST";
+        jQuery.Confirm(SCERP.Messages.DeleteConfirmation, function (r) {
+            if (r) {
+                $.Ajax({
+                    url: url,
+                    type: type,
+                    dataType: 'JSON'
+                }).done(function (resp) {
+
+                    if (resp === true) {
+                        form.DialogClose();
+                    }
+                });
+            }
+        });
+        e.preventDefault();
+        return false;
+    }
+
+  
+</script>

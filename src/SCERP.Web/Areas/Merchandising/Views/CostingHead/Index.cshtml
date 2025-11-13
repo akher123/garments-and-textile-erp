@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SCERP.Model.Mrc_CostingHead>  
+@{
+    ViewBag.Title = "CostingHead";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class=" additem">
+    <div style="width:500px; padding-left:340px;">
+        <h2>Style Costing Head  </h2>
+    </div>
+    <div style="margin-bottom: 3px;">
+        <button class="AjaxPopup addButton" action="/Merchandising/CostingHead/Edit">Add New</button>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model, rowCount: Model.Count(), autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(grid.Column("Title", header: "Head Name"),
+                grid.Column("Description"),
+                grid.Column("Edit", format:
+                    @<text><button class="edit" action="/Merchandising/CostingHead/Edit?CostingHeadId=@item.CostingHeadId"></button></text>),
+                grid.Column("Delete",format:
+                    @<text><button class="delete" action="/Merchandising/CostingHead/Delete/@item.CostingHeadId"></button></text>
+                    )));
+    }
+
+</div>
+

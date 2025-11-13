@@ -1,0 +1,42 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = null;
+}
+<table>
+    <tr>
+        <td>
+            <input type="button" id="toggoleButton" value="+" />
+            <div id="SewingInputProcessList">
+                @if (Model.VwSewingInputProcesses.Any())
+                {
+                    @Html.Partial("~/Areas/Production/Views/SewingInputProcess/_SewingInputParent.cshtml", Model)
+                }
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td id="sewingInputProcess" class="sewingDetail">
+            @if (Model.PivotDictionary.Any())
+            {
+                @Html.Partial("~/Areas/Production/Views/SewingInputProcess/_SewingInput.cshtml", Model)
+            }
+        </td>
+    </tr>
+</table>
+
+
+    <script type="text/javascript">
+
+        $("#toggoleButton").click(function () {
+            var value = $(this).val();
+            if (value == '+') {
+                $(this).val("-");
+            } else {
+                $(this).val("+");
+            }
+            $("#SewingInputProcessList").toggle("1000");
+
+        });
+        $("#SewingInputProcessList").hide();
+    </script>

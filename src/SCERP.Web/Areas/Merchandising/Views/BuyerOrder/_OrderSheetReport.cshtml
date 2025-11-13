@@ -1,0 +1,137 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    Layout = null;
+    var orderSheet = Model.OrderSheet;
+}
+<div id="btnReportPrintCover" style="margin-bottom: 5px;">
+    @*<div id="btnReportPrint" class="printReport" action="pdfReportContainer">Print report</div>*@
+    <div class="printReport" id="btnReportPrint">
+        <a href="@Url.Action("ShowPdfOrderSheet", "BuyerOrder", new { OrderNo =Model.OrderNo})" target="_blank">PDF</a>
+    </div> 
+</div>
+<div id="pdfReportContainer">
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px ;margin-left: 20px;"align="left" >
+        <thead >
+         
+            <tr >
+                <td  style="text-align: center">
+                    <b>Plummy Fashions Limited</b>
+                </td>
+            </tr>
+            <tr>
+                <td  style="text-align: center">
+                    North Norshingpur, Fatullah, Narayongonj
+                </td>
+            </tr>
+            <tr>
+                <td  style="text-align: center">
+                  Order Sheet
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+    <div>
+     
+        <table class="auto-style1 pdfReportTable" border="1" style="margin-bottom: 1px;">
+     
+            <tbody class="reportBody">
+                <tr class="reportTR">
+                    <td class="reportTD" style="width: 120px;"><b>Reference No :</b></td>
+                    <td class="reportTD" style="width: 30%;">@orderSheet.VBuyerOrder.OrderNo</td>
+                    <td class="reportTD" rowspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td class="reportTD"><b>Buyer :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.BuyerName</td>
+                </tr>
+                <tr class="reportTR">
+                    <td class="reportTD" style="width: 120px;"><b>Order No :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.RefNo</td>
+                    <td class="reportTD" style="width: 120px;"><b>Order Type :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.OTypeName</td>
+                </tr>
+                <tr class="reportTR">
+                    <td class="reportTD"><b>Order Date</b></td>
+                    <td class="reportTD">@String.Format("{0:d/M/yyyy}", orderSheet.VBuyerOrder.OrderDate)</td>
+                    <td class="reportTD"><b>Payment Term :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.PayTerm</td>
+                </tr>
+                <tr class="reportTR">
+                    <td class="reportTD"><b>Buyer Order No :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.BuyerRef</td>
+                    <td class="reportTD"><b>Shipment Date :</b></td>
+                    <td class="reportTD">@String.Format("{0:d/M/yyyy}", orderSheet.VBuyerOrder.ShipDate)</td>
+                </tr>
+                <tr class="reportTR">
+                    <td class="reportTD"><b>Order Quantity :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.Quantity</td>
+                    <td class="reportTD"><b>Merchadiser :</b></td>
+                    <td class="reportTH">@orderSheet.VBuyerOrder.EmpName</td>
+                </tr>
+                <tr class="reportTR">
+                    <td class="reportTD"><b>Fabrication :</b></td>
+                    <td class="reportTD">@orderSheet.VBuyerOrder.Fab</td>
+                    <td class="reportTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        @foreach (var styleShip in orderSheet.OrderStyles)
+        {
+            <table class="auto-style1 pdfReportTable" border="1">
+
+                <tbody class="reportBody">
+                    <tr class="reportTR">
+                        <td class="reportTD" style="width:100px;"><b>Article :</b></td>
+                        <td class="reportTD">@styleShip.Value.BuyOrdStyle.BuyerArt</td>
+                    </tr>
+                    <tr>
+                        <td class=" reportTD"><b>Style :</b></td>
+                        <td class=" reportTD">@styleShip.Value.BuyOrdStyle.StyleName </td>
+                    </tr>
+                    <tr>
+                        <td class="reportTD"><b>Item :</b></td>
+                        <td class="reportTD">@styleShip.Value.BuyOrdStyle.ItemName</td>
+
+                    </tr>
+                    <tr>
+                        <td class="reportTD"><b>Quantity : </b></td>
+                        <td class="reportTD">@styleShip.Value.BuyOrdStyle.Quantity</td>
+                    </tr>
+                    <tr class="reportTR">
+                        <td colspan="6">
+                            <table class="auto-style1 pdfReportTable" border="0">
+                                <thead class="reportThead" style="margin: 1px;">
+                                    <tr class="reportTR" style="background-color: gray">
+                                        @foreach (DataColumn col in styleShip.Value.OrderShipTable.Columns)
+                                        {
+                                            <th class="reportTD">@col.ColumnName</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody class="reportBody">
+                                    @foreach (DataRow row in styleShip.Value.OrderShipTable.Rows)
+                                    {
+                                        <tr class="reportTR">
+                                            @foreach (DataColumn col in styleShip.Value.OrderShipTable.Columns)
+                                            {
+                                                <td class="reportTD">@(row[col.ColumnName] ?? "")</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+        }
+
+    </div>
+
+</div>

@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeGradeSalaryPercentageViewModel
+@{
+    ViewBag.Title = "EmployeeGradeSalaryPercentage";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeGradeSalaryPercentages.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "EmployeeGradeSalaryPercentage", FormMethod.Get, new { @class = "EmployeeGradeSalaryPercentageSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div style="width:auto; padding-left:100px;">
+        <h3>Employee Grade  Salary Percentage</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            <tr>
+
+                <td>
+                    @Html.Label("Employee Type : ")
+                </td>
+                <td colspan="1">
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "-select-", new { @class = "EmployeeType ", @action = "/HRM/EmployeeGradeSalaryPercentage/GetEmpGradeByEmpType", @TargetClass = "EmployeeGrade" })
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Employee Grade: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeGradeId, Model.EmployeeGradeSelectListItem, "-select-", new { @class = "EmployeeGrade" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+       
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/EmployeeGradeSalaryPercentage/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeGradeSalaryPercentages, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+                           grid.Column("EmployeeGrade.EmployeeType.Title", header: "Employee Type"),
+                           grid.Column("EmployeeGrade.Name", header: "Employee Grade"),
+                                  grid.Column("Medical", header: "Medical", canSort: false),
+                                  grid.Column("Conveyance", header: "Conveyance", canSort: false),
+                                  grid.Column("Food", header: "Food", canSort: false),
+                                  grid.Column("HouseRentPercentage", header: "House Rent(%)", canSort: false),
+                         grid.Column("BasicPercentageRate", header: "Basic Salary Rate", canSort: false),
+                         grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeGradeSalaryPercentage/Edit?EmployeeGradeSalaryPercentageId=@item.EmployeeGradeSalaryPercentageId"></button></text>),
+                         grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/HRM/EmployeeGradeSalaryPercentage/Delete?EmployeeGradeSalaryPercentageId=@item.EmployeeGradeSalaryPercentageId"></button></text>)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "EmployeeGradeSalaryPercentage", new { SearchByEmployeeGradeId = Model.SearchFieldModel.SearchByEmployeeGradeId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "EmployeeGradeSalaryPercentage", new { SearchByEmployeeGradeId = Model.SearchFieldModel.SearchByEmployeeGradeId })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/EmployeeSalarySetup.js"></script>
+}

@@ -1,0 +1,290 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleApprovalViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SampleTypeId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "SampleApproval", FormMethod.Post, new { @class = "SampleApprovalForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.SampleApprovalId)
+     @Html.HiddenFor(model => model.TimeAndActionId)
+
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <fieldset>
+            <legend>Sample Approval </legend>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x=>x.BuyerId, null, "--select--", new { @class = "mrc_Buyer", @action = "/Merchandising/SampleApproval/GetSepcSheetByBuyerId", @TargetClass = "mrc_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.BuyerId, "Required")
+                    </td>
+                </tr>
+      
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x=>x.Mrc_SpecificationSheet.StyleNo)
+                    </td>
+                    <td>
+                       
+                        @Html.DropDownListFor(x=>x.StyleNo, null, "--select--", new { @class = "mrc_StyleNo", @action = "/Merchandising/SampleApproval/GetJobNumberByStyleNo", @TargetClass = "mrc_JobNumber" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.StyleNo, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Job Number")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SpecSheetId, null, "--select--", new { @class = "mrc_JobNumber", @action = "/Merchandising/SampleSubmission/GetDevelopmentSampleType", @TargetClass = "mrc_SampleType" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SpecSheetId, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x => x.Mrc_KeyProcess.KeyProcessName)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.KeyProcessId,null,"--select--")
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.KeyProcessId, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x => x.Mrc_SampleType.SampleName)
+                    </td>
+                    <td>
+
+
+                        @Html.DropDownListFor(x => x.SampleTypeId, null, "--select--", new { @class = "mrc_SampleType" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SampleTypeId, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x => x.SampleApprovedStatusId)
+                    </td>
+                    <td>
+                
+                        @Html.DropDownListFor(x => x.SampleApprovedStatusId,null, "--select--")
+                    </td>
+                    <td>
+                      
+                    </td>
+                    <td>
+                    
+                    </td>
+                </tr>
+             
+             
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.PlannedStartDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.PlannedStartDate)
+                    </td>
+                    <td>
+                   
+                    </td>
+                    <td>
+                    
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.PlannedEndDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.PlannedEndDate)
+                    </td>
+                    <td>
+                   
+                    </td>
+                    <td>
+                     
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.ActualStartDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ActualStartDate)
+                    </td>
+                    <td>
+                      
+                    </td>
+                    <td>
+                   
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.ActualEndDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ActualEndDate)
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.BuyerComment)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.BuyerComment)
+                    </td>
+                    <td>
+                    
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.BuyerCommentDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BuyerCommentDate)
+                    </td>
+                    <td>
+                     
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x => x.DepartmentId)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId, null, "-select-",
+new { @class = "mrc_Department", @action = "/Merchandising/SampleApproval/GetAallEmployeeByDepartmentId", @TargetClass = "SampleApproval_ResponsiblePersonId" })
+                    </td>
+                    <td>
+                  
+                    </td>
+                    <td>
+                      
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(x => x.ResponsiblePersonId)
+                    </td>
+                    <td>
+                    
+                        @Html.DropDownListFor(x => x.ResponsiblePersonId, null, "-select-", new { @class = "SampleApproval_ResponsiblePersonId" })
+                    </td>
+                    <td>
+                     
+                    </td>
+                    <td>
+              
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Remarks)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Remarks)
+                    </td>
+                    <td>
+                    
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+                 
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </fieldset>
+            @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+    }
+    </div>
+
+@*@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/SampleApproval.js"></script>
+}*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+

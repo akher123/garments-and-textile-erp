@@ -1,0 +1,138 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.GatePassViewModel
+@{
+    ViewBag.Title = "Gate Pass";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@if (Model.TypeId == GatepassType.YarnType)
+{
+    <div class="header-title">
+        <h2>GENEREL YARN DELIVERY CHALLAN LIST</h2>
+    </div>
+}
+else
+{
+    <div class="header-title">
+        <h2>GENEREL YARN RECEIVED CHALLAN LIST</h2>
+    </div>
+}
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "GeneralYarnDelivery", FormMethod.Get, new { @class = "GeneralYarnDeliveryForm ignore-validation" }))
+        {
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.TypeId, Model.YarnTypeReceivesSelectListItem, "--Select--")
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @if (Model.TypeId == GatepassType.YarnType)
+        {
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/Inventory/GeneralYarnDelivery/Edit">Add New</button>
+            </div>
+        }
+
+        <div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.GatePasses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("Approved", format: @<text> <input type="checkbox" onclick="ApprovedGatePass(this)" @(item.IsApproved ? "checked" : "") value="@item.GatePassId" /> </text>),
+grid.Column("GYR", canSort: false, format: @<text>
+
+    @if (Model.TypeId == GatepassType.YarnType)
+     {
+        <input type="button" value="YRCV" class="Edit_Button" action="/Inventory/GeneralYarnDelivery/GeneralYarnReceiveWnd?GatePass.GatePassId=@item.GatePassId">
+     }
+     else
+     {
+        <input type="button" value="YRCV">
+     }
+</text>),
+
+grid.Column("RefId", header: "Ref Id"),
+grid.Column("BuyerName", header: "BuyerName", canSort: false),
+grid.Column("OrderName", header: "OrderName", canSort: false),
+grid.Column("StyleName", header: "StyleName", canSort: false),
+grid.Column("ChallanNo", header: "ChallanNo", canSort: false),
+grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ChallanDate ?? ""), header: "Challan Date"),
+grid.Column("PartyName", header: "M/S", canSort: false),
+grid.Column("Designation", header: "Through", canSort: false),
+grid.Column("Remarks", header: "Remarks", canSort: false),
+grid.Column("Edit", canSort: false, format: @<text>
+    @if (Model.TypeId == GatepassType.YarnType)
+     {
+        <button class="edit" action="/Inventory/GeneralYarnDelivery/Edit?GatePass.GatePassId=@item.GatePassId"></button>
+
+     }
+     else
+     {
+        <button class="edit" action="/Inventory/GeneralYarnDelivery/GeneralYarnReceiveWnd?GatePass.GatePassId=@item.GatePassId"></button>
+     }
+
+</text>),
+grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Inventory/GeneralYarnDelivery/Delete?GatePassId=@item.GatePassId"></button></text>),
+grid.Column("Challan", format:@<text> <a href="/Inventory/GeneralYarnDelivery/GeneralYarnDeliveryChallan?GatePassId=@item.GatePassId" target="_blank">Print</a> </text>, canSort: false)))
+
+            }
+        </div>
+    </div>
+</section>
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function ApprovedGatePass(chechBox) {
+            var $chechBox = $(chechBox);
+            var gatePassId = $chechBox.val();
+            $.Ajax({
+                url: '/GeneralYarnDelivery/ApprovedGeneralYarnChallanById/',
+                data: { GatePassId: gatePassId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}
+
+
+
+

@@ -1,0 +1,102 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessDeliveryViewModel
+@{
+    Layout = null;
+}
+<div id="deliveryDetailContainer">
+    @Html.HiddenFor(x => x.CuttingBatch.CuttingBatchId)
+    @Html.HiddenFor(x => x.CuttingBatch.CuttingBatchRefId, new { id = "cuttingBatchId" })
+    @Html.HiddenFor(x => x.CuttingTagId, new { id = "cuttingTagId" })
+    <table class="webgrid-table  webgrid-alternating-row ">
+        <thead>
+            @foreach (var row in Model.CuttingJobDictionary.Where(x => x.Key != "SizeRefId"))
+            {
+                <tr>
+                    <td>
+                        @row.Key
+                    </td>
+                    @foreach (var col in @row.Value.Select((x, i) => new { value = x, index = i }))
+                    {
+                        <td>
+                            @col.value
+                            @Html.HiddenFor(x => x.CuttingJobDictionary["Size"][col.index])
+                        </td>
+                    }
+                </tr>
+            }
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    @Html.Label("Sending Qty")
+                </td>
+                @foreach (var row in Model.DeliveryDetails)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.DeliveryDetails[row.Key].Quantity, new { @style = "width:90%;", @class = "TextBoxStyle rejectQtyTextBox",@Value=" " })
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].SizeRefId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].CuttingBatchId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].ComponentRefId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].CuttingTagId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].ColorRefId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].ProcessDeliveryId)
+                        @Html.HiddenFor(x => Model.DeliveryDetails[row.Key].CompId)
+                    </td>
+
+                }
+                <td>
+                    <span id="totlaRejectQty">
+                        @Model.DeliveryDetails.Sum(x => x.Value.Quantity)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="@(Model.DeliveryDetails.Count + 2)">
+                    <div style="float: right">
+                        <input type="button" id="addProcessDetailButton" class="buttonStyle" action="/EmbroideryProcess/AddProcessDeliveryDetail/" value="Add" />
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    function removeProcessDetail(id) {
+        $('#newRow_' + id).remove();
+    }
+
+    $('#addProcessDetailButton').click(function () {
+        var button = $(this);
+        var url = button.attr('action');
+        var cuttingBatchId = $('#cuttingBatchId').val();
+        var cuttingTagId = $('#cuttingTagId').val();
+        $('#newRow_' + cuttingBatchId + '-' + cuttingTagId).remove();
+        $.Ajax({
+            url: url,
+            type: "POST",
+            data: $('#deliveryDetailContainer :input').serialize()
+        }).done(function (responsHtml) {
+            $('#processDeliveryDetail').append(responsHtml);
+            
+        });
+    });
+
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".rejectQtyTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totlaRejectQty").html(sum);
+    }
+    $(".rejectQtyTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+
+</script>

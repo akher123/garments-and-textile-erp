@@ -1,0 +1,67 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.GroupSubProcessModel
+@{
+    ViewBag.Title = "YarnLot";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Finishing SubProcess</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "GroupSubProcess", FormMethod.Get, new {@class = "groupSubProcessForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        <b>
+                            @Html.Label("Criteria")
+                        </b>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Production/GroupSubProcess/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.GroupSubProcesses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                footerStyle: "webgrid-footer",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("GroupName", header: "Name"),
+                        grid.Column("SpCode", header: "Code"),
+                        grid.Column("GroupType", header: "GroupType"),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Production/GroupSubProcess/Edit?GroupSubProcess.GroupSubProcessId=@item.GroupSubProcessId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Production/GroupSubProcess/Delete?GroupSubProcessId=@item.GroupSubProcessId"></button></text>)));
+        }
+    </div>
+</section>
+

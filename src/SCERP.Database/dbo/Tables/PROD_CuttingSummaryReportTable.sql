@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[PROD_CuttingSummaryReportTable] (
+    [CompId]          VARCHAR (3) NULL,
+    [ViewDate]        DATETIME    NULL,
+    [OrderStyleRefId] VARCHAR (7) NULL,
+    [ColorRefId]      VARCHAR (4) NULL,
+    [OrdQty]          INT         NULL,
+    [TDCuttQty]       INT         NULL,
+    [TTLCuttQty]      INT         NULL,
+    [PanelRejectQty]  INT         NULL,
+    [FinalCuttQty]    INT         NULL,
+    [FinalCutPrc]     FLOAT (53)  NULL,
+    [PrintSent]       INT         NULL,
+    [PrintRcv]        INT         NULL,
+    [PrintRcBlance]   INT         NULL,
+    [EmbSent]         INT         NULL,
+    [EmbRcv]          INT         NULL,
+    [EmbRcvBalance]   INT         NULL,
+    [TDaySewInput]    INT         NULL,
+    [TTLSewInput]     INT         NULL,
+    [CuttBank]        INT         NULL,
+    [TDaySewOut]      INT         NULL,
+    [TTLSewOut]       INT         NULL,
+    [SewingWIP]       INT         NULL
+);
+

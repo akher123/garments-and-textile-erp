@@ -1,0 +1,83 @@
+﻿@model  SCERP.Web.Areas.Commercial.Models.ViewModel.ProFormaInvoiceViewModel
+@{
+
+    ViewBag.Title = Model.ProFormaInvoice.PiId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "ProFormaInvoice", FormMethod.Post, new { @class = "ProFormaInvoiceForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ProFormaInvoice.PiId)
+    <fieldset>
+        <legend>ProForma Invoice</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProFormaInvoice.PiRefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("PI No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProFormaInvoice.PiNo, new { @placeholder = "PI No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "Supplier:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.ProFormaInvoice.SupplierId, Model.SupplierSelectListItem, "-Select-", new { @id = "suplierDrdId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Received Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProFormaInvoice.ReceivedDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+   
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.ProFormaInvoice.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

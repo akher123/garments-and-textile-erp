@@ -1,0 +1,113 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    ViewBag.Title = "Advance MaterialIssue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Yarn Delivery</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "YarnDelivery", FormMethod.Get, new {@class = "YarnDeliveryForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Delivery Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                        <input type="button" class="addButton" target="_blank" onclick="YarnDeliverySummaryReport(this)" value="PDF"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/YarnDelivery/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.MaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                      grid.Column("IRNoteNo", canSort: false, header: "IRNNo", format: @<text>@(item.IRNoteNo ?? "--")</text>),
+                    @*grid.Column("IRefId", canSort: false, header: "RefNo", format: @<text>@(item.IRefId ?? "--")</text>),*@
+                    grid.Column("PartyName", canSort: false, header: "Party", format: @<text>@(item.PartyName ?? "--")</text>),
+                    grid.Column("ProgramRefId", canSort: false, header: "Program No", format: @<text>@(item.ProgramRefId ?? "--")</text>),
+                  
+                    grid.Column("IRNoteDate", canSort: false, header: "Date", format: @<text>@(item.IRNoteDate == null ? "" : item.IRNoteDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("BuyerName", canSort: false, header: "Buyer ", format: @<text>@(item.BuyerName ?? "")</text>),
+                    grid.Column("OrderNo", canSort: false, header: "OrderNo ", format: @<text>@(item.OrderNo ?? "")</text>),
+                    grid.Column("StyleNo", canSort: false, header: "StyleNo ", format: @<text>@(item.StyleNo ?? "")</text>),
+                    grid.Column("SlipNo", canSort: false, header: "Lot No ", format: @<text>@(item.SlipNo ?? "")</text>),
+                    grid.Column("Edit", format:@<text> <button class="edit" action="/Inventory/YarnDelivery/Edit?MaterialIssue.AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button> </text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/YarnDelivery/Delete?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button></text>, canSort: false),
+                        grid.Column("CLN&GPASS", format: @<text> <a href="/Inventory/YarnDelivery/YarnDeliveryChallanReport?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId&key=INV" target="_blank">Print</a> </text>, canSort: false)));
+        }
+
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function YarnDeliverySummaryReport(obj) {
+            var form = $(obj).parents('form:first');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/Inventory/YarnDelivery/YarnDeliverySummaryReport?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+    </script> 
+}
+
+
+

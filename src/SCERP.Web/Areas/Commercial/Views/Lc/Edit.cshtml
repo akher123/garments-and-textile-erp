@@ -1,0 +1,218 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.LcId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "Lc", FormMethod.Post, new { @class = "lcform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.LcId)
+
+    <fieldset>
+        <legend> LC/Sales Contact</legend>
+        <table class="tabefont">
+            <tr>
+                <td> </td>
+                <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LC TYPE : ") </td>
+                <td> @Html.DropDownListFor(model => model.LcType, Model.LcTypeSelectListItem, "-Select-") </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td> </td>
+                <td> @Html.Label("Group LC: ") </td>
+                <td> @Html.DropDownListFor(model => model.LcType, Model.LcGroupSelectListItem, "N/A") </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Buyer Name : ") </td>
+                <td> @Html.DropDownListFor(model => model.BuyerId, Model.BuyerSelectListItem, "-Select-") </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td> </td>
+                <td> @Html.Label("LC/SC No : ") </td>
+                <td> @Html.TextBoxFor(p => p.LcNo, new { @placeholder = "LC No" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LC Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.LcDate, new { @placeholder = "LC Date", @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Quantity : ") </td>
+                <td> @Html.TextBoxFor(p => p.LcQuantity, new { @placeholder = "LC/SC Qty", id = "lcQuantityId" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Amount($) : ") </td>
+                <td> @Html.TextBoxFor(p => p.LcAmount, new { @placeholder = "LC/SC Amount", id = "lcAmountId" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td> </td>
+                <td> @Html.Label("Maturity Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.MatureDate, new { @placeholder = "Mature Date", @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Commissions(%): ") </td>
+                <td> @Html.TextBoxFor(p => p.CommissionPrc, new { @placeholder = "Commission %", id = "commissionPrcId", onkeyup = "javascript:caculateCommissionAmount(this);" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td> </td>
+                <td> @Html.Label("Commission Amount($) ") </td>
+                <td> @Html.TextBoxFor(p => p.CommissionsAmount, new { @placeholder = "Commissions Amount", id = "commissionsAmountId", onkeyup = "javascript:caculateCommissionPrc(this);" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Expiry Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.ExpiryDate, new { @placeholder = "Expiry Date", @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Extention Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.ExtensionDate, new { @placeholder = "Extension Date", @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Shipment Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.ShipmentDate, new { @placeholder = "Shipment Date", @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Issuing Bank : ") </td>
+                <td> @Html.TextBoxFor(p => p.LcIssuingBank, new { @placeholder = "Lc Issuing Bank" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Issuing Bank Address : ") </td>
+                <td> @Html.TextAreaFor(p => p.LcIssuingBankAddress, new { @placeholder = "Lc Issuing Bank Address" }) </td>
+                <td> </td>
+
+                <td> </td>
+                <td> @Html.Label("Receiving Bank : ") </td>
+                <td> @Html.DropDownListFor(model => model.ReceivingBankId, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Receiving Bank Address : ") </td>
+                <td> @Html.TextAreaFor(p => p.ReceivingBankAddress, new { @placeholder = "Receiving Bank Address" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Freight: ") </td>
+                <td> @Html.TextBoxFor(p => p.FreightAmount, new { @placeholder = "Freight Amount" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("UD/EO No : ") </td>
+                <td> @Html.TextBoxFor(p => p.UdEoNo, new { @placeholder = "UD/EO No" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("File No: ") </td>
+                <td> @Html.TextBoxFor(p => p.FileNo, new { @placeholder = "File No" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Partial Shipment : ") </td>
+                <td> @Html.DropDownListFor(model => model.PartialShipment, Model.PartialShipmentSelectListItem, "-Select-") </td>
+                <td> </td>
+
+                <td> </td>
+                <td> @Html.Label("Status : ") </td>
+                <td> @Html.DropDownListFor(model => model.RStatus, Model.StatusSelectListItem) </td>
+                <td> @Html.SaveButton() </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+        function caculateCommissionAmount(obj) {
+          
+            var lcAmount = $('#lcAmountId').val();
+            var commissionPrc = $(obj).val();
+            var commissionAmount = 0;
+            if (lcAmount.length > 0 && commissionPrc.length>0) {
+                commissionAmount = parseFloat(lcAmount) * parseFloat(commissionPrc) * 0.01;
+            } else {
+                $('#lcAmountId').css('border-color', 'red');
+            }
+            $('#commissionsAmountId').val(commissionAmount);
+        }
+
+
+        function caculateCommissionPrc(obj) {
+           
+            var lcAmount = $('#lcAmountId').val();
+            var commissionPrc = 0;
+            var commissionAmount =$(obj).val();
+            if (lcAmount.length > 0 && commissionAmount.length > 0) {
+
+                commissionPrc = parseFloat(commissionAmount) * 100 / parseFloat(lcAmount);
+            } else {
+                $('#lcAmountId').css('border-color', 'red');
+            }
+            $('#commissionPrcId').val(commissionPrc);
+        }
+
+    
+
+    </script>
+}

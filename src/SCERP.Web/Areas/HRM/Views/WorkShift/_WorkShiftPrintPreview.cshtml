@@ -1,0 +1,92 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.WorkShiftViewModel
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+<div class="additem ">
+    <div>
+        <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+        <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+
+            <thead class="reportHeader">
+                <tr class="reportTitle">
+                    <td colspan="15" align="center">WorkShift</td>
+                </tr>
+                <tr>
+                    <td>Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+                </tr>
+            </thead>
+        </table>
+
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td class="reportTH">
+
+                        SI.No
+                    </td>
+                    <td class="reportTH">
+                        WorkShift Name
+                    </td>
+               
+                    <td class="reportTH">
+                        WorkShift Name (Detail)
+                    </td>
+
+                    <td class="reportTH">
+                        Start Time
+                    </td>
+
+                    <td class="reportTH">
+                        End Time
+                    </td>
+                    <td class="reportTH">
+                        In Buffer Time (Minutes)
+                    </td>
+                    <td class="reportTH">
+                        Description
+                    </td>
+
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var workShift in Model.WorkShifts)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @workShift.Name
+                        </td>
+                        <td class="reportTD">
+                            @workShift.NameDetail
+                        </td>
+                        <td class="reportTD">
+
+                            @DateTime.Today.Add(workShift.StartTime).ToString("hh:mm tt")
+                        </td>
+                        <td class="reportTD">
+
+                            @DateTime.Today.Add(workShift.EndTime).ToString("hh:mm tt")
+                        </td>
+                        <td class="reportTD">
+                            @workShift.InBufferTime
+                        </td>
+                        <td class="reportTD">
+                            @workShift.Description
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+

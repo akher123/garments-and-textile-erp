@@ -1,0 +1,27 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.CustomSqlQuaryViewModel
+@{
+    Layout = null;
+}
+
+<tr id="newRow-@Model.Parameters[Model.Key].ReportParameterId">
+    <td>
+        @Html.HiddenFor(x => x.Parameters[Model.Key].CustomSqlQuaryId)
+        @Html.TextBoxFor(x => x.Parameters[Model.Key].Pname, new { @style = "width:120px;" })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.Parameters[Model.Key].Pvalue, new { @style = "width:120px;" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.Parameters[Model.Key].LabelFor, new { @style = "width:120px;" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.Parameters[Model.Key].Querystring, new { @style = "width:150px;" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Parameters[Model.Key].ControlType, new SelectList(Model.ControlTypes, "ControlType", "Value", Model.Parameters[Model.Key].ControlType), new { @style = "width:120px;" })
+    </td>
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>

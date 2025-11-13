@@ -1,0 +1,87 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+
+@{
+    ViewBag.Title = Model.OmSize.SizeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("CreateSize", "BuyerOrderColorSize", FormMethod.Post, new { @class = "BuyerOrderColorSizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.OmSize.SizeId)
+    <fieldset>
+        <legend>Size</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.OmSize.SizeRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Size :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.OmSize.SizeName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.OmSize.SizeName)
+                </td>
+            </tr>
+         
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Create" id="createSizeButton" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#createSizeButton').unbind('click').bind('click', function () {
+            var $form = $(this).parents('form:first');
+            var data = $form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                $form.validate();
+                if (!$form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    $.Ajax({
+                        url: $form.attr('action'),
+                        dataType: 'json',
+                        type: 'post',
+                        data: data,
+                    }).done(function (resposns) {
+                        if (resposns > 0) {
+                            $form.DialogClose();
+                        }
+
+                    });
+                }
+            }
+
+
+        });
+    </script>
+}

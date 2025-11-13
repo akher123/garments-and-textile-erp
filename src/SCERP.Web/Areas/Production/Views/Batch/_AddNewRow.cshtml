@@ -1,0 +1,66 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.BatchDetailDictionary)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].ItemName)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].ItemName, new { id = "Item_" + m.Key })
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].ItemId, new { id = "Item_ItemId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].ComponentName)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].ComponentName, new { id = "Component_" + m.Key })
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].ComponentRefId, new { id = "Component_ComponentRefId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].MdiaSizeName)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].MdiaSizeName, new { id = "Machinedia_" + m.Key })
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].MdiaSizeRefId, new { id = "machineDialSizeId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].FdiaSizeName)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].FdiaSizeName, new { id = "FinishDia_" + m.Key })
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].FdiaSizeRefId, new { id = "finishDialSizeId_" + m.Key })
+        </td>
+
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].GSM)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].GSM, new { id = "GSM_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].StLength)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].StLength, new { id = "StLength_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].RollQty)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].RollQty, new { id = "RollQty_" + m.Key })
+        </td>
+       
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].FLength)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].FLength, new { id = "FLength_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].Quantity)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].Quantity, new { id = "Quantity_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].Remarks)
+            @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+        </td>
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@m.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}
+
+
+
+

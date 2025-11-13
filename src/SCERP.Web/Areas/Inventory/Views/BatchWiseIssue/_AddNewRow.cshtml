@@ -1,0 +1,37 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.BachWiseIssueViewModel 
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.MaterialIssueDetails[Model.Key].ItemId">
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].MaterialIssueDetailId, new { @class = "mIDetailId-" + @Model.MaterialIssueDetails[Model.Key].ItemId })
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].MaterialIssueId)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].ItemId)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].ItemName)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].StockInHand)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].StockInHand)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].RequiredQuantity)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].RequiredQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].IssuedQuantity)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].IssuedQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].IssuedItemRate)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].IssuedItemRate)
+    </td>
+    <td>
+        @Html.ValueFor(x => x.MaterialIssueDetails[Model.Key].Remarks, "{0:dd/MM/yyyy}")
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].Remarks)
+    </td>
+
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+

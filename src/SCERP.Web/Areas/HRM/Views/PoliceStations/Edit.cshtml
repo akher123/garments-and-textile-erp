@@ -1,0 +1,92 @@
+﻿
+@model SCERP.Model.PoliceStation
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "PoliceStations", FormMethod.Post, new { @class = "policestationform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Police Station</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+           
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Country:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.Country.Id, ViewBag.CountryItemList as SelectList, "-Select-", new { @class = "Common_CountryId", @action = "/HRM/PoliceStations/GetDistrictByCountry", @TargetClass = "Common_DistrictId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Country.Id)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">District:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.District.Id, ViewBag.DistrictItemList as SelectList, "-Select-", new { @class = "Common_DistrictId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.District.Id)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Police Station:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Police Station (In Bengali)</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NameInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NameInBengali)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}

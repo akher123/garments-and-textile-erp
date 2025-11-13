@@ -1,0 +1,117 @@
+﻿@model SCERP.Model.Custom.BranchViewModel
+
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+
+    <table class="pdfReportTable" style="border: 0;margin-bottom: 5px;">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Branch List</td>
+            </tr>
+            <tr>
+                <td class="clsDate">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <table class="pdfReportTable" border="1">
+        <thead class="reportThead">
+            <tr class="reportTR">
+                <td class="reportTH">
+                    SL.No
+                </td>
+                <td class="reportTH">
+                    Branch
+                </td>
+                <td class="reportTH">
+                    Company
+                </td>
+                <td class="reportTH">
+                    Address
+                </td>
+                <td class="reportTH">
+                    Police Station
+                </td>
+                <td class="reportTH">
+                    District
+                </td>
+                <td class="reportTH">
+                    Post Office
+                </td>
+                <td class="reportTH">
+                    Post Code
+                </td>
+                <td class="reportTH">
+                    Phone
+                </td>
+                <td class="reportTH">
+                    Fax
+                </td>
+                <td class="reportTH">
+                    Email
+                </td>
+            </tr>
+        </thead>
+        <tbody class="reportBody">
+
+            @foreach (var branch in Model.Branches)
+            {
+                <tr class="reportTR">
+                    <td class="reportTD">
+                        @rowCount
+                    </td>
+                    <td class="reportTD">
+                        @branch.Name
+                    </td>
+                    <td class="reportTD">
+                        @branch.Company.Name
+                    </td>
+                    <td class="reportTD">
+                        @branch.FullAddress
+                    </td>
+                    <td class="reportTD">
+                        @if (branch.PoliceStation != null)
+                        {
+                            @branch.PoliceStation.Name;
+                        };
+                    </td>
+                    <td class="reportTD">
+                        @if (branch.District != null)
+                        {
+                            @branch.District.Name;
+                        };
+                    </td>
+                    <td class="reportTD">
+                        @branch.PostOffice
+                    </td>
+                    <td class="reportTD">
+                        @branch.PostCode
+                    </td>
+                    <td class="reportTD">
+                        @branch.Phone
+                    </td>
+                    <td class="reportTD">
+                        @branch.Fax
+                    </td>
+                    <td class="reportTD">
+                        @branch.Email
+                    </td>
+                </tr>
+                rowCount += 1;
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+

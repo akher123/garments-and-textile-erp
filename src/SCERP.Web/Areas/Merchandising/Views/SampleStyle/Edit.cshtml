@@ -1,0 +1,157 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleStyleViewModel
+@{
+    ViewBag.Title = Model.SampleStyle.SampleStyleId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "SampleStyle", FormMethod.Post, new { @class = "SampleStyleEditform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SampleStyle.SampleStyleId)
+    @Html.HiddenFor(model => model.SampleStyle.SampleOrderId)
+    <fieldset>
+        <legend>Sample Style</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Style No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.StyleNo)
+                </td>
+                <td>
+                    @Html.Label("Sample Type:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.SampleType)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Sample Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SampleStyle.SampleDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("EF Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SampleStyle.EFDate, new { @class = "datepicker" })
+                </td>
+            </tr>
+            <tr>
+               
+                <td>
+                    @Html.Label("Item:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.ItemName)
+                </td>
+                <td>
+                    @Html.Label("Qty:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.StyleQty)
+                </td>
+            </tr>
+         
+            
+           
+            <tr>
+                <td>
+                    @Html.Label("Color:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.ColorName)
+                </td>
+                <td>
+                    @Html.Label("Size:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.SizeName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Fabrication:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.SampleStyle.Fabrication)
+                </td>
+                <td>
+                    @Html.Label("Fabric Qty:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.FabQty)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("GSM:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.Gsm)
+                </td>
+                <td>
+                    @Html.Label("Finish Dia:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.FinishDia)
+                </td>
+              
+              
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Rib Fab:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.RibFab)
+                </td>
+
+                <td>
+                    @Html.Label("Rib Qty:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.RibQty)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Contas Fab:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.ContasFab)
+                </td>
+
+                <td>
+                    @Html.Label("Contas Qty:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleStyle.ContasQty)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.SampleStyle.Remarks)
+                </td>
+                <td>
+                    
+                </td>
+
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> {{"class", "innerTabSaveButton addButton"}, {"TargentClass", "sampleStyleDetailList"}})
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

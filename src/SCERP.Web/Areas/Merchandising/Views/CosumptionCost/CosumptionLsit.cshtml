@@ -1,0 +1,88 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CosumptionCostViewModel
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Update", "CosumptionCost", FormMethod.Post))
+{
+    @Html.HiddenFor(x=>x.OrderStyleRefId)
+   
+    <div style="overflow: hidden">
+        @if(Model.IsSearch==true)
+        {
+            <div style="float: left; margin-bottom: 20px;">
+                <input onclick="search('/Merchandising/CosumptionCost/Index')" value="Back" id="backButton" class="addButton" type="button"/>
+            </div>
+        }
+     
+
+        <div style="float: right; margin-bottom: 20px;">
+            @Html.Button("Update", "button", new Dictionary<string, object> {{"class", "innerTabSaveButton buttonStyle"}, {"TargentClass", "cosumptionLsitContainer"}})
+        </div>
+    </div>
+
+    <div style="overflow: auto; height: 400px;font-size: 12px;">
+        <table class="webgrid-table" style="width: 100%">
+            <thead style="text-align: center " class="webgrid-header">
+                <tr>
+                    <th>
+                        SL#
+                    </th>
+                    <th>
+                        Order
+                    </th>
+                    <th>
+                        Style
+                    </th>
+
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Rate
+                    </th>
+
+                    <th>
+                         Supplier
+                    </th>
+                </tr>
+            </thead>
+            @for (var index = 0; index < Model.Consumptions.Count; index++)
+            {
+
+                <tr>
+                    <td>
+                        @Convert.ToString(index + 1)
+                    </td>
+                    <td>
+
+                        @Html.DisplayFor(x => x.Consumptions[index].OrderName)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(x => x.Consumptions[index].OrderStyleRefId)
+                        @Html.DisplayFor(x => x.Consumptions[index].StyleName)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(x => x.Consumptions[index].ConsumptionId)
+                        @Html.DisplayFor(x => x.Consumptions[index].ItemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.Consumptions[index].Quantity)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Consumptions[index].Rate, new { @placeholder = "Product Rate" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Consumptions[index].SupplierId, new SelectList(Model.SupplierCompanies, "SupplierCompanyId", "CompanyName", Model.Consumptions[index].SupplierId), "-Select-")
+                    </td>
+                    @*<td>
+                        <button class="AjaxPopup addButton" action="/Merchandising/CosumptionCost/ConsSupplier?ConsumptionId=@Model.Consumptions[index].ConsumptionId&&ConsQty=@Model.Consumptions[index].Quantity&&ConsRate=@Model.Consumptions[index].Rate">Assign Supplier</button>
+                    </td>*@
+                </tr>
+            }
+        </table>
+    </div>
+
+}

@@ -1,0 +1,140 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CompConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<div style="font-size: 12px;background-color:gainsboro">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">DIA</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Update", "CompConsumptionDetail", FormMethod.Post, new { @class = "CompConsumptionDetailSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CompomentSlNo)
+        @Html.HiddenFor(model => model.CompConsumptionId)
+        @Html.HiddenFor(model => model.CompConsumptionDetailId)
+        @Html.HiddenFor(model => model.OrderStyleRefId)
+        @Html.HiddenFor(model => model.ConsRefId)
+        <fieldset>
+            <legend style="color: red">Fabric Consumtion for @Model.CompConsumption.ComponentName Component </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Update Type"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ConsTypeRefId, Model.ConsTypeSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "GSM"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.GSM, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "LayQty"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.LayQty, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Gr.Color"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.BaseColorName, new { @class = "Color_SearchString sizeColorUpdate" })
+                        @Html.HiddenFor(x => x.BaseColorRefId, new { @class = "Color_ColorRef" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Color"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.GColorRefId, Model.GColorSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Length"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Length, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Allow.(%)"))
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.PAllow, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Finish DIA"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PSizeName, new { @class = "Size_SearchString" })
+                        @Html.HiddenFor(x => x.PSizeRefId, new { @class = "Size_SizeRef" })
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Size"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.GSizeRefId, Model.GSizeSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Width"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Width, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Cons/DZ"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PDzCons, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+               
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "M/C DIA"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TableWidth, new { @class = "SearchSize_TableWidthID" })
+                        @Html.HiddenFor(x => x.TableWidthID, new { @class = "Size_TableWidthID" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Approved L/D"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ApprovedLD, new { @class = "compConsUpdate",  })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "F.Color"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PColorName, new { @class = "PColor_SearchString PColorColorUpdate", @style = "width:90px;" })
+                        @Html.HiddenFor(x => x.PColorRefId, new { @class = "Color_PColorRefId" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "P.Loss(%)"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ProcessLoss, new { @class = "compConsUpdate", @style = "width:70px;" })
+                    </td>
+                  
+                    <td>
+                        <input type="button" class="updateFabricConsQty addButton" value="Update" />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+</div>

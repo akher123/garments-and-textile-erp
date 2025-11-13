@@ -1,0 +1,76 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.BbLcPurchaseViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BbLcPurchaseId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "BbLcPurchase", FormMethod.Post, new {@class = "lcstyleform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.BbLcPurchaseId)
+
+    <fieldset>
+        <legend>BB LC to Booking Integration</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Lc No :</td>
+                <td>
+                    @Html.TextBoxFor(x => x.BbLcNo)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Order No :</td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrderNo)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#BbLcNo').autocomplete(
+            {
+                source: '@Url.Action("TagBbLcSearch", "BbLcPurchase")'
+            });
+
+        $('#PurchaseOrderNo').autocomplete(
+            {
+                source: '@Url.Action("TagPurchaseOrderSearch", "BbLcPurchase")'
+            });
+        
+    </script>
+}

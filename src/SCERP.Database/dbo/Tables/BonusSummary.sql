@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[BonusSummary] (
+    [BonusSummaryId]      INT              IDENTITY (1, 1) NOT NULL,
+    [EmployeeId]          UNIQUEIDENTIFIER NOT NULL,
+    [EmployeeCardId]      NVARCHAR (10)    NOT NULL,
+    [EmployeeName]        NVARCHAR (100)   NOT NULL,
+    [EmployeeDesignation] NVARCHAR (100)   NULL,
+    [CompanyId]           INT              NULL,
+    [BranchId]            INT              NULL,
+    [BranchUnitId]        INT              NULL,
+    [EmployeeTypeId]      INT              NULL,
+    [EmployeeType]        NVARCHAR (100)   NULL,
+    [DepartmentId]        INT              NULL,
+    [Department]          NVARCHAR (100)   NULL,
+    [SectionId]           INT              NULL,
+    [SectionName]         NVARCHAR (100)   NULL,
+    [LineId]              INT              NULL,
+    [LineName]            NVARCHAR (100)   NULL,
+    [GrossSalary]         DECIMAL (18, 2)  NULL,
+    [Amount]              DECIMAL (18, 2)  NULL,
+    [JoiningDate]         DATE             NULL,
+    [ExecuteDate]         DATE             NULL,
+    [CreateDate]          DATETIME         NULL,
+    [CreatedBy]           UNIQUEIDENTIFIER NULL,
+    [IsActive]            BIT              NULL
+);
+

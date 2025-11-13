@@ -1,0 +1,119 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/treeView.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Inventory chart of Item</h2>
+</div>
+
+    
+@*@using (Html.BeginForm("Index", "InventoryItem", FormMethod.Get, new { @class = "InventoryItemSearchForm" }))
+    {
+
+        <section class="search formCover" style="margin-bottom: 3px;">
+
+            <table class="tabefont">
+
+                <tr>
+                    <td>
+                        @Html.Label("Item Name : ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchKey,new{@placeholder="Serach by item"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+
+        </section>
+    }*@
+
+
+<section class="search formCover">
+    <div class="tree additem">
+        <ul>
+            <li>
+                <span style="font-size: 20px; color: #1e90ff">
+                    @Html.ActionLink("Create Group", "Create", "ControlAccount", new { @class = "AjaxPopup", title = "Add", @action = "/Inventory/InventoryItem/EditGroup" })
+                </span>
+            </li>
+            @foreach (var group in Model.ChartOfItemTreeViews)
+            {
+                <li>
+                    <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="margin-left: 10px; font-size: 20px; color: #006400">
+                        <a class="AjaxPopup" action="/Inventory/InventoryItem/EditGroup?GroupId=@group.GroupId">@group.GroupCode-@group.GroupName</a>
+                        @Html.ActionLink("Create Subgroup", "Create", "InventoryItem", new { @style = "font-sizer: 15px", @class = "AjaxPopup", title = "Add", @action = "/Inventory/InventoryItem/EditSubGroup?GroupId=" + @group.GroupId })
+                    </span>
+
+                    <ul>
+                        @foreach (var subGroup in group.Inventory_SubGroup)
+                        {
+                            <li>
+                                <a></a><span>&nbsp;&nbsp;</span>
+                                <span style="font-size: 20px; color: #800000">
+                                    <a class="AjaxPopup" action="/Inventory/InventoryItem/EditSubGroup?SubGroupId=@subGroup.SubGroupId">@subGroup.SubGroupCode-@subGroup.SubGroupName</a>
+
+                                    @Html.ActionLink("Create Item", "Edit", "InventoryItem", new { @style = "font-sizer: 10px", @class = "AjaxPopup", title = "Add ", @action = "/Inventory/InventoryItem/Edit?SubGroupId=" + subGroup.SubGroupId })
+                                </span>
+                                <ul>
+                                    @foreach (var item in subGroup.Inventory_Item)
+                                    {
+                                        <li>
+                                            <a></a><span>&nbsp;&nbsp;</span>
+                                            <span style="font-size: 20px; color: #1e90ff">
+                                                <a title="Edit Item" class="AjaxPopup" style="font-sizer: 15px" action="/Inventory/InventoryItem/Edit?ItemId=@item.ItemId">@item.ItemCode-@item.ItemName</a>
+                                            </span>
+
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
+
+
+
+@section scripts
+{
+        <script src="~/Scripts/SCERP/treeView.js"></script>
+        <script src="~/Scripts/SCERP/UserManagement/UserPermissionForDepartmentLevel.js"></script>
+        <script type="text/javascript">
+            $(".SearchGroupAutocomplite").autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/InventoryItem/AutocompliteGroup",
+                        type: "POST",
+                        data: { groupName: request.term }
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+
+                                return { label: item.GroupCode + "_" + item.GroupName, value: item.GroupName, GroupId: item.GroupId };
+                            }));
+
+                        });
+
+                },
+                select: function (event, ui) {
+
+                },
+            });
+
+
+        </script>
+    }

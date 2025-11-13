@@ -1,0 +1,77 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcStyleViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.LcStyleId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "LcStyle", FormMethod.Post, new {@class = "lcstyleform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.LcStyleId)
+
+    <fieldset>
+        <legend>Time and Action Calendar</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Lc No :</td>
+                <td>
+                    @Html.TextBoxFor(x => x.LcNo)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td></td>
+            </tr>          
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Order No :</td>
+                <td>
+                    @Html.TextBoxFor(x => x.OrderNo)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                 
+                </td>
+            </tr>
+                                                                                                                      
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#LcNo').autocomplete(
+            {
+                source: '@Url.Action("TagLcSearch", "LcStyle")'
+            });
+
+        $('#OrderNo').autocomplete(
+            {
+                source: '@Url.Action("TagOrderSearch", "LcStyle")'
+            });
+    </script>
+}

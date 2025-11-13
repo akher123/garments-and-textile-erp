@@ -1,0 +1,45 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TargetProductionViewModel
+@{
+    Layout = null;
+}
+<table class="webgrid-table ">
+    <thead class="webgrid-header">
+        <tr>
+            <th>@Html.Label("TargetProduction Ref")</th>
+            <th>
+                @Html.Label("TargetDate")
+            </th>
+            <th>
+                @Html.Label("Target Qty")
+            </th>
+            <th>
+                @Html.Label("Unit")
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            for (int i = 0; i < Model.TargetProductionDetails.Count; i++)
+            {
+                <tr class="webgrid-row-style">
+                    <td>
+                        @Model.PlanTargetProduction.TargetProductionRefId
+                    </td>
+                    <td>
+                       @String.Format("{0:d/M/yyyy}", Model.TargetProductionDetails[i].TargetDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => Model.TargetProductionDetails[i].TargetQty)
+                    </td>
+                    <td>
+                       Peces
+                    </td>
+                </tr>
+            }
+        }
+
+
+</table>
+

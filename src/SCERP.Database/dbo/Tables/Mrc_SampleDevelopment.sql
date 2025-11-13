@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Mrc_SampleDevelopment] (
+    [SampleDevelopmentId]       INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]               INT              NOT NULL,
+    [SampleTypeId]              INT              NOT NULL,
+    [SampleRoomSendingStatusId] INT              NULL,
+    [SampleRoomSendingDate]     DATETIME         NULL,
+    [SampleReadyStatusId]       INT              NULL,
+    [KeyProcessId]              INT              NOT NULL,
+    [Fabrication]               NVARCHAR (MAX)   NULL,
+    [Quantity]                  INT              NULL,
+    [SamplePrice]               DECIMAL (18, 3)  NULL,
+    [CurrencyId]                INT              NULL,
+    [CreatedDate]               DATETIME         NULL,
+    [CreatedBy]                 UNIQUEIDENTIFIER NULL,
+    [EditedDate]                DATETIME         NULL,
+    [EditedBy]                  UNIQUEIDENTIFIER NULL,
+    [IsActive]                  BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_SampleDevelopment] PRIMARY KEY CLUSTERED ([SampleDevelopmentId] ASC),
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_Currency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([CurrencyId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_ReadyStatus] FOREIGN KEY ([SampleReadyStatusId]) REFERENCES [dbo].[Mrc_ReadyStatus] ([ReadyStatusId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_SampleType] FOREIGN KEY ([SampleTypeId]) REFERENCES [dbo].[Mrc_SampleType] ([SampleTypeId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_SendingStatus] FOREIGN KEY ([SampleRoomSendingStatusId]) REFERENCES [dbo].[Mrc_SendingStatus] ([SendingStatusId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_SampleDevelopment_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId]) ON DELETE CASCADE
+);
+

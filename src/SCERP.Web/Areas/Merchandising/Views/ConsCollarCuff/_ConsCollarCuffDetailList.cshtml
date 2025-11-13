@@ -1,0 +1,152 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CompConsumptionDetailViewModel
+@{
+    Layout = null;
+    var sumQty = 0;
+}
+<div class="CompConsDetailList">
+    <div>
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS Color"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS Size"))
+                    </th>
+
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "F.Color"))
+                    </th>
+                    <th>
+                      @Html.Label(" ", String.Format("{0}", "F.Size"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "GSM"))
+                    </th>
+                 
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Ply"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "GMTS QTY"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "KntPL(%)"))
+                    </th>
+
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "DyPL(%)"))
+                    </th>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Req. Qty"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/DZ"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons/Pcs"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Weight(Kg)"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Type"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Print Type"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "L/D"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var compConsDetail in Model.CompConsumptionDetails)
+                {
+                    <tr>
+                        <td>
+                            @compConsDetail.GColorName
+                        </td>
+                        <td>
+                            @compConsDetail.GSizeName
+
+                        </td>
+
+                        <td>
+                            @compConsDetail.PColorName
+                        </td>
+                        <td>
+                            @compConsDetail.PSizeName
+                        </td>
+                        <td>
+                            @compConsDetail.GSM
+                        </td>
+                     
+                        <td>
+                            @compConsDetail.LayQty
+                        </td>
+                        <td>
+                            @compConsDetail.QuantityP
+                        </td>
+
+                        <td>
+                            @compConsDetail.PAllow
+                        </td>
+                        <td>
+                            @compConsDetail.ProcessLoss
+                        </td>
+                        <td>
+                            @if (compConsDetail.CompType==2)
+                            {
+                                sumQty += compConsDetail.RequiredQty.GetValueOrDefault();
+                                 @(compConsDetail.RequiredQty.GetValueOrDefault())
+                            }
+                            else
+                            {
+                                sumQty+= (compConsDetail.RequiredQty*2).GetValueOrDefault();
+                                 @(compConsDetail.RequiredQty * 2)
+                            }
+                        </td>
+                        <td>
+                            @compConsDetail.PDzCons
+                        </td>
+                        <td>
+                            @compConsDetail.PPQty
+                        </td>
+                        <td>
+                            @compConsDetail.Weight
+                        </td>
+                        <td>
+                            @compConsDetail.BaseColorName
+                        </td>
+                        <td>
+                            @compConsDetail.TableWidth
+                        </td>
+                        <td>
+                            @compConsDetail.ApprovedLD
+                        </td>
+                    </tr>
+                }
+
+                <tr style="background-color: goldenrod">
+
+                    <td colspan="9">
+                        Σ (T.QTY.)
+                    </td>
+                  
+                    <td>
+                        @sumQty
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @Model.CompConsumptionDetails.Sum(x => (decimal?)x.Weight)
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

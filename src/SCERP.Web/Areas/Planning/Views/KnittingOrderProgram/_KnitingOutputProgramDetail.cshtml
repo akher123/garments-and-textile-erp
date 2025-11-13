@@ -1,0 +1,200 @@
+﻿@using AutoMapper.Internal
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+<fieldset>
+    <legend>Output Program </legend>
+    <table id="tableOutputDetail">
+        <tr>
+            <td>
+                @Html.Label("", "Fabric")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ItemName, new { @placeholder = "Fabric", id = "fabricItemName", @class = "itemautocompliteItem", @data_target = "#fabricItemCode", @action = "/Consumption/AutocompliteItem" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ItemCode, new { id = "fabricItemCode" })
+
+            </td>
+
+            <td>
+                @Html.Label("", "Color")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ColorName, new { @placeholder = "Color", id = "fabricColorName", @class = "autocompliteColorSerach", @data_target = "#fabricColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ColorRefId, new { id = "fabricColorRefId" })
+            </td>
+            <td>
+                <div class="dropdown" style="float: right">
+                    <button class="dropbtn">Dropdown▼</button>
+                    <div class="dropdown-content">
+                        <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">M/C DIA</a>
+                        <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">Finish DIA</a>
+                        <a href="#" class="AjaxPopup" action="/Inventory/InventoryItem/CreatePartial?GroupCode=@Model.GroupCode">Fabric Type</a>
+                     </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "M/C DIA")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.SizeName, new { @placeholder = "M/C DIA", id = "machineDialSizeName", @class = "autocompliteSizeSerach", @data_target = "#machineDialSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.SizeRefId, new { id = "machineDialSizeId" })
+            </td>
+            <td>
+                @Html.Label("", "Finish DIA")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.FinishSizeName, new { @placeholder = "Finish DIA", id = "finishDialSizeName", @class = "autocompliteSizeSerach", @data_target = "#finishDialSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.FinishSizeRefId, new { id = "finishDialSizeId" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "GSM")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.GSM, new { id = "fabricGsm" })
+            </td>
+            <td>
+                @Html.Label("", "S.Length")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.SleeveLength, new { id = "fabricStitchLength" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Rate")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Rate, new { id = "fabricRate" })
+            </td>
+            <td>
+                @Html.Label("", "Qty(Kg)")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Quantity, new { @data_val = "false", id = "fabricQty" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Remarks")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Remarks, new { id = "fabricRemarks" })
+            </td>
+            <td>
+                <button value="+" class="addButton" id="btnOutputProgDtl">+</button>
+            </td>
+
+        </tr>
+    </table>
+    <hr />
+    <table class="webgrid-table" id="outputProgramDtlTable">
+        <thead style="background-color: #9370db">
+            <tr>
+                <th>
+                    Fabric
+                </th>
+
+                <th>
+                    GSM
+                </th>
+                <th>
+                    Color
+                </th>
+                <th>
+                    M/C DIA
+                </th>
+                <th>
+                    Finish DIA
+                </th>
+                <th>
+                    Stitch Length
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Qty(Kg)
+                </th>
+                <th>Remarks</th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var outDt in Model.OutputDataTable)
+            {
+                <tr class="@Model.OutputDataTable[outDt.Key].ItemCode">
+
+                    <td>
+
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].MType)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ProgramId)
+                        <span id="ItemName_@outDt.Key">
+                            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ItemName)
+                        </span>
+
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ItemCode, new { id = "ItemCode_" + outDt.Key })
+                    </td>
+                    <td>
+
+                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].GSM)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].GSM, new { id = "GSM_" + outDt.Key })
+                    </td>
+                    <td>
+                        <span id="ColorName_@outDt.Key">
+                            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ColorName)
+                        </span>
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ColorRefId, new { id = "ColorRefId_" + outDt.Key })
+                    </td>
+                    <td>
+                        <span id="SizeName_@outDt.Key">
+                            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].SizeName)
+                        </span>
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].SizeRefId, new { id = "SizeRefId_" + outDt.Key })
+                    </td>
+                    <td>
+                        <span id="FinishSizeName_@outDt.Key">
+                            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].FinishSizeName)
+                        </span>
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].FinishSizeRefId, new { id = "FinishSizeRefId_" + outDt.Key })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].SleeveLength)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].SleeveLength, new { id = "SleeveLength_" + outDt.Key })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Rate)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Rate, new { id = "Rate_" + outDt.Key })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Quantity)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Quantity, new { id = "Quantity_" + outDt.Key })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Remarks)
+                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Remarks, new { id = "Remarks_" + outDt.Key })
+                    </td>
+                    <td>
+                        <input type="button" value="Edit" onclick="editFabric('@outDt.Key')" />
+                    </td>
+                    <td>
+                        <input type="button" value="X" onclick="removeRow(this)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</fieldset>

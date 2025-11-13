@@ -1,0 +1,118 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+
+@{
+    ViewBag.Title = "Group Change";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+@using (Html.BeginForm("Index", "GlHeadGroupChange", FormMethod.Get, new { @class = "groupchange submit-allow ignore-validation" }))
+{
+
+<div class="header-title">
+    <h2>GL to GL Change</h2>
+</div>
+
+<section class="common-search-section">
+
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                <tr>
+                    <td> @Html.DisplayName("Company Name :") </td>
+                    <td> @Html.DropDownList("sectorId", null, "-Select-", new { @disabled = "disabled" }) </td>
+
+                    <td> @Html.DisplayName("Source GL Head :") </td>
+                    <td> @Html.TextBoxFor(p => p.GLHeadName, new { @class = "AccountName" }) </td>
+                </tr>
+
+                <tr>
+
+                    <td> @Html.DisplayName("Destination GL Head :") </td>
+                    <td> @Html.TextBoxFor(p => p.GLHeadNameNew, new { @class = "NewAccountName" }) </td>
+                    <td>  </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input id="btnPrint" class="addButton" type="button" value="Transfer" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td> @Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px; visibility: hidden;" }) </td>
+                    <td> </td>
+                </tr>
+
+            </table>
+        </div>
+</section>
+
+}
+
+<section class="search formCover">
+    <div class="additem" style="margin-top: 20px;margin-bottom: 20px;">
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.GeneralLedger, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        columns: grid.Columns(
+        grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+        grid.Column("VoucherDateShow", header: "Date"),
+        grid.Column("Particulars", header: "Particulars"),
+        grid.Column("VoucherNoShow", header: "Voucher No"),
+        grid.Column("TotalDebit", header: "Debit"),
+        grid.Column("TotalCredit", header: "Credit"),
+        grid.Column("Balance", header: "Balance")
+        ));
+        }
+    </div>
+</section>
+
+@section scripts
+    {
+<script type="text/javascript">
+
+    var temp = $('#GLHeadName').val();
+    if (temp == 0)
+        $('#GLHeadName').val('');
+
+    $('.AccountName').autocomplete(
+        {
+            source: '@Url.Action("TagSearch", "Report")'
+        });
+
+    var temp = $('#GLHeadNameNew').val();
+    if (temp == 0)
+        $('#GLHeadNameNew').val('');
+
+    $('.NewAccountName').autocomplete(
+        {
+            source: '@Url.Action("TagSearch", "Report")'
+        });
+
+    $('#btnPrint').unbind('click').bind('click', function (event) {
+        event.preventDefault();
+        var $Button = $(this);
+        var form = $Button.parents('form:first');
+        var option = {
+            url: '/GlHeadGroupChange/TransferGlAccount',
+            type: "POST",
+            data: form.serialize(),
+        };
+        jQuery.Ajax(option);
+    });
+
+</script>
+}

@@ -1,0 +1,30 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ApprovedOvertimeHoureViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title ="OT DETAILS";
+}
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+
+        <tr>
+            @foreach (DataColumn col in Model.DataTable.Columns)
+            {
+                <th>@col.ColumnName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.DataTable.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.DataTable.Columns)
+                {
+                    <td>@row[col.ColumnName]</td>
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>

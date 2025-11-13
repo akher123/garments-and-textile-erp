@@ -1,0 +1,62 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.PayrollProcessViewModel
+@{ ViewBag.Title = "PayRule Process";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Bonus Rule List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "BonusRule", FormMethod.Get, new {@class = "HourForm submit-allow"}))
+        {
+        
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Bonus Rule")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.BonusRuleId, Model.BonusRulesSelectListItem, "-select-",new { id="ddlBonusRuleId"})
+                    </td>
+                    <td>
+                        <input type="button" value="Bonus Process" onclick="ProcessBonusByRue()"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    function ProcessBonusByRue() {
+        var bonusRuleId = $('#ddlBonusRuleId').val();
+        if (bonusRuleId > 0) {
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/HRM/PayrollProcess/ProcessBonus/',
+                data: { bonusRuleId: bonusRuleId },
+                success: function (result) {
+                    if (result.Success == false) {
+                        alert(result.Message);
+                    } else {
+                        alert(result.Message);
+                    }
+                },
+                onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        } else {
+            alert("Please Select Bonus Rule for process!");
+        }
+
+    }
+</script>
+
+
+

@@ -1,0 +1,264 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.AgentViewModel
+@{
+    ViewBag.Title = Model.AgentId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Agent", FormMethod.Post, new { @class = "OmBuyerform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.AgentId)
+    @Html.HiddenFor(model => model.IsSearch)
+    <fieldset>
+        <legend>Agent</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.AgentRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+        
+            <tr>
+                <td>
+                    @Html.Label("Agent Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.AgentName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.AgentName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Agent Type :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.AType, Model.AgentTypesSelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.AType)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address1)
+
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Address1)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address2)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address3)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Country:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CountryId, Model.CountrySelectListItem, "-Select-", new { @class = "Country_forCity" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("City:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CityId, Model.CitySelectListItem, "-Select-", new { @class = "City_byCountry" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Phone)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Phone)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Email :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.EMail)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EMail)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Fax :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Fax)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Fax)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @if (!Model.IsSearch)
+                    {
+                            @Html.SaveButton()
+                    }
+                    else
+                    {
+                    <input type="button" value="Save" id="AgentSaveButton"/>
+                    }
+                
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+@section scripts
+{
+   <script type="text/javascript">
+    $('.Country_forCity').unbind('change').bind('change', function () {
+        var countryId = $(this).val();
+        $.Ajax({
+            url: '/City/GetCityByCountry/',
+            data: { CountryId: countryId }
+        }).done(function (states) {
+            $('.City_byCountry').empty();
+            $('.City_byCountry').append(
+                    $('<option/>')
+                        .attr('value','')
+                        .text('-Select-')
+                );
+            if (states.length > 0) {
+                $.each(states, function (state) {
+                    $('.City_byCountry').append(
+                        $('<option/>')
+                            .attr('value', this.CityId)
+                            .text(this.CityName)
+                    );
+                });
+            } else {
+                $('.City_byCountry').append(
+                    $('<option/>')
+                        .attr('value', "")
+                        .text("No City Found")
+                );
+            }
+
+        });
+
+
+    });
+    $('#AgentSaveButton').unbind('click').bind('click', function () {
+        var $form = $(this).parents('form:first');
+        var data = $form.serialize();
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                $.Ajax({
+                    url: $form.attr('action'),
+                    dataType: 'json',
+                    type: 'post',
+                    data: data,
+                }).done(function (agentList) {
+                    $('#agentDropDown').empty();
+                    if (agentList.length > 0) {
+                        $('#agentDropDown').append(
+
+                      $('<option/>')
+                          .attr('value', '')
+                          .text("N/A")
+                  );
+                        $.each(agentList, function (agent) {
+                            $('#agentDropDown').append(
+
+                                $('<option/>')
+                                    .attr('value', this.AgentRefId)
+                                    .text(this.AgentName)
+                            );
+                        });
+                        $form.DialogClose();
+                    } else {
+                        alert("not saved");
+                    }
+
+                });
+            }
+        }
+    });
+
+</script>
+ 
+}
+

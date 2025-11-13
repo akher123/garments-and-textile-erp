@@ -1,0 +1,98 @@
+﻿@using SCERP.Web.Areas.HRM.Reports
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="text-align: center">
+    <h2>Sewing Output Process</h2>
+</div>
+<section class="search formCover">
+    <div style="padding-left: 10px;padding-right: 10px;padding-top: 10px;padding-bottom: 10px;margin-left: 10px;width: auto; margin-bottom: 5px; background-color:white;">
+        @using (Html.BeginForm("Save", "SewingOutPutProcess", FormMethod.Post, new { @class = "SewingOutPutProcessForm" }))
+        {
+             @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend>Sewing Output Process</legend>
+                <div id="cuttingJobMaster">
+                    <table class="tabefont" style="margin-left: 10px;margin-bottom: 10px; margin-left: 100px;">
+                        <tr>
+                            <td>@Html.Label("Ref No")</td>
+                            <td>@Html.TextBoxFor(x => x.SewingOutPutProcess.SewingOutPutProcessRefId, new { @readonly = "readonly", id = "txtSewingOutPutProcessRefId", style = "background-color: #F0ECE7;" })</td>
+                            <td></td>
+                            <td>
+                                @Html.Label("Buyer")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingOutPutProcess.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "SewingInputProcess_buyerRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Order")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingOutPutProcess.OrderNo, Model.OrderSelectListItem, new { @class = "SewingInputProcess_OrderNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Style")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingOutPutProcess.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "SewingInputProcess_StyleNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Country :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingOutPutProcess.OrderShipRefId, Model.OrderShipSelectListItem, "ALL", new { @class = "SewingInputProcess_OrderShipRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Color")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingOutPutProcess.ColorRefId, Model.ColorSelectListItem, new {@class = "SewingInputProcess_Color"})
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>
+                                <input type="button" class="FindPartial buttonStyle" action="/SewingOutPutProcess/Find/" target="#basePlate" value="Find"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="basePlate">
+                    @if (Model.PivotDictionary.Any())
+                    {
+                        @Html.Partial("~/Areas/Production/Views/SewingOutPutProcess/_Plate.cshtml", Model)
+                    }
+                </div>
+            </fieldset>
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/SewingInputProcess.js"></script>
+}
+
+
+
+

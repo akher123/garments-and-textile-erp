@@ -1,0 +1,65 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillSetViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    int rowCount = 1;
+}
+
+<div class="additem ">
+    <div>
+        <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+        <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+            <thead class="reportHeader">
+                <tr class="reportTitle">
+                    <td colspan="15" align="center">Skill Set List</td>
+                </tr>
+                <tr>
+                    <td>Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+                </tr>
+            </thead>
+        </table>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td class="reportTH">
+                        SL. No
+                    </td>
+                    <td class="reportTH">
+                        Skill
+                    </td>
+                    <td class="reportTH">
+                        Description
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var skillSet in Model.SkillSets)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+
+                        <td class="reportTD">
+                            @skillSet.Title
+                        </td>
+                        <td class="reportTD">
+                            @skillSet.Description
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+</div>
+
+
+
+

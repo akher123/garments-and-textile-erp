@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .my-3 {
+            margin-top: 10%;
+        }
+
+        .custab {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin: 5% 0;
+            box-shadow: 3px 3px 2px #ccc;
+            transition: 0.5s;
+        }
+
+            .custab:hover {
+                box-shadow: 3px 3px 0px transparent;
+                transition: 0.5s;
+            }
+    </style>
+</head>
+<body class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 custyle">
+                <table class="table table-striped custab">
+                    <thead>
+                        
+                            <h2>Sewing Production Forecast</h2>
+                            <p class="date-timer">@DateTime.Now.ToString("MMMM")-@DateTime.Now.ToString("yyyy")</p>
+                        
+                        <tr>
+                            <th>Particular</th>
+                            <th>@DateTime.Now.ToString("MMMM")-@DateTime.Now.ToString("yyyy")</th>
+                            <th>@DateTime.Now.AddMonths(-1).ToString("MMMM")-@DateTime.Now.AddMonths(-1).ToString("yyyy")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Target</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.TargetQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.TargetQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Production</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ProductionQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ProductionQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Remaining</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.RemainingtQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.RemainingtQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ProductionRate)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ProductionRate)</td>
+                        </tr>
+                        <tr>
+                            <td>Forecast</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ForecastQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ForecastQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Short</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ShortQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ShortQty)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

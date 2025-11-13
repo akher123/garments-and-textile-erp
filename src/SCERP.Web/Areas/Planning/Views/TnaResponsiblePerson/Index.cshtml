@@ -1,0 +1,92 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TnaViewModel
+
+@{
+    ViewBag.Title = "TNA";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.TnaReports.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "TnaResponsiblePerson", FormMethod.Get, new { @class = "tnaSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>TNA By Responsible Person</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Responsible Person: ")</td>
+                    <td>@Html.TextBoxFor(x => x.OrderStyleRefId)</td>
+                    
+                    <td><input type="button" class="searchAction" /></td>
+                    <td><input type="button" class="addButton" value="Show Report" onclick=" javascript: PrintReport(); " /></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Planning/TnaResponsiblePerson/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TnaReports, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                         grid.Column("Detail/Edit", format: @<text><button class="edit" action="/Planning/TnaResponsiblePerson/Edit/@item.Id"></button></text>, canSort: false),
+                         grid.Column("BuyerName", header: "Buyer Name", canSort: false),
+                         grid.Column("OrderNo", header: "Order No", canSort: false),
+                         grid.Column("StyleName", header: "Style No", canSort: false),
+              
+                         grid.Column("ActivityName", header: "Activity Name", canSort: false),
+                         grid.Column("LeadTime", header: "Lead Time", canSort: false),
+                         grid.Column("PlannedStartDate", header: "Plan Start Date", canSort: false),
+                         grid.Column("PlannedEndDate", header: "Plan End Date", canSort: false),
+                         grid.Column("ActualStartDate", header: "Actual Start Date", canSort: false),
+                         grid.Column("ActrualEndDate", header: "Actual End Date", canSort: false),
+                         grid.Column("MerchandiserName", header: "Merchandiser", canSort: false),
+                         grid.Column("ResponsiblePersonName", header: "Responsible Person", canSort: false),
+                         grid.Column("NotifyBeforeDays", header: "Notify Before Days", canSort: false),
+                         grid.Column("Remarks", header: "Remarks", canSort: false),
+                         grid.Column("Delete",format:@<text><button class="delete" action="/Planning/TnaResponsiblePerson/Delete/@item.Id"></button></text>, canSort: false)));
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        
+        $('#OrderStyleRefId').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "TnaResponsiblePerson")'
+            });
+
+        function PrintReport() {
+            var person = $('#OrderStyleRefId').val();
+            window.open("/Planning/Report/TnaResponsePersonReportPrint?&person=" + person + "&ExportType=DOC");
+        }
+        
+    </script>
+}

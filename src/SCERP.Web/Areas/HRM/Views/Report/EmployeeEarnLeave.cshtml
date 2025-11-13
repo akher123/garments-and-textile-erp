@@ -1,0 +1,39 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReportSearchViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+<div style="text-align: center">
+    <h4>BUYER ORDER STATUS DETAIL @Model.FromDate @Model.ToDate @Model.EmployeeCardId</h4>
+</div>
+
+
+<div style="margin: 10px 30px 0;overflow-x:auto">
+    <table class="webgrid-table" style="text-align: center;overflow-x: auto">
+        <thead class="webgrid-header" style="background-color: #008b8b">
+            <tr>
+                @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.BuyerOrderMasterDataTable.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                    {
+
+                        <td>
+                            <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/BuyerOrderMasterAjaxPopup?refid=@row[0]&&columnName=@col.ColumnName">@row[col.ColumnName]</a>
+                        </td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

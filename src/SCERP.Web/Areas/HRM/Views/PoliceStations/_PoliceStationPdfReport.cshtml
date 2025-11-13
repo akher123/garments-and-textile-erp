@@ -1,0 +1,70 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.PoliceStationViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    int rowCount = 1;
+}
+
+    <div class="additem ">
+        <div>
+            <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+            <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+                <thead class="reportHeader">
+                    <tr class="reportTitle">
+                        <td colspan="15" align="center">Police Station List</td>
+                    </tr>
+                    <tr>
+                        <td>Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <table class="pdfReportTable" border="1">
+                <thead class="reportThead">
+                    <tr class="reportTR">
+                        <td class="reportTH">
+                            SL. No
+                        </td>
+                        <td class="reportTH">
+                            Police Station
+                        </td>
+                        <td class="reportTH">
+                            District
+                        </td>
+                        <td class="reportTH">
+                            Country
+                        </td>
+                    </tr>
+                </thead>
+                <tbody class="reportBody">
+
+                    @foreach (var policeStation in Model.PoliceStations)
+                    {
+                        <tr class="reportTR">
+
+                            <td class="reportTD">
+                                @rowCount
+                            </td>
+
+                            <td class="reportTD">
+                                @policeStation.Name
+                            </td>
+
+                            <td class="reportTD">
+                                @policeStation.District.Name
+                            </td>
+                            
+                            <td class="reportTD">
+                                @policeStation.Country.CountryName
+                            </td>
+                        </tr>
+
+                        rowCount += 1;
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+        
+</div>

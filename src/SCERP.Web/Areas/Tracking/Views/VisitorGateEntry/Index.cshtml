@@ -1,0 +1,82 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Tracking.Models.ViewModels.VisitorGateEntryViewModel
+@{
+    ViewBag.Title = "Visitor List";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Visitor Gate List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "VisitorGateEntry", FormMethod.Get, new { @class = "VisitorGateEntrySearchForm ignore-validation" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table>
+            <tr>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date", @style = "" })
+                </td>
+
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date", @style = "" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new {@style = "", @data_val = "false", @placeholder = "Search key" })
+                </td>
+                <td>
+                    @Html.Label("Criteria: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CheckOutStatus, Model.CheckOutStatusSelectListItem,"ALL", new { @style = "" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Tracking/VisitorGateEntry/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.DataList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column(header: "A/I",
+                  format: @<input class="InActiveVisitorGateEntry" disabled onclick="InActiveVisitorGateEntry(this)" name="VisitorGateEntryCheckBox" @(item.CheckOutStatus == 2 ? "checked" : "") type="checkbox" value="@item.VisitorGateEntryId" />),
+                  grid.Column("VisitorName", header: "Visitor Name"),
+                  grid.Column("Phone", header: "Phone"),
+                  grid.Column("VisitorCardId", header: "Visitor Card Id"),
+                  grid.Column("Purpose", header: "Purpose", canSort: false),
+                  grid.Column("Address", header: "Address", canSort: false),
+                  grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.EntryDate??""), header: "CheckIn Date"),
+                  grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.EntryDate??""), header: "CheckIn Time"),
+                  grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ExitDate??""), header: "CheckOut Date"),
+                  grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.ExitDate??""), header: "CheckOut Time"),
+                  grid.Column("Remarks", header: "Remarks"),
+                  grid.Column("Check Out", canSort: false, format: @<text><button class="edit" action="/Tracking/VisitorGateEntry/ShowForCheckOut?VisitorGateEntryId=@item.VisitorGateEntryId"></button></text>),
+                  grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Tracking/VisitorGateEntry/Edit?VisitorGateEntryId=@item.VisitorGateEntryId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Tracking/VisitorGateEntry/Delete?VisitorGateEntryId=@item.VisitorGateEntryId"></button></text>)));
+        }
+    </div>
+</section>

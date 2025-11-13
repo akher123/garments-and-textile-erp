@@ -1,0 +1,128 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var coll01 = "";
+    var coll02 = "";
+    var coll03 = "";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>Hourly Production</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color:#008b8b; ">
+        <div style="margin-left: 200px;margin-bottom:15px">
+            @using (Html.BeginForm("HourlyProduction", "SewingOutputProcess", FormMethod.Get, new { @class = "HourlyProductionFrom" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("PRODUCTION DATE :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker" })
+                        </td>
+                        <td style="width: 328px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="additem">
+        <table class="tabefont webgrid-table webgrid webgrid-alternating-row" style="background-color: #ffffff">
+            <thead class="webgrid-header" style="background-color: #9932cc">
+                <tr>
+                    @foreach (DataColumn col in Model.DataTable.Columns)
+                    {
+
+                        if (col.ColumnName == "Remarks")
+                        {
+
+                        }
+                        else
+                        {
+                            <th>@col.ColumnName</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.DataTable.Rows)
+                {
+                    <tr>
+                        @{
+                            coll02 = row.ItemArray[0].ToString();
+                            coll03 = row.ItemArray[row.ItemArray.Length-1].ToString();
+                            if (coll01 == coll02)
+                            {
+                                <td style="border-top: none; border-bottom: none;"></td>
+                                <td style="border-top: none; border-bottom: none; "></td>
+                            }
+                            else
+                            {
+                                coll01 = coll02;
+                                <td  title="@coll03" data-toggle="tooltip" style=" border-bottom:none; background-color: gainsboro">
+                                    <strong style="color: @(coll03.Length>0?"red":"black")">@coll02</strong>
+                                </td>
+                                <td  style="border-bottom: none; background-color:gainsboro">@row.ItemArray[1].ToString()</td>
+                            }
+
+                            for (int i = 2; i < row.ItemArray.Length-1; i++)
+                            {
+                                <td>@row.ItemArray[i].ToString()</td>
+                            }
+
+                        }
+                    </tr>
+                }
+                <tr>
+                    <td colspan="16" style="border-bottom: none;border-left: none;border-right: none"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+@section scripts
+{
+
+<script type="text/javascript">
+    //function AJ() {
+    //    var obj;
+    //    if (window.XMLHttpRequest) {
+    //        obj = new XMLHttpRequest();
+    //    }
+    //    else if (window.ActiveXObject) {
+    //        try {
+    //            obj = new ActiveXObject('MSXML2.XMLHTTP.3.0');
+    //        }
+    //        catch (er) {
+    //            obj = false;
+    //        }
+    //    }
+    //    return obj;
+    //}
+    ////Add keep-alive functionality
+    //var serverRefreshTimeId;
+    //function RefreshWindow() {
+    //    var xmlhttp = AJ();
+    //    if (xmlhttp) {
+    //        try {
+    //            xmlhttp.open("POST", "/SewingOutPutProcess/HourlyProduction", false);
+    //            xmlhttp.send();
+    //        }
+    //        catch (er) { }
+    //    }
+    //    serverRefreshTimeId = setTimeout("RefreshWindow()", 300000);
+    //}
+    //clearTimeout(serverRefreshTimeId);
+    $('[data-toggle="tooltip"]').tooltip();
+</script>
+}

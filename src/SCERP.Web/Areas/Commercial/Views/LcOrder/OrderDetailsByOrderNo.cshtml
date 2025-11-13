@@ -1,0 +1,40 @@
+﻿
+@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Buyer Order Style";
+}
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>Buyer</th>
+            <th>Order</th>
+            <th>Style</th>
+            <th>Quantity(Pcs)</th>
+            <th>Value($)</th>
+        </tr>
+    </thead>
+    <tbody>
+       
+                @foreach (var item in Model.BuyerOrderStyle)
+                {
+        <tr>
+            <td>@item.BuyerName</td>
+            <td>@item.OrderNo</td>
+            <td>@item.StyleName</td>
+            <td>@item.Quantity</td>
+            <td>@item.Amt</td>
+        </tr>
+                    
+                }
+        
+        <tr style="background-color:#b0c4de">
+            <td colspan="3"> </td>
+            <td> Quantity:@Model.BuyerOrderStyle.Sum(x => x.Quantity)</td>
+            <td> Value:@Model.BuyerOrderStyle.Sum(x => x.Amt)  </td>
+
+
+        </tr>
+    </tbody>
+</table>

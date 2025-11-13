@@ -1,0 +1,132 @@
+﻿@model SCERP.Web.Areas.Production.Models.FinishingProcessViewModel
+@{
+    Layout = null;
+}
+@Html.HiddenFor(x => x.FinishingProcess.FinishingProcessId)
+<table>
+    <tr>
+        <td style="width: 15%"><table class="tabefont webgrid-table">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>@Html.Label("InputDate")</td>
+                    <td>@Html.TextBoxFor(x => x.FinishingProcess.InputDate, new { @class = "datepicker", id = "txtInputDate", style = "width: 100px;" })</td>
+                </tr>
+                
+                <tr>
+                    <td>@Html.Label("Hour")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.FinishingProcess.HourId, Model.HourSelectListItem, "-Select-", new { @class = "HourId", style = "width: 116px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Remark")</td>
+                    <td>@Html.TextAreaFor(x => x.FinishingProcess.Remarks, new { style = "width: 100px;" })</td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+</table></td>
+        <td style="width: 80%"><table class="tabefont webgrid-table webgrid webgrid-alternating-row">
+    <thead>
+        @foreach (var porcess in Model.PivotDictionary)
+        {
+            <tr>
+                <td>
+                    @porcess.Key
+                </td>
+                @foreach (var col in @porcess.Value)
+                {
+                    <td>
+                        @col
+                    </td>
+                }
+            </tr>
+        }
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.Label("InputQty")
+            </td>
+            @foreach (var test in Model.FinishingProcessDetailDictionary)
+            {
+                <td>
+                    @Html.TextBoxFor(x => Model.FinishingProcessDetailDictionary[test.Key].InputQuantity, new { @style = "width:90%;", @class = "TextBoxStyle ratioTextBox" })
+                    @Html.HiddenFor(x => Model.FinishingProcessDetailDictionary[test.Key].CompId)
+                    @Html.HiddenFor(x => Model.FinishingProcessDetailDictionary[test.Key].SizeRefId)
+                </td>
+               
+            }
+            <td>
+                <span id="totalRatio">@Model.FinishingProcessDetailDictionary.Sum(x => x.Value.InputQuantity)</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="@(Model.FinishingProcessDetailDictionary.Count + 2)">
+                <div style="float:right">
+                    <input type="button"  onclick="SaveFinishing(this)" class="addButton"  value="Save" />
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+    </tr>
+</table>
+<script type="text/javascript">
+
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".ratioTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totalRatio").html(sum);
+    }
+    $(".ratioTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+    $('.allowNumeric').keyup(function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 0) {
+            $('#btnAddRollCutting').prop('disabled', false);
+        } else {
+            $('#btnAddRollCutting').prop('disabled', true);
+        }
+    });
+
+    function SaveFinishing(btnObj) {
+        var button = $(btnObj);
+        var form = button.parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                return false;
+            } else {
+                $.Ajax({
+                    url: form.attr('action'),
+                    dataType: "JSON",
+                    type: "POST",
+                    data: form.serialize()
+                }).done(function (model) {
+                    if (model.SaveStatus == true) {
+                        var target = '.Finishingplate';
+                        $(target).html(model.partialView);
+                        $('#txtFinishingProcessRefId').val(model.refId);
+                        alert(model.StatusMessage);
+                    }
+
+                });
+            }
+        }
+    }
+</script>
+
+
+

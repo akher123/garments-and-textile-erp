@@ -1,0 +1,134 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+    ViewBag.Title = "Batch";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var index = 1;
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Daily Knitting Roll</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("DailyKnittingRoll", "KnittingRoll", FormMethod.Get, new { @class = "KnittingBatchForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Knitting Date")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@data_val = "false", @placeholder = "Date", @class = "datepicker"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                    <td>
+                        @Html.Label("Knitting Detail")
+                    </td>
+                    <td>
+                        <div style="margin-bottom: 3px;">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT ▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="DailyKnittingRoll(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="DailyKnittingRoll(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.Label("Knitting Summary")
+                    </td>
+                    <td>
+                        <div style="margin-bottom: 3px;">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT ▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="PartyWiseDailyKnittingRoll(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="PartyWiseDailyKnittingRoll(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.Label("Total Qty")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TotalQty, new {@readonly = "readonly", @style = "background-color: #a5c3f9; width: auto" })
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <table class="webgrid-table">
+            <thead>
+                <tr class="webgrid-header">
+                    <th>SL#</th>
+                    <th>Prog.No</th>
+                    <th>Roll.No</th>
+                    <th>Party</th>
+                    <th>Machine</th>
+                    <th>M/C DIA</th>
+                    <th>Fab.Type</th>
+                    <th>Color</th>
+                    <th>Finish DIA</th>
+                    <th>GSM</th>
+                    <th>GreyQty</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kroll in Model.KnittingRolls)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>
+                            @kroll.ProgramRefId
+                        </td>
+                        <td>
+                            @kroll.RollRefNo
+                        </td>
+                        <td>
+                            @kroll.PartyName
+                        </td>
+                        <td>
+                            @kroll.MachineName
+                        </td>
+                        <td>
+                            @kroll.SizeName
+                        </td>
+                        <td>
+                            @kroll.ItemName
+                        </td>
+                        <td>
+                            @kroll.ColorName
+                        </td>
+                        <td>
+                            @kroll.FinishSizeName
+                        </td>
+                        <td>
+                            @kroll.GSM
+                        </td>
+                        <td>
+                            @kroll.Quantity
+                        </td>
+                    </tr>
+                    {
+                        index = index + 1;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section scripts{
+<script src="~/Scripts/SCERP/Production/KnittingRoll.js"></script>
+}

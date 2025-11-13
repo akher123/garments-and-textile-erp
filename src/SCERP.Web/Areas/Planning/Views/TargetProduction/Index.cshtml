@@ -1,0 +1,173 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TargetProductionViewModel
+@{
+    ViewBag.Title = "Sewing Program";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+    @*<div style="padding-left: 120px; margin-top: 5px; margin-bottom: 3px; background-color: #a9a9a9;">
+    @using (Html.BeginForm("Index", "TargetProduction", FormMethod.Get,new{@class="ignore-validation"}))
+    {
+    @Html.HiddenFor(x => x.IsSearch)
+    <table class="tabefont">
+        <tr>
+            <td>
+                @Html.Label("Buyer:")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.PlanTargetProduction.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new {@class = "search_buyerRefId"})
+            </td>
+            <td>
+                @Html.Label("Order:")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.PlanTargetProduction.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { @class = "search_OrderNo" })
+            </td>
+
+
+            <td>
+                @Html.Label("Style:")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.PlanTargetProduction.OrderStyleRefId, Model.StylesSelectListItem, "ALL", new { @class = "search_StyleNo" })
+            </td>
+            <td><input type="button" class="searchAction" /></td>
+        </tr>
+    </table>
+    }
+</div>*@
+
+<div class="header-title">
+    <h2>Sewing Production Planing</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "TargetProduction", FormMethod.Post, new { @class = "TargetProductionFrom" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Year")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.YearId, Model.YearSelectListItem)
+                </td>
+                <td>
+                    @Html.Label("Month")
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(x => x.MonthId)
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Planning/TargetProduction/Edit">Add New</button>
+        </div>
+
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.TargetProductions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new {id = "grid"},
+        tableStyle: "webgrid-table webgrid gridSelect",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "buyerOrderStyle-row",
+        selectedRowStyle: "buyerOrderStyle-row",
+        rowStyle: "buyerOrderStyle-row",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        columns:
+        grid.Columns(
+        grid.Column("TargetProductionRefId", canSort: false, header: String.Format("{0}", "RefId")),
+        grid.Column("BuyerName", canSort: false, header: "Buyer"),
+        grid.Column("OrderName", canSort: false, header: "Order"),
+        grid.Column("StyleName", canSort: false, header: "Style"),
+        grid.Column("Line", canSort: false, header: "Line"),
+        grid.Column("TotalTargetQty", canSort: false, header: "Qty"),
+        grid.Column("StartDate", canSort: false, header: "Start Date", format: @<text>@(item.StartDate == null ? "" : item.StartDate.ToString("dd-MM-yyyy"))</text>),
+        grid.Column("EndDate", canSort: false, header: "End Date", format: @<text>@(item.EndDate == null ? "" : item.EndDate.ToString("dd-MM-yyyy"))</text>),
+        grid.Column("Edit", canSort: false, format:@<text><button class="edit" action="/Planning/TargetProduction/Edit?PlanTargetProduction.TargetProductionId=@item.TargetProductionId"></button></text>),
+        grid.Column("Delet", canSort: false, format:@<text><button class="delete" action="/Planning/TargetProduction/Delete?TargetProductionId=@item.TargetProductionId"></button></text>)))
+
+        }
+
+    </div>
+</section>
+
+
+@section scripts
+{
+<script type="text/javascript">
+    $('.search_buyerRefId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+            $('.search_OrderNo').empty();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+
+
+    function populateDropDown(obj) {
+        $('.search_OrderNo').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+
+    $('.search_OrderNo').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('.search_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('.search_StyleNo').append(
+                    $('<option/>').attr('value', '').text("-ALL-")
+                );
+                $.each(styleList, function (style) {
+                    $('.search_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('.search_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    function removeDependentDropdown() {
+
+        $('.search_OrderNo').empty();
+        $('.search_StyleNo').empty();
+    }
+</script>
+
+}
+
+

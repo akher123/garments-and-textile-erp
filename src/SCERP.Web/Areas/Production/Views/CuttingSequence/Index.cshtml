@@ -1,0 +1,84 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingSequenceViewModel
+@{
+    ViewBag.Title = "CuttingSequence";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Cutting Sequence</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover">
+        @using (Html.BeginForm("Save", "CuttingSequence", FormMethod.Post, new {@class = "CuttingSequenceForm ignore-validation"}))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>Cutting Sequence</legend>
+                <div id="cuttingJobMaster" style="margin-right: 30px;float: left;">
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Buyer :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingSequence.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "CuttingBatch_buyerRefId"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayName("Order No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingSequence.OrderNo, Model.OrderSelectListItem, new {@class = "CuttingBatch_OrderNo"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayName("Style No:")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.CuttingSequence.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Color :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingSequence.ColorRefId, Model.ColorSelectListItem, new {@class = "CuttingBatch_Color"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="button" class="FindPartial buttonStyle addButton pull-right" action="/CuttingSequence/Find/" target="#part" value="Find"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="part" class="search formCover">
+                    @Html.Partial("~/Areas/Production/Views/CuttingSequence/_Part.cshtml", Model)
+                </div>
+                <input type="submit" class="SubmitButton buttonStyle addButton pull-right" value="Save" />
+            </fieldset>
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/CuttingSequence.js"></script>
+}

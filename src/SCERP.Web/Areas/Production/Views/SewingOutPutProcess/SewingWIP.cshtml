@@ -1,0 +1,126 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Sewing WIP</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 200px;margin-bottom:15px">
+            @using (Html.BeginForm("SewingWIP", "SewingOutputProcess", FormMethod.Get, new { @class = "SewingWIPFrom" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Output Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SewingOutPutProcess.OutputDate, new { @class = "datepicker", @data_val = "false", id = "txtOutputDate", style = "width:100px;" })
+                        </td>
+                        <td>@Html.Label("Hour")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SewingOutPutProcess.HourId, Model.HourSelectListItem, "-Select-", new { @class = "HourId", id = "txtHourId", style = "width: 116px;", @data_val = "false" })
+                        </td>
+                        <td style="width: 328px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="additem">
+        <div style="margin-bottom: 3px; margin-right: 100px;">
+            <div class="dropdown">
+                <button class="dropbtn">REPORT▼</button>
+                <div class="dropdown-content">
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIP(1)">StyleWiseWIP(pdf)</a>
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIP(3)">StyleWiseWIP(xlsx)</a>
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIPShot(1)">SewingWIPShot(pdf)</a>
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIPShot(3)">SewingWIPShot(xlsx)</a>
+                </div>
+            </div>
+        </div>
+
+        <table class="tabefont webgrid-table webgrid webgrid-alternating-row" id="wipTable">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>Line</th>
+                    <th>Opening</th>
+                    <th>Input</th>
+                    <th>Output</th>
+                    <th>WIP</th>
+                    <th>Hour</th>
+                    <th>RBuyer</th>
+                    <th>ROrder</th>
+                    <th>RStyle</th>
+                    <th>RColor</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (DataRow row in Model.DataTable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                        {
+                            <td>@row[col.ColumnName]</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#wipTable tr:odd').css('background-Color', 'honeydew');
+        });
+
+        function SewingWIP(reportTypeId) {
+            var form = $('.SewingWIPFrom');
+            var data = form.serialize();
+            var url = '/Production/ProductionReport/SewingWIP?' + data + '&reportTypeId=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+        
+        function SewingWIPShot(reportTypeId) {
+            var form = $('.SewingWIPFrom');
+            var data = form.serialize();
+            var url = '/Production/ProductionReport/SewingWIPShot?' + data + '&reportTypeId=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+
+    </script>
+
+}
+

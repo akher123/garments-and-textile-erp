@@ -1,0 +1,78 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeSkillViewModel
+
+@{
+    ViewBag.Title = "Employee Skill";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.VEmployeeSkillDetails.Count > 0) ? "" : "none"; 
+    string startDate = null;
+    string endDate = null;
+    if (Model.SearchFieldModel.StartDate.HasValue && Model.SearchFieldModel.EndDate.HasValue)
+    {
+        startDate = Model.SearchFieldModel.StartDate.GetValueOrDefault().ToString("dd/MM/yyyy");
+        endDate = Model.SearchFieldModel.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy");
+    }
+    var searchKey = new {
+                         StartDate = startDate,
+                         EndDate = endDate,                        
+                         SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId};
+}
+
+
+
+@using (Html.BeginForm("Index", "EmployeeSkill", FormMethod.Get, new { @class = "EmployeeSkillSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width:500px; padding-left:340px;">
+        <h2>Employee Skill</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @Html.Partial("~/Areas/HRM/Views/EmployeeSkill/_SearchEmployeeSkill.cshtml", Model)
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/EmployeeSkill/Edit">Add New</button>
+        </div>
+
+    </div>
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VEmployeeSkillDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                   grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                   grid.Column("Difficulty Name", header: "Difficulty Name", format: @<text>@(item.DifficultyName ?? "")</text>),
+                   grid.Column("CategoryName", header: "Category Name ", format: @<text>@(item.CategoryName ?? "")</text>),
+                   grid.Column("OperationName", header: "Operation Name ", format: @<text>@(item.OperationName ?? "")</text>),
+                   grid.Column("Efficiency", header: "Efficiency", format: @<text>@(item.Efficiency ?? "")</text>),
+                   grid.Column("FromDate", header: "From Date ", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>),
+                   grid.Column("ToDate", header: "To Date", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>),                             
+                   grid.Column("Detail/Edit", format:@<text><button class="edit" action="/HRM/EmployeeSkill/Edit?EmployeeSkillId=@item.EmployeeSkillId"></button></text>, canSort: false),
+                   grid.Column("Delete",format: @<text><button class="delete" action="/HRM/EmployeeSkill/Delete?EmployeeSkillId=@item.EmployeeSkillId"></button></text>, canSort: false)));
+    }
+
+</section>

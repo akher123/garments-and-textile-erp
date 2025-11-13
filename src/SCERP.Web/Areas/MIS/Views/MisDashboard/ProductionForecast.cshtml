@@ -1,0 +1,177 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    ViewBag.Title = "ProductionForecast";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<style type="text/css">
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: #F2F6F9;
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+    }
+
+    .table-section {
+        margin: 0 auto 20px;
+        padding: 8% 30px 19%;
+        width: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .date-timer {
+        margin: 0;
+        margin-bottom: 5px;
+        font-size: 1.6em;
+        font-weight: 600;
+    }
+
+    .table-section tbody tr td:first-child, .table-section tbody tr td:last-child {
+        font-size: 1.3em;
+    }
+
+    .table-section table {
+        border-spacing: 0;
+        border-collapse: collapse;
+        background-color: transparent;
+        text-transform: capitalize;
+    }
+
+    .table-bordered {
+        /*border: 1px solid #ddd;*/
+        width: 100%;
+    }
+
+    .col-md-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .table-section thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    .table-section tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+        text-align: left;
+    }
+
+    .table-section table thead tr, .table-section table tbody tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+        border-bottom-width: 2px;
+    }
+
+    /*.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+        border: 1px solid #ddd;
+    }*/
+
+    .table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+        padding: 5px;
+    }
+
+    .table-section table thead tr th {
+        color: #fff;
+        background: #365899;
+        font-size: 17px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .table-section table tbody tr td, .table-section table thead tr th {
+        padding: 6px 20px;
+        display: table-cell;
+        vertical-align: inherit;
+        /*border: 1px solid #365899;*/
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: powderblue;
+    }
+
+    /*.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+        border: 1px solid #ddd;
+    }*/
+
+    .table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+        padding: 8px;
+        color: #282828;
+    }
+    .table-section table tr:nth-child(even) {
+       background-color: #F2F6F9;
+    }
+    .row-1 {
+        width: auto;
+        background-color: #ffffff;
+    }
+</style>
+<div class="header-title">
+    <h2>Sewing Production Forecast</h2>
+    <p class="date-timer">@DateTime.Now.ToString("MMMM")-@DateTime.Now.ToString("yyyy")</p>
+</div>
+        <div class="row-1">
+            @*<div class="col-md-12" style="text-align: center;">
+                <h1>Sewing Production Forecast</h1>
+                <h3 class="cus-h3">@DateTime.Now.ToString("MMMM")-@DateTime.Now.ToString("yyyy")</h3>
+            </div>*@
+            <div id="no-more-tables" class="table-section">
+                <table class="col-md-12 table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Particular</th>
+                            <th>@DateTime.Now.ToString("MMMM")-@DateTime.Now.ToString("yyyy")</th>
+                            <th>@DateTime.Now.AddMonths(-1).ToString("MMMM")-@DateTime.Now.AddMonths(-1).ToString("yyyy")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Target</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.TargetQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.TargetQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Production</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ProductionQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ProductionQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Remaining</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.RemainingtQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.RemainingtQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ProductionRate)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ProductionRate)</td>
+                        </tr>
+                        <tr>
+                            <td>Forecast</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ForecastQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ForecastQty)</td>
+                        </tr>
+                        <tr>
+                            <td>Short</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastCurrentMonth.ShortQty)</td>
+                            <td>@Html.DisplayFor(x => x.ProductionForecastPreviousMonth.ShortQty)</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+

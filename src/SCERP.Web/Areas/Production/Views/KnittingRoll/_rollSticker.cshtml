@@ -1,0 +1,74 @@
+﻿@model IEnumerable<dynamic>
+@{
+    Layout = null;
+    var data = @Model.ToList()[0];
+}
+<div id="pdt-contetId" class="pdfobject-container">
+    <section style="overflow: hidden; padding: 15px;">
+        <table style="width: auto; font-size: 11px; max-width: 100%; text-align: left; border: 1px solid #ddd; border-spacing: 0; border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;" colspan="6">Prog No:@data.ProgramRefId <span style="width: 100%; padding-left: 10%;">Plummy Fashions Ltd.</span></th>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;" colspan="6">Buyer:@data.Buyer, Order:@data.OrderNo, Style:@data.StyleName</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;">Party</th>
+                <td style="padding: 4px; border: 1px solid #ddd;">@data.PartyName</td>
+                <th style="padding: 4px; border: 1px solid #ddd;">CH.No</th>
+                <td style="padding: 4px; border: 1px solid #ddd;" colspan="4">@data.CharllRollNo</td>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;" colspan="6">Yarn: @data.YarnName</th>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;">Lot</th>
+                <td style="padding: 4px; border: 1px solid #ddd;">@data.Lot</td>
+                <th style="padding: 4px; border: 1px solid #ddd;">Count</th>
+                <td style="padding: 4px; border: 1px solid #ddd;" colspan="4">@data.CountName</td>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;">F/Type</th>
+                <td style="padding: 4px; border: 1px solid #ddd;">@data.ItemName</td>
+                <th style="padding: 4px; border: 1px solid #ddd;">Color</th>
+                <td style="padding: 4px; border: 1px solid #ddd;" colspan="4">@data.ColorName</td>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;" colspan="6">SL: @data.StLength, GSM:@data.GSM, M/D: @data.SizeName, F/D: @data.FinishSizeName</th>
+            </tr>
+            <tr>
+                <th style="padding: 4px; border: 1px solid #ddd;">Date</th>
+                <td style="padding: 4px; border: 1px solid #ddd;">@data.RollDate.ToString("dd/MM/yyyy")</td>
+                <th style="padding: 4px; border: 1px solid #ddd;">Wait</th>
+                <th style="padding: 4px; border: 1px solid #ddd;">@data.Quantity kg</th>
+                <th style="padding: 4px; border: 1px solid #ddd;">Roll No</th>
+                <td style="padding: 4px; border: 1px solid #ddd;">@data.RollRefNo</td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <img id="code39"/>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div>
+            <a href="/Production/KnittingRoll/RollSticker?KnittingRollId=@data.KnittingRollId" target="_blank">Print</a>
+        </div>
+    </section>
+</div>
+
+<script src="~/Scripts/Common/JsBarcode.all.min.js"></script>
+<script type="text/javascript">
+    createBarcode($('#RollRefNo').val());
+    function createBarcode(text) {
+        JsBarcode("#code39", text, {
+            width: 2,
+            height: 50,
+            displayValue: false
+        });
+    }
+</script>

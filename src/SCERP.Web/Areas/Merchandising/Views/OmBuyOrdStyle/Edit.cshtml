@@ -1,0 +1,308 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmBuyOrdStyleViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.OrderStyleId > 0) ? "Edit" : "Add";
+}
+@section styles
+{
+    <style type="text/css">
+        div.ui-datepicker {
+            font-size: 80.5%;
+        }
+    </style>
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="font-size: 12px;">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" action="/Merchandising/OmStyle/Edit?IsSearch=true">Style</a>
+            <a href="#" class="AjaxPopup" action="/Merchandising/OmBrand/Edit?IsSearch=true">Brand</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Save", "OmBuyOrdStyle", FormMethod.Post, new { @class = "OmBuyOrdStyleSearchForm" }))
+    {@Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.OrderStyleId)
+    @Html.HiddenFor(model => model.ImagePath, new { id = "styleImagePathHidden" })
+    <fieldset>
+        <legend>Style In Order </legend>
+        <table>
+
+            <tr>
+                <td>
+                    @Html.Label("", String.Format("{0}", "Ref. #"))
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.OrderStyleRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Order No")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Season")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.SeasonRefId, Model.SeasonsSelectListItem)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td>
+                    @Html.Label("", "Ref. Date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.StyleentDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Style")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.StyleRefId, Model.StyleSelectListItem, "-select-", new { @id = "styleDropdownId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Article # ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.BuyerArt)
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Brand")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.BrandRefId, Model.BrandSelectListItem, "-select-", new { @id = "brandDropdownId" })
+                </td>
+                <td>
+                </td>
+                <td>
+                    @Html.Label("Category")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.CatIRefId, Model.CategorieSelectListItem, "-select-")
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Quantity)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Quantity, new { @placeholder = "QTY IN PISCES", @id = "styleQuantity" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.LabelFor(model => model.Rate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.Rate, new { @placeholder = "$", @id = "styleRate", @class = "StyleValue" })&#36;
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Discount(%)")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Discount, new { @placeholder = "$", @id = "styleDiscount", @class = "StyleValue" })&#36;
+                </td>
+                <td>
+                </td>
+
+                <td>
+                    @Html.Label("Value")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Amt, new { @placeholder = "$", @id = "styleAmt", @class = "StyleValue" })&#36;
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("LC Status")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.LCSTID, Model.LcStatusSelectListItem)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("LC")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.PI)
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Remarks ")
+                </td>
+                <td>
+                    @Html.TextAreaFor(model => model.Rmks)
+                </td>
+                <td></td>
+                <td></td>
+
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "buyerOrderStyleContainner" } })
+                </td>
+            </tr>
+
+
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <img src="" id="itemImageUrl" style="width:100px; height:100px" />
+                </td>
+                <td>
+                    <fieldset>
+                        <legend> Upload Style Picture(.jpeg,.png) </legend>
+                        <div id="uploadFile" action="/Common/Document/DocumentFileUpload?RefId=@Model.ImagePath">Upload</div>
+                    </fieldset>
+                </td>
+
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+}
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $('.StyleValue').unbind('keyup').bind('keyup', calculateValue);
+        $('#styleQuantity, #styleRate, #styleDiscount').keyup(function () {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+        });
+        function calculateValue() {
+            var amt = new StyleAmount();
+            $('#styleAmt').val(amt.amount());
+        }
+        function StyleAmount() {
+            var vm = this;
+            vm.qty = function getQty() {
+                var qty = $('#styleQuantity').val();
+                if (qty === '') {
+                    qty = 0;
+                }
+                return qty;
+            };
+            vm.rate = function getRate() {
+                var rate = $('#styleRate').val();
+                if (rate == '') {
+                    rate = 0;
+                }
+                return rate;
+            };
+            vm.discount = function getDiscount() {
+                var discount = $('#styleDiscount').val();
+                if (discount === '') {
+                    discount = 0;
+                }
+                return discount;
+            };
+            vm.amount = function getAmount() {
+                return parseFloat(vm.qty()) * parseFloat(vm.rate()) * (1 - parseFloat(vm.discount()) * 0.01);
+            };
+
+        }
+
+        var uploadObj = $("#uploadFile").uploadFile({
+            url: $("#uploadFile").attr('action'),
+            fileName: "file",
+            method: "POST",
+            enctype: "multipart/form-data",
+            formData: null,
+            returnType: null,
+            allowedTypes: "*",
+            maxFileSize: -1,
+            maxFileCount: 1,
+            autoSubmit: true,
+            showCancel: true,
+            showDone: false,
+            multiple: false,
+            showDelete: true,
+            dragDrop: false,
+            onSelect: function (files) {
+                return true;
+            },
+            onSubmit: function (files, xhr) {
+            },
+            onSuccess: function (files, response, xhr, pd) {
+                $('#styleImagePathHidden').val(response.DocumentFilePath);
+                $('#itemImageUrl').attr('src', response.DocumentFilePath);
+            },
+            onError: function (files, status, message, pd) { },
+            onCancel: function (files, pd) { },
+            deleteCallback: function (data, pd) {
+            deletedocument.DeleteDocumnetFile(data, pd);
+                $('#styleImagePathHidden').val('');
+                $('#itemImageUrl').attr('src', '');
+                pd.statusbar.hide();
+            },
+        });
+
+        var deletedocument = {
+            DeleteDocumnetFile: function (data, pd) {
+                $.ajax({
+                    url: "/Common/Document/DeleteDocumnetFile",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { filePath: data.DocumentFilePath },
+                    success: function (respons) {
+                        if (respons.Success == true) {
+                            $('#styleImagePathHidden').va('');
+                            $('#itemImageUrl').attr('src', '');
+                            pd.statusbar.hide();
+                        } else if (respons.Success == false) {
+                            alert("Style picture not delete");
+                        }
+                    }
+                });
+            },
+        }
+
+    </script>
+}
+
+

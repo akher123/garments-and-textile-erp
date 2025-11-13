@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	     <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;প্লামি ফ্যাশনস্ লিমিটেড 
+        </td>
+		 <td align="right" valign="bottom">
+          <img src="{EMPLOYEE_PHOTOGRAPH_PATH}" width="55px" height="55px" />
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+		 <td align="right">
+          
+        </td>
+      </tr>
+	  
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="15px"></td>
+        <td width="715px"></td>
+        <td></td>
+        <td>তারিখ : {PREPARE_DATE}</td>
+      </tr>
+        
+    </table>   
+    
+    <table width="850px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">বয়স প্রমাণ ও শারীরিক সক্ষমতার সনদপত্র</td>
+      </tr>
+	  <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;"><u style="text-decoration: underline;"> Age Estimation and Fitness Certificate </u></td>
+      </tr>
+    </table> 
+	                                                            
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">কর্মীর পরিচয় (Particulars of the Worker): </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+             <tr>
+            <td></td>
+            <td>০১) আইডি কার্ড(Id Card)</td>
+            <td> : {EMP_CARDNO}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০২) নাম(Name)</td>
+            <td> : {EMP_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৩) পিতার নাম(Father's Name)</td>
+            <td> : {EMP_FATHER_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+         <tr>
+            <td></td>
+            <td>০৪) মাতার নাম (Mother's Name)</td>
+            <td> : {EMP_MOTHER_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td>০৫) বৈবাহিক অবস্থা(Marital Status)</td>
+            <td> : {MARITAL_STATE}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৬) স্বামী/স্ত্রীর নাম(Husband/Wife's Name)</td>
+            <td> : {EMP_SPOUSE_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>    
+        <tr>
+            <td></td>
+            <td>০৭) জন্ম তারিখ (Date of Birth)</td>
+            <td> : {BIRTH_DATE}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>                               
+        <tr>
+            <td></td>
+            <td>০৮) সনাক্তকরণ চিহ্ন(ID Mark)</td>
+            <td> : </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>   
+           <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">শ্রমিকের সম্মতি জ্ঞাপন (Consent of the Worker) : </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+    </table>
+    
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td></td>
+            <td>আমার দ্বারা উপরে প্রদত্ত তথ্যাবলী সত্য এবং আমি স্বজ্ঞানে এবং স্বেচ্ছায় প্লামি ফ্যাশনস্ লিঃ-এ আমার আবেদনকৃত পদের জন্য প্রয়োজনীয় বয়স ও শারীরিক সক্ষমতা নির্ণয়ের ডাক্তার পরীক্ষার অনুমতি দিলাম। </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td height = "20px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>         
+        <tr>
+            <td></td>
+            <td> আবেদনকারীর স্বাক্ষর </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> (Applicant's Signature) </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> তারিখ/Date : {JOINING_DATE} </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">ডাক্তারী পরীক্ষা (Medical Examination):</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>       
+        <tr>
+            <td></td>
+            <td>০১) লিঙ্গ (Gender) : {GENDER}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০২) রক্তের গ্রুপ (Blood Group) : ..................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৩) উচ্চতা (Height) : .......................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td>০৪) ওজন (Weight) : .......................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৫) দাঁতের সংখ্যা (Number of Teeth) (৮/৭ এবং ৮/৭ = ৩০ বয়স ১৯, ৭/৭, ৭/৭, ৭/৭ বয়স ১৪-১৮)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৬) চোখের রং :	&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] কালো &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] বাদামী</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৭) মাসিক শুরুর তারিখ (Onset of Menstruation) (মহিলাদের ক্ষেত্রে প্রযোজ্য): ..........................................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০৮) দাঁড়ি/গোফ (Beard) (পুরুষদের ক্ষেত্রে প্রযোজ্য) :		&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] লক্ষ্যণীয়			&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] লক্ষ্যণীয় নয়</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td>০৯) শারীরিক গঠন (Physicial Growth): 		&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] সুঠাম			&nbsp;[ &nbsp;&nbsp;&nbsp;&nbsp; ] দুর্বল</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>১০) দৃষ্টি শক্তি (Visual Equity): ..................................................................................................................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+           <tr>
+            <td></td>
+            <td>১১) সংক্রামক ব্যাধি (Transmitted Diseases) (যদি থাকে) ..............................................................................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:16px;">(বিশেষ দ্রষ্টব্যঃ মহিলা কর্মীকে পরীক্ষাকালে ফ্যাক্টরীর মেডিকেল সহকারী ডাক্তারকে সাহায্য করবেন)।</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">ডাক্তারের মন্তব্য (Doctor's Comments):</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td>উপরোক্ত ব্যক্তির মৌখিক বর্ণনা ও তার শারীরিক (গোপন ও প্রকাশ্যে) পরীক্ষার ফলাফল থেকে এটা প্রত্যয়ন করা যাচ্ছে যে, তার বর্তমান বয়স {AGE_BANGLA} বছর। অত্র কারখানার বিরাজমান কাজের পরিবেশ ও তার কাজের প্রকৃতি যাচাই করতঃ আরো প্রত্যয়ন করা যাচ্ছে যে, তার আবেদনকৃত পদের জন্য সে শারীরিকভাবে উপযুক্ত/অনুপোযুক্ত (This is to certify that the applicant is {AGE} years old and he/she is physicially fit for the applied job in this company.)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>  
+        <tr>
+            <td height = "20px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td>.............................................................................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td>ডাক্তারের স্বাক্ষর ও সীল (Doctor's Signature and Seal)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td>তারিখ (Date): {JOINING_DATE}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>  
+    </table>                                                                                            
+                          
+    ]]>
+  </EmployeeSpecificInfo>
+
+</AppointmentLetter>

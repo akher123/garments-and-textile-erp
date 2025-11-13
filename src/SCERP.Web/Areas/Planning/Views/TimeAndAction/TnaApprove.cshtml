@@ -1,0 +1,172 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TimeAndActionViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>APPROVED TNA</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("TnaApprove", "TimeAndAction", FormMethod.Get, new { @class = "TnaApproveSearchForm" }))
+        {
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "CostOrderStyle_BuyerId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "ALL", new { id = "CostOrderStyle_OrderNo_ID", @class = "CostOrderStyle_Order" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "ALL", new {id = "CostOrderStyle_StyleNo"})
+                    </td>
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.IsLocked, Model.StatusSelectListItem)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+ 
+
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid gridSelect",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "buyerOrderStyle-row",
+            selectedRowStyle: "buyerOrderStyle-row",
+            footerStyle: "webgrid-footer",
+            rowStyle: "buyerOrderStyle-row",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("Merchandiser", canSort: false, header: "Merchandiser"),
+                    grid.Column("BuyerName", canSort: false, header: "Buyer"),
+                    grid.Column("RefNo", canSort: false, header: "Order"),
+                    grid.Column("StyleName", canSort: false, header: String.Format("{0}", "Style")),
+                    grid.Column("Quantity", canSort: false, header: "Quantity"),
+                    grid.Column("Ship Date", canSort: false, header: "Ship Date", format: @<text>@(item.EFD == null ? "" : item.EFD.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column(header: "IsApproved",format: @<input class="IsApprovedcbx" onclick="IsApprovedFun(this)" name="IsApprovedCheckBox" @(item.TnaMode =="L" ? "checked" : "") type="checkbox" value="@item.OrderStyleId" />),
+                    grid.Column("TNA", format: @<text> <a href="/Planning/TimeAndAction/TnAReport?orderStyleRefId=@item.OrderStyleRefId&reportType=1" target="_blank">Print</a> </text>, canSort: false)));
+
+    }
+
+ 
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function IsApprovedFun(chechBox) {
+            var $chechBox = $(chechBox);
+            var orderStyleId = $chechBox.val();
+            $.Ajax({
+                url: '/TimeAndAction/TnaApproved',
+                data: { orderStyleId: orderStyleId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Approved/Not Approved.");
+                }
+            });
+        }
+
+    $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+
+            removeDependentDropdown();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "ALL" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+    function populateDropDown(obj) {
+        $('.CostOrderStyle_Order').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+    $('#CostOrderStyle_OrderNo_ID').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('#CostOrderStyle_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("ALL")
+                );
+                $.each(styleList, function (style) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+   
+    function removeDependentDropdown() {
+
+        $('.CostOrderStyle_Order').empty();
+        $('#CostOrderStyle_StyleNo').empty();
+        $('#Copy_CostOrderStyle_StyleNo_ID').empty();
+
+    }
+
+    function tnAReport() {
+        var orderStyleRefId = $('#CostOrderStyle_StyleNo').val();
+        var searchurl = '/Planning/TimeAndAction/TnAReport?orderStyleRefId=' + orderStyleRefId;
+        window.open(searchurl);
+    }
+    </script>
+}
+

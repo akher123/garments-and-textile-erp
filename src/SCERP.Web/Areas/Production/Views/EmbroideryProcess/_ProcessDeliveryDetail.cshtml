@@ -1,0 +1,78 @@
+﻿@using SCERP.Model.Production
+@model SCERP.Web.Areas.Production.Models.ProcessDeliveryViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var cb in Model.DoDictionary)
+{
+    var cuttingBatchRefId = cb.Key.Split('-')[0];
+    <div id="newRow_@cuttingBatchRefId" style="margin-bottom: 10px;">
+        <div style="font-size: 12px; background-color: seashell">
+            <input type="button" onclick="removeProcessDetail('@cuttingBatchRefId')" value="x" />
+           <em style="color: #00008b"> CUTT REF NO :@cuttingBatchRefId</em>
+        </div>
+
+        <table class="webgrid-table  webgrid-alternating-row ">
+
+            <thead class="webgrid-header">
+                @foreach (var row in Model.CuttingJobDictionary.Where(x => x.Key == cuttingBatchRefId))
+                {
+                    <tr>
+
+                        @foreach (var col in @row.Value)
+                        {
+                            <td>
+                                @col
+                            </td>
+                        }
+                    </tr>
+                }
+            </thead>
+            <tbody>
+
+                <tr>
+                    @foreach (var row in cb.Value)
+                    {
+                        <td >
+                            @Html.DisplayFor(x => x.DoDictionary[cb.Key][row.Key].Quantity)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].Quantity)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].SizeRefId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CuttingBatchId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ColorRefId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ComponentRefId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CuttingTagId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ProcessDeliveryId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ProcessDeliveryDetailId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CompId)
+                        </td>
+
+                    }
+                    <td>
+                        @cb.Value.Sum(x => x.Value.Quantity)
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+<script type="text/javascript">
+    function removeProcessDetail(id) {
+        $('#newRow_' + id).remove();
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialReceivedViewModel
+@{
+    ViewBag.Title = "Grey Register";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Fabric Register List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "FabricRegister", FormMethod.Get, new {@class = "FabricRegisterForm ignore-validation"}))
+        {
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", id = "txtFromDate", @data_val = "false"})
+                    </td>
+                    <td>
+                        @Html.Label("To Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", id = "txtToDate", @data_val = "false"})
+                    </td>
+                    <td>
+                        @Html.Label("Criteria ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/FabricRegister/Edit">Add New</button>
+        </div>
+        <div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.MaterialReceivedList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("MaterialReceivedRefId", header: "Ref Id"),
+                        grid.Column("GRN", header: "GRN", canSort: false),
+                        grid.Column("GEN", header: "GEN", canSort: false),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ReceivedDate ?? ""), header: "Rcv Date"),
+                        grid.Column("ChallanNo", header: "ChallanNo", canSort: false),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ChallanDate ?? ""), header: "Challan Date"),
+                        grid.Column("SupplierName", header: "Supplier", canSort: false),
+                        grid.Column("BuyerName", header: "Buyer", canSort: false),
+                        grid.Column("StyleNo", header: "Style", canSort: false),
+                        grid.Column("Article", header: "Article", canSort: false),
+                        grid.Column("LCNo", header: "LCNo", canSort: false),
+                        grid.Column("BillStatus", header: "BillStatus", canSort: false),
+                        grid.Column("Remarks", header: "Remarks", canSort: false),
+                        grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Inventory/FabricRegister/Edit?MaterialReceived.MaterialReceivedId=@item.MaterialReceivedId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Inventory/FabricRegister/Delete?MaterialReceivedId=@item.MaterialReceivedId"></button></text>)))
+
+            }
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+

@@ -1,0 +1,184 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabricIssueViewModel
+@{
+    ViewBag.Title = Model.FinishFabricIssue.FinishFabIssueId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="padding-left: 300px;">
+    <h2>Finish Fabric Issue/Delivery Challan @ViewBag.Title</h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "FinishFabricIssue", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.FinishFabricIssue.FinishFabIssueId)
+        <fieldset>
+            <legend>Finish Fabric Issue/Delivery Challan</legend>
+            <table class="tabefont" style="float: left; padding-right: 10px; border-right: 1px solid #000;">
+                <tr>
+                    <td>
+                        @Html.Label("Ref No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.FinishFabIssureRefId, new { @readonly = "readonly", id = "txtReturnableChallanRefId", style = "background-color: #F0ECE7;width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan No :")
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.ChallanNo, new { style = "width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.ChallanDate, new { @class = "datepicker", @placeholder = "Challan Date", style = "width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Party")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.FinishFabricIssue.PartyId, Model.PartySelectListItem, "-Select-", new { id = "ddlParyId", style = "width: 254px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Vehicle Type :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.VehicleType, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Driver:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.DriverName, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Driver Phone:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FinishFabricIssue.DriverPhone, new {style = "width: 240px;"})
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(x => x.FinishFabricIssue.Remarks, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <table class="tabefont"  style="padding-left: 10px;">
+                <tr>
+                    <td>
+                        <table id="finishFabricIssueDetail">
+                            <tr>
+                                <td>
+                                    @Html.Label("Batch")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.FinishFabricIssueDetail.BatchNo, new { @id = "BatchNoTextBox", @placeholder = "SearchBy Batch No", @data_target = "#BtRefNoHiddenText", @action = "/FinishFabricIssue/BatchAutoCompliteByParty" })
+                                    @Html.HiddenFor(x => x.FinishFabricIssueDetail.BatchId, new { @id = "BtRefNoHiddenText" })
+                                </td>
+                                <td>@Html.Label("Item")</td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.FinishFabricIssueDetail.BatchDetailId, Model.ItemSelectListItem, "-Select-", new { @id = "ddlBatchDetailItem", @data_val = "false" })
+                                    @Html.HiddenFor(x => x.FinishFabricIssueDetail.ItemName, new { @id = "txtItemName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Issued Qty")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.IssueQty, new { id = "IssueQty", @data_val = false, @readonly = "readonly" ,@style="background-color: #b0c4de"})</td>
+                                <td>@Html.Label("FabQty")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.FabQty, new {id = "FabQty", @data_val = false})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("NoOfRoll")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.NoOfRoll, new {id = "NoOfRoll", @data_val = false})</td>
+                                <td>@Html.Label("Grey Wt")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.GreyWt, new { id = "GreyWt", @data_val = false })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Remarks")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.Remarks, new {id = "Remarks"})</td>
+                                <td>@Html.Label("CcuffQty")</td>
+                                <td>@Html.TextBoxFor(x => x.FinishFabricIssueDetail.CcuffQty, new { id = "CcuffQty", @data_val = false })</td>
+                                <td>
+                                    <input type="button" value="+" id="addFabricIssueDetailButton" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <table class="tabefont webgrid-table" id="finishFabricIssueDetailTable">
+                            <thead style="text-align: center" class="webgrid-header">
+                                <tr>
+                                    <th>Batch</th>
+                                    <th>Item</th>
+                                    <th>Grey Wt</th>
+                                    <th>Finish Wt</th>
+                                    <th>CcuffQty</th>
+                                    <th>NoOfRoll</th>
+                                    <th>Remarks</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Partial("~/Areas/Inventory/Views/FinishFabricIssue/_FabricIssueDetail.cshtml", Model)
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="float: left">
+                        <input onclick="search('/Inventory/FinishFabricIssue/Index')" value="Back" id="backButton" class="addButton" type="button" />
+                    </td>
+                    <td style="float: right">
+                        <input type="button" value="Save" id="finishFabricIssueSaveButton" class="addButton"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+</section>
+
+@section scripts
+{
+<script src="~/Scripts/SCERP/Inventory/finishFabricIssue.js"></script>
+}

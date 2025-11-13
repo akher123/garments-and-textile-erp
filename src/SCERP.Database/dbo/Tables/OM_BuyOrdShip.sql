@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[OM_BuyOrdShip] (
+    [OrderShipId]        INT            IDENTITY (1, 1) NOT NULL,
+    [CompId]             VARCHAR (3)    NULL,
+    [OrderShipRefId]     VARCHAR (8)    NULL,
+    [OrderNo]            VARCHAR (12)   NULL,
+    [OrderStyleRefId]    VARCHAR (7)    NULL,
+    [LotNo]              VARCHAR (2)    NULL,
+    [ShipDate]           DATE           NULL,
+    [CountryId]          INT            NULL,
+    [PortOfLoadingRefId] VARCHAR (2)    NULL,
+    [Quantity]           NUMERIC (8, 2) NULL,
+    [IModeRefId]         VARCHAR (1)    NULL,
+    [DeliveryDate]       DATE           NULL,
+    [StyleIRefId]        VARCHAR (4)    NULL,
+    [JobQty]             NUMERIC (8)    NULL,
+    [FinishQty]          NUMERIC (8)    NULL,
+    [ShipRowId]          INT            NULL,
+    [ProductionQty]      NUMERIC (9, 2) NULL,
+    [DespatchQty]        INT            NULL,
+    [ShipAmend]          VARCHAR (1)    NULL,
+    [CINo]               VARCHAR (20)   NULL,
+    [ETD]                DATETIME       NULL,
+    [Remarks]            VARCHAR (MAX)  NULL,
+    CONSTRAINT [PK_OM_BuyOrdShip] PRIMARY KEY CLUSTERED ([OrderShipId] ASC)
+);
+

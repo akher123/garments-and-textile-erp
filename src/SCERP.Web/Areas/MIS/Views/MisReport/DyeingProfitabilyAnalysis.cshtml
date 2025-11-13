@@ -1,0 +1,70 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    ViewBag.Title = "DYEING PROFITABILITY ANALYSIS";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>DYEING PROFITABILITY ANALYSIS</h2>
+</div>
+
+
+<div >
+    <section class="formCover">
+       
+@using (Html.BeginForm("DyeingProfitabilyAnalysis", "MisReport", FormMethod.Post, new { @class = "DyeingProfitabilyAnalysisForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <table>
+        <tr>
+            
+            <td>
+                @Html.Label("Year")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.YearId, Model.YearSelectListItem)
+            </td>
+            <td>
+                <input type="button" class="searchAction"/>
+            </td>
+            <td>
+                <div class="addButton-wrapper">
+                    <a href="/MIS/MisReport/ShowDyeingProfitabilyAnalysisReport?yearId=@Model.YearId" class="addButton" target="_blank">PDF DOWNLOAD</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+        <table class="webgrid-table">
+            <thead class="webgrid-header">
+            <tr>
+                <th>YEAR</th>
+                <th>MONTH</th>
+                <th>DYEING QTY (KG)</th>
+                <th>INCOME (TK)</th>
+                <th>COST(TK)</th>
+                <th>COST(WASH+ETP)</th>
+                <th>GP(TK)</th>
+                <th>GP/KG(TK)</th>
+                <th>GP %</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (DataRow row in Model.SummaryDataTable.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.SummaryDataTable.Columns)
+                    {
+
+                        <td>@row[col.ColumnName]</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </section >
+</div>
+
+
+

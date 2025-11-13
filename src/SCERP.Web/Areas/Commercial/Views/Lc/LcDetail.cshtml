@@ -1,0 +1,58 @@
+﻿@using iTextSharp.text.pdf
+@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    ViewBag.Title = "LC";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.LcInfos.Count > 0) ? "" : "none";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Index", "Lc", FormMethod.Get, new { @class = "lcSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="padding-left: 240px;">
+        <h2>LC Detail Report</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <div style="margin-left: 50px;">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("LC Detail")
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="margin-left: 10px;margin-bottom: 3px;">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="LcDetail(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="LcDetail(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function LcDetail(reportTypeId) {
+            var searchurl = '/Commercial/Report/CommercialInvoice?reportTypeId=' + reportTypeId;
+            window.open(searchurl);
+        }
+    </script>
+}
+
+

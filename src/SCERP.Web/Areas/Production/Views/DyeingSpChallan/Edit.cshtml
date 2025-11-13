@@ -1,0 +1,161 @@
+﻿@model SCERP.Web.Areas.Production.Models.DyeingSpChallanViewModel
+@{
+    ViewBag.Title = Model.DyeingSpChallan.DyeingSpChallanId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Dyeing finish Fabric Entry</h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "DyeingSpChallan", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.DyeingSpChallan.DyeingSpChallanId)
+        <fieldset>
+            <legend>Dyeing Subprocess Challan</legend>
+            <table class="tabefont" style="float: left;padding-right: 10px;border-right: 1px solid #000;">
+                <tr>
+                    <td>
+                        @Html.Label("Ref No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DyeingSpChallan.DyeingSpChallanRefId, new {@readonly = "readonly", id = "txtReturnableChallanRefId", style = "background-color: #F0ECE7;width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan No :")
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.DyeingSpChallan.ChallanNo, new { style = "width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DyeingSpChallan.ChallanDate, new {@class = "datepicker", @placeholder = "Challan Date", style = "width: 240px;"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Exp Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DyeingSpChallan.ExpDate, new {@class = "datepicker", @placeholder = "Expectd Date", style = "width: 240px"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Factory")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DyeingSpChallan.ParyId, Model.PartySelectListItem, "-Select-", new {@class = "ddlParyId", style = "width: 254px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(x => x.DyeingSpChallan.Remarks, new {style = "width: 240px;"})
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <table class="tabefont" id="DyeingSpChallanInput" style="padding-left: 10px;display: flex;">
+                <tr>
+                    <td>
+                        @Html.Label("Batch")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.VDyeingSpChallanDetail.BatchNo, new { @id = "BatchNoTextBox", @placeholder = "SearchBy Batch No", @data_target = "#BatchIdNoHiddenText", @action = "/BatchWiseIssue/BatchAutoComplite" })
+                        @Html.HiddenFor(x => x.VDyeingSpChallanDetail.BatchId, new {@id = "BatchIdNoHiddenText"})
+                    </td>
+                    <td>@Html.Label("Item")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.VDyeingSpChallanDetail.BatchDetailId, Model.ItemSelectListItem, "-Select-",new {@id = "ddlItem" ,@data_val = "false" })
+                        @Html.HiddenFor(x => x.VDyeingSpChallanDetail.ItemName, new {@id = "txtItemName"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("SP Group")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.VDyeingSpChallanDetail.SpGroupId, Model.GroupSelectListItem, "-Select-", new {@id = "ddlSpGroup", @data_val = "false" })
+                        @Html.HiddenFor(x => x.VDyeingSpChallanDetail.GroupName, new {id = "txtGroupName"})
+                    </td>
+                    <td>@Html.Label("GreyWeight")</td>
+                    <td>@Html.TextBoxFor(x => x.VDyeingSpChallanDetail.GreyWeight, new { id = "GreyWeight", @data_val = "false"})</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("FinishWeight")</td>
+                    <td>@Html.TextBoxFor(x => x.VDyeingSpChallanDetail.FinishWeight,new {id= "FinishWeight" })</td>
+                    <td>@Html.Label("Wastage")</td>
+                    <td>@Html.TextBoxFor(x => x.VDyeingSpChallanDetail.Rate, new { id= "Rate", @data_val = "false" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Remarks")</td>
+                    <td>@Html.TextBoxFor(x => x.VDyeingSpChallanDetail.Remarks, new {id = "Remarks"})</td>
+                    <td>@Html.Label("CcuffQty")</td>
+                    <td>@Html.TextBoxFor(x => x.VDyeingSpChallanDetail.CcuffQty, new {id = "CcuffQty", @data_val = "false"})</td>
+                    <td>
+                        <input type="button" class="addButton" id="addBactchButton" value="+" />
+                    </td>
+                </tr>
+            </table>
+        
+            <table id="dyeingSpChallanListTable" class="tabefont webgrid-table" style="margin-top: 20px; display: inline-table;">
+                <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>Batch</th>
+                    <th>Item</th>
+                    <th>SP Group</th>
+                    <th>GreyWeight</th>
+                    <th>FinishWeight</th>
+                    <th>Wastage</th>
+                    <th>CcuffQty</th>
+                    <th>Remarks</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                @Html.Partial("~/Areas/Production/Views/DyeingSpChallan/_AddNewRow.cshtml", Model)
+                </tbody>
+            </table>
+            <table class="tabefont" style="width: 100%;">
+                <tr>
+                    <td class="pull-left">
+                        <input onclick="search('/Production/DyeingSpChallan/Index?DyeingSpChallanId=0')" value="Back" class="addButton" type="button"/>
+                    </td>
+                    <td class="pull-right">
+                        <input type="submit" class="addButton" id="btnSaveDyeingSubprocess" value="Save"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</section>
+@section scripts
+{
+<script src="~/Scripts/SCERP/Production/DyeingSpChallan.js"></script>
+}

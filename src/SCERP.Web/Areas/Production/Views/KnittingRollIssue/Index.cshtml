@@ -1,0 +1,135 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.KnittingRollIssueViewModel
+@{
+    ViewBag.Title = "DyeingSpChallan";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+
+<div class="header-title">
+    <h2>Knitting Roll Issue</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "KnittingRollIssue", FormMethod.Get, new { @class = "KnittingRollIssueForm ignore-validation", }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.KnittingRollIssue.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "RollIsue_BuyerId" })
+                    </td>
+                    <td>
+                        
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.KnittingRollIssue.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "RollIsue_OrderNo" })
+                    </td>
+                    <td>
+                       
+                    </td>
+
+                  
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.KnittingRollIssue.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "RollIsue_StyleNo" })
+                    </td>
+                    <td>
+                       
+                    </td>
+                  
+                    <td>
+                        @Html.Label("", "Ref No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString)
+                    </td>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover" >
+    <div class="additem" style="min-height: 200px;">
+        <div class="addButton-wrapper">
+            <input onclick=" search('/Production/KnittingRollIssue/Edit') " value="Add New" class="addButton" type="button"/>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.KnittingRollIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("IssueRefNo", canSort: false, header: "RefId"),
+                        grid.Column("ProgramRefId", canSort: false, header: "Program No"),
+                        grid.Column("BuyerRefId", canSort: false, header: "Buyer"),
+                        grid.Column("OrderNo", canSort: false, header: "Order"),
+                        grid.Column("BatchNo", canSort: false, header: "Challan No"),
+                        grid.Column("IssueDate", canSort: false, header: "Challan Date", format: @<text>@(item.IssueDate == null ? "" : item.IssueDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column(header: "IsReceived", format: @<text>@(item.IsRecived == true ? "YES" : "NO") </text>),
+                        grid.Column("Remarks", canSort: false, header: "Remarks"),
+                        grid.Column("Detail", canSort: false, header: "Report", format: @<text>
+                                                                                            <div class="dropdown">
+                                                                                                <a class="dropbtn custom-table-dropbtn">PDF</a>
+                                                                                                <div class="dropdown-content custom-table-dropdown-content">
+                                                                                                    <a href="/Production/ProductionReport/KnittingRollDeliveryChallanSummary?KnittingRollIssueId=@item.KnittingRollIssueId" target="_blank">Summary</a>
+                                                                                                    <a href="/Production/ProductionReport/KnittingRollDeliveryChallan?KnittingRollIssueId=@item.KnittingRollIssueId&&challanType=@item.ChallanType" target="_blank">Detail</a>
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                         </text>),
+
+                        grid.Column("Edit", canSort: false, format: @<text><input type="button" class="addButton" onclick=" search('/Production/KnittingRollIssue/Edit?KnittingRollIssue.KnittingRollIssueId=@item.KnittingRollIssueId') " value="Edit"/></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Production/KnittingRollIssue/Delete?KnittingRollIssueId=@item.KnittingRollIssueId"></button></text>)))
+            ;
+        }
+    </div>
+
+
+</section>
+
+
+@section scripts
+{
+
+
+
+    <script src="~/Scripts/SCERP/Production/knittingRollIssue.js"></script>
+}

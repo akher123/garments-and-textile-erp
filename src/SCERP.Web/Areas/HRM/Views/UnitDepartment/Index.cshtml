@@ -1,0 +1,82 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.UnitDepartmentViewModel
+@{
+    ViewBag.Title = "Unit Department";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.UnitDepartments.Count > 0) ? "" : "none";
+}
+<div class="header-title">
+    <h2>Unit Department Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "UnitDepartment", FormMethod.Get, new { @class = "UnitDepartmentSearchForm  ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Unit Name: ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchByUnitId, Model.UnitSelectListItem, "--Select--")
+                            @Html.ValidationMessageFor(x => x.SearchByUnitId)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                   
+                        <td>
+                            @Html.Label("Department: ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchByDepartmentId, Model.DepartmentSelectListItem, "--Select--")
+                            @Html.ValidationMessageFor(x => x.SearchByDepartmentId)
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+           
+        }
+
+    </div>
+</section>
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/UnitDepartment/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.UnitDepartments, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("Unit.Name", header: "Unit Name", format: @<text>@(item.Unit == null ? "" : item.Unit.Name)</text>),
+            grid.Column("Department.Name", header: "Department Name", format: @<text>@(item.Department == null ? "" : item.Department.Name)</text>),
+            grid.Column("Detail/Edit",canSort:false,format:@<text><button class="edit" action="/HRM/UnitDepartment/Edit?UnitDepartmentId=@item.UnitDepartmentId"></button></text>),
+            grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/HRM/UnitDepartment/Delete?UnitDepartmentId=@item.UnitDepartmentId"></button></text>)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "UnitDepartment", new { SearchByUnitId = Model.SearchByUnitId, SearchByDepartmentId = Model.SearchByDepartmentId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "UnitDepartment", new { SearchByUnitId = Model.SearchByUnitId, SearchByDepartmentId = Model.SearchByDepartmentId })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>
+

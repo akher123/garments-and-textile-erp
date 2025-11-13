@@ -1,0 +1,85 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.EmailUserViewModel
+@{
+    ViewBag.Title = Model.EmailUser.EmailUserId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmailUser", FormMethod.Post, new { @class = "EmailUserform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmailUser.EmailUserId)
+
+    <fieldset>
+        <legend>Email User</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmailUser.EmailUserRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("User Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.EmailUser.EmailUserName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EmailUser.EmailUserName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Email Address:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.EmailUser.EmailAddress)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EmailUser.EmailAddress)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.EmailUser.Phone)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EmailUser.Phone)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

@@ -1,0 +1,151 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ItemStoreViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ItemStoreId > 0 ? "Edit" : "Add");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+<table class="tabefont">
+    <tr>
+
+        <td>
+            @Html.Label("SPR NO :")
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.SearchString, new { @onkeyup = "requisitionNoAutocomplite(this)" })
+            @Html.HiddenFor(x => x.StorePurchaseRequisitionId, new { @class = "StorePurchaseRequisitionId" })
+        </td>
+        <td>
+            <input type="button" id="findItemReceive" class="addButton" value="Find" />
+        </td>
+        <td></td>
+
+    </tr>
+</table>
+<hr/>
+<div >
+    @using (Html.BeginForm("Save", "ItemStore", FormMethod.Post, new { @class = "ItemStoreSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ItemStoreId)
+        @Html.HiddenFor(x => x.IsSearch)
+        <div id="itemReceive">
+            @Html.Partial("~/Areas/Inventory/Views/ItemStore/_ItemReceive.cshtml", Model)
+        </div>
+        <p class="tabefont custom-modal-btn">
+            <input type="submit" class="addButton" value="Save" />
+        </p>
+    }
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+   
+        function addNewRow() {
+            var $table = $('table#ItemStoreDetail tbody');
+            var rowCount = $('#ItemStoreDetail tr').length;
+            var option = {
+                url: '@Url.Action("AddRow", "ItemStore")',
+                type: "get",
+                dataType: "html",
+                data: { Key: rowCount },
+            };
+            $.Ajax(option).done(function (htmResult) {
+                $table.append(htmResult);
+                RefrashModelState();
+            });
+        }
+
+        function itemAutocomplite(obj, index) {
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/ItemStore/AutocompliteItemByBranch",
+                        type: "POST",
+                        data: { itemName: request.term },
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ItemName + "_" + item.ItemCode, value: item.ItemName, ItemId: item.ItemId };
+                            }));
+                        });
+                },
+                select: function (event, ui) {
+                    $('.ItemHiddenField-' + index).val(ui.item.ItemId);
+
+                },
+            });
+        }
+
+        function RefrashModelState() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+        $('.IsProcessRequsition').click(function () {
+            var status = $(this).is(':checked');
+            if (status) {
+                $('.RequisitionNumber').prop('readonly', true);
+                $('.RequisitionNumber').css("background-color", "cornflowerblue");
+            } else {
+                $('.RequisitionNumber').prop('readonly', false);
+                $('.RequisitionNumber').css("background-color", "");
+
+            }
+        });
+
+        $('#findItemReceive').unbind('click').bind('click', function () {
+            var sprId = $('.StorePurchaseRequisitionId').val();
+            if (sprId.length!=0) {
+                var url = '/ItemStore/ItemReceive/';
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: { StorePurchaseRequisitionId: sprId },
+                    success: function (respons) {
+                        $('#itemReceive').html(respons);
+                    }
+                });
+
+            } else {
+                alert('Please Select Correct SPR NO !!');
+            }
+              
+        });
+
+
+        function requisitionNoAutocomplite(obj) {
+            $('.StorePurchaseRequisitionId').val('');
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/ItemStore/AutocompliteRquisitionNumber",
+                        type: "POST",
+                        data: { searchString: request.term },
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.RequisitionNo, value: item.RequisitionNo, ItemId: item.StorePurchaseRequisitionId };
+                            }));
+                        });
+                },
+                select: function (event, ui) {
+                    $('.StorePurchaseRequisitionId').val(ui.item.ItemId);
+
+                },
+            });
+        }
+    </script>
+}

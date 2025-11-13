@@ -1,0 +1,317 @@
+﻿@model ICollection<SCERP.Model.Weekend>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var dayNames = ViewBag.dayNames;
+    int count = 0;
+
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Holiday Setup</title>
+
+    <style type="text/css">
+        .fc-border-separate {
+            background-color: #CCFFFF;
+            border-color: #696969;
+        }
+
+        .fc-day {
+            border-color: #696969;
+        }
+
+        .fc-day-header {
+            border-color: #696969;
+        }
+
+        .fc-header-left {
+            border-color: #696969;
+        }
+
+        .tooltipevent {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 5px 10px black;
+            position: relative;
+            width: 200px;
+        }
+
+            /* arrows - :before and :after */
+            .tooltipevent:before {
+                position: absolute;
+                display: inline-block;
+                border-top: 7px solid transparent;
+                border-right: 7px solid #eee;
+                border-bottom: 7px solid transparent;
+                border-right-color: #000000;
+                left: -14px;
+                top: 20px;
+                content: '';
+            }
+
+            .tooltipevent:after {
+                position: absolute;
+                display: inline-block;
+                border-top: 6px solid transparent;
+                border-right: 6px solid #eee;
+                border-bottom: 6px solid transparent;
+                left: -12px;
+                top: 21px;
+                content: '';
+            }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h2>Yearly Holidays</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <fieldset>
+                <legend>Weekends Setup</legend>
+                <table>
+                    <tr>
+                        @foreach (var weekend in Model)
+                        {
+                            <td></td>
+                            <td><input type="checkbox" @(weekend.IsActive == true ? "checked" : "") name="@weekend.DayName" class="weekends-day" value="@weekend.Id" /></td>
+                            <td>@dayNames[count++]</td>
+                        }
+                        <td></td>
+                        <td>
+                            <input type="button" class="addButton" id="weekends-update" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+    </section>
+    <section class="search formCover">
+        <div class="additem">
+            <table width="100%" cellpadding="5" cellspacing="5">
+                <tr>
+                    <td></td>
+                    <td style="text-align: center">
+                        <input type="button" id="monthprevbutton" class="addButton" value="&nbsp;&#9668;&nbsp;"/>
+                        &nbsp;&nbsp;&nbsp;
+                        <input type="button" id="monthnextbutton" class="addButton" value="&nbsp;&#9658;&nbsp;"/>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="33%"> <div id='calendar0'> </div> </td>
+                    <td width="33%"> <div id='calendar1'> </div> </td>
+                    <td width="33%"> <div id='calendar2'> </div> </td>
+
+                </tr>
+                <tr>
+                    <td width="33%"> <div id='calendar3'> </div> </td>
+                    <td width="33%"> <div id='calendar4'> </div> </td>
+                    <td width="33%"> <div id='calendar5'> </div> </td>
+                </tr>
+                <tr>
+                    <td width="33%"> <div id='calendar6'> </div> </td>
+                    <td width="33%"> <div id='calendar7'> </div> </td>
+                    <td width="33%"> <div id='calendar8'> </div> </td>
+
+                </tr>
+                <tr>
+                    <td width="33%"> <div id='calendar9'> </div> </td>
+                    <td width="33%"> <div id='calendar10'> </div> </td>
+                    <td width="33%"> <div id='calendar11'> </div> </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <div id="editContainer"></div>
+    <div id="editDeleteDialogContainer"></div>
+
+</body>
+</html>
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/holidaySetup.js"></script>
+    <script type="text/javascript">
+        InitializeHolidaySetup();
+        InitializeFullcalender();
+
+        function InitializeFullcalender() {
+            for (var i = 0; i < 12; i++) {
+                $('#calendar' + i).fullCalendar({
+                    header: {
+                        left: '',
+                        center: 'title',
+                        right: ''
+                    },
+                    month: i,
+                    firstDay: 6,
+                    theme: true,
+                    events: function (start, end, callback) {
+                        $.getJSON("/HRM/HolidaySetup/GetAllHolidays", function (data) {
+
+                            var result = $(data).map(function () {
+                                return {
+                                    id: this.Id,
+                                    title: this.title,
+                                    start: this.start,
+                                    end: this.end,
+                                    allDay: this.editable,
+                                    backgroundColor: 'pink',
+                                    textColor: '#0E0E0E'
+                                };
+                            }).toArray();
+                            callback(result);
+
+                        });
+                    },
+                    dayClick: function (date, allDay, jsEvent, view) {
+                        var startDate = $.fullCalendar.formatDate(date, 'dd/MM/yyyy');
+                        var url = '@Url.Action("CreateHoliday", "HolidaySetup", new {@Area = "HRM"})';
+                        jQuery.Ajax({
+                            url: url,
+                            type: "GET",
+                            data: { Id: 0, StartDate: startDate, EndDate: startDate },
+                            dialog: { title: "Create Holiday" },
+                            loader: { loader: "body" },
+                        });
+
+                    },
+
+                    eventMouseover: function (calEvent, jsEvent) {
+                        var tooltip = '<div class="tooltipevent tooltip" style="width:100px;height:auto;background:#851BBB;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
+                        $("body").append(tooltip);
+                        $(this).mouseover(function (e) {
+                            $(this).css('z-index', 10000);
+                            $('.tooltipevent').fadeIn('500');
+                            $('.tooltipevent').fadeTo('10', 1.9);
+                        }).mousemove(function (e) {
+                            $('.tooltipevent').css('top', e.pageY + 10);
+                            $('.tooltipevent').css('left', e.pageX + 20);
+                        });
+                    },
+                    eventMouseout: function (calEvent, jsEvent) {
+                        $(this).css('z-index', 8);
+                        $('.tooltipevent').remove();
+                    },
+                    eventClick: function (calEvent, jsEvent, view) {
+                        $("#editDeleteDialogContainer").empty();
+                        $("#editDeleteDialogContainer").append(' Title: <strong>' + calEvent.title + '</strong>' + '<br/>');
+                        $("#editDeleteDialogContainer").append(' Start Date: <strong>' + $.fullCalendar.formatDate(calEvent.start, 'dd/MM/yyyy') + '</strong>' + '<br/>');
+                        $("#editDeleteDialogContainer").append(' End Date: <strong>' + $.fullCalendar.formatDate(calEvent.end, 'dd/MM/yyyy') + '</strong>');
+                        $("#editDeleteDialogContainer").dialog({
+                            resizable: true,
+                            title: 'Do you want to delete or edit ?',
+                            height: 'auto',
+                            width: 'auto',
+                            modal: true,
+                            loader: { loader: "body" },
+                            buttons: {
+                                "Edit": function () {
+                                    var holidayId = calEvent.id;
+                                    jQuery.Ajax({
+                                        url: '/HRM/HolidaySetup/CreateHoliday',
+                                        type: "GET",
+                                        data: { Id: holidayId },
+                                        dialog: { title: "Edit Holiday" },
+                                        loader: { loader: "body" },
+
+                                    });
+                                    $('#holidaySetUp').val("Edit");
+
+                                    $(this).dialog("close");
+                                },
+                                "Delete": function () {
+                                    var holidayId = calEvent.id;
+                                    $.getJSON("/HRM/HolidaySetup/DeleteHoliday", { Id: holidayId }, function (data) {
+                                        if (data.Success == true) {
+                                            loadAction("/HRM/HolidaySetup/Index");
+                                            $('.ui-dialog-content').dialog('close');
+                                        }
+                                        if (data.Success === false) {
+                                            alert(calEvent.title + " Not delete ");
+                                        }
+
+                                    });
+
+                                },
+                            }
+                        });
+
+                    },
+                    editable: true,
+                    allDaySlot: false,
+                    selectable: true,
+                    slotMinutes: 15,
+                });
+            }
+        }
+
+
+        $('#monthprevbutton').click(function () {
+            for (var i = 0; i < 12; i++) {
+                $('#calendar' + i).fullCalendar('prevYear');
+            }
+            weekendsDay();
+        });
+        $('#monthnextbutton').click(function () {
+            for (var i = 0; i < 12; i++) {
+                $('#calendar' + i).fullCalendar('nextYear');
+
+            }
+            weekendsDay();
+        });
+
+        function saveHoliday() {
+            var form = $('.HolidaySetupForm');
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (monthPosition) { //zero index based month position
+                    $('#calendar' + monthPosition).fullCalendar('refetchEvents');
+                    $('.ui-dialog-content').dialog('close');
+                }
+            });
+
+
+
+        }
+
+        weekendsDay();
+
+        function updateWeekends() {
+            var weekends = [];
+            $('.weekends-day:checked').each(function () {
+                weekends.push($(this).val());
+            });
+            var url = '/HRM/HolidaySetup/UpdateWeekends';
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(weekends),
+                success: function (data) {
+                    if (data.length != 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('.fc-day.fc-' + data[i].DayName + '').css('color', 'red');
+                        }
+                        alert('Updated successfully.');
+
+                    } else if (data.Success === false) {
+                        alert('Failed to update');
+                    }
+                    weekendsDay();
+                }
+            });
+        }
+
+        $('.fc-header-title').css('font-size', '12px');
+    </script>
+}

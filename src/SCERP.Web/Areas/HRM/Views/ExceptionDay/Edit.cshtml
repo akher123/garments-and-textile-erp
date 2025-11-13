@@ -1,0 +1,140 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.ExceptionDayViewModel
+@{
+    ViewBag.Title = Model.ExceptionDay.ExceptionDayId > 0 ? "Edit " : "Add ";
+    bool isReadOnly = Model.ExceptionDay.ExceptionDayId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "ExceptionDay", FormMethod.Post, new { @class = "ExceptionDayForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ExceptionDay.ExceptionDayId)
+    <fieldset>
+        <legend>Exception Day</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Company: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/HRM/ExceptionDay/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/ExceptionDay/GetAllBranchUnitsByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.ExceptionDay.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/ExceptionDay/GetBranchUnitDepartmentsByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                <td>
+            </tr>
+ 
+            <tr>
+                <td>
+                    @Html.Label("Exception Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ExceptionDay.ExceptionDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Exception Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Is Exception For Weekend:")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.ExceptionDay.IsExceptionForWeekend, new { id = "1", @class = "ExceptionDay" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Is Exception For Holiday:")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.ExceptionDay.IsExceptionForHoliday, new { id = "2", @class = "ExceptionDay" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Is Exception For General Day :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.ExceptionDay.IsExceptionForGeneralDay, new { id = "3", @class = "ExceptionDay" })
+                </td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Is Declared As Weekend:")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.ExceptionDay.IsDeclaredAsWeekend, new { id = "DeclaredDay-1", @class = "DeclaredDay" })
+                </td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Is Declared As Holiday:")
+                </td>
+                <td>
+                     @Html.CheckBoxFor(x => x.ExceptionDay.IsDeclaredAsHoliday, new { id = "DeclaredDay-2", @class = "DeclaredDay" })
+                 </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Is Declared As General Day:")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.ExceptionDay.IsDeclaredAsGeneralDay, new { id = "DeclaredDay-3", @class = "DeclaredDay" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.ExceptionDay.Remarks)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/ExceptionDay.js"></script>
+    @*<script type="text/javascript">
+        function loadCreateNewEmployee(url) {
+            loadAction(url);
+        }
+    </script>*@
+
+}
+
+
+
+

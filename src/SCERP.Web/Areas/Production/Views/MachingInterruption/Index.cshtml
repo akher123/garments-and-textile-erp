@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.Production.Models.MachingInterruptionViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Production Remarks</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "MachingInterruption", FormMethod.Get, new {@class = "MachingInterruptionSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.MachingInterruption.InterrupDate, new {id = "InterrupDateText", @class = "datepicker"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <table class="webgrid-table">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>LINE</th>
+                    <th>STATUS</th>
+                    <th>Save</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.MachingInterruptions.Count; i++)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => x.MachingInterruptions[i].Name)</td>
+                    <td>@Html.TextBoxFor(x => x.MachingInterruptions[i].Remarks, new {id = "remarks_" + Model.MachingInterruptions[i].MachineId, @style = "width:97%"})</td>
+                    <td>
+                        <input type="button" onclick=updateInterruptStatus('@Model.MachingInterruptions[i].MachineId') value="Save" class="addButton"/>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section scripts
+{
+   <script type="text/javascript">
+       function updateInterruptStatus(machineId) {
+        var interrupDate = $('#InterrupDateText').val();
+        var textBox = $('#remarks_' + machineId);
+        var remarks = textBox.val();
+        var machingInterruption = {
+            InterrupDate: interrupDate,
+            MachineId: machineId,
+            Remarks: remarks
+        };
+        if (remarks.length>0) {
+            $.Ajax({
+                url: '/MachingInterruption/Save',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    model: machingInterruption
+                }
+            }).done(function (resp) {
+                alert(resp);
+            });
+        } else {
+            alert("Status Missing");
+
+        }
+     
+    }
+</script>
+ 
+}

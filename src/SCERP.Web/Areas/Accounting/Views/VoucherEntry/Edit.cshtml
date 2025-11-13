@@ -1,0 +1,193 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    ViewBag.Title = (Model.Id>0?"Edit Voucher":"Create Voucher");
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<fieldset>
+    
+    <legend><strong> Voucher Entry </strong></legend>
+
+    @using (Html.BeginForm("Save", "VoucherEntry", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IsPartial)
+        @Html.HiddenFor(model => model.CostCentreId)
+        @Html.HiddenFor(model=>model.CurrencyRate)
+
+        <table  class="tabefont">
+
+            <tr>
+                <td>@Html.DisplayName("Voucher Type")</td>
+                <td>@Html.DisplayName("Date")</td>
+                <td>@Html.DisplayName("Sector Name")</td>
+                @*<td>@Html.DisplayName("Cost Centre")</td>*@
+                <td>@Html.DisplayName("Ref No")</td>
+                <td>@Html.DisplayName("Voucher No")</td>
+
+            </tr>
+            <tr>
+                <td>@Html.DropDownListFor(x => x.VoucherType, Model.VoucherTypeSelectListItem, "-Select-", new { @onchange = "getVoucherNoByType(this.value)", style = "width:160px;height: 35px;", @Class = "VoucherType" })</td>                
+                <td>@Html.TextBoxFor(x => x.VoucherDate, new { @class = "datepicker", style = "width:160px;", @data_val = "false", @placeholder = "To" })</td>
+                <td>@Html.DropDownListFor(x => x.SectorId, Model.CompanySectorSelectListItem, new { @onchange = "getCostCentreBySector(this.value)", style = "width:180px;height: 35px;", @disabled = "disabled" })</td>
+                @*<td>@Html.DropDownListFor(x => x.CostCentreId, Model.CostCentreSelectListItem, new { @class = "CostCentre", style = "width:160px;height: 35px;" })</td>*@
+
+                <td>@Html.TextBoxFor(model => model.VoucherNo, new { style = "width:100px;", @readonly = "readonly" })</td>
+                <td>@Html.TextBoxFor(model => model.VoucherRefNo, new { style = "width:160px;", @autofocus = "autofocus", @class = "voucherRefNo" })</td>
+                <td>@Html.ValidationMessageFor(model => model.VoucherRefNo) </td>                                    
+            </tr>
+
+            <tr>
+                <td style="height: 10px;" colspan="6"></td>
+            </tr>
+
+            <tr>
+                <td align="center" colspan="6"><h3>Transaction Detail</h3></td>
+            </tr>
+
+            <tr>
+                <td colspan="6"> <hr /> </td>
+            </tr>
+
+            <tr>
+                <td colspan="6">
+
+                    <table>
+                        <tr>
+                            <td> @Html.DisplayName("Account Name") </td> 
+                            <td> @Html.DisplayName("Cost Centre") </td>                               
+                            <td> @Html.DisplayName("Particulars") </td>
+                            <td> @Html.DisplayName("DEBIT (TAKA)") </td>
+                            <td> @Html.DisplayName("CREDIT (TAKA)") </td>                                                                               
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.TextBoxFor(x => x.AccountName, new { @style = " width: 300px;", @id = "vd_AccountName" })
+                                @Html.HiddenFor(x => x.VoucherDetail.GLID, new { @Id = "vd_GLID" })
+                            </td>
+                            <td> @Html.DropDownListFor(x => x.CostCentreId, Model.CostCentreMultilayersSelectListItem, new { @class = "CostCentreNew", style = "width:160px;height: 35px;" }) </td>
+                            <td> @Html.TextBoxFor(x => x.VoucherDetail.Particulars, new { @style = " width: 150px;", @id = "vd_Particulars" }) </td>                                
+                            <td> @Html.TextBoxFor(x => x.VoucherDetail.Debit, new { @style = " width: 100px;", @id = "vd_Debit" }) </td>
+                            <td> @Html.TextBoxFor(x => x.VoucherDetail.Credit, new { @style = " width: 100px;", @id = "vd_Credit" }) </td>                           
+                                                                                                                                                                         
+                            @*<td> <input type="button" style="width: 70px; height: 35px;" id="addNewRowButton" value="+" /> </td>*@    
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6" style="height: 10px;"></td>
+            </tr>
+
+            <tr>
+                <td width="800px" colspan="10">
+                    <table width="700px" class="gridtable tabefont" id="VoucherDetailTable">
+                        <thead>
+                            <tr>
+                                <th width="200px">Account Name</th>
+                                <th> Particulars </th>                                                          
+                                <th> DEBIT (TAKA) </th>
+                                <th> CREDIT (TAKA) </th>
+                                <th> Cost Centre </th>
+                                <th> Delete </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                     
+                            @foreach (var vd in Model.VoucherDetails)
+                            {
+                                <tr id="row-@Model.VoucherDetails[vd.Key].GLID">
+
+                                    <td>
+                                        @Html.HiddenFor(x => x.VoucherDetails[vd.Key].GLID)
+                                        @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Acc_GLAccounts.AccountName)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.VoucherDetails[vd.Key].CostCentreId)
+                                        @Html.DisplayFor(x => x.VoucherDetails[vd.Key].CostCentreId)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Particulars)
+                                        @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Particulars)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Debit)
+                                        @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Debit)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Credit)
+                                        @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Credit)
+                                    </td>
+                                  
+                                    <td> <input type="button" value="-" onclick="ViewModel.DeleteTR(this)" /> </td>                                                                          
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6" style="height: 10px;"></td>
+            </tr>
+
+            <tr>
+                <td align="right" colspan="6">
+                    <table>
+                        <tr>
+                            <td>
+                                Total:
+                                @Html.TextBoxFor(x => x.TotalDebitAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalDebitAmount" })
+                                @Html.TextBoxFor(x => x.TotalCreditAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalCreditAmount" })
+                                @Html.TextBoxFor(x => x.TotalAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalAmount" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr>
+                <td> @Html.DisplayName("Total BDT In Words") </td>                                    
+            </tr>
+
+            <tr>
+                <td style="width: 500px;" colspan="6">
+                    @Html.TextBoxFor(x => x.TotalAmountInWord, new { @style = "width: 500px;", @readonly = "readonly", @class = "AmountInWords" })
+                </td>
+            </tr>
+
+            <tr>
+                <td> @Html.DisplayName("Narration") </td>                                   
+            </tr>
+
+            <tr>
+                <td colspan="6">
+                    @Html.TextBoxFor(model => model.Particulars, new { @class = "VoucherParticulars", style = "width: 500px;" })
+                    <input type="submit" id="btnVoucherSave" value="Save"/>
+                </td>
+            </tr>         
+        </table>
+    }
+</fieldset>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Acc_VoucherEntry.js"></script>
+}

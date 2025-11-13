@@ -1,0 +1,100 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.FabricReturnViewModel
+@{
+    ViewBag.Title = Model.FabricReturn.FabricReturnId > 0 ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "FabricReturn", FormMethod.Post, new { @class = "FabricReturnform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.FabricReturn.FabricReturnId)
+    @Html.HiddenFor(model => model.FabricReturn.ProgramId)
+    <fieldset>
+        <legend>Grey/Yarn Receive</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Challan No:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.FabricReturn.ReturnChallanNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+              
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Date:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.FabricReturn.ReturnDate,new{@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("GreyQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FabricReturn.FabQty)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Rest Yarn:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FabricReturn.ReturnYarnQty)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Wastage Yarn:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FabricReturn.WstYarnQty)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.FabricReturn.Remarks)
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+              
+                <td>
+                    @Html.Button("Add", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "fabricReturnContent" } })
+                </td>
+               
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

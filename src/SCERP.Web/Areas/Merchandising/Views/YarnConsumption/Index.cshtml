@@ -1,0 +1,20 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = null;
+}
+
+<div class="yarnListDiv" >
+    <div class="editYarn">
+        @{
+
+            Html.RenderPartial("~/Areas/Merchandising/Views/YarnConsumption/_Edit.cshtml", Model);
+        }
+    </div>
+    <div>
+        @{
+            Html.RenderPartial("~/Areas/Merchandising/Views/YarnConsumption/_YarnList.cshtml", Model);
+        }
+        
+    </div>
+</div>
+

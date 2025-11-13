@@ -1,0 +1,55 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabricOrderViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>
+                Style Ref ID
+            </th>
+            <th>
+                Style No
+            </th>
+            <th>
+                Garments Qty
+            </th>
+            <th>
+                Fabric Qty
+            </th>
+            <th>
+                Select
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.OmBuyOrdStyles.Any())
+        {
+            for (int index = 0; index < Model.OmBuyOrdStyles.Count; index++)
+            {
+                <tr>
+                    <td>
+                        @Model.OmBuyOrdStyles[index].OrderStyleRefId
+                    </td>
+                    <td>
+                        @Model.OmBuyOrdStyles[index].StyleName
+                    </td>
+                    <td>
+                        @Model.OmBuyOrdStyles[index].Quantity
+                    </td>
+                    <td>
+                        @Model.OmBuyOrdStyles[index].TotalFabQty
+                    </td>
+                    <td>
+                        <input type="hidden" name="FabricOrder.OM_FabricOrderDetail[@index].CompId" value="@Model.OmBuyOrdStyles[index].CompId"  />
+                        <input type="checkbox" name="FabricOrder.OM_FabricOrderDetail[@index].OrderStyleRefId" value="@Model.OmBuyOrdStyles[index].OrderStyleRefId" @(Model.FabricOrder.FabricOrderId > 0 ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+

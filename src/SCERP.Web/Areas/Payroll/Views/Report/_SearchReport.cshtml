@@ -1,0 +1,39 @@
+﻿
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.ReportSearchViewModel
+<tr>
+    <td>
+        @Html.Label("Company :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Payroll/Report/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+     
+    </td>
+    <td>
+        @Html.Label("Branch :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Payroll/Report/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+ 
+    </td>
+</tr>
+<tr>
+    <td>
+        @Html.Label("Unit :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", 
+                                   @action = "/Payroll/Report/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+
+    </td>
+    <td>
+        @Html.Label("Department :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Payroll/Report/GetDepartmentSectionAndLineByBranchUnitDepartmentId", 
+                                   @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+</tr>

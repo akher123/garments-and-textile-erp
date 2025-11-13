@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[DailyProductionReportTable] (
+    [BuyerName]       VARCHAR (100) NULL,
+    [OrderName]       VARCHAR (100) NULL,
+    [StyleName]       VARCHAR (100) NULL,
+    [ColorName]       VARCHAR (100) NULL,
+    [OrderQty]        INT           NULL,
+    [Cutting]         INT           NULL,
+    [CumCutting]      INT           NULL,
+    [PrintSend]       INT           NULL,
+    [PrintRcv]        INT           NULL,
+    [EmboSend]        INT           NULL,
+    [EmboRcv]         INT           NULL,
+    [SewInput]        INT           NULL,
+    [CumSewInput]     INT           NULL,
+    [SewOutput]       INT           NULL,
+    [IronInput]       INT           NULL,
+    [CumIronInput]    INT           NULL,
+    [PolyInput]       INT           NULL,
+    [CumPolyInput]    INT           NULL,
+    [ShipQty]         INT           NULL,
+    [CompId]          VARCHAR (3)   NULL,
+    [ViewDate]        DATETIME      NULL,
+    [OrderStyleRefId] VARCHAR (7)   NULL,
+    [ColorRefId]      VARCHAR (4)   NULL
+);
+

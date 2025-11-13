@@ -1,0 +1,537 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.DashBoardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<style type="text/css">
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+    }
+
+    h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-wrapper {
+        overflow: hidden;
+        width: 100%;
+        color: #ffffff;
+        text-align: center;
+    }
+
+    .SewingProductionBoard-wrapper {
+        margin-left: 1%;
+        margin-bottom: 1%;
+        background: #2c0d0d;
+        float: left;
+    }
+
+    .top-wrapper, .middle-wrapper, .bottom-wrapper {
+        overflow: hidden;
+    }
+
+    .bottom-wrapper {
+        border-bottom: 2px solid #aaa;
+
+    }
+
+    .company-info {
+        float: left;
+    }
+
+    .datetime-info {
+        float: right;
+    }
+
+    .company-info, .datetime-info {
+        width: 50%;
+        /*height: 135px;*/
+    }
+
+        .company-info h1 {
+            background: transparent;
+            margin: 0;
+            padding: 10px 0;
+            border-right: 1px solid #9c9c9c;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .company-info h3 {
+            padding: 5px 0;
+            border-right: 1px solid #9c9c9c;
+            background: transparent;
+            font-size: 14px;
+            text-transform: capitalize;
+            border-top: 1px solid #aaa;
+            border-bottom: 1px solid #aaa;
+        }
+
+    .company-card {
+        padding: 11px 0;
+        border-bottom: 1px solid #aaa;
+        border-right: 1px solid #9c9c9c;
+        font-weight: 700;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+
+        .company-card p:first-child {
+            margin-bottom: 5px;
+        }
+
+    .time-zone {
+        padding: 10px;
+    }
+
+    .date-header, .date-show {
+        overflow: hidden;
+        color: #F0F6B6;
+        font-size: 15px;
+        font-weight: 600;
+        border: 1px solid #3E364D;
+        text-transform: capitalize;
+    }
+
+    .week-wrapper, .date-type, .time-wrapper, .time-line {
+        padding: 17px 0;
+    }
+
+    .week-wrapper, .date-type {
+        width: 50%;
+        float: left;
+        border-right: 1px solid #3E364D;
+    }
+
+    .time-wrapper, .time-line {
+        width: 49%;
+        float: right;
+    }
+
+    .paln-wrapper h3, .actual-wrapper h3, .gap-wrapper h3, .effparsent-wrapper h3 {
+        background: #d45087;
+        padding: 5px 0;
+        font-size: 14px;
+        border-right: 2px solid #9c9c9c;
+        text-transform: capitalize;
+        letter-spacing: 1px;
+    }
+
+    .paln-wrapper p, .actual-wrapper p, .gap-wrapper p, .effparsent-wrapper p {
+        
+        font-size: 37px;
+        font-weight: 400;
+        border-right: 2px solid #9c9c9c;
+    }
+
+    .paln-wrapper, .gap-wrapper {
+        width: 50%;
+        float: left;
+    }
+
+    .actual-wrapper, .effparsent-wrapper {
+        width: 50%;
+        float: right;
+    }
+
+    .SewingProductionBoard-wrapper #pie-chart {
+        height: 50% !important;
+        width: 84% !important;
+        margin: 0 auto 10px;
+    }
+
+    .SewingProductionBoard-wrapper #line-chart {
+        height: 50% !important;
+        width: 84% !important;
+        margin: 0 auto 10px;
+    }
+
+
+
+
+    @@media only screen and (min-width: 1200px) {
+
+        .main-wrapper {
+            /*margin-top: 8px;*/
+        }
+
+        .SewingProductionBoard-wrapper {
+            width: 48.5%;
+        }
+    }
+
+    @@media only screen and (min-width: 768px) and (max-width: 1199px) {
+
+        .main-wrapper {
+            margin-top: 5px;
+        }
+
+        .SewingProductionBoard-wrapper {
+            width: 48%;
+        }
+
+        .company-info h1 {
+            font-size: 19px;
+        }
+
+        .company-card {
+            font-size: 14px;
+
+        }
+
+            .company-card p:first-child {
+                margin-bottom: 8px;
+            }
+
+        .date-header, .date-show {
+            font-size: 16px;
+        }
+
+        .paln-wrapper h3, .actual-wrapper h3, .gap-wrapper h3, .effparsent-wrapper h3 {
+            font-size: 16px;
+        }
+
+        .paln-wrapper p, .actual-wrapper p, .gap-wrapper p, .effparsent-wrapper p {
+            font-size: 32px;
+        }
+
+        .company-info, .datetime-info {
+            /*height: 228px;*/
+        }
+    }
+
+    @@media only screen and (min-width: 481px) and (max-width: 767px) {
+
+        .main-wrapper {
+            margin-top: 10px;
+        }
+
+        .SewingProductionBoard-wrapper {
+            width: 98%;
+        }
+
+        .company-info, .datetime-info {
+            width: 100%;
+            height: auto;
+        }
+
+        .date-header, .date-show {
+            font-size: 18px;
+        }
+
+        .paln-wrapper h3, .actual-wrapper h3, .gap-wrapper h3, .effparsent-wrapper h3 {
+            font-size: 14px;
+            
+        }
+
+        .paln-wrapper p, .actual-wrapper p, .gap-wrapper p, .effparsent-wrapper p {
+            font-size: 36px;
+        }
+
+        .user-logout-wrapper {
+            font-size: 14px;
+        }
+    }
+
+    @@media only screen and (max-width: 480px) {
+
+        .main-wrapper {
+            margin-top: 10px;
+        }
+
+        .SewingProductionBoard-wrapper {
+            width: 98%;
+        }
+
+        .company-info, .datetime-info {
+            width: 100%;
+            height: auto;
+        }
+
+        .date-header, .date-show {
+            font-size: 18px;
+        }
+
+        .paln-wrapper h3, .actual-wrapper h3, .gap-wrapper h3, .effparsent-wrapper h3 {
+            font-size: 14px;
+        }
+
+        .paln-wrapper p, .actual-wrapper p, .gap-wrapper p, .effparsent-wrapper p {
+            font-size: 36px;
+        }
+
+        .user-logout-wrapper {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="header-title">
+        @*<marquee style="color:red;font-size:20px">প্লামি ফ্যাশন এর সম্মানিত সফটওয়্যার ব্যাবহারকারীদের অবগতির জন্য জানানো জাস্সে যে !আগামী রবিবার এর পর থেকে ফ্যাব্রিক চালান রিসিভ করা সারা কাটিং করা যাবে না !</marquee>*@
+        <h2>Sewing Production Dashboard</h2>
+    </div>
+    <div class="right-sidebar-wrapper">
+        <div class="main-wrapper">
+            <div class="SewingProductionBoard-wrapper">
+                <section class="top-wrapper">
+                    <div class="company-info">
+                        <h1>ASSORT ERP</h1>
+                        <h3>garments division</h3>
+                        <div class="company-card">
+                            <p>shift a</p>
+                            <p>shift start 09:00 <span>AM</span></p>
+                        </div>
+                    </div>
+                    <div class="datetime-info">
+                        <div class="time-zone">
+                            <div class="date-header">
+                                <div class="week-wrapper">
+                                    <span id="cuurentDayName"></span>
+                                </div>
+                                <div class="time-wrapper">
+                                    <span>Time</span>
+                                </div>
+                            </div>
+                            <div class="date-show">
+                                <div class="date-type">
+                                    <span id="currentDate"></span>
+                                </div>
+                                <div class="time-line">
+                                    <span id="currentTime"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="middle-wrapper">
+                    <div class="paln-wrapper">
+                        <h3>TARGET QTY</h3>
+                        <p id="planQty">@Model.SpMisSewingProductionBoard.TargetQty</p>
+                    </div>
+                    <div class="actual-wrapper">
+                        <h3>ACHIEVED QTY</h3>
+                        <p id="ActualQty">@Model.SpMisSewingProductionBoard.ActualQty</p>
+                    </div>
+                </section>
+                <section class="bottom-wrapper">
+                    <div class="gap-wrapper">
+                        <h3>TARGET BALANCE</h3>
+                        <p id="Variance">@Model.SpMisSewingProductionBoard.Variance</p>
+                    </div>
+                    <div class="effparsent-wrapper">
+                        <h3>ACHIEVED%</h3>
+                        <p id="Efficiency">@Model.SpMisSewingProductionBoard.Efficiency</p>
+                    </div>
+
+                </section>
+
+            </div>
+            <div class="SewingProductionBoard-wrapper" style="background: #ffffff;border: 1px solid #eee;">
+                <canvas id="bar-chart" width="1200" height="600"></canvas>
+            </div>
+            <div class="SewingProductionBoard-wrapper" style="background: #ffffff;border: 1px solid #eee;">
+                <canvas id="line-chart" width="1200" height="600"></canvas>
+            </div>
+            <div class="SewingProductionBoard-wrapper" style="background: #ffffff;border: 1px solid #eee;">
+                <canvas id="pie-chart" width="1200" height="600"></canvas>
+            </div>
+            <div class="SewingProductionBoard-wrapper" style="background: #ffffff;border: 1px solid #eee;">
+                <canvas id="att-bar-chart" width="1200" height="600"></canvas>
+            </div>
+            <div class="SewingProductionBoard-wrapper" style="background: #ffffff;border: 1px solid #eee;">
+                <canvas id="att-pie-chart" width="1200" height="600"></canvas>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    startTime();
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('currentTime').innerHTML =
+            h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+        return i;
+    }
+        var today = new Date();
+        var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+        $('#currentDate').text(date);
+
+       var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+       $('#cuurentDayName').text(weekday[today.getDay()]);
+
+
+
+       new Chart(document.getElementById("bar-chart"), {
+           type: 'bar',
+           data:@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Charts[1]))),
+           options: {
+               legend: { display: false },
+               title: {
+                   display: true,
+                   text: 'Daily line wise Target VS Achieved Qty',
+                     fontSize: 25,
+                   fontColor:'rgb(0, 63, 92)'
+               },
+               scales: {
+                   yAxes: [{
+                       ticks: {
+                           beginAtZero: true
+                       }
+                   }],
+                   xAxes: [{
+                       // Change here
+                       barPercentage:1.2
+                   }]
+               }
+           }
+       });
+       // Pie chart
+    new Chart(document.getElementById("pie-chart"), {
+        type: 'pie',
+        data: @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Charts[2]))),
+        options: {
+            title: {
+                display: true,
+                text: 'Remaining and Acheived',
+                  fontSize: 25,
+                fontColor:'rgb(0, 63, 92)'
+            }
+        }
+    });
+
+
+
+       //----Multi Line Chart---------
+       var c = document.getElementById("line-chart");
+       var ctx = c.getContext("2d");
+       var tData = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Charts[0])));
+      var lastEntryDateTime = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.LastEntryDateTime)));
+       new Chart(ctx, {
+           type: 'line',
+           data: tData ,
+           options: {
+                    title: {
+                   display: true,
+                   text: "TARGET VS ACHIEVED (LAST ENTRY : "+lastEntryDateTime+" )",
+                             fontSize: 25,
+                   fontColor:'rgb(0, 63, 92)'
+               },
+            legend: {
+            display: true,
+             
+            }
+           },
+
+       });
+
+
+    new Chart(document.getElementById("att-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: ['Present', 'Absent', 'Leave', 'late'],
+            datasets: [{
+                data: [250, 55, 20, 25],
+                backgroundColor: [
+                    "rgb(88, 80, 141)",
+                    "rgb(255, 99, 97)",
+                    "#d21243",
+                    "#B27200"
+                ],
+                borderColor: "#fff"
+            }]
+        },
+        options: {
+            tooltips: {
+                enabled: true
+            },
+            title: {
+                display: true,
+                text: 'Daily Attendance Status',
+                fontSize: 25,
+                fontColor: 'rgb(0, 63, 92)'
+            },
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+
+                        let datasets = ctx.chart.data.datasets;
+
+                        if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                            let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                            let percentage = Math.round((value / sum) * 100) + '%';
+                            return percentage;
+                        } else {
+                            return percentage;
+                        }
+                    },
+                    color: '#fff',
+                }
+            }
+        }
+    });
+    new Chart(document.getElementById("att-pie-chart"), {
+        type: 'pie',
+        data: {
+            labels: ['Present', 'Absent', 'Leave', 'late'],
+            datasets: [{
+                data: [250, 55, 20, 25],
+                backgroundColor: [
+                    "rgb(88, 80, 141)",
+                    "rgb(255, 99, 97)",
+                    "#d21243",
+                    "#B27200"
+                ],
+                borderColor: "#fff"
+            }]
+        },
+        options: {
+            tooltips: {
+                enabled: true
+            },
+            title: {
+                display: true,
+                text: 'Daily Attendance Status',
+                fontSize: 25,
+                fontColor: 'rgb(0, 63, 92)'
+            },
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+
+                        let datasets = ctx.chart.data.datasets;
+
+                        if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                            let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                            let percentage = Math.round((value / sum) * 100) + '%';
+                            return percentage;
+                        } else {
+                            return percentage;
+                        }
+                    },
+                    color: '#fff',
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,101 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.FeedbackViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("SaveAllUser", "Feedback", FormMethod.Post, new { @class = "feedbackform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend> Feed back </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Subject:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Subject)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Subject)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Description)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Created Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.CreatedDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.CreatedDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Feedback Status</td>
+                <td>
+                    @Html.DropDownListFor(x => x.JobStatus, Model.FeedbackStatusSelectListItem)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+                                              
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Module Name</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ModuleId, Model.ModuleSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+                     
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

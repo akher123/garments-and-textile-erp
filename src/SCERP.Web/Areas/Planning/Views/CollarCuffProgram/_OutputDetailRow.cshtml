@@ -1,0 +1,73 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+@foreach (var outDt in Model.OutputDataTable)
+{
+    // id="OutRow-@Model.OutputDataTable[outDt.Key].ItemCode"
+    <tr id="OutRow-@Model.OutputDataTable[outDt.Key].ItemCode-@Model.OutputDataTable[outDt.Key].ColorRefId - @Model.OutputDataTable[outDt.Key].FinishSizeRefId">
+
+        <td>
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].MType)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ProgramId)
+            <span id="ItemName_@outDt.Key">
+                @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ItemName)
+            </span>
+
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ItemCode, new {id = "ItemCode_" + outDt.Key})
+        </td>
+        <td>
+            <span id="ColorName_@outDt.Key">
+                @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ComponentName)
+            </span>
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ComponentRefId, new { id = "ComponentRefId_" + outDt.Key })
+        </td>
+        <td>
+            <span id="ColorName_@outDt.Key">
+                @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ColorName)
+            </span>
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ColorRefId, new { id = "ColorRefId_" + outDt.Key })
+        </td>
+        <td>
+            <span id="FinishSizeName_@outDt.Key">
+                @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].FinishSizeName)
+            </span>
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].FinishSizeRefId, new { id = "FinishSizeRefId_" + outDt.Key })
+        </td>
+
+
+        <td>
+
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].GSM)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].GSM, new {id = "GSM_" + outDt.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].SleeveLength)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].SleeveLength, new { id = "SleeveLength_" + outDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].NoOfCone)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].NoOfCone, new { id = "NoOfCone_" + outDt.Key })
+        </td>
+       
+     
+        <td>
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Rate)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Rate, new { id = "Rate_" + outDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Quantity)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Quantity, new { id = "Quantity_" + outDt.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Remarks)
+            @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].Remarks, new { id = "Remarks_" + outDt.Key })
+        </td>
+        <td>
+            <input type="button" value="Edit" onclick="editCollarCuffOutputProgram('@outDt.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="removeRow(this)" />
+        </td>
+    </tr>
+}

@@ -1,0 +1,155 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetMasterViewModel
+@{
+    ViewBag.Title = Model.CostSheetMaster.CostSheetMasterId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width: 500px; padding-left: 340px;">
+    <h2>INITIAL COSTING SHEET</h2>
+</div>
+<style type="text/css">
+    .ddlStyleMarc {
+        padding: 2px 5px;
+        width: 130px;
+    }
+
+    .TextBoxStyleMarc {
+        padding: 2px 5px !important;
+        width: 120px !important;
+    }
+</style>
+<section class="search formCover">
+    <div>
+        @using (Html.BeginForm("Save", "CostSheetMaster", FormMethod.Post, new { @class = "CostSheetMasterForm" }))
+        {
+        <div style="margin-left: 1px; margin-bottom: 30px;">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.CostSheetMaster.CostSheetMasterId)
+            <table>
+                <tr>
+                    <td style="float: left">
+                        <table style="font-size: 12px;">
+
+                            <tr style="background-color: gainsboro">
+                                <td colspan="2" style="font-size: 16px; text-align: center">
+                                    @Html.Label("Buyer Information")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Ref No :")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.CostSheetMaster.CostSheetMasterRefId, new {@class = "TextBoxStyleMarc", @readonly = "readonly", style = "background-color: #F0ECE7;"})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Buyer ")</td>
+                                <td>@Html.DropDownListFor(x => x.CostSheetMaster.BuyerId, Model.BuyerSelectListItems, "-Select-", new {@class = "ddlStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("OrderNo ")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.OrderNo, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("StyleNo")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.StyleNo, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Order Qty")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.OrderQty, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Item")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.Item, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Fabrication")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.Fabrication, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Color")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.Color, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Size")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.Size, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("YarnCount")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.YarnCount, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("GSM")</td>
+                                <td>@Html.TextBoxFor(x => x.CostSheetMaster.Gsm, new {@class = "TextBoxStyleMarc"})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Item Type ")</td>
+                                <td>@Html.DropDownListFor(x => x.CostSheetMaster.ItemTypeId, Model.ItmeTypeSelectListItems, "-Select-", new {@class = "itemTypeDropdownList ddlStyleMarc"})</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <div id="particular">
+
+                            @{
+                                    if (Model.CostSheetMaster.CostSheetMasterId > 0)
+                                    {
+                                        Html.RenderPartial("~/Areas/Merchandising/Views/CostSheetMaster/_Particular.cshtml",Model);
+                                    }
+                                    else
+                                    {
+                                        Html.RenderAction("GetCostSheetTemplateByItemTypeId", "CostSheetMaster", new { ItemTypeId = 1 });
+                                    }
+
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+        <div>
+            <table class="tabefont" style="float: right">
+                <tr>
+
+                    <td></td>
+                    <td><input type="button" class="addButton" id="btnSave" value="Save" /></td>
+                </tr>
+            </table>
+        </div>
+          }
+    </div>
+</section>
+@section scripts
+{
+        <script type="text/javascript">
+            $('.itemTypeDropdownList').unbind('change').bind('change', function () {
+                var itemTypeId = $(this).val();
+                $.Ajax({
+                    url: '/CostSheetMaster/GetCostSheetTemplateByItemTypeId/',
+                    data: { ItemTypeId: itemTypeId }
+                }).done(function (htmlResponse) {
+                    $('#particular').html(htmlResponse);
+                });
+            });
+
+            $('#btnSave').unbind('click').bind('click', function () {
+                var form = $(this).parents('form:first');
+                var data = form.serialize();
+                $.Ajax({
+                    type: 'POST',
+                    url: '/CostSheetMaster/Save',
+                    data: data
+                }).done(function (htmlResponse) {
+                    alert("Successfully Saved");
+                });
+            });
+
+
+
+        </script>
+
+    }

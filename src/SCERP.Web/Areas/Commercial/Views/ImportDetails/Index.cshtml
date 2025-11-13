@@ -1,0 +1,34 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CommImportDetailViewModel
+@{
+    ViewBag.Title = "Sales Contact Detail";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper salesContactEdit">
+        @{Html.RenderPartial("~/Areas/Commercial/Views/ImportDetails/_Edit.cshtml", Model);}
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem salesContactList">
+        @{Html.RenderPartial("~/Areas/Commercial/Views/ImportDetails/_List.cshtml", Model);}
+    </div>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        function refreshsalesContact(obj) {
+            var button = $(obj);
+            var targetId = button.attr('targetId');
+            jQuery.Ajax({
+                url: button.attr('action')
+                , type: "GET"
+                , container: targetId
+            });
+
+        }
+    </script>
+
+}

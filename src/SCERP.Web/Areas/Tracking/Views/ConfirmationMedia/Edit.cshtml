@@ -1,0 +1,47 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.ConfirmationMediaViewModel
+@{
+
+    ViewBag.Title = Model.ConfirmationMediaId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    bool isReadOnly = Model.ConfirmationMediaId > 0;
+}
+
+@using (Html.BeginForm("Save", "ConfirmationMedia", FormMethod.Post, new { @class = "ConfirmationMediaForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ConfirmationMediaId)
+    <fieldset>
+        <legend>Confirmation Media</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Confirmation Media :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ConfirmationMedia, new { @placeholder = "Confirmation Media" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

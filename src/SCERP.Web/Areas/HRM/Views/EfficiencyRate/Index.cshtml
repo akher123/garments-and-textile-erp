@@ -1,0 +1,78 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EfficiencyRateViewModel
+
+@{
+    ViewBag.Title = "Skill Efficiency";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    //var displayStyle = (Model.EfficiencyRates.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "EfficiencyRate", FormMethod.Get, new { @class = "EfficiencyRateSearchForm  ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width:500px; padding-left:340px;">
+        <h2>Skill Efficiency</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Skill Operation: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SkillOperationId, Model.SkillOperationSelectListItem, "--Select--")
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            <tr>
+                <td>
+                    @Html.Label("Efficiency Rate: ")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchByRate)
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/EfficiencyRate/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EfficiencyRates, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("SkillOperation.Name", header: "Operation Name", format: @<text>@(item.SkillOperation == null ? "" : item.SkillOperation.Name)</text>),
+                        grid.Column("Rate", header: "Efficiency Rate"),
+                        grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                        grid.Column("ToDate", header: "To Date", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                        grid.Column("Detail/Edit", format: @<text><button class="edit" action="/HRM/EfficiencyRate/Edit?EfficiencyRateId=@item.EfficiencyRateId"></button></text>, canSort: false),
+                        grid.Column("Delete", format: @<text><button class="delete" action="/HRM/EfficiencyRate/Delete?EfficiencyRateId=@item.EfficiencyRateId"></button></text>, canSort: false)));
+        }
+    </div>
+
+</section>

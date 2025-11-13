@@ -1,0 +1,61 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.TaskManagement.Models.SubjectViewModel
+@{
+    ViewBag.Title = "Subject List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Subject List</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: gray; ">
+        <div style="margin-left: 150px;">
+            @using (Html.BeginForm("Index", "Subject", FormMethod.Get, new { @class = "VisitorGateEntrySearchForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Criteria ")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @style = "width:250px;", @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/TaskManagement/Subject/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Subjects, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("TmModule.ModuleName", header: "Module Name"),
+                  grid.Column("SubjectName", header: "Subject Name"),
+                  grid.Column("Description", header: "Description", canSort: false),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/TaskManagement/Subject/Edit?SubjectId=@item.SubjectId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/TaskManagement/Subject/Delete?SubjectId=@item.SubjectId"></button></text>)));
+        }
+    </div>
+</section>

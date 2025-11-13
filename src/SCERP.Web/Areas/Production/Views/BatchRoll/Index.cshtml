@@ -1,0 +1,96 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchRollViewModel
+@{
+    ViewBag.Title = "BatchRoll";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Roll In Batch Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "BatchRoll", FormMethod.Get, new {@class = "BBatchRollForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new {id = "RollIsue_BuyerId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select Order-", new {id = "RollIsue_OrderNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchString, Model.StylesSelectListItem, "-Select Style-", new {id = "RollIsue_StyleNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Batches, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("BuyerName", header: "Buyer"),
+            grid.Column("OrderName", header: "Order"),
+            grid.Column("StyleName", header: "Style"),
+            grid.Column("GColorName", header: "Color"),
+            grid.Column("BtRefNo", header: "Ref No"),
+            grid.Column("BatchNo", header: "Batch No"),
+            grid.Column("BatchDate", header: "Date", format: @<text>@(item.BatchDate == null ? "" : item.BatchDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("BatchQty", header: "Qty"),
+            grid.Column(header: "Status", format: (item) =>(BatchStatus)item.BatchStatus),
+            grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Production/BatchRoll/Edit?BatchId=@item.BatchId"></button></text>),
+            grid.Column("Report", canSort: false, header: "BATCH", format: @<text><a href="/Production/ProductionReport/GetBatchDetail?BatchId=@item.BatchId" target="_blank">PDF</a></text>)));
+        }
+    </div>
+</section>
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Production/knittingRollIssue.js"></script>
+}

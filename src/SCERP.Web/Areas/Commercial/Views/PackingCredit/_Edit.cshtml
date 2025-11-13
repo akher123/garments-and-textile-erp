@@ -1,0 +1,80 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PackingCreditViewModel
+@{
+    ViewBag.Title = "Packing Credit";
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("Save", "PackingCredit", FormMethod.Get, new { @class = "PackingCreditForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.PackingCredit.PackingCreditId)
+    @Html.HiddenFor(model => model.PackingCredit.LcId)
+    <fieldset>
+        <legend>PC AMOUNT</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td>
+                    @Html.Label("PC Date :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.PackingCredit.CreditDate, new { @class = "datepicker" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.PackingCredit.CreatedDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Amount(BDT)")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.PackingCredit.Amount)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.PackingCredit.Amount)
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Amount(USD)")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.PackingCredit.UsdAmount)
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                  
+                </td>
+
+            </tr>
+            <tr>
+                <td >
+                    @Html.Button(Model.PackingCredit.PackingCreditId > 0 ? "Update" : "Save", "button", new Dictionary<string, object> { { "class", "addButton FindPartial" }, { "target", ".packingCreditList" }, { "action", "/PackingCredit/Save" } })
+                </td>
+                
+                <td>
+                    @Html.Button("Refresh", "button", new Dictionary<string, object> { { "class", "addButton" }, { "onclick", "refreshPackingCredit(this)" }, { "targetId", ".packingCreditEdit" }, { "action", "/PackingCredit/Refresh?LcId="+Model.PackingCredit.LcId } })
+                </td>
+                <td>
+                    <input type="button" class="dialogClose addButton" action="/Commercial/Lc/Index" value="Close" />
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}

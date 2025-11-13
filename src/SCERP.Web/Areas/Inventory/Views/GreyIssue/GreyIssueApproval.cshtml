@@ -1,0 +1,107 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.GreyIssueViewModel
+@{
+    ViewBag.Title = "Grey Issue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+
+<div class="header-title">
+    <h2>Knitted Grey Fabric Delivery </h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("GreyIssueApproval", "GreyIssue", FormMethod.Get, new { @class = "GreyIssueForm ignore-validation" }))
+        {
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem" style="min-height:500px;">
+        <div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.GreyIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("RefId", header: "Ref Id"),
+                        grid.Column("ChallanNo", header: "Ref Id"),
+                        grid.Column("Through", header: "Through", canSort: false),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ChallanDate ?? ""), header: "Challan Date"),
+                        grid.Column("Party.Name", header: "Party", canSort: false),
+                        grid.Column("Remarks", header: "Remarks", canSort: false),
+                        grid.Column(header: "IsReceived", format: @<input class="IsApprovedcbx" onclick="IsReceivedRollChallan(this)" name="IsApprovedCheckBox" @(item.IsApproved == true ? "checked" : "") type="checkbox" value="@item.GreyIssueId" />),
+                        grid.Column("Report", canSort: false, header: "Report", format: @<text>
+                       <div class="dropdown">
+                        <a class="dropbtn custom-table-dropbtn">PDF</a>
+                        <div class="dropdown-content custom-table-dropdown-content">
+                            <a href="/Inventory/GreyIssue/GreyBillReport?GreyIssueId=@item.GreyIssueId" target="_blank">Bill</a>
+                            <a href="/Inventory/GreyIssue/GreyIssueChallanReport?GreyIssueId=@item.GreyIssueId" target="_blank">Challan</a>
+
+                        </div>
+                    </div>
+
+
+                    </text>)))
+            }
+        </div>
+    </div>
+</section>
+
+
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsReceivedRollChallan(chechBox) {
+            var $chechBox = $(chechBox);
+            var greyIssueId = $chechBox.val();
+            $.Ajax({
+                url: '/Inventory/GreyIssue/IsGreyIssueApproval',
+                data: { greyIssueId: greyIssueId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed to approved delivery challan .");
+                }
+            });
+        }
+
+    </script>
+}

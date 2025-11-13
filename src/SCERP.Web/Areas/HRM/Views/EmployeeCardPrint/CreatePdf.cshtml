@@ -1,0 +1,79 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeCardPrintViewModel
+
+@{
+    ViewBag.Title = "Employee Card Print";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class=" additem">
+
+    @using (@Html.BeginForm("Search", "EmployeeCardPrint", FormMethod.Post, new { @class = "EmployeeCardPrintForm", name = "EmployeeCardPrintForm" }))
+    {
+        <div style="width: 500px; padding-left: 240px;">
+            <h2>Employee Card Print</h2>
+        </div>
+
+        <section class="search formCover" style="margin-bottom: 7px; font-size: 12px;">
+
+            <table>
+                <tr>
+                    <td> @Html.Label("Department") </td>
+                    <td> @Html.DropDownList("departmentId", null, "--select--", new { @class = "Department", @action = "/Payroll/EmployeeSalarySearch/GetAallEmployeeByDepartmentId", @TargetClass = "employee" })</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Employee Card Id") </td>
+                    <td> @Html.DropDownList("employeeId", null, "--select--", new { @class = "employee" }) </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td></td>
+                    <td> <button class="search" type="button" onclick=" search('/HRM/EmployeeCardPrint/Search', 'EmployeeCardPrintForm') " />  </td>
+                    <td><img onclick="search('/HRM/EmployeeCardPrint/CreatePdf', 'EmployeeCardPrintForm')" title="Pdf preview" src="~/Content/images/Pdf-icon.png" /> </td>
+                </tr>
+            </table>
+        </section>
+    }
+    <section class="search formCover">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/EmployeeSalarySearch/Edit">Add new</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: SCERP.Common.AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeCardInfos, rowCount: Model.EmployeeCardInfos.Count, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                         grid.Column("Name", header: "Employee Name")
+
+            ));
+        }
+
+    </section>
+</div>
+
+@*@section scripts
+{
+    <script src="~/Scripts/SCERP/EmployeeCardPrint.js"></script>
+}*@

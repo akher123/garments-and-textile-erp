@@ -1,0 +1,127 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyOrdShipViewModel
+@{
+    Layout = null;
+}
+<div class="BuyOrdShipContainner">
+
+    <div>
+        <div class="order-notes-wrapper" style="margin: 0 0 10px 0;padding: 10px;min-height: auto;font-size: 13px;">
+          
+            <div>
+                Order: @Model.OrdStyle.RefNo
+            </div>
+            <div>
+                Style: @Model.OrdStyle.StyleName
+            </div>
+          
+        </div>
+
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Merchandising/BuyOrdShip/Edit?OrderStyleRefId=@Model.OrderStyleRefId">Add New</button>
+        </div>
+        <div>
+            @Html.HiddenFor(x => x.OrderStyleRefId, new { @class = "Buyer_OrderStyleRefId" })
+            <table id="grid" class="webgrid-table webgrid">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>
+                            <strong>OrderNo</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Style Ref.")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Ship Ref.")</strong>
+                        </th>
+
+                        <th>
+                            <strong>@String.Format("{0}", "Ship Date")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "ETD")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Quantity")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Port")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Country")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Select")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Edit")</strong>
+                        </th>
+                        <th>
+                            <strong>@String.Format("{0}", "Delete")</strong>
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var ship in Model.OmBuyOrdShips)
+                    {
+                    <tr id="@ship.OrderShipRefId ">
+                        <td>
+                            @ship.OrderNo
+                        </td>
+                        <td>
+                            @ship.OrderStyleRefId
+                        </td>
+                        <td>
+                            @ship.OrderShipRefId
+                        </td>
+                        <td>@String.Format("{0:dd/MM/yyyy}", ship.ETD)</td>
+                        <td>@String.Format("{0:dd/MM/yyyy}", ship.ShipDate)</td>
+
+                        <td>
+                            @ship.Quantity
+                        </td>
+                        <td>@String.Format("{0}", ship.PortOfLoadingName)</td>
+                        <td>@String.Format("{0}", ship.CountryName)</td>
+                        <td>
+                            <input type="button" onclick="selectBuyerOrderStyShipleRow('@ship.OrderShipRefId',this)" value="✅" />
+                        </td>
+                        <td><button class="edit" action="/Merchandising/BuyOrdShip/Edit?OrderShipId=@ship.OrderShipId"></button></td>
+                        <td><button class="deleteAction" targentclass="BuyOrdShipContainner" action="/Merchandising/BuyOrdShip/Delete?OrderShipRefId=@ship.OrderShipRefId&OrderStyleRefId=@ship.OrderStyleRefId"></button></td>
+                    </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        @if (Model.OmBuyOrdShips.Any())
+        {
+            <div id="buyerOrderShipAssortment" style="margin-bottom: 50px;">
+                @Html.Partial("~/Areas/Merchandising/Views/BuyOrdShip/ShipAssort.cshtml", Model)
+            </div>
+        }
+        else
+        {
+            <div style="text-decoration-color: brown">
+                <span>Create Shipment </span>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function selectBuyerOrderStyShipleRow(orderShipRefId, obj) {
+        var orderStyleRefId = $('.Buyer_OrderStyleRefId').val();
+        var button = $(obj);
+        var $tr = button.closest('tr');
+        $tr.addClass("selected").siblings().removeClass("selected");
+        jQuery.Ajax({
+            url: '/Merchandising/BuyOrdShip/GetShipAssort'
+            , type: "GET",
+            data: { OrderShipRefId: orderShipRefId, OrderStyleRefId: orderStyleRefId }
+            , container: '#buyerOrderShipAssortment'
+        });
+    }
+</script>

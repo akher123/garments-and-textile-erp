@@ -1,0 +1,51 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.ReligionViewModel
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Religion List</td>
+            </tr>
+            <tr>
+                <td>Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <table class="pdfReportTable" border="1">
+        <thead class="reportThead">
+            <tr class="reportTR">
+                <td class="reportTH">
+                    SL. No
+                </td>
+                <td class="reportTH">
+                    Religion
+                </td>
+            </tr>
+        </thead>
+        <tbody class="reportBody">
+
+            @foreach (var religion in Model.Religions)
+            {
+                <tr class="reportTR">
+                    <td class="reportTD">
+                        @rowCount
+                    </td>
+                    <td class="reportTD">
+                        @religion.Name
+                    </td>
+                </tr>
+                rowCount += 1;
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>

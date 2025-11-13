@@ -1,0 +1,60 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+    <table class="webgrid-table webgrid" style="width: 100%;">
+        <tbody class="webgrid-header">
+            <tr>
+                <th>
+                    ItemCode
+                </th>
+                <th>
+                    Item Name
+                </th>
+                <th>
+                    Color
+                </th>
+                <th>
+                    Size
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Unit
+                </th>
+            </tr>
+        </tbody>
+        @for (int index = 0; index < Model.OutPutProgramDetails.Count; index++)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].ItemCode)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].MType)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].ItemName)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].ItemCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].ColorName)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].ColorRefId)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].SizeName)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].SizeRefId)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].Quantity)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Model.OutPutProgramDetails[index].UnitName)
+                    @Html.HiddenFor(x => Model.OutPutProgramDetails[index].Quantity)
+                </td>
+            </tr>
+        }
+
+    </table>

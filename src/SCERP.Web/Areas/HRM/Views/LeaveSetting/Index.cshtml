@@ -1,0 +1,97 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.LeaveSettingViewModel
+
+@{
+    ViewBag.Title = "Leave Setup";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.LeaveSettings.Count > 0) ? "" : "none";
+}
+
+
+@using (Html.BeginForm("Index", "LeaveSetting", FormMethod.Get, new { @class = "LeaveSettingSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Leave Setting</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>Company:</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "serchByCompanyForBranchUnit", @action = "/HRM/LeaveSetting/GetAllUnitsByCompanyId", @TargetClass = "Hrm_SearchBranchUnitId"})
+                    </td>
+
+                    <td>Unit:</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new {@class = "Hrm_SearchBranchUnitId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Leave Type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByLeaveTypeId, Model.LeaveTypeSelectListItem, "--Select--")
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/LeaveSetting/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.LeaveSettings, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                            firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("BranchUnit.Branch.Company.Name", header: "Company", format: @<text>@(item.BranchUnit.Branch.Company == null ? "" : item.BranchUnit.Branch.Company.Name)</text>),
+                    grid.Column("BranchUnit.Unit.Name", header: "Unit", format: @<text>@(item.BranchUnit.Unit == null ? "" : item.BranchUnit.Unit.Name)</text>),
+                    grid.Column("EmployeeType.Title", header: "Employee Type", format: @<text>@(item.EmployeeType == null ? "" : item.EmployeeType.Title)</text>),
+                    grid.Column("LeaveType.Title", header: "Leave Type", format: @<text>@(item.LeaveType == null ? "" : item.LeaveType.Title)</text>),
+                    grid.Column("NoOfDays",header:"No of Days", canSort:false),
+                    grid.Column("MaximumAtATime", header: "Maximum at a time", canSort: false),
+
+                    grid.Column(header:"Edit", format: @<text><button class="edit" action="/HRM/LeaveSetting/Edit/@item.Id"></button></text>),
+                    grid.Column(header: "Delete", format: @<text><button class="delete" action="/HRM/LeaveSetting/Delete/@item.Id"></button></text>)
+
+            ))
+        }
+    </div>
+       
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "LeaveSetting", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByEmployeeTypeId = Model.SearchFieldModel.SearchByEmployeeTypeId, SearchByLeaveTypeId = Model.SearchFieldModel.SearchByLeaveTypeId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "LeaveSetting", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByEmployeeTypeId = Model.SearchFieldModel.SearchByEmployeeTypeId, SearchByLeaveTypeId = Model.SearchFieldModel.SearchByLeaveTypeId })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>

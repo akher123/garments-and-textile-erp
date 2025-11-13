@@ -1,0 +1,65 @@
+﻿
+@model SCERP.Web.Areas.Common.Models.ViewModel.GatePassViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.GatePassDetails)
+{
+
+
+    <tr id="row_'@Model.GatePassDetails[m.Key].Item.Replace(" ", "")'">
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Item)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Item, new { id = "Item_" + m.Key })
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].GatePassDetailId)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].ParentId)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].FColorName)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].FColorName, new { id = "FColorName_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Size)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Size, new { id = "Size_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Description)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Description, new { id = "Description_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Color)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Color, new { id = "Color_" + m.Key })
+        </td>
+      
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Unit)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Unit, new { id = "Unit_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Quantity)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Quantity, new { id = "Quantity_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Wrapper)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Wrapper, new { id = "Wrapper_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].WrappingQty)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].WrappingQty, new { id = "WrappingQty_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.GatePassDetails[m.Key].Remarks)
+            @Html.HiddenFor(x => x.GatePassDetails[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+        </td>
+
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@m.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}
+
+
+

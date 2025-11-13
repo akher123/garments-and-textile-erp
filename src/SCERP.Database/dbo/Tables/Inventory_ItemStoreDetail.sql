@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[Inventory_ItemStoreDetail] (
+    [ItemStoreDetailId] BIGINT           IDENTITY (1, 1) NOT NULL,
+    [ItemStoreId]       BIGINT           NOT NULL,
+    [ItemId]            INT              NOT NULL,
+    [Specification]     NVARCHAR (MAX)   NULL,
+    [SuppliedQuantity]  DECIMAL (18, 2)  NOT NULL,
+    [ReceivedQuantity]  DECIMAL (18, 2)  NOT NULL,
+    [UnitPrice]         DECIMAL (18, 5)  NOT NULL,
+    [SizeId]            INT              NULL,
+    [BrandId]           INT              NULL,
+    [OriginId]          INT              NULL,
+    [ManufacturingDate] DATETIME         NULL,
+    [ExpirationDate]    DATETIME         NULL,
+    [CurrencyId]        INT              NOT NULL,
+    [CreatedDate]       DATETIME         NULL,
+    [CreatedBy]         UNIQUEIDENTIFIER NULL,
+    [EditedDate]        DATETIME         NULL,
+    [EditedBy]          UNIQUEIDENTIFIER NULL,
+    [IsActive]          BIT              CONSTRAINT [DF_Inventory_ItemStoreDetail_IsActive] DEFAULT ((1)) NOT NULL,
+    CONSTRAINT [PK_Inventory_ItemStoreDetail] PRIMARY KEY CLUSTERED ([ItemStoreDetailId] ASC),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Country] FOREIGN KEY ([OriginId]) REFERENCES [dbo].[Country] ([Id]),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Currency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([CurrencyId]),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Inventory_Brand] FOREIGN KEY ([BrandId]) REFERENCES [dbo].[Inventory_Brand] ([BrandId]),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Inventory_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Inventory_Item] ([ItemId]),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Inventory_ItemStore] FOREIGN KEY ([ItemStoreId]) REFERENCES [dbo].[Inventory_ItemStore] ([ItemStoreId]),
+    CONSTRAINT [FK_Inventory_ItemStoreDetail_Inventory_Size] FOREIGN KEY ([SizeId]) REFERENCES [dbo].[Inventory_Size] ([SizeId])
+);
+

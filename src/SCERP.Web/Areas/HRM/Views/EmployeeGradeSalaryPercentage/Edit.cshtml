@@ -1,0 +1,134 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeGradeSalaryPercentageViewModel
+@{
+    ViewBag.Title = Model.EmployeeGradeSalaryPercentageId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmployeeGradeSalaryPercentage", FormMethod.Post, new { @class = "EmployeeGradeSalaryPercentageform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmployeeGradeSalaryPercentageId)
+    <fieldset>
+        <legend>EmployeeType Salary Percentage</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Employee Type : ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeTypeId, Model.EmployeeTypeSelectListItem, "-select-", new { @class = "EmployeeType ", @action = "/HRM/EmployeeGradeSalaryPercentage/GetEmpGradeByEmpType", @TargetClass = "Employee_Grade" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeTypeId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Employee Grade : ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeGradeId, Model.EmployeeGradeSelectListItem, "-select-", new { @class = "Employee_Grade" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeGradeId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Medical : ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Medical)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Medical)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Conveyance : ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Conveyance)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Conveyance)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Food : ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Food)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Food)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("House Rent : ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.HouseRentPercentage)
+                    @Html.Label("%")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.HouseRentPercentage)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Basic Salary Rate : ")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.BasicPercentageRate)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.BasicPercentageRate)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2">
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script src="~/Scripts/SCERP/EmployeeSalarySetup.js"></script>
+}
+
+
+

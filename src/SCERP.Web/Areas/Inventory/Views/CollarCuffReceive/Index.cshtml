@@ -1,0 +1,81 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.FabricReturnViewModel
+@{
+    ViewBag.Title = "FabricReturn";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Collar and Cuff Receive List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "CollarCuffReceive", FormMethod.Get, new {@class = "CollarCuffReceiveForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Programs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                footerStyle: "webgrid-footer",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ProgramRefId", header: "ProgNo"),
+                        grid.Column("PrgDate", header: "PrgDate", format: @<text>@(item.PrgDate == null ? "" : item.PrgDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ExpDate", header: "ExpDate", format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("Attention", header: "Attention"),
+                        grid.Column("Buyer", header: "Buyer"),
+                        grid.Column("RefNo", header: "Order"),
+                        grid.Column("StyleName", header: "Style"),
+                        grid.Column("ReqYarnQty", header: "ProgQty"),
+                        grid.Column("YarnDeliveryQty", header: "DeliveryQty"),
+                        grid.Column("RcvQty", header: "Qty(Kg)"),
+                        grid.Column("QtyInPcs", header: "Qty(Pcs)"),
+                        grid.Column("Select", canSort: false, format: @<text><button class="btnDetail" targentclass="fabricReturnContent" action="/Inventory/CollarCuffReceive/FabricReturnLsit?ProgramId=@item.ProgramId"></button></text>)));
+        }
+
+    </div>
+    <div class="fabricReturnContent">
+
+    </div>
+</section>
+

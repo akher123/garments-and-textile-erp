@@ -1,0 +1,248 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeWorkShiftViewModel
+@{
+    ViewBag.Title = "Employee WorkShift";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Create", "EmployeeWorkShift", FormMethod.Get, new { @class = "EmployeeWorkShiftSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee WorkShift Assign</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @action = "/HRM/EmployeeWorkShift/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByCompanyId)
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @action = "/HRM/EmployeeWorkShift/GetAllBranchUnitByBranchId", @TargetClass = "Hrm_BranchUnitIdForWorkGroup"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByBranchId)
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitIdForWorkGroup", @action = "/HRM/EmployeeWorkShift/GetWorkGroupWorkShiftAndDepartmentByBranchUnitId", @TargetClass = "Hrm_WorkGroupId", @OtherTargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @ThirdTargetClass = "Hrm_BranchUnitWorkShift" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByBranchUnitId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @data_val = false, @action = "/HRM/EmployeeWorkShift/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItems, "-Select-", new {@data_val = false})
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @Html.Label("WorkGroup:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByWorkGroupId, Model.WorkGroupSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_WorkGroupId"}})
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @Html.Label("Checking Work Shift :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CheckingBranchUnitWorkShiftId, Model.WorkShiftSelectListItem, "-Select-", new { @class = "Hrm_BranchUnitWorkShift", @data_val = false })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Checking Shift Date :")
+                    </td>
+                    <td>                 
+                        @Html.TextBoxFor(x => x.CheckingShiftDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Checking ShiftDate" })
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+@if (Model.EmployeesForWorkShift.Count > 0)
+{
+    <section class="search formCover">
+
+        <div class=" additem">
+            @using (Html.BeginForm("Save", "EmployeeWorkShift", FormMethod.Post))
+            {
+                <fieldset>
+                    <legend>Employees</legend>
+
+                    <div style="overflow: auto;">
+                        <div style="height: 200px;">
+                            @{
+                var grid = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.EmployeesForWorkShift, autoSortAndPage: false);
+                //grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                    tableStyle: "webgrid-table webgrid",
+                                    headerStyle: "webgrid-header",
+                                    footerStyle: "webgrid-footer",
+                                    alternatingRowStyle: "webgrid-alternating-row",
+                                    selectedRowStyle: "webgrid-selected-row",
+                                    rowStyle: "webgrid-row-style",
+                                    firstText: "First",
+                                    lastText: "Last",
+                                    nextText: "Next",
+                                    mode: WebGridPagerModes.All,
+                                    previousText: "Previous",
+                                    columns: grid.Columns(
+                                        grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox" /></text>),
+                                        grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardNo ?? "")</text>),
+                                        grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.EmployeeName ?? "")</text>),
+                                        grid.Column("Department", header: "Department ", format: @<text>@(item.Department ?? "")</text>),
+                                        grid.Column("Section", header: "Section ", format: @<text>@(item.Section ?? "- - -")</text>),
+                                        grid.Column("Line", header: "Line ", format: @<text>@(item.Line ?? "- - -")</text>),
+                                        grid.Column("EmployeeType", header: "EmployeeType ", format: @<text>@(item.EmployeeType ?? "- - -")</text>),
+                                        grid.Column("Grade", header: "Grade ", format: @<text>@(item.Grade ?? "")</text>),
+                                        grid.Column("Designation", header: "Designation ", format: @<text>@(item.Designation ?? "")</text>),
+                                        grid.Column("WorkGroup", header: "WorkGroup ", format: @<text>@(item.WorkGroup ?? "")</text>),
+                                        grid.Column("JoiningDate", header: "Joining Date ", format: @<text>@(item.JoiningDate == null ? "" : item.JoiningDate.ToString("dd-MM-yyyy"))</text>),
+                                        grid.Column("WorkGroupAssignedDate", header: "WorkGroup Assigned date ", format: @<text>@(item.WorkGroupAssignedDate == null ? "" : item.WorkGroupAssignedDate.ToString("dd-MM-yyyy"))</text>)
+                                        ))
+                
+                            }
+                        </div>
+
+                    </div>
+
+                </fieldset>
+                <fieldset>
+                    <legend>Other Information</legend>
+                    <table class="tabefont">
+                        <tr>
+                            <td></td>
+                            <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Target Work Shift: ")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.BranchUnitWorkShiftId, Model.WorkShiftSelectListItem, "-Select-")
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.ValidationMessageFor(x => x.BranchUnitWorkShiftId)
+                            </td>
+                            <td>
+                                @Html.Label("Remarks :")
+                            </td>
+                            <td>
+                                @Html.TextAreaFor(x => x.Remarks)
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Shift From :")
+                            </td>
+                            <td>                                
+                                @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Start Date" })
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.ValidationMessageFor(x => x.StartDate)
+                            </td>
+                            <td>
+                                @Html.Label("Shift To :")
+                            </td>
+                            <td>                               
+                                @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "End Date" })
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.ValidationMessageFor(x => x.EndDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td>
+                                <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Save" />
+                            </td>
+                            <td>
+                                <input type="button" class="addButton" onclick="search('@Url.Action("index", "EmployeeWorkShift")', 'EmployeeWorkShiftSearchForm' ) " value="Back" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </fieldset>
+            }
+        </div>
+
+    </section>
+
+}
+@section scripts{
+    <script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>
+}

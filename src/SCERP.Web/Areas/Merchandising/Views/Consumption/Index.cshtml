@@ -1,0 +1,42 @@
+﻿@using System.Data.Entity.Core
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionViewModel
+@{
+    Layout = null;
+}
+<div class="consumtionContainer">
+    <div style="margin-bottom: 5px;" id="consumtionContainerEntyForm">
+        @Html.Partial("~/Areas/Merchandising/Views/Consumption/_Edit.cshtml", Model)
+    </div>
+    @{
+        var grid = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.Consumptions);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+                   footerStyle: "webgrid-footer",
+                     firstText: "First",
+                     lastText: "Last",
+                     nextText: "Next",
+                     mode: WebGridPagerModes.All,
+                     previousText: "Previous",
+            columns:
+              grid.Columns(
+              grid.Column("ConsRefId", canSort: false, header: String.Format("{0}", "Cons. Ref.")),
+              grid.Column("ConsDate", canSort: false, header: String.Format("{0}", "Date"), format: @<text>@(item.ConsDate == null ? "" : item.ConsDate.ToString("dd-MM-yyyy"))</text>),
+              grid.Column("ItemCode", canSort: false, header: String.Format("{0}", "ItemCode")),
+              grid.Column("ItemName", canSort: false, header: String.Format("{0}", "Item")),
+              grid.Column("ItemDescription", canSort: false, header: String.Format("{0}", "Composition")),
+              grid.Column("ConsGroupName", canSort: false, header: String.Format("{0}", "Sourcing")),
+              grid.Column("ConsTypeName", canSort: false, header: String.Format("{0}", "Cons.Type")),
+              grid.Column("Quantity", canSort: false, header: String.Format("{0}", "Quantity")),
+              grid.Column("Unit", canSort: false, header: String.Format("{0}", "Unit")),
+              grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="selectConsumptionRow('@item.ConsumptionId',this)" value="✅" /></text>),
+              grid.Column("Edit", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="EditConsumption('@item.ConsumptionId')" value="Edit" /></text>),
+              grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="consumtionContainer" action="@Url.Action("Delete", "Consumption", new { ConsRefId = item.ConsRefId, ConsumptionId = item.ConsumptionId, OrderStyleRefId = Model.OrderStyleRefId, OrderNo=Model.OrderNo })"></button></text>)));
+    }
+
+
+</div>

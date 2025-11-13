@@ -1,0 +1,81 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabStoreViewModel
+@{
+    Layout = null;
+   
+}
+<table class="tabefont webgrid-table">
+    <thead class="webgrid-header">
+    <tr>
+        <th>Party</th>
+        <th>Buyer</th>
+        <th>Order</th>
+        <th>Style</th>
+        <th>Batch</th>
+        <th>Fabric Type</th>
+        <th>Grey Wt</th>
+        <th>Finish Wt</th>
+        <th>TTL RcvQty</th>
+        <th>Balance Qty</th>
+        <th>Challan Qty</th>
+        <th>Ccuff(Pcs)</th>
+        <th>Location</th>
+        <th>Remove</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var key in Model.FabDictionary.Keys)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].PartyName)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].BuyerName)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].OrderName)
+            </td>
+          
+            <td>
+                @Html.HiddenFor(x => x.FabDictionary[key].DyeingSpChallanDetailId)
+                @Html.HiddenFor(x => x.FabDictionary[key].BatchId)
+                @Html.HiddenFor(x => x.FabDictionary[key].BatchDetailId)
+                @Html.DisplayFor(x => x.FabDictionary[key].StyleName)
+
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].BatchNo)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].FabType)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].GreyWt)
+                @Html.HiddenFor(x => x.FabDictionary[key].GreyWt)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].FabQty)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].RcvQty)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.FabDictionary[key].BalanceQty)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.FabDictionary[key].Qty, new {@style = "width: 100px;"})
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.FabDictionary[key].CcuffQty, new { @style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.FabDictionary[key].Remarks, new { @style = "width: 100px;" })
+            </td>
+            <td>
+                <input type="button" value="X" onclick="deleteRow(this)"/>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

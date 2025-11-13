@@ -1,0 +1,106 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingTagViewModel
+@{ ViewBag.Title = "ConfirmationMedia";
+ Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Cutting Tag</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        <fieldset>
+            <legend>Sequence list</legend>
+            @using (Html.BeginForm("Index", "CuttingTag", FormMethod.Get, new { @class = "CuttingTagForm submit-allow" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingSequence.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingSequence.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingSequence.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Color :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingSequence.ColorRefId, Model.ColorSelectListItem, "ALL", new { @class = "CuttingBatch_Color", @data_val = "false" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </fieldset>
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CuttingSequences, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ColorName", header: "Color", canSort: false),
+                        grid.Column("ComponentName", header: "Sequence", canSort: false),
+                        grid.Column("Add", canSort: false, format: @<text><button class="btnDetail" targentclass="tagListContainer" action="/Production/CuttingTag/TagList?CuttingTag.CuttingSequenceId=@item.CuttingSequenceId"></button></text>)))
+            ;
+        }
+    </div>
+
+
+    <div class="tagListContainer"></div>
+    <div class="tagSupplierContainer"></div>
+
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/CuttingSequence.js"></script>
+}

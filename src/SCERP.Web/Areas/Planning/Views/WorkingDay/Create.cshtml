@@ -1,0 +1,31 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.WorkingDayViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Working Days";
+}
+
+@using (Html.BeginForm("Save", "WorkingDay", FormMethod.Post, new { @class = "WorkingDayform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Working Days</legend>
+        <table class="tabefont">
+            <tr>
+               
+                <td>
+                    @Html.Label(" Working Year:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CureentYar, Model.YarSeasonsSelectListItem)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Save" />
+                </td>
+            </tr>
+        </table>
+    
+    </fieldset>
+}

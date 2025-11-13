@@ -1,0 +1,337 @@
+﻿@model SCERP.Model.Mrc_OrderInformation
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.OrderId > 0) ? "Edit" : "Add";
+}
+
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "OrderInformation", FormMethod.Post, new {@class = "OrderInformationForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.OrderId)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <fieldset>
+            <legend>Order Information</legend>
+            <table>
+
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Buyer Name")
+                    </td>
+                    <td>
+                        @Html.DropDownList("buyerId", null, "--select--", new { @class = "OrderInformation_Buyer", @action = "/Merchandising/OrderInformation/GetSepcSheetByBuyerId", @TargetClass = "OrderInformation_StyleNo", @BuyerClientclass = "OrderInformation_BuyerClient" })
+                    </td>
+                    <td>
+                       
+                    </td>
+                    <td width="60px"></td>                  
+                    <td>
+                        @Html.Label("Style No")
+                    </td>
+                    <td>
+                        @Html.DropDownList("StyleNo", null, "--select--", new {@class = "OrderInformation_StyleNo", @action = "/Merchandising/OrderInformation/GetJobNumberByStyleNo", @TargetClass = "OrderInformation_JobNumber"})
+                    </td>
+                    <td>
+                      
+                    </td>
+                    <td width="60px">                        
+                    </td>
+                </tr>
+             
+                <tr>
+                    <td>
+                        @Html.Label("Job Number")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SpecSheetId, null, "--select--", new { @class = "OrderInformation_JobNumber", @action = "/Merchandising/OrderInformation/GetOrderNoByJobNo", @TargetClass = "OrderInformation_OrderNumber" })
+                    </td>
+                    <td>
+                     @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SpecSheetId, "Required")                       
+                    </td>
+                    <td>
+                        @Html.Label("Supplier")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x=>x.SupplierId, null, "--select--")
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SupplierId, "Required")                        
+                    </td>
+                </tr>
+                                                                                   
+                <tr>
+                    <td>
+                        @Html.Label("Order No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OrderNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.OrderNo, "Required")
+                    </td>
+
+                    <td>
+                        @Html.Label("Buyer Client")
+                    </td>
+                    <td>                      
+                        @Html.DropDownList("BuyerClientId", null, "--select--", new { @class = "OrderInformation_BuyerClient" })
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     
+                    </td>
+                </tr>
+                                                
+                <tr>
+                    <td>
+                        @Html.Label("Fabric Consumption")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricConsumption)
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.FabricConsumption, "Required")
+                    </td>
+                    <td>
+                        @Html.Label("Fabric Weight")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricWeight)
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.FabricWeight, "Required")
+                    </td>
+                </tr>             
+                                           
+                <tr>
+                    <td>
+                        @Html.Label("Price Per Dozen")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.PricePerDozen)
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                       @* @Html.ValidationMessageFor(model => model.PricePerDozen, "Required")*@
+                    </td>
+                    <td>
+                        @Html.Label("Lead Time")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.LeadTime)
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     @*   @Html.ValidationMessageFor(model => model.LeadTime, "Required")*@
+                    </td>
+                </tr>    
+                         
+                <tr>
+                    <td>
+                        @Html.Label("Shipment Date")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ShipmentDate)
+                    </td>
+                    <td>
+                      @*  @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     @*   @Html.ValidationMessageFor(model => model.ShipmentDate, "Required")*@
+                    </td>
+                    <td>
+                        @Html.Label("Total Quantity")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.TotalQuantity)
+                    </td>
+                    <td>
+                      @*  @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                      @*  @Html.ValidationMessageFor(model => model.TotalQuantity, "Required")*@
+                    </td>
+                </tr>    
+                                                                                                                             
+                <tr>
+                    <td>
+                        @Html.Label("Total Amount")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.TotalAmount)
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     @*   @Html.ValidationMessageFor(model => model.TotalAmount, "Required")*@
+                    </td>
+                    <td>
+                        @Html.Label("Currency")
+                    </td>
+                    <td>
+                        @Html.DropDownList("CurrencyId", null, "--select--")
+                    </td>
+                    <td>
+                      @*  @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td></td>
+                </tr>
+                                  
+                <tr>
+                    <td>
+                        @Html.Label("Payment Term")
+                    </td>
+                    <td>
+                        @Html.DropDownList("PaymentTermId", null, "--select--")
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("Number Of Carton")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.NumberOfCarton)
+                    </td>
+                    <td>
+                      @*  @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     @*   @Html.ValidationMessageFor(model => model.NumberOfCarton, "Required")*@
+                    </td>
+                </tr>
+                                                    
+                <tr>
+                    <td>
+                        @Html.Label("Ex Factory Date On PO")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ExFactoryDateOnPO)
+                    </td>
+                    <td>
+                    @*    @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                  @*      @Html.ValidationMessageFor(model => model.ExFactoryDateOnPO, "Required")*@
+                    </td>
+                    <td>
+                        @Html.Label("ExFactory As Per Plan")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ExFactoryAsPerPlan)
+                    </td>
+                    <td>
+                    @*    @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                     @*   @Html.ValidationMessageFor(model => model.ExFactoryAsPerPlan, "Required")*@
+                    </td>
+                </tr>
+                                                                 
+                <tr>
+                    <td>
+                        @Html.Label("Remarks")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Remarks)
+                    </td>
+                    <td>
+                     @*   @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td>
+                   @*     @Html.ValidationMessageFor(model => model.Remarks, "Required")*@
+                    </td>
+                    
+                    <td>
+                        @Html.Label("Article No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.ArticleNo)
+                    </td>
+                    <td>
+                    @*    @Html.Label("*", new {@class = "labelInstruction"})*@
+                    </td>
+                    <td></td>
+                </tr>
+                                                                                                                             
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </fieldset>
+        @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+    }
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/OrderInformation.js"></script>          
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

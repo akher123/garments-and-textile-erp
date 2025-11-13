@@ -1,0 +1,85 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.FinishingProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Daily Iron Finishing</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left:160px;margin-bottom:15px;">
+            @using (Html.BeginForm("DailyIronFinishing", "IronFinishing", FormMethod.Post, new { @class = "DailyIronFinishingForm ignore-validation" }))
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Input Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.FinishingProcess.InputDate, new { @class = "datepicker", @data_val = "false", @style = "width:100px;", id = "OutputDate" })
+                        </td>
+                        <td style="width: 200px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            <input type="button" value="PDF"  onclick="FinishingReport()" />
+                        </td>
+                        <td>
+                            @Html.Label("Total Iron Qty")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x=>x.Total, new { @readonly = "readonly", @style = "background-color: #6495ed; width: 50px" })
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem" style="overflow-y: scroll; overflow-x: scroll; height: 308px;">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwFinishingProcess, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("FinishingProcessRefId", header: "RefId", canSort: false),
+                    grid.Column("BuyerName", header: "Buyer", canSort: false),
+                    grid.Column("OrderName", header: "OrderNumber", canSort: false),
+                    grid.Column("StyleName", header: "Style", canSort: false),
+                    grid.Column("ColorName", header: "Color", canSort: false),
+                    grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.InputDate ?? ""), header: "Input-Date"),
+                    grid.Column("HourName", header: "Hour", canSort: false),
+                    grid.Column("InputQuantity", header: "InputQty", canSort: false)));
+        }
+    </div>
+</section>
+<script type="text/javascript">
+    function FinishingReport() {
+        var form = $('.DailyIronFinishingForm');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                return false;
+            } else {
+                var data = form.serialize();
+                var searchurl = '/IronFinishing/DailyIronFinishingReport?' + data;
+                window.open(searchurl);
+            }
+        }
+
+
+    }
+</script>

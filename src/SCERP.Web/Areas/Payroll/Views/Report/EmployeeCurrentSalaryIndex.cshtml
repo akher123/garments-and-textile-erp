@@ -1,0 +1,81 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Current Salary Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("EmployeeCurrentSalaryIndex", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Current Salary Report</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @{ Html.RenderPartial("~/Areas/Payroll/Views/Report/_SearchReport.cshtml", Model); }
+            <tr>
+                <td>
+                    @Html.Label("Section: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                <td>
+                    @Html.Label("Line: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, new { htmlAttributes = new { @class = "CardId" } })
+                </td>
+                <td>
+                
+                </td>
+                <td>
+                 
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("From Date")
+                </td>
+                <td>                 
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("To Date")
+                </td>
+                <td>                   
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>             
+                    <input type="button" id="showReport" class="addButton" onclick="search('@Url.Action("EmployeeCurrentSalary", "Report")','ReportSearchForm')" value="Show Report" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+}

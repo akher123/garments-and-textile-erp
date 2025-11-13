@@ -1,0 +1,128 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Salary XL";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("EmployeeSalaryXL", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 370px;">
+        <h3>Monthly Salary XL</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td> </td>
+                <td align="left" colspan="3"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new
+               {
+                   @class = "SearchByCompanyId",
+                   @action = "/Payroll/Report/GetAllBranchesByCompanyId",
+                   @TargetClass = "SearchByBranchId"
+               })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+
+                </td>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new
+               {
+                   @class = "SearchByBranchId",
+                   @action = "/Payroll/Report/GetAllBranchUnitByBranchId",
+                   @TargetClass = "SearchByBranchUnitId"
+               })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayName("Year:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SelectedYear, Model.Years, "-Select-")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Month:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SelectedMonth, Model.Months, "-Select-", Model.SelectedMonth)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("From Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("To Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Print Format: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.PrintFormatId, Model.PrintFormatStatusSelectListItems)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" id="showReport" value="Show Report" /> </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+}
+
+<script type="text/javascript">
+    $('#showReport').click(function (e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+    });
+</script>

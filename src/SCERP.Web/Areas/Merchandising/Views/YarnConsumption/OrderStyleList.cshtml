@@ -1,0 +1,201 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+
+<div id="buyerOrderStyleInYarnCons">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+            @using (Html.BeginForm("OrderStyleList", "YarnConsumption", FormMethod.Get, new { @class = "YarnConsumptionSearchForm submit-allow" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "timeAndAction_buyerRefId", style = "width: 150px;" })
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-ALL-", new { @class = "timeAndAction_OrderNo", style = "width: 150px;" })
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new { id = "shipStyleRefId", @class = "timeAndAction_StyleNo", style = "width: 150px;" })
+                        </td>
+                        <td>
+                            <input type="button" class="buyerOrStyleFind addButton" value="Find" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                     selectedRowStyle: "webgrid-selected-row",
+                     rowStyle: "webgrid-row-style",
+                      footerStyle: "webgrid-footer",
+                     firstText: "First",
+                     lastText: "Last",
+                     nextText: "Next",
+                     mode: WebGridPagerModes.All,
+                     previousText: "Previous",
+            columns:
+            grid.Columns(
+           grid.Column("L/U", format: @<text> <input type="checkbox" onclick="FabricBookingLock(this)" @(item.YLocked ? "checked" : "") value="@item.OrderStyleRefId" />  </text>),
+grid.Column("FabricOrderRefId", canSort: false, header: "RefNo"),
+grid.Column("Merchandiser", canSort: false, header: "Merchandiser"),
+grid.Column("BuyerName", canSort: false, header: "Buyer"),
+grid.Column("OrderName", canSort: false, header: "Order"),
+grid.Column("StyleName", canSort: false, header: "Style"),
+grid.Column("ItemName", canSort: false, header: String.Format("{0}", "Item")),
+grid.Column("FinishQty", canSort: false, header: String.Format("{0}", "Finish Wt")),
+grid.Column("GreyQty", canSort: false, header: String.Format("{0}", "Grey Wt")),
+grid.Column("BookingQty", canSort: false, header: String.Format("{0}", "Booking Qty")),
+grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="selectYarnConsBuyerOrderRow('@item.OrderStyleRefId',this)" value="✅" /></text>),
+
+grid.Column("Report", format: @<text>
+        <div class="dropdown">
+            <a class="dropbtn custom-table-dropbtn">Report</a>
+            <div style="z-index: 2;right: 2%;" class="dropdown-content custom-table-dropdown-content">
+                <a href="/Merchandising/Report/BulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=1" target="_blank">Fabric(PDF)</a>
+                <a href="/Merchandising/Report/BulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=3" target="_blank">Fabric(EXCEL)</a>
+
+            </div>
+        </div>
+</text>, canSort: false)));
+
+
+    }
+</div>
+
+
+
+<script type="text/javascript">
+    
+        function FabricBookingLock(chechBox) {
+            var $chechBox = $(chechBox);
+            var orderStyleRefId = $chechBox.val();
+            $.Ajax({
+                url: '/Merchandising/FabricOrder/FabricBookingLock/',
+                data: { orderStyleRefId: orderStyleRefId },
+                type: 'post'
+            });
+        }
+    function selectYarnConsBuyerOrderRow(orderStyleRefId, obj) {
+        var button = $(obj);
+        var $tr = button.closest('tr');
+        var $href = $('#YarnStyleConsumptionTabHref');
+        var url = '/Merchandising/YarnConsumption/FabricList';
+        url += "?OrderStyleRefId=" + orderStyleRefId;
+        $tr.addClass("selected").siblings().removeClass("selected");
+        $href.attr('href', url);
+        //  var a = '/Merchandising/YarnConsumptionCost/YarnConsumptionList' + url;
+        var url1 = "?OrderStyleRefId=" + orderStyleRefId;
+        $('#YarnConsumptionCostTabHref').attr('href', '/Merchandising/YarnConsumptionCost/YarnConsumptionList' + url1);
+        $('#YarnBookingTabHref').attr('href', '/Commercial/YarnBooking/YarnBookingList' + url1);
+        $("#YarnConsumptionTab").tabs('enable', 1);
+        $('#YarnOrderStyleListTabHref').attr('href', '#temp');
+    }
+
+    $('.buyerOrStyleFind').unbind('click').bind('click', function () {
+        var button = $(this);
+        var form = button.parents('form:first');
+        jQuery.Ajax({
+            url: form.attr('action')
+            , type: "GET",
+            data: form.serialize()
+            , container: '#buyerOrderStyleInYarnCons'
+        });
+        $("#YarnConsumptionTab").tabs({
+
+            disabled: [1, 2]
+        });
+
+    });
+
+
+    function shipmentAlertReport(obj) {
+        var form = $(obj).parents('form:first');
+        var data = form.serialize();
+        var searchurl = '/Merchandising/Report/ShipmentAlert?' + data;
+        window.open(searchurl);
+    }
+
+    $('.timeAndAction_buyerRefId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+            $('.timeAndAction_OrderNo').empty();
+            $('.timeAndAction_StyleNo').empty();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+
+
+    function populateDropDown(obj) {
+        $('.timeAndAction_OrderNo').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+
+    $('.timeAndAction_OrderNo').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('.timeAndAction_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('.timeAndAction_StyleNo').append(
+                    $('<option/>').attr('value', '').text("-ALL-")
+                );
+                $.each(styleList, function (style) {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('.timeAndAction_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    function removeDependentDropdown() {
+
+        $('.timeAndAction_OrderNo').empty();
+        $('.timeAndAction_StyleNo').empty();
+    }
+</script>
+
+
+

@@ -1,0 +1,181 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = null;
+}
+@Html.HiddenFor(x => x.SewingOutPutProcess.SewingOutPutProcessId)
+<table>
+    <tr>
+        <td style="width: auto">
+            <table class="tabefont webgrid-table">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>@Html.Label("OutputDate")</td>
+                                <td>@Html.TextBoxFor(x => x.SewingOutPutProcess.OutputDate, new { @class = "datepicker", id = "txtOutputdate", style = "width: 100px;" })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Hour")</td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.SewingOutPutProcess.HourId, Model.HourSelectListItem, "-Select-", new { @class = "HourId", id = "txtHourId", style = "width: 116px;" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Line")</td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.SewingOutPutProcess.LineId, Model.MachineSelectListItem, "-Select-", new { @class = "LineId", style = "width: 116px;" })
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>@Html.Label("Manpower")</td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.SewingOutPutProcess.ManPower, new { style = "width: 100px;" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Remark")</td>
+                                <td>
+                                    @Html.TextAreaFor(x => x.SewingOutPutProcess.Remarks, new { style = "width: 100px;" })
+                                @Html.ValidationMessageFor(m => m.SewingOutPutProcess.Remarks, "", new { data_val_usetitle = "true" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        </table>
+    </td>
+    <td style="width: auto">
+        <table class="tabefont webgrid-table webgrid webgrid-alternating-row tableFocusInputText">
+            <thead>
+                @foreach (var porcess in Model.PivotDictionary)
+                {
+                    <tr>
+                        <td>
+                            @porcess.Key
+                        </td>
+                        @foreach (var col in @porcess.Value)
+                        {
+                            <td>
+                                @col
+                            </td>
+                        }
+                    </tr>
+                }
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.Label("OutputQty")
+                    </td>
+                    @foreach (var test in Model.SewingOutputProcessDetailDictionary)
+                    {
+                        <td>
+                            @Html.TextBoxFor(x => Model.SewingOutputProcessDetailDictionary[test.Key].Quantity, new { @style = "width:90%;", @class = "TextBoxStyle ratioTextBox" })
+                            @Html.HiddenFor(x => Model.SewingOutputProcessDetailDictionary[test.Key].CompId)
+                            @Html.HiddenFor(x => Model.SewingOutputProcessDetailDictionary[test.Key].SizeRefId)
+                        </td>
+                    }
+                    <td>
+                        <span id="totalRatio">@Model.SewingOutputProcessDetailDictionary.Sum(x => x.Value.Quantity)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("QC Reject")
+                    </td>
+                    @foreach (var test in Model.SewingOutputProcessDetailDictionary)
+                    {
+                        <td>
+                            @Html.TextBoxFor(x => Model.SewingOutputProcessDetailDictionary[test.Key].QcRejectQty, new { @style = "width:90%;" ,@class="totalQcReject"})
+                        </td>
+                    }
+                    <td>
+                        <span id="totalQcReject">@Model.SewingOutputProcessDetailDictionary.Sum(x => x.Value.QcRejectQty)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="@(Model.SewingOutputProcessDetailDictionary.Count + 2)">
+                        <div style="float:right">
+                            <input type="button" onclick="saveSewingOutPut(this)" class="addButton" value="Save" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+</table>
+<script type="text/javascript">
+    $('.tableFocusInputText').formNavigation();
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".ratioTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totalRatio").html(sum);
+    }
+    function calculateTotalQcReject() {
+        var sum = 0;
+        $(".totalQcReject").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totalQcReject").html(sum);
+    }
+
+    $(".ratioTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+
+    $(".totalQcReject").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalQcReject();
+        });
+    });
+
+    $('.allowNumeric').keyup(function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 0) {
+            $('#btnAddRollCutting').prop('disabled', false);
+        } else {
+            $('#btnAddRollCutting').prop('disabled', true);
+        }
+    });
+    function saveSewingOutPut(btnobject) {
+        var button = $(btnobject);
+        var form = button.parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                return false;
+            } else {
+                $.Ajax({
+                    url: form.attr('action'),
+                    dataType: "JSON",
+                    type: "POST",
+                    data: form.serialize()
+                }).done(function (model) {
+                    if (model.SaveStatus == true) {
+                        var target = '#basePlate';
+                        $(target).html(model.partialView);
+                        $('#txtSewingOutPutProcessRefId').val(model.refId);
+                        alert(model.StatusMessage);
+                    }
+
+                });
+            }
+        }
+    }
+</script>
+
+
+

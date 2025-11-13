@@ -1,0 +1,50 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ChallanReceiveMasterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReturnableChallan.ReturnableChallanId > 0 ? "Edit" : "Add");
+}
+@using (Html.BeginForm("Save", "FabSubProcessReceive", FormMethod.Get, new { @class = "FabSubProcessReceiveForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ChallanReceiveMaster.ReturnableChallanReceiveMasterId)
+    <fieldset>
+        <legend>Returnable Challan Receive</legend>
+        <div style="margin-bottom: 20px; ">
+            <table>
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ref No")
+                    </td>
+                    <td>:</td>
+                    <td class="tabefont">
+                        @Html.HiddenFor(x => x.ReturnableChallan.ReturnableChallanId, new {@class = "txtReturnableChallanId"})
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key", @class = "txtSearchString"})
+                    </td>
+                    <td class="tabefont">
+                        <input class="addButton" action="/Inventory/FabSubProcessReceive/FindReturnableChallan" type="button" id="filterbyReturnableChallanId" value="Find"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="background-color: papayawhip;">
+            @if (Model.VwReturnableChallanReceives != null)
+{
+    <div id="FabSubProcessReceive_containner" style="background-color: white">
+        @Html.Partial("~/Areas/Inventory/Views/FabSubProcessReceive/_EditReturnableChallanReceive.cshtml", Model)
+    </div>
+}
+        </div>
+    </fieldset>
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Inventory/FabSubProcessReceive.js"></script>
+}

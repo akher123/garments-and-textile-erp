@@ -1,0 +1,61 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.SubjectViewModel
+@{
+
+    ViewBag.Title = Model.Subject.SubjectId > 0 ? "Edit " : "Add ";
+   
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Subject", FormMethod.Post, new { @class = "SubjectForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Subject.SubjectId)
+    <fieldset>
+        <legend>Subject</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Module Name:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Subject.ModuleId, Model.ModuleSelectListItems, "-Select-", new { @class = "moduleDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Subject Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Subject.SubjectName, new { @placeholder = "Subject Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Subject.Description, new { @placeholder = "Description" })
+                </td>
+            </tr>
+           
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

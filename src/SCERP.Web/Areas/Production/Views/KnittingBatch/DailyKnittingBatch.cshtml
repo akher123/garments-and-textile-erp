@@ -1,0 +1,64 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = "DailyKnittingBatch";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@using (Html.BeginForm("DailyKnittingBatch", "KnittingBatch", FormMethod.Get, new { @class = "BatchForm" }))
+{
+    <div style="width:500px; padding-left:340px;">
+        <h3>Daily Knitting Batch Information</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <div style="background-color: #46B9AF; ">
+            <div style="margin-left: 160px;margin-bottom:15px">
+                <table class="tabefont">
+                    <tr>
+                        <td>@Html.Label("Batch Date")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.BatchDate, new { @class = "datepicker" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VProBatches, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("BtRefNo", header: "Ref No"),
+            grid.Column("BatchNo", header: "Batch No"),
+            grid.Column("BatchDate", header: "Date", format: @<text>@(item.BatchDate == null ? "" : item.BatchDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("PartyName", header: "Party "),
+            grid.Column("MachineName", header: "Machine"),
+            grid.Column("ColorName", header: "Color"),
+            grid.Column("BatchQty", header: "Qty"),
+            grid.Column("ShadePerc", header: "Roll"),
+            grid.Column("CostRate", header: "Cost Rate"),
+            grid.Column("BillRate", header: "BillRate"),
+            grid.Column("BatchStatus", header: "Status",format: @<text>@(item.BatchStatus == 1 ? "R" : "C")</text>)));
+        }
+    </div>
+</section>
+

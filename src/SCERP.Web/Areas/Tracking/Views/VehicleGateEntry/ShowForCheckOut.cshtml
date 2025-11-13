@@ -1,0 +1,137 @@
+﻿@*@using SCERP.Model.Tracking*@
+@model SCERP.Web.Areas.Tracking.Models.ViewModels.VehicleGateEntryViewModel
+@{
+
+    ViewBag.Title = Model.VehicleGateEntry.VehicleGateEntryId > 0 ? "Check Out " : "Add ";
+    bool isReadOnly = Model.VehicleGateEntry.VehicleGateEntryId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "VehicleGateEntry", FormMethod.Post, new { @class = "VehicleGateEntryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VehicleGateEntry.VehicleGateEntryId)
+    <fieldset>
+        <legend>Vehicle Gate Entry</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Vehicle Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.VehicleId, Model.VehiclesSelectListItem, "-Select-", isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @class = "EnvVehicleTypeDropDownList" } : new { @class = "EnvVehicleTypeDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Vehicle Number :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.VehicleNumber, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @class = "VehicleNumberTextBoxFor", @placeholder = "Vehicle Number" } : new { @class = "VehicleNumberTextBoxFor", @placeholder = "Vehicle Number" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Gate Entry Number :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.GateEntryNumber, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @placeholder = "Gate Entry Number" } : new { @placeholder = "Gate Entry Number" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Invoice Number:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.InvoiceNumber, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @placeholder = "Invoice Number" } : new { @placeholder = "Invoice Number" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("To Whom")
+                </td>
+                <td>
+                    @Html.HiddenFor(x => x.VehicleGateEntry.EmployeeId, new { @class = "EmployeeIdHiddenFor" })
+                    @Html.TextBoxFor(x => x.EmployeeName, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @class = "ToWhomTextBoxFor", @placeholder = "To Whom" } : new { @class = "ToWhomTextBoxFor", @placeholder = "To Whom" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Confirmed By:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.ConfirmedBy, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @class = "ConfirmedByTextBoxFor", @placeholder = "Confirmed By" } : new { @class = "ConfirmedByTextBoxFor", @placeholder = "Confirmed By" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Confirm Way:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.ConfirmationMediaId, Model.ConfirmationMediaSelectListItem, "-Select-", isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7", @class = "ConfirmWayDropDownList" } : new { @class = "ConfirmWayDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Check Out/UnCheck:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.CheckOutStatus, Model.CheckOutStatusSelectListItem, "-Select-", new { @style = "width:316px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Check Out Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.ExitDate, new { @class = "datepicker", @placeholder = "Check Out date" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Check Out Time:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.CheckOutTime, new { @class = "timePicker", @placeholder = "Check Out Time" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.TextAreaFor(x => x.VehicleGateEntry.Remarks, new { @readonly = "readonly", @style = "background-color: #F0ECE7;display:none" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+

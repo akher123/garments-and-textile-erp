@@ -1,0 +1,47 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MerchandisingReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Style Wise Production Status</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("StyleWiseProductionStatus", "Report", FormMethod.Get, new { @class = "StyleWiseProductionStatusSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("From")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date"  })
+                    </td>
+                    <td>
+                        <input type="button" class="showRdlcReport addButton" value="Show" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+    <div class="custom-iframe-wrapper">
+        <iframe id="reportIfram" width="98%" height="400"></iframe>
+    </div>
+</section>
+
+<script>
+    $('.showRdlcReport').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var data = form.serialize();
+        var searchurl = '/Merchandising/Report/StyleWiseProductionStatus?' + data;
+        $('#reportIfram').attr('src', '');
+        $('#reportIfram').attr('src', searchurl);
+    });
+</script>
+

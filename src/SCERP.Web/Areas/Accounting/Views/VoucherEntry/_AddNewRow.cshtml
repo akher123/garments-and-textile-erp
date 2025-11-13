@@ -1,0 +1,36 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    Layout = null;
+}
+
+
+@foreach (var vd in Model.VoucherDetails)
+{
+    <tr id="row-@Model.VoucherDetails[vd.Key].GLID">
+
+        <td>
+            @Html.HiddenFor(x => x.VoucherDetails[vd.Key].GLID)
+            @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Acc_GLAccounts.AccountName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Particulars)
+            @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Particulars)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Debit)
+            @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Debit)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.VoucherDetails[vd.Key].Credit)
+            @Html.DisplayFor(x => x.VoucherDetails[vd.Key].Credit)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.VoucherDetails[vd.Key].CostCentreId)
+            @Html.DisplayFor(x => x.VoucherDetails[vd.Key].CostCentreId)
+        </td>
+        <td>
+            <input type="button" value="-" onclick="ViewModel.DeleteTR(this)" />
+        </td>
+    </tr>
+}

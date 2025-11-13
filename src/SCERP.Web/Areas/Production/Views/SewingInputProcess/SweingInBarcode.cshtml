@@ -1,0 +1,109 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Sewing Input </h3>
+</div>
+<section class="search formCover">
+    <div>
+        @using (Html.BeginForm("SweingInBarcode", "SewingInputProcess", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(x => x.SewingInputProcess.SewingInputProcessId)
+
+
+            <table class="tabefont webgrid-table">
+                <tr>
+                    <td>@Html.Label("InputDate")</td>
+                    <td>@Html.TextBoxFor(x => x.SewingInputProcess.InputDate, new { @class = "datepicker", @data_val = "false", id = "txtInputDate", style = "width: 100px;" })</td>
+             
+                    <td>@Html.Label("InputTime")</td>
+                    <td>@Html.TextBoxFor(x => x.InputTime, new { @class = "timePicker", @placeholder = "Input Time", style = "width: 100px;" })</td>
+                
+                    <td>@Html.Label("Hour")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingInputProcess.HourId, Model.HourSelectListItem, "-Select-", new { @class = "HourId", style = "width: 116px;" })
+                    </td>
+              
+                    <td>@Html.Label("Line")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingInputProcess.LineId, Model.MachineSelectListItem, "-Select-", new { @class = "LineId", style = "width: 116px;", id = "swiput_lineId", @placeholder="Scan Barcode" })
+                    </td>
+           
+                    <td>@Html.Label("Bundle")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SewingInputProcess.JobNo, new { style = "width: 100px;", id = "inputBarcode" })
+                    </td>
+                </tr>
+
+            </table>
+
+        }
+    </div>
+    <div class="additem" style="overflow-y: scroll;height: 400px;" id="sweingInBarcodeList">
+        @Html.Partial("~/Areas/Production/Views/SewingInputProcess/_SweingInputList.cshtml", Model)
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#inputBarcode').on({
+            keypress: function () { typed_into = true; },
+            change: function () {
+                var form = $(this).parents('form:first');
+                if (typed_into) {
+                    typed_into = false;
+                  
+                    var option = {
+                        url: form.attr('action'),
+                        type: 'POST',
+                        datatype: "html",
+                        data: form.serialize(),
+
+                    }
+             
+                    if (jQuery.validator && jQuery.validator.unobtrusive) {
+                        form.validate();
+                        if (!form.valid()) {
+                          
+                            return false;
+                        } else {
+                            $.Ajax(option).done(function (respons) {
+                                $('#sweingInBarcodeList').html(respons);
+                                $('#inputBarcode').val('');
+                            });
+                        }
+                    }
+                 
+                } else {
+                    alert('not type');
+                }
+            }
+        });
+
+
+        $('#swiput_lineId').on('change', function() {
+            var lineId = $(this).val();
+            var option = {
+                url:'/Production/SewingInputProcess/GetSweingInputList',
+                type: 'GET',
+                datatype: "html",
+                data: { lineId: lineId }
+
+            }
+            $.Ajax(option).done(function(respons) {
+                $('#sweingInBarcodeList').html(respons);
+                $('#inputBarcode').val('');
+            });
+        });
+    </script>
+}

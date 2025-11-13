@@ -1,0 +1,93 @@
+﻿@using SCERP.Common
+@model SCERP.Model.Custom.EmployeeAddressInfoCustomModel
+
+@{
+    Layout = null;
+}
+<div class="EmployeeAddressInfoDetailContainner">
+
+    @using (Html.BeginForm("Index", "EmployeeAddressInfo", FormMethod.Get, new { @class = "EmployeePresentAddressSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+            <legend>Present Address</legend>
+
+            <div class="additem">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/HRM/EmployeeAddressInfo/EditEmployeePresentAddress">Add New</button>
+                </div>
+                @{
+        var gridPresentAddress = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+        gridPresentAddress.Bind(Model.EmployeePresentAddresses, autoSortAndPage: false);
+        @gridPresentAddress.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                            columns: gridPresentAddress.Columns(
+                            gridPresentAddress.Column("MailingAddress", header: "Mailing Address", format: @<text>@(item == null ? "---" : item.MailingAddress)</text>),
+                            gridPresentAddress.Column("Country.CountryName", header: "Country", format: @<text>@(item.Country == null ? "---" : item.Country.CountryName)</text>),
+                            gridPresentAddress.Column("District.Name", header: "District", format: @<text>@(item.District == null ? "---" : item.District.Name)</text>),
+                            gridPresentAddress.Column("PoliceStation.Name", header: "Police Station", format: @<text>@(item.PoliceStation == null ? "---" : item.PoliceStation.Name)</text>),
+                            gridPresentAddress.Column("MobilePhone", header: "Mobile Phone", format: @<text>@(item == null ? "---" : item.MobilePhone)</text>),
+                            gridPresentAddress.Column("LandlordName", header: "Landlord Name", format: @<text>@(item == null ? "---" : item.LandlordName)</text>),
+                            gridPresentAddress.Column("Status", header: "Status ", format: @<text>@(item == null ? "---" : (item.Status == 1 ? "Active" : "InActive"))</text>),
+                            gridPresentAddress.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeAddressInfo/EditEmployeePresentAddress?EmployeePresentAddressId=@item.Id"></button></text>),
+                            gridPresentAddress.Column("Delete", format: @<text><button class="delete" action="/HRM/EmployeeAddressInfo/DeleteEmployeePresentAddress?EmployeePresentAddressId=@item.Id"></button></text>, canSort: false)))
+                }
+            </div>
+        </fieldset>
+    }
+
+
+
+    @using (Html.BeginForm("Index", "EmployeeAddressInfo", FormMethod.Get, new { @class = "EmployeePermanentAddressSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+            <legend>Permanent Address</legend>
+
+            <div class="additem">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/HRM/EmployeeAddressInfo/EditEmployeePermanentAddress">Add New</button>
+                </div>
+                @{
+        var gridPermanentAddress = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+        gridPermanentAddress.Bind(Model.EmployeePermanentAddresses, autoSortAndPage: false);
+        @gridPermanentAddress.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                                columns: gridPermanentAddress.Columns(
+                                gridPermanentAddress.Column("MailingAddress", header: "Mailing Address", format: @<text>@(item == null ? "---" : item.MailingAddress)</text>),
+                                gridPermanentAddress.Column("Country.CountryName", header: "Country", format: @<text>@(item.Country == null ? "---" : item.Country.CountryName)</text>),
+                                gridPermanentAddress.Column("District.Name", header: "District", format: @<text>@(item.District == null ? "---" : item.District.Name)</text>),
+                                gridPermanentAddress.Column("PoliceStation.Name", header: "Police Station", format: @<text>@(item.PoliceStation == null ? "---" : item.PoliceStation.Name)</text>),
+                                gridPermanentAddress.Column("Status", header: "Status ", format: @<text>@(item == null ? "---" : (item.Status == 1 ? "Active" : "InActive"))</text>),
+                                gridPermanentAddress.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeAddressInfo/EditEmployeePermanentAddress?EmployeePermanentAddressId=@item.Id"></button></text>),
+                                gridPermanentAddress.Column("Delete", format: @<text><button class="delete" action="/HRM/EmployeeAddressInfo/DeleteEmployeePermanentAddress?EmployeePermanentAddressId=@item.Id"></button></text>, canSort: false)))
+                }
+            </div>
+        </fieldset>
+    }
+
+</div>

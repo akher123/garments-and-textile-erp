@@ -1,0 +1,131 @@
+﻿@model SCERP.Model.Custom.EmployeeAddressInfoCustomModel
+
+@{
+    ViewBag.Title = (Model.EmployeePermanentAddress.Id > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("SaveEmployeePermanentAddress", "EmployeeAddressInfo", FormMethod.Post, new { @class = "EmployeeAddressInfoform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmployeePermanentAddress.Id)
+
+    <fieldset>
+        <legend>Permanent Address</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Mailing Address:</td>
+                <td>
+                    @Html.TextAreaFor(m => m.EmployeePermanentAddress.MailingAddress)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeePermanentAddress.MailingAddress)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Mailing Address (In Bengali):</td>
+                <td>
+                    @Html.TextAreaFor(m => m.EmployeePermanentAddress.MailingAddressInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeePermanentAddress.MailingAddressInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Country:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.EmployeePermanentCountryId, Model.PermanentCountrySelectListItem, "--Select--", new { @class = "Common_CountryId", @action = "/HRM/EmployeeAddressInfo/GetAllDistrictsByCountryId", @TargetClass = "Common_DistrictId" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">District:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.EmployeePermanentDistrictId, Model.PermanentDistrictSelectListItem, "--Select--", new { @class = "Common_DistrictId", @action = "/HRM/EmployeeAddressInfo/GetAllPoliceStationsByDistrictId", @TargetClass = "Common_PoliceStationId" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Police Station:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.EmployeePermanentPoliceStationId, Model.PermanentPoliceStationsSelectListItem, "--Select--", new { @class = "Common_PoliceStationId" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Post Office:</td>
+                <td>
+                    @Html.EditorFor(m => m.EmployeePermanentAddress.PostOffice)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeePermanentAddress.PostOffice)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Post Office (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(m => m.EmployeePermanentAddress.PostOfficeInBengali)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Post Code:</td>
+                <td>
+                    @Html.EditorFor(m => m.EmployeePermanentAddress.PostCode)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeePermanentAddress.PostCode)
+                </td>
+            </tr>            
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeAddressInfoDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+

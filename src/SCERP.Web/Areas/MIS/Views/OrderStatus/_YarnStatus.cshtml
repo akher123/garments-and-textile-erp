@@ -1,0 +1,209 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.YarnStatusViewModel
+@using System.Data
+
+@{
+    Layout = null;
+}
+
+<section class="formCover">
+    <div class="mis-title">Fabric Consumption</div>
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+            
+                <th>
+                    @Html.Label(String.Format("{0}", "Fabrication"))
+                </th>
+                <th>
+                    @Html.DisplayName(String.Format("{0}", "Color"))
+                </th>
+                <th>
+                    @Html.Label(" ", String.Format("{0}", "F.Fabric(Kg)"))
+                </th>
+
+                <th>
+                    @Html.Label(" ", String.Format("{0}", "Gr.Fabric(Kg)"))
+                </th>
+                <th>
+                    @Html.Label(" ", String.Format("{0}", "YConsQty(Kg)"))
+                </th>
+                <th>
+                    @Html.Label(" ", String.Format("{0}", "Balance(Kg)"))
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cons in Model.VCompConsumptionDetails)
+            {
+            <tr class="buyerOrderStyle-row" id="@cons.ConsRefId">
+               
+                <td>
+                    @cons.ItemName
+                </td>
+                <td>
+                    @cons.GColorName
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", cons.TQty)
+                </td>
+
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", cons.GreyQty)
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", cons.YConsQty)
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", cons.GreyQty - cons.YConsQty)
+                </td>
+            </tr>
+            }
+            <tr>
+                <td colspan="2">Total Fabric</td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.TQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.GreyQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.YConsQty))
+                </td>
+                <td style="text-align:right">
+                    @String.Format("{0:0.00}", Model.VCompConsumptionDetails.Sum(x => x.GreyQty - x.YConsQty))
+                </td>
+            
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section class="formCover">
+    <div class="mis-title">Yarn Consumption Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Yarn")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("Count")
+                </th>
+                <th>
+                    @Html.Label("Consumption(Kg)")
+                </th>
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var m in Model.YConDtl)
+            {
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(x => m.ItemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => m.KColorName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => m.KSizeName)
+
+                    </td>
+                    <td>
+
+                        @Html.DisplayFor(x => m.KQty)
+                    </td>
+
+                </tr>
+            }
+            <tr>
+                <td colspan="2"></td>
+                <td>Total Yarn Qty</td>
+                <td>
+                    @Model.TotalConsQty
+                </td>
+            </tr>
+    </table>
+</section>
+
+<section class="formCover">
+    <div class="mis-title">Yarn Booking Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Yarn")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("Count")
+                </th>
+                <th>
+                    @Html.Label("Booking(Kg)")
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.YBookingDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Yarn"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["Count"]</td>
+                    <td>@row["Quantity"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+<section class="formCover">
+    <div class="mis-title">Yarn Received Status</div>
+    <table id="ReceivedAgstPoDetail" class="webgrid-table">
+        <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Yarn")
+                </th>
+                <th>
+                    @Html.Label("Color")
+                </th>
+                <th>
+                    @Html.Label("Count")
+                </th>
+                <th>
+                    @Html.Label("Lot No")
+                </th>
+                <th>
+                    @Html.Label("Booking(Kg)")
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (DataRow row in Model.YRcvDtl.Rows)
+            {
+                <tr>
+                    <td>@row["Yarn"]</td>
+                    <td>@row["Color"]</td>
+                    <td>@row["Count"]</td>
+                    <td>@row["LotNo"]</td>
+                    <td>@row["Quantity"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>

@@ -1,0 +1,155 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ApprovedOvertimeHoureViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ViewBag.Title = "Approved Overtime Houre";
+}
+
+@using (Html.BeginForm("Index", "LineOvertimeHoure", FormMethod.Post, new { @class = "LineOvertimeHoureForm" }))
+{
+
+    <div class="header-title">
+        <h2>DAILY LINE WISE OVERTIME HOURS</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <div class="common-search-leftbar">
+                <table class="tabefont">
+                    <tr>
+                        <td>@Html.CheckBox("All", false)</td>
+                        <td>@Html.Label("All:")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.CheckBox("Garments", false)</td>
+                        <td>@Html.Label("Garments:")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.CheckBox("Knitting", false)</td>
+                        <td>@Html.Label("Knitting:")</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.CheckBox("Dyeing", false) </td>
+                        <td>@Html.Label("Dyeing:")</td>
+                    </tr>
+
+                    <tr>
+                        <td>@Html.Label("Date:")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.OtDate, new { id = "textOutputDate", @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            <div class="common-search-rightbar">
+                                <input type="button" class="searchAction" />
+                                <input type="button" class="FindPartial addButton" action='@Url.Action("OthList", "LineOvertimeHoure", new {Area = "HRM"})' target="#othourList" value="OTH" />
+                                <input type="button" class="addButton" id="sendOTHButton" value="Send" />
+                                <input type="button" value="Show Report" class="addButton" onclick="javascript: overTimeByLineReport();" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </section>
+}
+
+<section id="section2" class="search formCover">
+    <div id="othourList">
+        <table class="webgrid-table">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        LINE
+                    </th>
+                    <th>
+                        TOTAL MAN POWER
+                    </th>
+                    <th>
+                        OTH
+                    </th>
+                    <th>
+                        OT AMOUNT
+                    </th>
+                    <th>
+                        PRODUCTION
+                    </th>
+                    <th>
+                        ACCOUNTS & FINANCE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lineOtH in Model.LineOvertimeHours)
+            {
+                    <tr style="background-color: @(lineOtH.FirstSign == "Y" ? "YES" : "NO")">
+
+                        <td>
+                            <a style="color: blueviolet; padding: 2px; cursor: pointer;" class="AjaxPopup" action="/HRM/LineOvertimeHoure/EmployeeOtHour?TransactionDate=@lineOtH.TransactionDate.ToString()&DepartmentLineId=@lineOtH.DepartmentLineId">@lineOtH.Line</a>
+                        </td>
+                        <td>@lineOtH.OvertimePerson</td>
+
+                        <td>@lineOtH.OvertimeHour</td>
+                        <td>@Math.Round(lineOtH.TTLOtAmount, 2)</td>
+                        <td>
+                            @(lineOtH.FirstSign == "Y" ? "YES" : "NO")
+                        </td>
+                        <td>
+                            @(lineOtH.SecondSign == "Y" ? "YES" : "NO")
+                        </td>
+                    </tr>
+                }
+                <tr style="background-color: #ddd; font-weight: bold">
+                    <td>TOTAL</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.OvertimePerson)</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.OvertimeHour)</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.TTLOtAmount)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#sendOTHButton').unbind('click').bind('click', function () {
+            var form = $(".LineOvertimeHoureForm");
+            $.Ajax({
+                url: '/LineOvertimeHoure/SendOvertimeHour/',
+                type: "POST",
+                data: form.serialize(),
+
+            }).done(function (resp) {
+                if (resp.IsSend == true) {
+                    $('#othourList').html(resp.OthLsit);
+                    alert("ThIS OTH SEND SUCCESSFULLY!!");
+                } else {
+                    alert("ThIS OTH NOT EDITABLE BECAUSE IT SIGNED BY AUTHORIZED PERSON!!");
+
+                }
+            });
+        })
+
+        function overTimeByLineReport() {
+
+            var all = $('#All').is(':checked');
+            var garments = $('#Garments').is(':checked');
+            var knitting = $('#Knitting').is(':checked');
+            var dyeing = $('#Dyeing').is(':checked');
+            var date = $('#textOutputDate').val();
+
+            var searchurl = '/HRM/LineOvertimeHoure/OverTimeByLineReport?date=' + date + '&all=' + all + '&garments=' + garments + '&knitting=' + knitting + '&Dyeing=' + dyeing;
+            window.open(searchurl);
+        }
+
+    </script>
+}

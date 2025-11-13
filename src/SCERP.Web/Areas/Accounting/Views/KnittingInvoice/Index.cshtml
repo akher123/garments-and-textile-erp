@@ -1,0 +1,86 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.KnittingInvoiceViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Knitting Payable Bills</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "KnittingInvoice", FormMethod.Get, new { @class = "KnittingInvoiceSearchForm" }))
+        {
+
+            <table class="tabefont">
+                <tr>
+                    @*<td>
+                        @Html.Label("Bill Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.InvoiceDate, new { @data_val = "false", @class = "datepicker", @placeholder = "Date" })
+                    </td>*@
+                    <td>
+                        @Html.Label("Filter")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SerarchString, new { @data_val = "false",  @placeholder = "Search by Party Or Bill No OR Challan No" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+
+    <div style="overflow-x:auto;height:1000px;">
+        <table class="webgrid-table" style="text-align: left;display: -moz-grid-group;">
+            <thead class="webgrid-header mis-header">
+                <tr>
+                    <th>Export</th>
+                    <th>Party</th>
+                    <th>Party Account</th>
+                    <th>RefId</th>
+                    <th>InvoiceNo</th>
+                    <th>Bill Date</th>
+                    <th>Qty</th>
+                    <th>BillAmount</th>
+                    <th>Voucher</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kb in Model.knittingBills)
+                {
+                    <tr>
+                        <td>
+                            <div class="dropdown">
+                                <a class="dropbtn custom-table-dropbtn">Bill</a>
+                                <div class="dropdown-content custom-table-dropdown-content">
+                                    <a href="/Production/ProductionReport/KnittingPartyChallan?KnittingRollIssueId=@kb.Id" target="_blank">Challan</a>
+                                    <a href="/Production/ProductionReport/KnittingPartyBill?KnittingRollIssueId=@kb.Id" target="_blank">BILL</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@kb.Party</td>
+                        <td>@kb.AccountName</td>
+                        <td>@kb.RefId</td>
+                        <td>@kb.InvoiceNo</td>
+                        <td>@kb.InvoiceDate.GetValueOrDefault().ToString("dd/M/yyyy")</td>
+                        <td>@kb.Qty</td>
+                        <td>@kb.BillAmount</td>
+                        <td>
+                            <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/Accounting/KnittingInvoice/KnittingVoucher?Key=@kb.RefId">Post</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>

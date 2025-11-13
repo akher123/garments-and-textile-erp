@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[MIS_MonthValue] (
+    [BuyerRefId] VARCHAR (3) NULL,
+    [Q1]         INT         NULL,
+    [V1]         FLOAT (53)  NULL,
+    [Q2]         INT         NULL,
+    [V2]         FLOAT (53)  NULL,
+    [Q3]         INT         NULL,
+    [V3]         FLOAT (53)  NULL,
+    [Q4]         INT         NULL,
+    [V4]         FLOAT (53)  NULL,
+    [Q5]         INT         NULL,
+    [V5]         FLOAT (53)  NULL,
+    [Q6]         INT         NULL,
+    [V6]         FLOAT (53)  NULL,
+    [Q7]         INT         NULL,
+    [V7]         FLOAT (53)  NULL,
+    [Q8]         INT         NULL,
+    [V8]         FLOAT (53)  NULL,
+    [Q9]         INT         NULL,
+    [V9]         FLOAT (53)  NULL,
+    [Q10]        INT         NULL,
+    [V10]        FLOAT (53)  NULL,
+    [Q11]        INT         NULL,
+    [V11]        FLOAT (53)  NULL,
+    [Q12]        INT         NULL,
+    [V12]        FLOAT (53)  NULL
+);
+

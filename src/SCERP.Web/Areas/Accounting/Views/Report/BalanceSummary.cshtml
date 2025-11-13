@@ -1,0 +1,174 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+
+@{
+    ViewBag.Title = "GeneralLedger";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2> General Ledger</h2>
+</div>
+
+@using (Html.BeginForm("BalanceSummary", "Report", FormMethod.Get, new { @class = "GeneralLedgerForm submit-allow ignore-validation" }))
+{
+    <div>
+        <section class="search" style="width: 1015px;">
+            <table class="tabefont">
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+
+                <tr>
+                    <td> @Html.DisplayName("Print Format : ") </td>
+                    <td> @Html.DropDownList("PrintFormatId", null, new { style = "width:320px;" }) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Company Name :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("sectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "width:342px;", @disabled = "disabled" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Account Head :")
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(p => p.GlId, new { @class = "AccountName", style = "width:303px;" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Currency Name:")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("currencyId", null, new { @class = "Currency", style = "width:342px;" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("Show:")
+                    </td>
+
+
+
+                    <td>
+                        <button class="search" type="button" onclick="search('/Accounting/Report/BalanceSummary', 'GeneralLedgerForm')" />
+                    </td>
+                    <td>
+                        <input id="btnPrint" type="button" onclick=" javascript: PrintGL(); " value="Print" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+
+                    <td>
+                        @Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px;visibility: hidden;" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+            </table>
+        </section>
+    </div>
+}
+
+<section class="search" style="width: 1015px; margin-top: 20px; margin-bottom: 10px;">
+    <div class="additem" style="margin-top: 20px;margin-bottom: 20px; width: 1015px;">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.GeneralLedger, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+                grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                grid.Column("VoucherRefNo", header: "Voucher No"),
+                grid.Column("VoucherNoShow", header: "Ref No"),
+                grid.Column("VoucherDateShow", header: "Date"),
+                grid.Column("Particulars", header: "Particulars"),
+                grid.Column("TotalDebit", header: "Debit"),
+                grid.Column("TotalCredit", header: "Credit", format: @<text>@(item.TotalCredit == 0 ? "" : item.TotalCredit)</text>),
+                grid.Column("Balance", header: "Balance"),
+                grid.Column(header: "Entry", format: @<text><button class="edit" action="/Accounting/VoucherEntry/EditFromBalanceSheetByMasterId?Id=@item.VoucherNoMasterId"></button></text>, canSort: false)
+                //grid.Column("PrevYear", header: "Prevous Year"),
+                //grid.Column("SubGroupCode", header: "SubGroupCode"),
+                //grid.Column(header: "Detail", format:@<text><button class="edit" action="/Accounting/Report/IncomeStatementDetail?subGroupCode=@item.SubGroupCode&sectorId=@Model.SectorId&toDate=@Model.ToDate&fromDate=@Model.FromDate"></button></text>, canSort: false)
+                ));
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function PrintGL() {
+            var FpId = $('#FpId').val();
+            var SectorId = $('#sectorId').val();
+            var GlId = $('#GlId').val().replace(/[_\W]+/g, "-");
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var SectorText = $("#sectorId option:selected").text();
+            var CurrencyId = $("#currencyId option:selected").val();
+            var FileType = $('#PrintFormatId option:selected').text();
+            window.open("/Accounting/Report/PrintGeneralLedger?FpId=" + FpId + "&SectorId=" + SectorId + "&currencyId=" + CurrencyId + "&SectorText=" + SectorText + "&fromDate=" + fromDate + "&toDate=" + toDate + "&GlId=" + GlId + "&ExportType=" + FileType);
+        }
+
+        function getCostCentreBySector(sectorId) { // This is for cascade dropdown
+
+            var url = "/BankVoucherEntry/GetCostCentreBySector";
+            $.ajax({
+                url: url,
+                type: "get",
+                data: { "sectorId": sectorId },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+
+                        var items = "<option value='" + 0 + "'>" + " -Select - " + "</option>";
+
+                        $.each(data, function(i, costCentre) {
+
+                            items += "<option value='" + costCentre.Id + "'>" + costCentre.CostCentreName + "</option>";
+                        });
+                        $('.CostCentre').html(items);
+                    } else {
+                        var items = '<option>Not found</option>';
+                        $('.CostCentre').html(items);
+                    }
+                }
+            });
+        }
+
+        var temp = $('#GlId').val();
+        if (temp == 0)
+            $('#GlId').val('');
+
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("TagSearchThirdLayer", "Report")'
+            });
+
+    </script>
+
+}

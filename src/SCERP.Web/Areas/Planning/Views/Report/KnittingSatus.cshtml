@@ -1,0 +1,80 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "KnittingProgramStatus";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Knitting Production</h2>
+</div>
+<section class="common-search-section">
+    <div class="title-tag">Party Wise Knitting Production</div>
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("KnittingSatus", "Report", FormMethod.Get, new {@class = "KnittingSatusForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+
+                <tr>
+                    <td>
+                        @Html.Label("Process")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessRefId, Model.ProcessSelectListItem, new {id = "processRefId"})
+                    </td>
+                    <td>
+                        @Html.Label("Party :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Program.PartyId, Model.PartySelectListItem, "ALL")
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="PartyWiseKnittingBalance(1)">Knitting Summary</a>
+                                <a style="cursor: pointer" target="_blank" onclick="KnittingProgram(1)">Knitting Detail</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function KnittingProgram(reportTypeId) {
+            var form = $('.KnittingSatusForm');
+            var data = form.serialize();
+            var url = '/Planning/Report/KnittingProgramStatusReport?' + data + '&ReportType=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                window.open(url);
+            }
+        }
+
+        function PartyWiseKnittingBalance(reportTypeId) {
+            var form = $('.KnittingSatusForm');
+            var data = form.serialize();
+            var url = '/Planning/Report/PartyWiseKnittingBalance?' + data + '&ReportType=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                window.open(url);
+            }
+        }
+    </script>
+
+}
+
+
+
+

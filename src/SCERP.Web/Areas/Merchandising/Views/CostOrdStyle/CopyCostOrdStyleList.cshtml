@@ -1,0 +1,115 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostOrdStyleViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("SaveCostOrdStyleList", "CostOrdStyle", FormMethod.Post, new { @class = "SaveCostOrdStyleListForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Copy & PASTE</legend>
+        <div class="search common-search-wrapper">
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "Copy_CostOrderStyle_OrderNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "Copy_CostOrderStyle_StyleNo" })
+                    </td>
+                    <td>
+                        <input type="submit" class="addButton" value="PASTE" />
+                    </td>
+                </tr>
+            </table>
+
+            <table class="tabefont webgrid-table tableFocusInputText">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Style</th>
+                        <th>CostName</th>
+                        <th>Unit</th>
+                        <th>Qty</th>
+                        <th>CostRate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int index = 0; index < Model.VCostOrderStyles.Count; index++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => Model.VCostOrderStyles[index].StyleName)
+                             
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => Model.VCostOrderStyles[index].CostName)
+                                @Html.HiddenFor(x => Model.VCostOrderStyles[index].CostRefId)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.VCostOrderStyles[index].Unit)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.VCostOrderStyles[index].Qty)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.VCostOrderStyles[index].CostRate)
+                            </td>
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </fieldset>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+
+        $('#Copy_CostOrderStyle_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('#Copy_CostOrderStyle_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('#Copy_CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-Select Style-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('#Copy_CostOrderStyle_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('#Copy_CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+        function removeDependentDropdown() {
+
+            $('#Copy_CostOrderStyle_OrderNo').empty();
+            $('#Copy_CostOrderStyle_StyleNo').empty();
+        }
+    </script>
+}
+

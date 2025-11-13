@@ -1,0 +1,154 @@
+﻿
+@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Daily Absent Root Cause Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("EmployeeDailyAbsentRootCauseReport", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2> Daily Absent Root Cause Report </h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @data_val = false, @class = "SearchByCompanyId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @data_val = false, @class = "SearchByBranchId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitByBranchId", @TargetClass = "Hrm_BranchUnitIdForDepartmentAndWorkShift" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_BranchUnitIdForDepartmentAndWorkShift", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitDepartmentAndWorkShiftByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @OtherTargetClass = "Hrm_BranchUnitWorkShift" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeDailyAttendance/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentSection" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee Type: ")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItems, "--Select--", new { @data_val = false, @class = "Hrm_EmployeeTypeId", @action = "/HRM/Report/GetAllEmployeeGradesByEmployeeTypeId", @TargetClass = "Hrm_EmployeeGradeId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Grade:")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeGradeId, Model.EmployeeGradeSelectListItems, "--Select--", new { @data_val = false, @class = "Hrm_EmployeeGradeId", @action = "/HRM/Report/GetAllEmployeeDesignationsByEmployeeGradeId", @TargetClass = "Hrm_EmployeeDesignationId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Designation: ")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeDesignationId, Model.EmployeeDesignationSelectListItems, "--Select--", new { @data_val = false, @class = "Hrm_EmployeeDesignationId" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Print Format: ")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.PrintFormatId, Model.PrintFormatStatusSelectListItems)
+                    </td>
+
+                    <td>
+                        @Html.Label("Date and Year:")
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Id:")
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.EmployeeCardId)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="button" id="showReport" class="addButton" style="float: right" value="Show Report" />
+                    </td>
+                </tr>           
+            </table>
+        </div>
+    </section>
+}
+
+<script type="text/javascript">
+    $('#showReport').click(function (e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+    }
+    );
+</script>
+
+
+

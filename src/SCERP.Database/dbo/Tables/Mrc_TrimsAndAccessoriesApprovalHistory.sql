@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Mrc_TrimsAndAccessoriesApprovalHistory] (
+    [TrimsAndAccessoriesApprovalHistoryId] INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]                          INT              NOT NULL,
+    [ApprovalStatusId]                     INT              NULL,
+    [KeyProcessId]                         INT              NULL,
+    [DepartmentId]                         INT              NULL,
+    [ResponsiblePersonId]                  UNIQUEIDENTIFIER NULL,
+    [BuyerComment]                         NVARCHAR (MAX)   NULL,
+    [BuyerCommentDate]                     DATETIME         NULL,
+    [PlannedStartDate]                     DATETIME         NULL,
+    [PlannedEndDate]                       DATETIME         NULL,
+    [ActualStartDate]                      DATETIME         NULL,
+    [ActualEndDate]                        DATETIME         NULL,
+    [Remarks]                              NVARCHAR (MAX)   NULL,
+    [CreatedDate]                          DATETIME         NULL,
+    [CreatedBy]                            UNIQUEIDENTIFIER NULL,
+    [EditedDate]                           DATETIME         NULL,
+    [EditedBy]                             UNIQUEIDENTIFIER NULL,
+    [IsActive]                             BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_TrimsAndAccessoriesApprovalHistory] PRIMARY KEY CLUSTERED ([TrimsAndAccessoriesApprovalHistoryId] ASC),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesApprovalHistory_Department] FOREIGN KEY ([DepartmentId]) REFERENCES [dbo].[Department] ([Id]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesApprovalHistory_Employee] FOREIGN KEY ([ResponsiblePersonId]) REFERENCES [dbo].[Employee] ([EmployeeId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesApprovalHistory_Mrc_ApprovalStatus] FOREIGN KEY ([ApprovalStatusId]) REFERENCES [dbo].[Mrc_ApprovalStatus] ([ApprovalStatusId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesApprovalHistory_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesApprovalHistory_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId])
+);
+

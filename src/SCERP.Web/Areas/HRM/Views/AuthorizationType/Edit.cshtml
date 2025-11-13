@@ -1,0 +1,64 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AuthorizationTypeViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "AuthorizationType", FormMethod.Post, new { @class = "AuthorizationTypeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    <fieldset>
+        <legend>Authorization Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Process Key:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.ProcessKeyId, null, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ProcessKeyId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Authorization Key:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.AuthorizationId, null,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.AuthorizationId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Type Name:</td>
+                <td>
+                    @Html.EditorFor(x => x.TypeName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TypeName)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2">
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

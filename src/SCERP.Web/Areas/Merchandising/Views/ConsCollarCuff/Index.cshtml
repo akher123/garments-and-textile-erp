@@ -1,0 +1,15 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CompConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+
+<div id="ComConsumptionDetailContainer">
+    <div style="margin-top: 5px;">
+        @Html.Partial("~/Areas/Merchandising/Views/ConsCollarCuff/_Edit.cshtml", Model)
+    </div>
+    <div style="margin-top: 5px;" id="CollarCuffConsumptionDetailList">
+        @Html.Partial("~/Areas/Merchandising/Views/ConsCollarCuff/_ConsCollarCuffDetailList.cshtml", Model)
+    </div>
+</div>
+
+<script src="~/Scripts/SCERP/Merchandising/collarCuffConsumption.js"></script>

@@ -1,0 +1,121 @@
+﻿@using SCERP.Common
+@model IEnumerable<SCERP.Model.Mrc_SpecificationSheet>
+
+@{
+    ViewBag.Title = "Specification Sheet";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (@Html.BeginForm("Search", "SpecificationSheet", FormMethod.Post, new { @class = "SpecificationSheetSearchForm", name = "SearchformBuyer" }))
+{
+    <div style="width:500px; padding-left:340px;">
+        <h2> Specification Sheet </h2>
+    </div>
+    <section class="search formCover" style="margin-bottom: 7px;">
+
+
+        <table>
+
+            <tr>
+                <td>
+                    @Html.Label("Buyer")
+                </td>
+                <td>
+                    @Html.DropDownList("BuyerId", null, "-select-", new { @class = "searchSpecsheetByBuyerId" })
+
+                </td>
+
+                <td></td>
+                <td>
+                    @Html.Label("Style No")
+                </td>
+                <td>
+
+                    @Html.DropDownList("StyleNo", null, "-select-", new { @class = "dropdownSpecificationSheet", @action = "/Merchandising/SpecificationSheet/GetJobNumberByStyleNo", @TargetClass = "specSheei_JobNo" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Job No")
+                </td>
+                <td>
+                    @Html.DropDownList("SpecificationSheetId", null, "-select-", new { @class = "specSheei_JobNo" })
+                </td>
+
+                <td>
+                    <button class="search" type="button" onclick="search('/Merchandising/SpecificationSheet/Search', 'SpecificationSheetSearchForm')" />
+                    <div style="float: right;margin-left:10px;margin-top: 4px; ">
+                        <input type="button" value="Show Report" onclick="javascript: PrintReport();" class="showReport" />
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </section>
+
+        <section class="search formCover" >
+            <div class="additem ">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/Merchandising/SpecificationSheet/Edit">Add New</button>
+                </div>
+
+                @{
+    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model, rowCount: ViewBag.TotalRecords, autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+  
+                            grid.Column("Mrc_Buyer.BuyerName", header: "Buyer", format: @<text>@(item.Mrc_Buyer == null ? "" : item.Mrc_Buyer.BuyerName)</text>),
+                            grid.Column("Employee.Name", header: "Merchandiser", format: @<text>@(item.Employee == null ? "" : item.Employee.Name)</text>),
+                            grid.Column("StyleNo", header: "Style No"),
+                             grid.Column("JobNo", header: "Job No"),
+                           
+                          
+                            grid.Column("FabricationDescription", header: "Fabrication"),
+                            grid.Column("SizeRange", header: "Size Range"),
+                            grid.Column("Brand"),
+                            grid.Column(header: "Create New Job", format:
+                            @<text><input type="button" class="AjaxPopup addButton" action="/Merchandising/SpecificationSheet/CreateJob?SpecificationSheetId=@item.SpecificationSheetId" value="New Job" /></text>),
+                                grid.Column(header: "Costing", format:
+                            @<text><input type="button" class="addButton" onclick="loadAction('/Merchandising/StyleCost/StyleCost?specificationSheetId=@item.SpecificationSheetId')" value="Costing" /></text>),
+                            grid.Column(header: "Detail/Edit", format:
+                            @<text><button class="edit" action="/Merchandising/SpecificationSheet/Edit?specificationSheetId=@item.SpecificationSheetId"></button></text>),
+                            grid.Column(header: "Delete", format:
+                            @<text><button class="delete" action="/Merchandising/SpecificationSheet/Delete?specificationSheetId=@item.SpecificationSheetId"></button></text>),
+                            grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "SpecSheetDetail", "Report", new { item.SpecificationSheetId }, new { @target = "_blank" })   </text>)
+    ));
+                }
+            </div>
+        </section>
+
+
+}
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/SpecificationSheet.js"></script>
+       
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var buyerId = $("#BuyerId option:selected").val();
+            var styleNo = $("#StyleNo option:selected").text();
+            var jobNo = $("#SpecificationSheetId option:selected").text();
+
+            window.open("/Merchandising/Report/SpecSheetList?&buyerId=" + buyerId + "&styleNo=" + styleNo + "&jobNo=" + jobNo + "&ExportType=DOC");
+        }
+
+    </script>
+}

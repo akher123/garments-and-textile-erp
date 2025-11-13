@@ -1,0 +1,132 @@
+﻿@model  SCERP.Web.Areas.Accounting.Models.ViewModels.PartyAccountViewModel
+@{
+    ViewBag.Title = "Mapping Party Account";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("UpdateParty", "PartyAccount", FormMethod.Post, new { @class = "PartyAccountform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Party.PartyId)
+    <fieldset>
+        <legend>Party GL Mapping</legend>
+        <table class="tabefont webgrid-table">
+            <tr>
+                <td>
+                    @Html.Label("Ref No")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.PartyRefNo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Name")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Address")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.Address)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.Phone)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Knitting Payable Account :")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.KnittingAcName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Knitting Receivable Account :")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.KnittingRcvAcName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Dyeing Receivable Account")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.DyeingAcName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Print Payable Account :")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.PrintPayAcName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Embroidery Payable Account")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Party.EmPayAcName)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Party Type")</td>
+                <td>
+                    @Html.DropDownListFor(x => x.PrType, Model.AccountTypeSelectListItem)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("GL Account")</td>
+                <td>
+                    @Html.HiddenFor(x => x.GlId, new { @id = "accountglId" })
+                    @Html.TextBoxFor(x => x.SearchString, new { @id = "gl_AccountName" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+<script type="text/javascript">
+    $('#gl_AccountName').autocomplete({
+    source: function (request, response) {
+        var option = {
+            url: "/VoucherEntry/AutocompliteGLAccount",
+            type: "POST",
+            data: { accountName: request.term },
+        };
+        $.Ajax(option)
+            .done(function (data) {
+                response($.map(data, function (item) {
+                    return { label: item.AccountName + "-" + item.AccountCode, value: item.AccountName + "-" + item.AccountCode, GLID: item.Id };
+                }));
+            });
+    },
+    select: function (event, ui) {
+        $('#accountglId').val(ui.item.GLID);
+       // $('#vd_Particulars').focus();
+
+    },
+});
+</script>

@@ -1,0 +1,59 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.QualityCertificateViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.QualityCertificateId > 0) ? "Edit" : "Add";
+}
+
+
+@using (Html.BeginForm("Save", "QualityCertificate", FormMethod.Post, new { @class = "QualityCertificateform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QualityCertificateId)
+    @Html.HiddenFor(model => model.ItemStoreId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Quality Certificate Passed</legend>
+        <table class="tabefont">
+            <tr>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Q.C Ref :</td>
+                <td>
+                    @Html.TextBoxFor(model => model.QCReferenceNo, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.QCReferenceNo)
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Date:</td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.SendingDate,new{@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.SendingDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+}

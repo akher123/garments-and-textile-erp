@@ -1,0 +1,337 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialReceivedViewModel
+@{
+    ViewBag.Title = Model.MaterialReceived.MaterialReceivedId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "FabricRegister", FormMethod.Post, new { @class = "FabricRegisterForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MaterialReceived.MaterialReceivedId)
+    @Html.HiddenFor(x => x.MaterialReceived.CompId)
+    @Html.HiddenFor(x => x.MaterialReceived.BuyerName, new { data_val = "false" })
+    @Html.HiddenFor(x => x.MaterialReceived.OrderNo, new { data_val = "false" })
+    @Html.HiddenFor(x => x.MaterialReceived.StyleNo, new { data_val = "false" })
+    <fieldset>
+        <legend>Finish Fabric Register</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.MaterialReceivedRefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("GRN :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.GRN)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("GEN :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.GEN)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>
+                    @Html.Label("Received Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.ReceivedDate, new { @class = "datepicker", @data_val = "false" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Challan No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.ChallanNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Challan Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.ChallanDate, new { @class = "datepicker", @data_val = "false" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Supplier :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceived.SupplierName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Article  :")</td>
+                <td>@Html.TextBoxFor(x => x.MaterialReceived.Article)</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>@Html.Label("LCNo  :")</td>
+                <td>@Html.TextBoxFor(x => x.MaterialReceived.LCNo)</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Bill Status  :")</td>
+                <td>@Html.DropDownListFor(x => x.MaterialReceived.BillStatus, Model.BillStatusSelectListItem, new { @class = "BillStatus" })</td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.MaterialReceived.Remarks)
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        <table class="tabefont" id="materialReceivedDetailInput">
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.BuyerNameDtl, new { id = "BuyerNameDtl" })
+                </td>
+                <td>
+                    @Html.Label("Order :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.OrderNameDtl, new { id = "OrderNameDtl" })
+                </td>
+                <td>
+                    @Html.Label("Style :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.StyleNameDtl, new { id = "StyleNameDtl" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Item :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.Item, new { id = "Item" })
+                </td>
+                <td>
+                    @Html.Label("Color :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.Color, new { id = "Color" })
+                </td>
+
+                <td>
+                    @Html.Label("Size")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.Size, new { id = "Size" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Brand :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.Brand, new { id = "Brand" })
+                </td>
+
+                <td>
+                    @Html.Label("Lot No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.LotNo, new { id = "LotNo" })
+                </td>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.UnitName, new { id = "UnitName" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Received Qty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.ReceivedQty, new { id = "ReceivedQty" })
+                </td>
+                <td>
+                    @Html.Label("Rate :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialReceivedDetail.Rate, new { id = "Rate" })
+                </td>
+            </tr>
+
+        </table>
+        <hr />
+        <table id="materialReceivedDetailListingTable" class="webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+
+                <tr>
+                    <th>
+                        @Html.Label("Buyer ")
+                    </th>
+                    <th>
+                        @Html.Label("Order ")
+                    </th>
+                    <th>
+                        @Html.Label("Style ")
+                    </th>
+                    <th>
+                        @Html.Label("Item ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Color ")
+                    </th>
+                    <th>
+                        @Html.Label("Size")
+                    </th>
+                    <th>
+                        @Html.Label("Brand ")
+                    </th>
+                    <th>
+                        @Html.Label("Lot No ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Unit ")
+                    </th>
+                    <th>
+                        @Html.Label("ReceivedQty")
+                    </th>
+                    <th>
+                        @Html.Label("Rate ")
+                    </th>
+                    <th>@Html.Label("Edit")</th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("~/Areas/Inventory/Views/FabricRegister/_AddNewRow.cshtml", Model)
+            </tbody>
+
+        </table>
+
+        <div class="custom-modal-btn">
+            <input type="submit" class="addButton" id="btnSave" value="Save" />
+        </div>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script>
+        $('#Rate').unbind("keypress").bind("keypress", function (e) {
+            var key = e.which;
+
+            if (key == 13)  //the enter key code
+            {
+                e.preventDefault();
+                var addNewItem = $('#materialReceivedDetailInput :input');
+                var $table = $('table#materialReceivedDetailListingTable tbody');
+                var $item = $('#Item').val();
+                // var $color = $('#Color').val();
+                //var $size = $('#Size').val();
+                var $unit = $('#UnitName').val();
+                var $receivedQty = $('#ReceivedQty').val();
+                var option = {
+                    url: "/FabricRegister/AddNewRow/",
+                    type: "POST",
+                    data: addNewItem.serialize()
+                };
+
+                var message = "";
+                if ($item.length <= 0) {
+                    message += "Enter Item .";
+                }
+                if ($unit.length <= 0) {
+                    message += "Enter Unit Name.";
+                }
+                if ($receivedQty.length <= 0) {
+                    message += "Enter Received Qty .";
+                }
+                if (message.length > 0) {
+                    alert(message);
+                }
+                else {
+                    $.Ajax(option).done(function (htmlResponse) {
+                        //$('#' + $item+'_'+$color+'_'+$size).remove();
+                        $table.append(htmlResponse);
+                        addNewItem.val('');
+                        $('#Item').focus();
+                    });
+                }
+            }
+        });
+
+
+        $("#ReceivedQty,#Rate").each(function () {
+            $(this).keyup(function () {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+            });
+        });
+
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+        function editRow(key) {
+            $('#Item').val($('#Item_' + key).val());
+            $('#Color').val($('#Color_' + key).val());
+            $('#Size').val($('#Size_' + key).val());
+            $('#Brand').val($('#Brand_' + key).val());
+            $('#LotNo').val($('#LotNo_' + key).val());
+            $('#UnitName').val($('#UnitName_' + key).val());
+            $('#ReceivedQty').val($('#ReceivedQty_' + key).val());
+            $('#Rate').val($('#Rate_' + key).val());
+            $('#BuyerNameDtl').val($('#BuyerNameDtl_' + key).val());
+            $('#OrderNameDtl').val($('#OrderNameDtl_' + key).val());
+            $('#StyleNameDtl').val($('#StyleNameDtl_' + key).val());
+
+        }
+    </script>
+}
+
+
+
+
+
+
+
+

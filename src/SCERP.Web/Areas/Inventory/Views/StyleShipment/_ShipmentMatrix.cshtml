@@ -1,0 +1,58 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.StyleShipmentViewModel
+@{
+    Layout = null;
+}
+
+
+@foreach (var dictionary in Model.DictionaryList)
+{ <div style="margin-bottom: 10px;" id="@dictionary.Key.Split('X')[1]" >
+        <fieldset>
+            <legend>@dictionary.Key.Split('X')[0]
+                <input type="button" onclick="removeMatrix('@dictionary.Key.Split('X')[1]')" value="X" />
+            </legend>
+            <table class="webgrid-table tableFocusInputText">
+                @foreach (var pari in dictionary.Value)
+                {
+                    <tr>
+                        <td style="background-color: @(pari.Key == "Color" ? "#bbb" : "");font-weight: bold">@pari.Key</td>
+                        @foreach (var pair in pari.Value)
+                        {
+                            if (pair.Value.ShipmentQty == -1)
+                            {
+                                <td style="background-color: #bbb; font-weight: bold;">@pair.Value.SizeRefId</td>
+                                @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].ColorRefId)
+                                @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].SizeRefId)
+                                @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].OrderStyleRefId)
+                                @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].CompId)
+                                @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].ShipmentQty)
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.TextBoxFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].ShipmentQty, new { @class = "sizeColorText" })
+                                    @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].ColorRefId)
+                                    @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].SizeRefId)
+                                    @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].OrderStyleRefId)
+                                    @Html.HiddenFor(x => x.DictionaryList[dictionary.Key][pari.Key][pair.Key].CompId)
+                                </td>
+                            }
+
+                        }
+                    </tr>
+                }
+            </table>
+        </fieldset>
+    </div>
+}
+
+<script type="text/javascript">
+    $('.tableFocusInputText').formNavigation();
+    refreshValidation();
+    function refreshValidation() {
+        var form = $('.StyleShipmentForm');
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+    }
+
+</script>

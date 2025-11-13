@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Mrc_TimeAndActionCalendar] (
+    [TimeAndActionId]            INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]                INT              NOT NULL,
+    [KeyProcessId]               INT              NOT NULL,
+    [PlannedStartDate]           DATETIME         NULL,
+    [PlannedEndDate]             DATETIME         NULL,
+    [ActualStartDate]            DATETIME         NULL,
+    [ActualEndDate]              DATETIME         NULL,
+    [DepartmentId]               INT              NULL,
+    [ResponsiblePersonId]        UNIQUEIDENTIFIER NULL,
+    [NotifyBeforeDays]           INT              NULL,
+    [NotificationIntervalInHour] INT              NULL,
+    [Remarks]                    NVARCHAR (MAX)   NULL,
+    [CreatedDate]                DATETIME         NULL,
+    [CreatedBy]                  UNIQUEIDENTIFIER NULL,
+    [EditedDate]                 DATETIME         NULL,
+    [EditedBy]                   UNIQUEIDENTIFIER NULL,
+    [IsActive]                   BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_TimeAndAction] PRIMARY KEY CLUSTERED ([TimeAndActionId] ASC),
+    CONSTRAINT [FK_Mrc_TimeAndActionCalendar_Department] FOREIGN KEY ([DepartmentId]) REFERENCES [dbo].[Department] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_TimeAndActionCalendar_Employee] FOREIGN KEY ([ResponsiblePersonId]) REFERENCES [dbo].[Employee] ([EmployeeId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_TimeAndActionCalendar_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Mrc_TimeAndActionCalendar_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId]) ON DELETE CASCADE
+);
+

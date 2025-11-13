@@ -1,0 +1,80 @@
+﻿@model  SCERP.Model.EmployeeDocument
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "EmployeeDocuments", FormMethod.Post, new { @class = "EmployeeDocument" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Path)
+        <fieldset>
+            <legend>Employee Document </legend>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Title)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Title)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Title, "Required")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Description)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Description)
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <fieldset>
+                            <legend> Upload File </legend>
+                            <div id="EmployeeDocumentUploadFile">Upload</div>
+                        </fieldset>
+                    </td>
+
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeDocumentDetailContainner" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    
+    }
+</div>
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/EmployeeDocument.js"></script>
+}
+
+
+
+
+
+

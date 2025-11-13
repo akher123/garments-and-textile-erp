@@ -1,0 +1,155 @@
+﻿@using System.Data
+@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Common.Models.ViewModel.CustomSqlQuaryViewModel
+@{
+    ViewBag.Title = (Model.CustomSqlQuaryId > 0 ? "Create" : "Edit");
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    textarea {
+        width: 600px;
+        height: 30px;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "CustomSqlQuary", FormMethod.Post, new { @class = "CustomSqlQuarySearchForm" }))
+{
+    @Html.HiddenFor(x => x.CustomSqlQuaryId)
+    <div style="float: right;margin-right: 200px;">
+
+        <div style="float: left;">
+            @Html.Partial("~/Areas/Common/Views/CustomSqlQuary/_ReportNevMenu.cshtml", Model.CustomSqlQuaries)
+        </div>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    <div>
+                        <div style="float: left;margin-top: 3px;">
+                            @Html.DropDownListFor(x => x.TableName, Model.TableNameSelectListItem, "Tables")
+                        </div>
+                        <div style="float: left;">
+                            <img style="width: 36px;height:36px;" onclick="loadAction('/Common/CustomSqlQuary/Index')" alt="Refresh" title="Refresh" src="~/Content/images/Refresh-icon.png" />
+                        </div>
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                            <button class="AjaxPopup" action="/Common/CustomSqlQuary/Edit?SqlQuary=@Model.SqlQuary&CustomSqlQuaryId=@Model.CustomSqlQuaryId">@(Model.CustomSqlQuaryId > 0 ? "Edit" : "Add")</button>
+                        </div>
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                            <input type="button" value="Print Priview" id="printPriviewButton" />
+                        </div>
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                          <img target="_blank" id="exportExcel" src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" />
+                        </div>
+                       
+                    </div>
+
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.TextAreaFor(x => x.SqlQuary, new { @data_val = "false", @placeholder = "Sql Quary Editor",@class = "SqlQuaryString" })
+                </td>
+                <td>
+                    <div>
+                        <div style="float: left">
+                            <input type="button" class="searchAction" />
+                        </div>
+
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    </section>
+
+
+
+}
+
+<section class="search formCover" style="margin-bottom: 8px;">
+
+    <div style="overflow: auto; height: 800px; ">
+        <table id="tableid" class="webgrid-table" style="width: 300px;">
+            <thead class="webgrid-header">
+                <tr>
+                    @foreach (DataColumn col in Model.DataTable.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.DataTable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                        {
+                            if (col.DataType.Name == "DateTime")
+                            {
+                               <td>@(String.Format("{0:dd-MM-yyyy}", row[col.ColumnName]))</td>
+                            }
+                            else
+                            {
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#printPriviewButton').on('click', function() {
+            var $this = $(this);
+            var form = $this.parents('form:first');
+            var url = "/CustomSqlQuary/PrintPreview/";
+            jQuery.ajax({
+                url: url,
+                dataType: 'html',
+                data: form.serialize(),
+                type: "GET",
+                success: function(response) {
+                    var data = response;
+                    var popupWindow = window.open('', '', 'width=810,height=520,left=0,top=0,toolbar=0,status=0');
+                    popupWindow.document.open();
+                    popupWindow.document.write('<HTML>\n<HEAD>\n');
+                    popupWindow.document.write('<link rel="stylesheet" type="text/css" href="~/Content/Common/PdfReport.css"/>');
+                    popupWindow.document.write('</HEAD>\n');
+                    popupWindow.document.write('<BODY >\n');
+                    popupWindow.document.write(data);
+                    popupWindow.document.write('</BODY>\n');
+                    popupWindow.document.write('</HTML>\n');
+                    popupWindow.document.close();
+                    popupWindow.focus();
+
+                }
+            });
+        });
+        $('#exportExcel').on('click', function () {
+            var sqlQuery = $('.SqlQuaryString').val();
+            if (sqlQuery.length>0) {
+                var url = "/CustomSqlQuary/GetExcel?SqlQuary=" + sqlQuery;
+                window.location = url;
+            } else {
+                alert("Sql statement is missing");
+            }
+         
+        });
+    </script>
+}
+
+
+

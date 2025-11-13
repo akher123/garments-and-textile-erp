@@ -1,0 +1,183 @@
+﻿
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Size & Line Wise Sewing Output </h3>
+</div>
+<section class="search formCover" style="margin-top: 20px;">
+    <div style="margin-left:10px;margin-bottom:5px;">
+
+        @using (Html.BeginForm("Save", "SewingOutputProcess", FormMethod.Post, new { @class = "SewingOutputProcessForm ignore-validation" }))
+        {
+
+            <table class="tabefont" style="margin-left: 60px">
+
+                <tr>
+                    <td>
+                        @Html.Label("Buyer :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingOutPutProcess.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "SewingOutPut_buyerRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("Order No:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingOutPutProcess.OrderNo, Model.OrderSelectListItem, new { @class = "SewingOutPut_OrderNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Style No:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingOutPutProcess.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "SewingOutPut_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Color :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingOutPutProcess.ColorRefId, Model.ColorSelectListItem, new { @class = "SewingOutPut_Color" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="buttonStyle" id="btnSizeAndLineWizeOutPit" value="PDF" />
+                    </td>
+                </tr>
+
+            </table>
+
+
+        }
+    </div>
+
+</section>
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.SewingOutPut_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Production/JobCard/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.SewingOutPut_OrderNo').append(
+                $('<option/>')
+                    .attr('value', obj.OrderNo)
+                    .text(obj.RefNo)
+            );
+        }
+
+        $('.SewingOutPut_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Production/JobCard/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.CuttingBatch_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.SewingOutPut_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.SewingOutPut_StyleNo').append(
+                            $('<option/>')
+                                .attr('value', this.OrderStyleRefId)
+                                .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.SewingOutPut_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        $('.SewingOutPut_StyleNo').unbind('change').bind('change', function () {
+            var orderStyleRefId = $(this).val();
+            $.Ajax({
+                url: '/Production/JobCard/GetColorsByOrderStyleRefId/',
+                data: { orderStyleRefId: orderStyleRefId }
+            }).done(function (colors) {
+                $('.CuttingBatch_Color').empty();
+                if (colors.length > 0) {
+                    $('.SewingOutPut_Color').append(
+                     $('<option/>')
+                         .attr('value', '')
+                         .text("Select")
+                 );
+                    $.each(colors, function (color) {
+                        $('.SewingOutPut_Color').append(
+                            $('<option/>')
+                                .attr('value', this.ColorRefId)
+                                .text(this.ColorName)
+                        );
+                    });
+                } else {
+                    $('.SewingOutPut_Color').append(
+                        $('<option/>')
+                            .attr('value', "No Order Found")
+                            .text("Select")
+                    );
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+            $('.SewingOutPut_OrderNo').empty();
+            $('.SewingOutPut_StyleNo').empty();
+            $('.SewingOutPut_Color').empty();
+        }
+        $('#btnSizeAndLineWizeOutPit').unbind('click').bind('click', function () {
+            var form = $(this).parents('form:first');
+            var data = form.serialize();
+            var searchurl = '/Production/ProductionReport/SizeLineWiseSewingOutputReport?' + data;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(searchurl);
+                }
+            }
+
+        });
+    </script>
+}

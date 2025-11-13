@@ -1,0 +1,64 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingTagViewModel
+@{
+    ViewBag.Title = Model.CuttingTagSupplier.CuttingTagSupplierId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<div >
+    @using (Html.BeginForm("SaveCuttingTagSupplier", "CuttingTag", FormMethod.Post, new { @class = "CuttingTagSupplierForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.CuttingTagSupplier.CuttingTagSupplierId)
+        <fieldset>
+            <legend>Party</legend>
+            <table class="tableFont">
+                <tr>
+                    <td>
+                        @Html.Label("CuttingTagId :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CuttingTagSupplier.CuttingTagId, new { @readonly = "readonly", @style = "background-color: #EEEEEE" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Purpose :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingTagSupplier.EmblishmentStatus, Model.EmblishmentStatusSelectListItem, "-Select-")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Party :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingTagSupplier.PartyId, Model.PartyListSelectListItem, "-Select-")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Rate :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CuttingTagSupplier.Rate)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Deduction Allowance(%) :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CuttingTagSupplier.DeductionAllowance)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "tagSupplierContainer" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>

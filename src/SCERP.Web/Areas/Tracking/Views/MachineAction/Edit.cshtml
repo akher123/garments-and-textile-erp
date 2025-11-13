@@ -1,0 +1,49 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.MachineActionViewModel
+@{
+
+    ViewBag.Title = Model.MachineActionId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    bool isReadOnly = Model.MachineActionId > 0;
+}
+
+@using (Html.BeginForm("Save", "MachineAction", FormMethod.Post, new { @class = "MachineActionForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MachineActionId)
+    <fieldset>
+        <legend>Machine Action</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Machine Action:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineActionName, new { @placeholder = "Machine Action" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        </fieldset>
+}
+

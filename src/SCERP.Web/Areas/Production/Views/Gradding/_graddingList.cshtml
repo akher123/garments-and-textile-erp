@@ -1,0 +1,43 @@
+﻿@model SCERP.Web.Areas.Production.Models.GraddingViewModel
+@{
+    Layout = null;
+}
+<div class="addButton-wrapper">
+    <button class="AjaxPopup addButton" action="/Production/Gradding/Edit?CuttingBatchId=@Model.CuttingBatchId">Add New</button>
+</div>
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+        <tr>
+            <th>From Sise</th>
+            <th>To Sise</th>
+            <th>Gradding Qty</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var row in Model.Graddings)
+        {
+            <tr>
+                <td>
+                    @row.FSizeName
+                </td>
+                <td>
+                    @row.TSizeName
+                </td>
+                <td>
+                    @row.Quantity
+                </td>
+                <td>
+                    <button class="edit"  action="/Production/Gradding/Edit?CuttingBatchId=@row.CuttingBatchId&Gradding.CuttingGraddingId=@row.CuttingGraddingId"></button>
+                </td>
+                <td>
+                    <button class="deleteAction" targentclass="graddingContainer" action="/Production/Gradding/Delete?CuttingBatchId=@row.CuttingBatchId&Gradding.CuttingGraddingId=@row.CuttingGraddingId"></button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

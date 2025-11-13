@@ -1,0 +1,115 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Marketing.Models.MarketingInquiryViewModel
+@{
+    ViewBag.Title = "Marketing Inquiry";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@using (Html.BeginForm("Index", "MarketingInquiry", FormMethod.Get, new { @class = "MarketingInstituteForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div class="header-title">
+        <h2>Marketing Inquiry</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+
+
+                    <td>@Html.DisplayName("From Date:")</td>
+                    <td class="datepicker">@Html.TextBox("FromDate", "", new { @style = "", @class = "datepicker", @id = "FromDate" })</td>
+
+                    <td>@Html.DisplayName("To Date:")</td>
+                    <td class="datepicker">@Html.TextBox("ToDate", "", new { @style = "", @class = "datepicker", @id = "ToDate" })</td>
+                    <td>
+                        @*<input type="button" class="searchAction" />*@
+                        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintMarketingClientList();" value="Print" />
+                    </td>
+                </tr>
+                @*<tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintMarketingClientList();" value="Print" />
+                    </td>
+                </tr>*@
+            </table>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintMarketingClientList();" value="Print" />
+        @{
+
+        var inquiryList =
+
+        from inq in Model.MarketingInquiries
+        join ins in Model.MarketingInstitute
+             on inq.InstituteId equals ins.InstituteId
+        select new
+        {
+            inq.InquiryId,
+            inq.InquiryDate,
+            ins.InstituteName,
+            inq.InquiryContactPerson,
+            inq.Mobile,
+            inq.Email,
+            inq.Telephone,
+            inq.Remarks,
+            inq.FurtherContactType,
+            inq.InstituteId,
+
+        };
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(inquiryList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                          tableStyle: "webgrid-table webgrid",
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          firstText: "First",
+                          lastText: "Last",
+                          nextText: "Next",
+                          mode: WebGridPagerModes.All,
+                          previousText: "Previous",
+                          columns:
+                          grid.Columns(
+                          grid.Column("InquiryId", header: "InquiryId"),
+                          //grid.Column("InquiryDate", header: "InquiryDate"),
+                          grid.Column("InquiryDate", "Inquiry Date", format: @<text>@(item.InquiryDate == null ? "" : item.InquiryDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                          grid.Column("InstituteName", header: "Institute Name"),
+                          grid.Column("InquiryContactPerson", header: "InquiryContactPerson"),
+                          grid.Column("Mobile", header: "Mobile"),
+                          grid.Column("Email", header: "Email"),
+                          grid.Column("Remarks", header: "Remarks"),
+                          grid.Column("FurtherContactType", header: "FurtherContactType"),
+                          grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Marketing/MarketingInquiry/Edit?MarketingInquiriy.InquiryId=@item.InquiryId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Marketing/MarketingInquiry/Delete?InquiryId=@item.InquiryId"></button></text>)));
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+            function PrintMarketingClientList() {
+                var fromDate = $('#FromDate').val();
+                var toDate = $('#ToDate').val();
+                window.open("/Marketing/MarketingReports/MarketingReportPdf?fromDate=" + fromDate + "&toDate=" + toDate );
+            }
+
+           
+
+    </script>
+}

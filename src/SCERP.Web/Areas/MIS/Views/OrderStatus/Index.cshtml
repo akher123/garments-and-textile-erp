@@ -1,0 +1,98 @@
+﻿@using System.Data
+@model DataTable
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/W3.css" rel="stylesheet" />
+    <link href="~/Scripts/Common/tautocomplete.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/Common/tautocomplete.js"></script>
+    <script>
+        function selectStyle(orderStyleRefId,styleName,obj) {
+            $("#ta-txt").html(styleName);
+            $("#orderStyleRefId").val(orderStyleRefId)
+            $(".acontainer input").val(styleName);
+            $(obj).DialogClose();
+        
+        }
+
+        var text2 = $("#Text2").tautocomplete({
+            width: "500px",
+            columns: ['StyleName', 'RefNo', 'BuyerName'],
+            theme: "classic",
+            width: "1000px",
+            highlight: 'word-highlight',
+            placeholder: "Search by style/Order No.",
+            ajax: {
+                url: "/OmBuyOrdStyle/StyleAutocomplite",
+                type: "GET",
+                dataType: "json",
+                data: function () {
+                    return { searchString: text2.searchdata() };
+                },
+                success: function (data) {
+                    var filterData = data;
+                    return filterData;
+                },
+            },
+            onchange: function () {
+                $("#ta-txt").html(text2.text());
+                $("#orderStyleRefId").val(text2.id())
+            }
+        });
+        function loadOrderStystus(url) {
+            if (url.length > 0) {
+                $("body").showLoading();
+                var orderStyleRefId = $("#orderStyleRefId").val();
+                if (url != undefined && url != "") {
+                    requseturl = url
+                    jQuery.Ajax({
+                        url: url,
+                        data: { OrderStyleRefId:orderStyleRefId },
+                        container: '#w3-container'
+                    });
+
+                } else {
+                    requseturl = "";
+                }
+            } else {
+                return false;
+            }
+        }
+        //  loadOrderStystus("/MIS/UserActivity/Index");
+    </script>
+
+}
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-bar-block w3-yale-blue w3-collapse w3-card w3-animate  w3-text-white  " style="width:170px; cursor:pointer;" id="mySidebar">
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/RuningOrderDetails');" class="w3-bar-item  w3-text-white w3-bottombar"> Running Order </a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/ShipmentBrackdownStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Size&Color</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/AccessorisStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Accessories Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/YarnStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Yarn Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/FabricStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Fabric Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/CuttingStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Cutting Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/BodyRejceReplacementStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Body Recject Replace</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/PrintingSatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Print Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/EmbrSatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Embr Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/SewingStatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Sewing Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/FinishingSatus');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Finishing Status</a>
+    <a onclick="loadOrderStystus('/MIS/OrderStatus/ShipmentRatio');" class="w3-bar-item w3-button w3-border-bottom  w3-padding-small">Shipment Status</a>
+</div>
+
+<!-- Page Content -->
+<div class="w3-main" style="margin-left:170px">
+    <div class="w3-container">
+        <input type="hidden" id="orderStyleRefId"/>
+        <input type="text" id="Text2" style="font-size:1em;" />
+        Style : <span id="ta-txt"></span><br />
+        <br /><br />
+        <div style="width: 100%; text-align:center;" id="w3-container">
+            @Html.Partial("~/Areas/MIS/Views/OrderStatus/_RuningOrderDetails.cshtml", Model)
+        </div>
+    </div>
+</div>
+

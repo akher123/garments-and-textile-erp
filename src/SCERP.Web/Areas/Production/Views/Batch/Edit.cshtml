@@ -1,0 +1,340 @@
+﻿@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = Model.BatchId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+    <style type="text/css">
+        ul.ui-autocomplete {
+            position: relative;
+            z-index: 100;
+        }
+    </style>
+}
+
+@using (Html.BeginForm("Save", "Batch", FormMethod.Post, new { @class = "Batchform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Batch.BatchId)
+    <div class="dropdown" style="margin: 0 20px 20px 0;float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">M/C DIA</a>
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">Finish DIA</a>
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateColor">Color</a>
+        </div>
+    </div>
+    <fieldset>
+        <legend>
+            Dyeing Batch
+        </legend>
+
+        <table class="tabefont" style="width: 100%;">
+            <tr>
+                <td>
+                    @Html.Label("Batch Ref ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.BtRefNo, new { @readonly = "readonly", @placeholder = "Batch Ref", @style = "background-color: #EEEEEE;width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Batch No ")
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.BatchNo, new { @placeholder = "Batch No", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Batch Date", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.BatchDate, new { @class = "datepicker", @placeholder = "Batch Date", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Batch Type ")
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.DropDownListFor(x => x.Batch.BtType, Model.BatchTypeSelectListItem, new { @class = "batchTypeDdl", @style = "width: 264px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Machine")
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.DropDownListFor(x => x.Batch.MachineId, Model.MachineSelectListItem, "-select-", new { @style = "width: 264px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Party ")
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.DropDownListFor(x => x.Batch.PartyId, Model.PartySelectListItem, "-select-", new { @style = "width: 264px;",id="Batch_PartyId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+            </tr>
+        </table>
+        <div id="batchTypeDiv">
+            @Html.Partial("~/Areas/Production/Views/Batch/_OrderInfo.cshtml", Model)
+        </div>
+        <table class="tabefont" style="width: 100%;">
+
+            <tr>
+                <td>
+                    @Html.Label("Batch Qty ", new { @style = "width: 76px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.BatchQty, new { @placeholder = "BatchQty", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Appd Ld No", new { @style = "width: 76px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.ApprovedLdNo, new { @placeholder = "Approved Ld No", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks", new { @style = "width: 76px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.Batch.Remarks, new { @placeholder = "Remarks", @style = "width: 250px;" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Process", new { @style = "width: 76px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.DropDownListFor(x => x.Batch.GroupSubProcessId, Model.GroupSelectListItem, new { @style = "width: 264px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Job No", new { @style = "width: 76px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.DropDownListFor(x => x.Batch.JobRefId, Model.JobOrderListSelectListItem,"-Select-", new { @style = "width: 264px;",id="Batch_JobRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                </td>
+                <td></td>
+                <td style="width: 250px;">
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <table class="tabefont" id="batchDetailInput" style="width: 100%;">
+            <tr>
+                <td>
+                    @Html.Label("Fabric Type", new { @style = "width: 75px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", id = "Item", @placeholder = "Fabric Type", @style = "width: 250px;" })
+                    @Html.HiddenFor(x => x.BatchDetail.ItemId, new { @class = "Item_ItemId", @style = "width: 264px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Component", new { @style = "width: 77px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.ComponentName, new { @onkeyup = "componentAutocomplite(this)", id = "Component", @placeholder = "Component Name", @style = "width: 250px;" })
+                    @Html.HiddenFor(x => x.BatchDetail.ComponentRefId, new { @class = "Component_ComponentRefId", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "M/C DIA", new { @style = "width: 75px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.MdiaSizeName, new { @placeholder = "M/C DIA", id = "Machinedia", @class = "autocompliteSizeSerach", @data_target = "#machineDialSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite", @style = "width: 250px;" })
+                    @Html.HiddenFor(x => x.BatchDetail.MdiaSizeRefId, new { id = "machineDialSizeId", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("", "Finish DIA", new { @style = "width: 77px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.FdiaSizeName, new { @placeholder = "Finish DIA", id = "FinishDia", @class = "autocompliteSizeSerach", @data_target = "#finishDialSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite", @style = "width: 250px;" })
+                    @Html.HiddenFor(x => x.BatchDetail.FdiaSizeRefId, new { id = "finishDialSizeId", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("STLength", new { @style = "width: 75px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.StLength, new { id = "StLength", @placeholder = "StLength", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("RollQty", new { @style = "width: 77px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.RollQty, new { id = "RollQty", @placeholder = "RollQty", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("GSM", new { @style = "width: 75px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.GSM, new { id = "GSM", @placeholder = "GSM", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Quantity", new { @style = "width: 77px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.Quantity, new { id = "Quantity", @placeholder = "Quantity", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks", new { @style = "width: 75px;display: inline-block" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.Remarks, new { @class = "RemarksEnterEvent", id = "Remarks", @placeholder = "Remarks", @style = "width: 250px;" })
+                </td>
+
+                <td></td>
+                <td>
+                    @Html.Label("Length(Woven)", new { @style = "width: 77px;display: inline-block", id = "CollarCuffLbl" })
+                </td>
+                <td>:</td>
+                <td style="width: 250px;">
+                    @Html.TextBoxFor(x => x.BatchDetail.FLength, new { id = "FLength", @placeholder = "YARD", @style = "width: 250px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+            </tr>
+        </table>
+        <div style="overflow: hidden">
+            <input type="button" style="margin: 5px 25px 5px 10px;float: right" class="addButton" id="addBactchButton" value="+" />
+        </div>
+        <hr />
+        <table id="batchDetailListingTable" class="tabefont webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>Fabric Type</th>
+                    <th>Component</th>
+                    <th>M/C Dia</th>
+                    <th>Finish Dia</th>
+                    <th>GSM</th>
+                    <th>St.Length</th>
+                    <th>RollQty</th>
+                    <th>Count(Pcs/Yards)</th>
+                    <th>Quantity</th>
+                    <th style="width: 0px;">Remarks</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("~/Areas/Production/Views/Batch/_AddNewRow.cshtml", Model)
+            </tbody>
+        </table>
+        <div style="margin: 5px -7px 5px 0;float: right">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        <input type="submit" class="addButton" id="btnSave" value="Save" />
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+}
+
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Production/batch.js"></script>
+
+}
+
+

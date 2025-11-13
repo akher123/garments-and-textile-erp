@@ -1,0 +1,103 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ChallanReceiveMasterViewModel
+@{
+    Layout = null;
+    var buttonName = (Model.ChallanReceiveMaster.ReturnableChallanReceiveMasterId > 0) ? "Edit" : "Save";
+}
+<div>
+    <table>
+        <tr>
+            <td>@Html.Label("M/S ")</td>
+            <td>@Html.Label(":")</td>
+            <td>@Html.TextBoxFor(x => x.ReturnableChallan.Messrs, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+            <td>@Html.Label("Challan Date ")</td>
+            <td>@Html.Label(":")</td>
+            <td>@Html.TextBoxFor(x => x.ReturnableChallan.ChallanDate, new { @class = "datepicker", @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Through ")</td>
+            <td>@Html.Label(":")</td>
+            <td>@Html.TextBoxFor(x => x.ReturnableChallan.RefferancePerson, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+            <td>@Html.Label("Designation ")</td>
+            <td>@Html.Label(":")</td>
+            <td>@Html.TextBoxFor(x => x.ReturnableChallan.Designation, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+        </tr>
+    </table>
+    <hr/>
+</div>
+<div>
+    <table>
+        <tr>
+            <td>
+                @Html.Label("Challan Date")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.ChallanReceiveMaster.ReceiveDate, new { @class = "datepicker", @date_val = "false" })
+            </td>
+            <td>
+                @Html.Label("Challan No")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.ChallanReceiveMaster.ChallanNo)
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    @Html.HiddenFor(x => x.ChallanReceiveMaster.ReturnableChallanId)
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Item</th>
+                <th>Challan Qty</th>
+                <th>Total Receive</th>
+                <th>Total Reject</th>
+                <th>Balance</th>
+                <th>Receive Qty</th>
+                <th>Reject Qty</th>
+                <th>Amount</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var m in Model.RChallanReceiveDictionary)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => x.RChallanReceiveDictionary[m.Key].ItemName)
+                        @Html.HiddenFor(x => x.RChallanReceiveDictionary[m.Key].ReturnableChallanDetailId)
+                        @Html.HiddenFor(x => x.RChallanReceiveDictionary[m.Key].ReturnableChallanReceiveId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.RChallanReceiveDictionary[m.Key].DeliveryQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.RChallanReceiveDictionary[m.Key].TotalReceiveQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.RChallanReceiveDictionary[m.Key].TotalRejectQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.RChallanReceiveDictionary[m.Key].RemainingQty)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RChallanReceiveDictionary[m.Key].ReceiveQty, new { style = "width:60px;" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RChallanReceiveDictionary[m.Key].RejectQty, new { style = "width:60px;" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RChallanReceiveDictionary[m.Key].Amount, new { style = "width:60px;" })
+                    </td>
+                    <td>
+                        <input type="button" value="X" onclick="deleteRow(this)" />
+                    </td>
+                </tr>
+            }
+            <tr>
+
+        </tbody>
+    </table>
+    <div class="custom-modal-btn">
+        @Html.Button(buttonName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "ChallanReceiveMaster_containner" } })
+    </div>
+</div>

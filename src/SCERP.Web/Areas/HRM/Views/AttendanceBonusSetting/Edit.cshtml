@@ -1,0 +1,119 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceBonusSettingViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.AttendanceBonusSettingId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "AttendanceBonusSetting", FormMethod.Post, new {@class = "AttendanceBonusSettingform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.AttendanceBonusSettingId)
+
+    <fieldset>
+        <legend>Attendance Bonus Setting</legend>
+        <table class="tabefont">
+            
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Absent Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.AbsentDays)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.AbsentDays)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Late Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LateDays)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LateDays)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Leave without Application:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LeavewithoutApplication)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LeavewithoutApplication)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Leave with Application:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LeavewithApplication)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LeavewithApplication)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">From Date:</td>
+                <td>           
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </td>
+            </tr>
+                       
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">To Date:</td>
+                <td>   
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To Date" })
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+            
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}

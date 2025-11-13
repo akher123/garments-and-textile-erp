@@ -1,0 +1,57 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.EmailTemplateViewModel
+    @{
+        ViewBag.Title = Model.EmailTemplate.EmailTemplateId > 0 ? "Edit " : "Add ";
+        Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    }
+    @using (Html.BeginForm("Save", "EmailTemplate", FormMethod.Post, new { @class = "EmailTemplateNameEditform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.EmailTemplate.EmailTemplateId)
+
+        <fieldset>
+            <legend>Email Template</legend>
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ref No:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.EmailTemplate.EmailTemplateRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Template Name :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.EmailTemplate.EmailTemplateName)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.EmailTemplate.EmailTemplateName)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    }
+
+

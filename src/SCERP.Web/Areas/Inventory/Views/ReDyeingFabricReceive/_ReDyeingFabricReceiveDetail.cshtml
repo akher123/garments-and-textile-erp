@@ -1,0 +1,31 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReDyeingFabricReceiveViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.ReDyeingFabricReceiveDetails)
+{
+    <tr id="NewRow_@Model.ReDyeingFabricReceiveDetails[m.Key].BatchId.ToString()_@Model.ReDyeingFabricReceiveDetails[m.Key].BatchDetailId.ToString()">
+        <td>
+            @Html.DisplayFor(x => x.ReDyeingFabricReceiveDetails[m.Key].BatchNo)
+            @Html.HiddenFor(x => x.ReDyeingFabricReceiveDetails[m.Key].BatchNo, new { id = "BatchNo_" + m.Key })
+            @Html.HiddenFor(x => x.ReDyeingFabricReceiveDetails[m.Key].BatchId, new { id = "BatchId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ReDyeingFabricReceiveDetails[m.Key].ItemName)
+            @Html.HiddenFor(x => x.ReDyeingFabricReceiveDetails[m.Key].ItemName, new { id = "ItemName_" + m.Key })
+            @Html.HiddenFor(x => x.ReDyeingFabricReceiveDetails[m.Key].BatchDetailId, new { id = "BatchDetailId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ReDyeingFabricReceiveDetails[m.Key].RQty)
+            @Html.HiddenFor(x => x.ReDyeingFabricReceiveDetails[m.Key].RQty, new { id = "RQty_" + m.Key })
+        </td>
+       
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@m.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

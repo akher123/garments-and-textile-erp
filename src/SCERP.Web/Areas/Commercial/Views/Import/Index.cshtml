@@ -1,0 +1,111 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.ImportViewModel
+
+@{
+    ViewBag.Title = "Imp";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("Index", "Import", FormMethod.Get, new { @class = "ExportSearchForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2> Import</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @style = "", @placeholder = "From date" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @style = "", @placeholder = "To date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key", @autofocus = "autofocus" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                    <td>
+                        <input type="button" value="Exp Report" class="addButton" onclick=" javascript: PrintExportReport(); " />
+                        @*<input type="button" value="Commercial Invoice Report" onclick=" javascript: PrintCommercialInvoiceReport(); " />
+                            <input type="button" value="Packing List Report" onclick=" javascript: PrintPackingReport(); " /> *@
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Commercial/Import/Edit">Add New</button>
+            <div style="float: right" id="pcscwrapperId">
+                <input type="button" id="btnScDtl" class="AjaxPopup addButton" action="" value="Add LC Detail" />
+
+            </div>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CommImports, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("LCNo", header: "LC No", format: @<text>@(item.LcNo ?? "--")</text>, canSort: false),
+                     grid.Column("LcValue", header: "Invoice No ", format: @<text>@(item.LcValue ?? "--")</text>, canSort: false),
+                     grid.Column("InvoiceNo", header: "Invoice Value ", format: @<text>@(item.InvoiceNo ?? "--")</text>, canSort: false),
+                     grid.Column("InvoiceDate", "Invoice Date", format: @<text>@(item.InvoiceDate == null ? "" : item.InvoiceDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("DocsValue", header: "BankRef No ", format: @<text>@(item.DocsValue ?? "--")</text>, canSort: false),
+                     grid.Column("Import Dtl", canSort: false, format: @<text> <input type="button" onclick="selectRow('@item.ImportId',this)" value="✅" /></text>),
+                     //grid.Column("RealizedDate", "Realised Date", format: @<text>@(item.RealizedDate == null ? "" : item.RealizedDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     //grid.Column("RealizedValue", header: "Realized Value ", format: @<text>@(item.RealizedValue ?? "--")</text>, canSort: false),
+                     //grid.Column("BillOfLadingNo", header: "B/L No ", format: @<text>@(item.BillOfLadingNo ?? "--")</text>, canSort: false),
+                     grid.Column("Edit", format: @<text> <button class="edit" action="/Commercial/Import/Edit?CommImport.ImportId=@item.ImportId"></button></text>, canSort: false),
+                     grid.Column("Delete", format: @<text> <button class="delete" action="/Commercial/Import/Delete?CommImport.ImportId=@item.ImportId"></button></text>, canSort: false)))
+        }
+    </div>
+</section>
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#pcscwrapperId').hide();
+        function selectRow(importId, obj) {
+            $('#pcscwrapperId').hide("slow");
+            $('#pcscwrapperId').show('slow');
+            var button = $(obj);
+            var $tr = button.closest('tr');
+            $tr.addClass("selected").siblings().removeClass("selected");
+            var scUrl = "/Commercial/ImportDetails/Index";
+            $('#btnScDtl').attr('action', scUrl + "?importId=" + importId);
+
+            
+        }
+
+    </script>
+}

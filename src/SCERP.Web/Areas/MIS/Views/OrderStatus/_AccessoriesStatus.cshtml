@@ -1,0 +1,97 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+}
+<div class="mis-title">Accessories Booking & Received Status</div>
+
+    <div class="tbl-header">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label("Item Name")
+                    </th>
+                    <th>
+                        @Html.Label("Style Color")
+                    </th>
+                    <th>
+                        @Html.Label("Style Size")
+                    </th>
+                    <th>
+                        @Html.Label("Item Color")
+                    </th>
+                    <th>
+                        @Html.Label("item Size")
+                    </th>
+                    <th>
+                        @Html.Label("Unit")
+                    </th>
+                    <th>
+                        @Html.Label("Rate")
+                    </th>
+                    <th>
+                        @Html.Label("Booking Qty")
+                    </th>
+                    <th>
+                        @Html.Label("Received Qty")
+                    </th>
+                    <th>
+                        @Html.Label("Balance Qty")
+                    </th>
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="tbl-content">
+        <table class="webgrid-table">
+            <tbody>
+
+                @foreach (var m in Model.Dictionary)
+                {
+                    <tr id="newRow-@Model.Dictionary[m.Key].ItemId">
+                        <td>
+
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].FColorName)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].GSizeName)
+
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].ColorName)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].UnitName)
+                        </td>
+                        <td style="width: 65px;">
+
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedRate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].TBookingQty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].TotalRcvQty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.Dictionary[m.Key].BalanceQty)
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+

@@ -1,0 +1,126 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MerchandiserViewModel
+@{
+    ViewBag.Title = Model.MerchandiserId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Merchandiser", FormMethod.Post, new { @class = "Merchandiserform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MerchandiserId)
+    <fieldset>
+        <legend>Merchandiser</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmpId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.EmpName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address1)
+
+                </td>
+                <td>
+                 
+                </td>
+                <td>
+                 
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address2)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address3)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Phone)
+
+                </td>
+                <td>
+               
+                </td>
+                <td>
+             
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Email :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Email)
+
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                 
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+

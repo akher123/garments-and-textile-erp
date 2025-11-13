@@ -1,0 +1,87 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessViewModel
+@{
+    ViewBag.Title = Model.ProcessId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Process", FormMethod.Post, new { @class = "Processform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ProcessId)
+    <fieldset>
+        <legend>Process</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProcessRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Process:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ProcessName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ProcessName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buffer Day:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.BufferDay)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.BufferDay)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Code:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ProcessCode)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ProcessCode)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

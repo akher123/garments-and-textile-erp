@@ -1,0 +1,119 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProcessDeliveryViewModel
+@{
+    ViewBag.Title = "Printing Delivery";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h4>Printing Delivery List</h4>
+</div>
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left:50px;">
+            @using (Html.BeginForm("Index", "PrintingProcess", FormMethod.Get, new { @class = "PrintingProcessSearchForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                    <tr>
+                        <td>@Html.Label("Factory  :")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.PartyId, Model.PartySelectListItem, "-Select-", new { @class="CuttingBatch_factory" , id = "partyId" })
+                        </td>
+                       
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                   
+
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.OrderNo, Model.OrderSelectListItem, "-Select-", new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                      
+                        <td>
+                            @Html.DisplayName("Criteria:")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString)
+                        </td>
+                     
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            <div style="font-size: 12px;background-color:gainsboro">
+                                <div class="dropdown" style="float: right">
+                                    <button class="dropbtn">REPORT▼</button>
+                                    <div class="dropdown-content">
+                                        <a style="cursor: pointer " target="_blank" onclick="processDeliverySummary()">SUMMARY</a>
+                                        <a style="cursor: pointer " target="_blank" onclick="processDeliveryDetail()">DETAIL</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </td>
+                        
+
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <input onclick="search('/Production/PrintingProcess/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Deliveries, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("RefNo", header: "REF NO", canSort: false),
+                        grid.Column("BuyerName", header: "BUYER", canSort: false),
+                        grid.Column("OrderName", header: "ORDER", canSort: false),
+                        grid.Column("OrderName", header: "STYLE", canSort: false),
+                        grid.Column("PartyName", header: "FACTORY", canSort: false),
+                        grid.Column("InvoiceNo", header: "CHALLAN", canSort: false),
+                        grid.Column("InvDate", canSort: false, header: "DATE", format: @<text>@(item.InvDate == null ? "" : item.InvDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("TotalQuantity", header: "QUANTITY", canSort: false),
+                        grid.Column(header: "Report", canSort: false, format: @<text><a href="/Production/ProductionReport/DeliveryChalan?processDeliveryId=@item.ProcessDeliveryId&ProcessRefId=@item.ProcessRefId&DeliveryType=1" target="_blank">Chalan</a></text>),
+                        grid.Column(header: "Report", canSort: false, format: @<text><a href="/Production/ProductionReport/DeliveryChalan?processDeliveryId=@item.ProcessDeliveryId&ProcessRefId=@item.ProcessRefId&DeliveryType=2" target="_blank">Gate Pass</a></text>),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text> <input onclick="search('/Production/PrintingProcess/Edit?Delivery.ProcessDeliveryId=@item.ProcessDeliveryId')" value="Edit" type="button" />  </text>),
+                        grid.Column("Delete", canSort: false, format: @<text><button class="delete" action="/Production/PrintingProcess/Delete?processDeliveryId=@item.ProcessDeliveryId"></button></text>)));
+
+        }
+    </div>
+</section>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/processDeliver.js"></script>
+
+}

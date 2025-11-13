@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Mrc_TrimsAndAccessoriesDevelopmentHistory] (
+    [TrimAndAccessoriesDevelopmentId] INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]                     INT              NOT NULL,
+    [KeyProcessId]                    INT              NOT NULL,
+    [ReadyStatusId]                   INT              NOT NULL,
+    [DepartmentId]                    INT              NULL,
+    [ResponsiblePersonId]             UNIQUEIDENTIFIER NULL,
+    [PlannedStartDate]                DATETIME         NULL,
+    [PlannedEndDate]                  DATETIME         NULL,
+    [ActualStartDate]                 DATETIME         NULL,
+    [ActualEndDate]                   DATETIME         NULL,
+    [Remarks]                         NVARCHAR (MAX)   NULL,
+    [CreatedDate]                     DATETIME         NULL,
+    [CreatedBy]                       UNIQUEIDENTIFIER NULL,
+    [EditedDate]                      DATETIME         NULL,
+    [EditedBy]                        UNIQUEIDENTIFIER NULL,
+    [IsActive]                        BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_TrimAndAccessoriesDevelopmentHistory] PRIMARY KEY CLUSTERED ([TrimAndAccessoriesDevelopmentId] ASC),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesDevelopmentHistory_Department] FOREIGN KEY ([DepartmentId]) REFERENCES [dbo].[Department] ([Id]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesDevelopmentHistory_Employee] FOREIGN KEY ([ResponsiblePersonId]) REFERENCES [dbo].[Employee] ([EmployeeId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesDevelopmentHistory_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesDevelopmentHistory_Mrc_ReadyStatus] FOREIGN KEY ([ReadyStatusId]) REFERENCES [dbo].[Mrc_ReadyStatus] ([ReadyStatusId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesDevelopmentHistory_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId])
+);
+

@@ -1,0 +1,44 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Buyer Order Detail</h2>
+</div>
+@section styles
+{
+    <link href="~/Content/CSS/Merchandising/RowSelectStyle.css" rel="stylesheet" />
+}
+
+<div id="buyerOrderDetail" class="buyerOrderDetailContainer position-relative">
+    <span class="toggle-div" onclick="toggleDiv()">
+        <i id="open" class="fa fa-angle-double-down" aria-hidden="true"> Open</i>
+        <i id="close" class="fa fa-angle-double-up disply-none" aria-hidden="true"> Close</i>
+    </span>
+    <ul>
+        <li><a id="BuyerOrderHref" href="/Merchandising/BuyerOrder/Index?SearchString=@Model.OrderNo">Order</a></li>
+        <li><a id="buyerOrderTabHref" href="/Merchandising/OmBuyOrdStyle/Index?OrderNo=@Model.OrderNo">Style in order</a></li>
+        <li><a id="buyerOrderStyleTabHref" href="/Merchandising/BuyerOrderColorSize/Index?OrderStyleRefId=@Model.OrderStyleRefId">Color & Size </a></li>
+        <li><a id="BuyOrdShipTabHref" href="/Merchandising/BuyOrdShip/Index?OrderStyleRefId=@Model.OrderStyleRefId">Shipment in Order</a></li>
+        <li><a id="buyerOrderSheet" href="/Merchandising/BuyerOrder/ShowOrderSheet?OrderNo=@Model.OrderNo">Order Sheet</a></li>
+        <li><a id="OrderDocumentHref" href="/Merchandising/OrderDocument/Index?RefId=@Model.OrderNo">Document Upload</a></li>
+    </ul>
+</div>
+
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $("#buyerOrderDetail").tabs({
+            load: SCERP.AjaxCompleted,
+            disabled: [1, 2, 3, 4, 5]
+        });
+    </script>
+}
+
+
+
+
+
+

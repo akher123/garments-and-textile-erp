@@ -1,0 +1,142 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.VehicleGateEntryViewModel
+@{
+
+    ViewBag.Title = Model.VehicleGateEntry.VehicleGateEntryId > 0 ? "Edit " : "Add ";
+    bool isReadOnly = Model.VehicleGateEntry.VehicleGateEntryId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "VehicleGateEntry", FormMethod.Post, new { @class = "VehicleGateEntryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VehicleGateEntry.VehicleGateEntryId)
+    <fieldset>
+        <legend>Vehicle Gate Entry</legend>
+        <table class="tabefont">
+           
+            <tr>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.CheckOutStatus, Model.CheckOutStatusSelectListItem, "-Select-", new { @style = "display:none" })
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.ExitDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Exit date", @style = "display:none" })
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.CheckOutTime, new { @class = "timePicker", @style = "display:none" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Gate Entry Number :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.GateEntryNumber, new { @placeholder = "Gate Entry Number" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Vehicle Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.VehicleId, Model.VehiclesSelectListItem, "-Select-", new { @class = "EnvVehicleTypeDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Vehicle Number :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.VehicleNumber, new { @class = "VehicleNumberTextBoxFor", @placeholder = "Vehicle Number" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Invoice Number:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.InvoiceNumber,new{@placeholder = "Invoice Number"})
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("To Whom")
+                </td>
+                <td>
+                    @Html.HiddenFor(x => x.VehicleGateEntry.EmployeeId, new { @class = "EmployeeIdHiddenFor" })
+                    @Html.TextBoxFor(x => x.EmployeeName, new { @class = "ToWhomTextBoxFor" ,@placeholder = "To Whom"})
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    @Html.Label("Confirmed By:")
+                </td>
+                <td>
+                    
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.ConfirmedBy, new { @class = "ConfirmedByTextBoxFor", @placeholder = "Confirmed By" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Confirm Way:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VehicleGateEntry.ConfirmationMediaId, Model.ConfirmationMediaSelectListItem, "-Select-", new { @class = "ConfirmWayDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Check In Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.EntryDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Check In date" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Check In Time:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicleGateEntry.CheckInTime, new { @class = "timePicker", @placeholder = "Check In Time" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.VehicleGateEntry.Remarks)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+<script src="~/Scripts/SCERP/Tracking/vehicleGateEntry.js"></script>
+}
+
+
+
+

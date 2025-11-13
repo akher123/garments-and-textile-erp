@@ -1,0 +1,139 @@
+﻿@using iTextSharp.tool.xml.html
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewBag.Title = Model.ItemId > 0 ? "Edit Item" : "Add Item";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("SavePartialItem", "InventoryItem", FormMethod.Post, new { @class = "ItemForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.IsActive)
+    <fieldset>
+        <legend>Item</legend>
+        <table class="tabefont">
+         
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Group :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.GroupId, Model.GroupSelectListItem, "-Select-", new { @id = "groupDropdownId" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SubGroupId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Sub Group :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SubGroupId, Model.SubGroupSelectListItem, "-Select-", new { @id = "subGroupDropdownId" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SubGroupId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Item Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemName)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ItemName)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Unit")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MeasurementUinitId, Model.MeasurementUnitSelectListItem, "--Select--")
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.MeasurementUinitId)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td>
+                   <input type="button" value="Save" id="itemSaveButton"/>
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+     
+        $('#groupDropdownId').unbind('change').bind('change', function () {
+            var groupId = $(this).val();
+            $.Ajax({
+                url: '/InventoryItem/GetSubGroupByGroupId/',
+                data: { groupId: groupId }
+            }).done(function (subgroupLsit) {
+                $('#subGroupDropdownId').empty();
+                if (subgroupLsit.length > 0) {
+                    $('#subGroupDropdownId').append(
+
+                            $('<option/>')
+                                .attr('value', '')
+                                .text("-Select-")
+                        );
+                    $.each(subgroupLsit, function (subgroup) {
+                        $('#subGroupDropdownId').append(
+
+                            $('<option/>')
+                                 .attr('value', this.SubGroupId)
+                                .text(this.SubGroupName)
+                        );
+                    });
+                } else {
+                    $('#subGroupDropdownId').append(
+                        $('<option/>')
+                            .attr('value', "")
+                            .text("No Sub Group Found")
+                    );
+                }
+
+            });
+
+
+        });
+
+        $('#itemSaveButton').unbind('click').bind('click', function () {
+            var $form = $(this).parents('form:first');
+            var data = $form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                $form.validate();
+                if (!$form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    $.Ajax({
+                        url: $form.attr('action'),
+                        dataType: 'json',
+                        type: 'post',
+                        data: data,
+                    }).done(function (status) {
+                        if (status==true) {
+                            $form.DialogClose();
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+
+
+}

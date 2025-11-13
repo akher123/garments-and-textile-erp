@@ -1,0 +1,102 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.TrialBalanceViewModel
+@{
+    ViewBag.Title = "Control Trial Balance";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Control Trial Balance</h2>
+</div>
+
+@using (Html.BeginForm("ControlTrialBalance", "Report", FormMethod.Get, new { @class = "ControlTrialBalanceForm submit-allow ignore-validation" }))
+{
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+
+                <tr>
+                    <td> @Html.DisplayName("Print Format : ") </td>
+                    <td> @Html.DropDownList("PrintFormatId", null, new { style = "" }) </td>
+
+                    <td>@Html.DisplayName("Company Name ")</td>
+                    <td>@Html.DropDownList("sectorId", null, "- Select -", new { style = "", @disabled = "disabled" })</td>
+
+                    <td>@Html.DisplayName("Opening Option ")</td>
+                    <td>@Html.DropDownList("OpeningOption", "- Select -")</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right">
+                        <button class="search" type="button" onclick="search('/Accounting/Report/ControlTrialBalance', 'ControlTrialBalanceForm')" />
+                        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintTrialBalance();" value="Print" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+}
+
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TrialBalance, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    grid.Column("ClasslHead", header: "Class Head"),
+                    grid.Column("GrouplHead", header: "Group Head"),
+                    grid.Column("SubGrouplHead", header: "Sub Group Head"),
+                    grid.Column("ControlHead", header: "Control Head"),
+                    grid.Column("OpeningBalance", header: "Opening Balance"),
+                    grid.Column("TotalDebit", header: "Debit"),
+                    grid.Column("TotalCredit", header: "Credit"),
+                    grid.Column("ClosingBalance", header: "Closing Balance")
+                    ));
+        }
+
+    </div>
+</section>
+
+    @section scripts
+    {
+        <script type="text/javascript">
+
+            function PrintTrialBalance() {
+                var FpId = $('#FpId').val();
+                var SectorId = $('#sectorId').val();
+                var OpOption = $('#OpeningOption').val();
+                var fromDate = $('#FromDate').val();
+                var toDate = $('#ToDate').val();
+                var SectorText = $("#sectorId option:selected").text();
+                var FileType = $('#PrintFormatId option:selected').text();
+                window.open("/Accounting/Report/PrintTrialBalance?FpId=" + FpId + "&SectorId=" + SectorId + "&SectorText=" + SectorText + "&fromDate=" + fromDate + "&toDate=" + toDate + "&openingOption=" + OpOption + "&TrialBalanceLebel=4&ExportType=" + FileType);
+            }
+
+            var columns = $('.additem td:nth-child(6), td:nth-child(9), th:nth-child(6), th:nth-child(9)');
+            $('#OpeningOption').openingOptionState(columns);
+            $('#OpeningOption').openingOption(columns);
+
+        </script>
+    }

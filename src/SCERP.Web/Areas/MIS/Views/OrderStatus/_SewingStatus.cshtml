@@ -1,0 +1,42 @@
+﻿@using System.Collections.Generic;
+@using System.Data;
+@model Dictionary<string, Dictionary<string, List<string>>>
+@{
+    Layout = null;
+}
+
+    <section class="formCover">
+        <div class="mis-title">Sewing Status</div>
+        <div class="tbl-content">
+            <table>
+                <tbody>
+                    @foreach (var porcess in Model)
+                    {
+                        <tr>
+                            <td style="width:10%">@porcess.Key</td>
+                            <td>
+                                <table class="webgrid-table">
+                                    <tbody>
+                                        @foreach (var dt in @porcess.Value)
+                                        {
+                                            <tr>
+                                                <td>@dt.Key</td>
+                                                @foreach (var col in dt.Value)
+                                                {
+                                                    <td>
+                                                       @col
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+

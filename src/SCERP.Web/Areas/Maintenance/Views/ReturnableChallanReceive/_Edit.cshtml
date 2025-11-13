@@ -1,0 +1,44 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanReceiveViewModel
+@{  Layout = null;
+    var buttonName = (Model.ReturnableChallanReceive.ReturnableChallanReceiveId > 0) ? "Edit" : "Save";
+}
+
+@using (Html.BeginForm("Save", "ReturnableChallanReceive"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ReturnableChallan.ReturnableChallanId)
+    @Html.HiddenFor(x => x.ReturnableChallanReceive.ReturnableChallanReceiveId)
+    @Html.ValidationSummary(true)
+    <table>
+        <tr >
+            <td>@Html.Label("Challan No")</td>
+            <td>
+                @Html.TextBoxFor(x => x.ReturnableChallanReceive.ChallanNo, new { @placeholder = "Challan No", style = "width: 100px;" })
+                @Html.HiddenFor(x => x.ReturnableChallanReceive.ReturnableChallanDetailId)
+            </td>
+            <td>@Html.Label("Receive Date")</td>
+            <td>
+                @Html.TextBoxFor(x => x.ReturnableChallanReceive.ReceiveDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Receive Date", style = "width: 100px;" })
+            </td>
+            <td>@Html.Label("Receive Qty")</td>
+            <td>
+                @Html.TextBoxFor(x => x.ReturnableChallanReceive.ReceiveQty, new { style = "width: 100px;" })
+            </td>
+            <td>@Html.Label("Reject Qty")</td>
+            <td>
+                @Html.TextBoxFor(x => x.ReturnableChallanReceive.RejectQty, new { style = "width: 100px;" })
+            </td>
+            <td>@Html.Label("Amount")</td>
+            <td>
+                @Html.TextBoxFor(x => x.ReturnableChallanReceive.Amount, new { style = "width: 100px;" })
+            </td>
+            <td>
+                @Html.Button(buttonName, "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "challanReceive" } })
+            </td>
+        </tr>
+    </table>
+}
+
+
+
+

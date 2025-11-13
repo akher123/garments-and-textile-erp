@@ -1,0 +1,64 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.LotViewModel
+@{
+    ViewBag.Title = Model.ColorId > 0 ? "Edit Lot " : "Add Lot";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Lot", FormMethod.Post, new { @class = "Lotform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ColorId)
+       @Html.HiddenFor(model => model.TypeId, new { @id = "yarnBrandTypeId" })
+    <fieldset>
+        <legend>Yarn Lot</legend>
+        <table class="tabefont">
+          
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ColorRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.Label(" Lot No :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ColorName)
+
+                </td>
+                <td >
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+              
+                </td>
+            </tr>
+            <tr>
+                <td  >
+                    @Html.Label("Brand:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BrandId, Model.BrandSelectListItem, "-Select-")
+                </td>
+                <td ></td>
+            </tr>
+        
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

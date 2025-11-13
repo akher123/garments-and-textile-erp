@@ -1,0 +1,46 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessDeliveryViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+        <tr>
+            <th>SL No</th>
+            <th>Job No</th>
+            <th>Ref No</th>
+            <th>Buyer</th>
+            <th>Order</th>
+            <th>Style</th>
+            <th>Color</th>
+            <th>Sequence</th>
+            <th>Tag</th>
+            <th>FinalCutt</th>
+            <th>TotalSent</th>
+            <th>Balance</th>
+            <th>PROCESS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cutseq in Model.CuttiongProcesses.Select((x, i) => new { index = i + 1, value = x }))
+        { 
+            <tr>
+                <th>@cutseq.index</th>
+                <td>@cutseq.value.JobNo</td>
+                <td>@cutseq.value.CuttingBatchRefId</td>
+                <td>@cutseq.value.BuyerName</td>
+                <td>@cutseq.value.OrderNo</td>
+                <td>@cutseq.value.StyleName</td>
+                <td>@cutseq.value.ColorName</td>
+                <td>@cutseq.value.SequenceName</td>
+                <td>@cutseq.value.TagName</td>
+                <td>@cutseq.value.FinalCutt</td>
+                <td>@cutseq.value.TotalSent</td>
+                <td>@(cutseq.value.FinalCutt - cutseq.value.TotalSent)</td>
+                <td>
+                    <input type="button" class="btnDetail" targentclass="processDelivery" action="/PrintingProcess/CuttingJobQty?CuttingBatch.CuttingBatchId=@cutseq.value.CuttingBatchId&CuttingBatch.CuttingBatchRefId=@cutseq.value.CuttingBatchRefId&CuttingTagId=@cutseq.value.CuttingTagId&CuttingBatch.ColorRefId=@cutseq.value.ColorRefId&CuttingBatch.ComponentRefId=@cutseq.value.ComponentRefId&Delivery.ProcessDeliveryId=@Model.Delivery.ProcessDeliveryId" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

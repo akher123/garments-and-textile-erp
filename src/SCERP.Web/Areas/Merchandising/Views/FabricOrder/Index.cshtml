@@ -1,0 +1,121 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabricOrderViewModel
+@{
+    ViewBag.Title = "Fabric Order";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>BULK FABRIC WORK ORDER</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "FabricOrder", FormMethod.Get, new {@class = "FabricOrderSearchForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+                <tr>
+                   
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.FabricOrder.Status, Model.StatusSeectListItem)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+
+                    </td>
+                </tr>
+              
+            </table>
+
+        }
+
+    </div>
+  
+       
+          
+        
+  
+</section>
+
+<section class="formCover">
+    <div class="additem" style="min-height: 800px;">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Merchandising/FabricOrder/Edit">Add New</button>
+            <div class="addButton-wrapper" style="float:right">
+                <input onclick="search('/Merchandising/FollowUp/Index')" value="Go Order Activity" class="addButton" type="button" />
+            </div>
+        </div>
+        
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.FabricOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                    grid.Column("FabricOrderRefId", header: "Ref ID", canSort: false),
+                    grid.Column("Merchandiser", header: "Merchandiser", canSort: false),
+                    grid.Column("BuyerName", header: "Buyer", canSort: false),
+                    grid.Column("OrderName", header: "OrderName", canSort: false),
+                    grid.Column("StyleName", header: "StyleName", canSort: false),
+                    grid.Column("Supplier", header: "Supplier", canSort: false),
+                    grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.OrderDate ?? ""), header: "Order Date"),
+                    grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ExpDate ?? ""), header: "Exp Date"),
+                    grid.Column("Status", "Status", format: (item) => Html.DropDownList("Status", new SelectList(Model.StatusList, "Value", "Text", item.Status), new { id = item.FabricOrderId, @class = "chnageStatus", style = "width:100px;" })),
+                    grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/FabricOrder/Edit?FabricOrder.FabricOrderId=@item.FabricOrderId"></button></text>),
+                    grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/FabricOrder/Delete?FabricOrderId=@item.FabricOrderId"></button></text>),
+                    grid.Column("Report", format:@<text>
+                            <div class="dropdown">
+                                <a class="dropbtn custom-table-dropbtn">Report</a>
+                                <div style="z-index: 2;right: 30px;" class="dropdown-content custom-table-dropdown-content">
+                                    <a href="/Merchandising/Report/BulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=1" target="_blank">Fabric(PDF)</a>
+                                    <a href="/Merchandising/Report/BulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=3" target="_blank">Fabric(EXCEL)</a>
+                                    @*<a href="/Merchandising/Report/CollarCuffBulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=1" target="_blank">CollarCuff(PDF)</a>
+                                    <a href="/Merchandising/Report/CollarCuffBulkFabricOrderSheet?FabricOrderId=@item.FabricOrderId&reportTypeId=3" target="_blank">CollarCuff(EXCEL)</a>*@
+                                </div>
+                            </div>
+                    </text>, canSort: false)));
+
+        }
+    </div>
+</section>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        $('.chnageStatus').unbind('change').bind('change', changedStataus);
+        function changedStataus() {
+           
+            var fabricOrderId = $(this).attr('id');
+            var status = $(this).val();
+            $.Ajax({
+                url: '/Merchandising/FabricOrder/UpdateFabricOrderStatus',
+                data: { status: status, fabricOrderId: fabricOrderId },
+                type: 'POST',
+            });
+            var whichtr = $(this).closest("tr");
+            whichtr.remove();
+
+        }
+    </script>
+}

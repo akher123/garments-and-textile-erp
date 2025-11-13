@@ -1,0 +1,136 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.CommExport.ExportId > 0) ? "Commercial Detail" : "Add";
+}
+
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("SaveDetail", "Export", FormMethod.Post, new {@class = "ExportDetailSearchForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CommExport.ExportId)
+
+        <fieldset>
+            <legend> Commercial Detail </legend>
+            <table>
+                <tr>
+                    <td style="height: 20px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>                                 
+                <tr>
+                    <td style="font-weight: bold;"> @Html.Label("Order No") </td>                                                                
+                    <td style="font-weight: bold;"> @Html.Label("Style No") </td>  
+                    <td style="font-weight: bold;"> @Html.Label("Carton Quantity") </td> 
+                    <td style="font-weight: bold;"> @Html.Label("Item Quantity")  </td> 
+                    <td style="font-weight: bold;"> @Html.Label("Rate")  </td>           
+                    <td style="font-weight: bold;"> @Html.Label("Item Desc")  </td>  
+                    <td style="font-weight: bold;"> @Html.Label("Export Code")  </td>  
+                    <td style="font-weight: bold;"> </td> 
+                    <td style="font-weight: bold;"> </td>                                       
+                </tr> 
+                    
+                <tr>
+                    <td> @Html.DropDownListFor(x => x.BuyerOrders, Model.BuyerOrderSelectListItem, "-Select-", new {@onchange = "getStyleNoByOrder(this.value)", style = "width:160px;height: 35px;"}) </td>
+                    <td> @Html.DropDownListFor(x => x.ExportDetail.OrderStyleRefId, Model.BuyerOrderStyleSelectListItem, "-Select-", new {style = "width:160px;height: 35px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.ExportDetail.CartonQuantity, new {style = "width:100px;"}) </td>                                            
+                    <td> @Html.TextBoxFor(model => model.ExportDetail.ItemQuantity, new {style = "width:100px;"}) </td>                                          
+                    <td> @Html.TextBoxFor(model => model.ExportDetail.Rate, new {style = "width:100px;"}) </td> 
+                    <td> @Html.TextBoxFor(model => model.ExportDetail.ItemDescription, new { style = "width:100px;" }) </td> 
+                    <td> @Html.TextBoxFor(model => model.ExportDetail.ExportCode, new { style = "width:100px;" }) </td> 
+                    <td> @Html.TextBoxFor(model => model.ExportId, new {style = "width:100px;"}) </td>
+                    <td> <input type="button" style="width: 70px; height: 35px;" id="addNewRowButton" value="Add" /> </td>                                       
+                </tr>
+                      
+                <tr>
+                    <td style="height: 20px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>  
+                                                 
+                <tr>
+                    <td colspan="9">
+                        <table class="gridtable tabefont" id="ExportDetailTable">
+                            <thead>
+                                <tr>                                   
+                                    <th width="150px"> Style No </th>
+                                    <th width="150px"> Carton Quantity </th>
+                                    <th width="150px"> Item Quantity </th>
+                                    <th width="150px"> Rate </th>  
+                                    <th width="150px"> Item Desc. </th> 
+                                    <th width="150px"> Export Code </th>                           
+                                    <th> Delete </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var vd in Model.CommExportDetail)
+                                {
+                                    <tr id="row-@Model.CommExportDetail[vd.Key].OrderStyleRefId">                                      
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].OrderStyleRefId)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].OrderStyleRefId)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].CartonQuantity)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].CartonQuantity)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].ItemQuantity)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].ItemQuantity)
+                                        </td>
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].Rate)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].Rate)
+                                        </td>  
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].ItemDescription)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].ItemDescription)
+                                        </td>     
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommExportDetail[vd.Key].ExportCode)
+                                            @Html.DisplayFor(x => x.CommExportDetail[vd.Key].ExportCode)
+                                        </td>                               
+                                        <td>
+                                            <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                                                                                                                                                                                                                                                                                                                          
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>              
+                    <td> <input type="submit" style="width: 70px; height: 35px;" value="Save" /> </td>                                            
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>
+
+@section scripts
+{    
+    <script src="~/Scripts/SCERP/Commercial/CommercialInvoice.js"></script>
+}

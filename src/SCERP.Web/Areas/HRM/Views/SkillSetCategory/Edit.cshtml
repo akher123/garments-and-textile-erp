@@ -1,0 +1,51 @@
+﻿@model SCERP.Model.SkillSetCategory
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.CategoryId > 0) ? "Edit" : "Add";
+}
+
+
+
+@using (Html.BeginForm("Save", "SkillSetCategory", FormMethod.Post, new { @class = "SkillSetCategoryForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CategoryId)
+
+    <fieldset>
+        <legend>SkillSetCategory</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Category Name:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.CategoryName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.CategoryName)
+                </td>
+            </tr>
+           
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}

@@ -1,0 +1,105 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    ViewBag.Title = "Printing Receive";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h4>Printing Receive List</h4>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 100px;">
+            @using (Html.BeginForm("Index", "PrintReceive", FormMethod.Get, new { @class = "PrintReceiveSearchForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>@Html.Label("Factory  :")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Receive.PartyId, Model.PartySelectListItem, "-Select-", new { @style = "width:150px;", id = "partyId" })
+                        </td>
+                        <td>
+                            @Html.Label("Criteria")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key", @style = "width:150px;", id = "searchString" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            <div style="margin-bottom: 3px;width: 150px; ">
+                                <div class="dropdown">
+                                    <button class="dropbtn" >REPORT▼</button>
+                                    <div class="dropdown-content">
+
+                                        <a style="cursor: pointer" target="_blank" onclick="processReceiveBalanceStatus(1)">Receive Balance (PDF)</a>
+                                        <a style="cursor: pointer" target="_blank" onclick="processReceiveBalanceStatus(3)">Receive Balance (Excel)</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <input onclick="search('/Production/PrintReceive/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Receives, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("RefNo", header: "REF NO", canSort: false),
+                        grid.Column("InvoiceNo", header: "CHALLAN", canSort: false),
+                        grid.Column("InvoiceDate",canSort: false, header: "DATE", format: @<text>@(item.InvoiceDate == null ? "" : item.InvoiceDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("GateEntryNo", header: "GATE ENTRY NO", canSort: false),
+                        grid.Column("GateEntrydate", canSort: false, header: "TE ENTRY DATE", format: @<text>@(item.GateEntrydate == null ? "" : item.GateEntrydate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("Total", canSort: false, header: "REPORT", format: @<text><a href="/Production/ProductionReport/ProcessReceiveReport?ProcessReceiveRefId=@item.RefNo" target="_blank">PDF</a></text>),
+                        grid.Column("Edit", canSort: false, format: @<text> <input onclick="search('/Production/PrintReceive/Edit?Receive.ProcessReceiveId=@item.ProcessReceiveId')" value="Edit" type="button" />  </text>),
+                        grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Production/PrintReceive/Delete?ProcessReceiveId=@item.ProcessReceiveId"></button></text>)));
+
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function processReceiveBalanceStatus(reportTypeId) {
+            var partyId = $('#partyId').val();
+            var searchString = $('#searchString').val();
+            var processRefId = '005'; //Print process;
+            if (partyId.length > 0) {
+                var searchurl = '/Production/ProductionReport/ReceiveBalanceStatusReport?PartyId=' + partyId + '&SearchString=' + searchString + '&processRefId=' + processRefId + "&reportTypeId=" + reportTypeId;
+                window.open(searchurl);
+            } else {
+                alert("Please Select Fctory with add some filter creaiteria");
+            }
+
+        }
+    </script>
+  
+}

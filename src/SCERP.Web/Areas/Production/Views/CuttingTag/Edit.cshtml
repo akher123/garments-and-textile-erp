@@ -1,0 +1,65 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingTagViewModel
+@{
+    ViewBag.Title = Model.CuttingTag.CuttingTagId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "CuttingTag", FormMethod.Post, new { @class = "CuttingTagForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.CuttingTag.CuttingTagId)
+    <fieldset>
+        <legend>Cutting Tag</legend>
+        <table class="tableFont">
+            <tr>
+                <td>
+                    @Html.Label("RefId :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CuttingTag.CuttingSequenceId, new { @readonly = "readonly", @style = "background-color: #EEEEEE" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Part :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CuttingTag.ComponentRefId, Model.ComponentSelectListItem, "-Select-")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Solid :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.CuttingTag.IsSolid)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Print :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.CuttingTag.IsPrint)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Embroidery :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.CuttingTag.IsEmbroidery)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "tagListContainer" } })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

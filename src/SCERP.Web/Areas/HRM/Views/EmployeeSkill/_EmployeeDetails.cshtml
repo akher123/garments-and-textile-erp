@@ -1,0 +1,60 @@
+﻿@model SCERP.Model.VEmployeeCompanyInfoDetail
+@{
+    
+    var employeeSkillId = Convert.ToInt32(ViewData["EmployeeSkillId"]);
+ 
+   Layout = (employeeSkillId>0)?null:"~/Views/Shared/_Layout.Dialog.cshtml";
+
+}
+    @if (Model != null)
+{<td>
+        @Html.HiddenFor(x => x.EmployeeId)
+        <table style="font-family: Arial; font-size: 12px;">
+            <tr>
+                <td>
+                    <img src="@Url.Content(Model.PhotographPath)" alt="@Model.EmployeeName" height="160" />
+                </td>
+
+                <td>
+                    <table style="font-family:Arial; border:1px solid;background-color: #b0e0e6" >
+                        <tr>
+                            <td><b>Employee Name:</b></td>
+                            <td>@Model.EmployeeName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Employee ID:</b></td>
+                            <td>@Model.EmployeeCardId</td>
+                        </tr>
+                        <tr>
+                            <td><b>Comapany:</b></td>
+                            <td>@Model.CompanyName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Branch:</b></td>
+                            <td>@Model.BranchName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Unit:</b></td>
+                            <td>@Model.UnitName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Department:</b></td>
+                            <td>@Model.DepartmentName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Section:</b></td>
+                            <td>@Model.SectionName</td>
+                        </tr>
+                        <tr>
+                            <td><b>Line:</b></td>
+                            <td>@Model.LineName</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan="1"></td>
+            </tr>
+
+        </table>
+    </td>
+}
+    

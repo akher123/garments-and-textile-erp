@@ -1,0 +1,35 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabConsumptionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>FABRIC CONSUMPTION ANALYSIS</h2>
+</div>
+
+
+@section styles
+{
+    <link href="~/Content/CSS/Merchandising/RowSelectStyle.css" rel="stylesheet" />
+}
+<div id="FabricComplonetTab" @*style="margin-top:5px; margin-left: 20px;  font-size: 12px;"*@>
+    <ul>
+        <li><a id="fabOrderStyleListTabHref" href="/Merchandising/FabConsumption/OrderStyleList?SearchString=@Model.OrderStyleRefId">Style</a></li>
+        <li><a id="styleFabConsumptionTabHref" href="/Merchandising/FabConsumption/Index">Component</a></li>
+        <li><a id="comConsumptionDetailHref" href="/Merchandising/CompConsumptionDetail/Index">Fabric Consumption</a></li>
+        <li><a id="CollarCuffconsDetailHref" href="/Merchandising/ConsCollarCuff/Index">Collar&Cuff</a></li>
+    </ul>
+
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        var postData = {};
+        $("#FabricComplonetTab").tabs({
+            load: SCERP.AjaxCompleted,
+           disabled: [1, 2,3]
+        });
+     
+    </script>
+
+}

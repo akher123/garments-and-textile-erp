@@ -1,0 +1,186 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryReportViewModel
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Style wise Accessories Status</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("AccessoriesStatus", "AccessoriesReceive", FormMethod.Get, new { @class = "AccessorisStatusDetailForm" }))
+        {
+           
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, new { @class = "KnittingProgram_BuyerRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, new { @class = "KnittingProgram_OrderNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "KnittingProgram_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="AccessoriesStatus(1)">Status(PDF)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="AccessoriesStatus(3)">Status(EXCEL)</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">BOM ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="AccessoriesBoM(1)">Accessories(PDF)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="AccessoriesBoM(3)">Accessories(EXCEL)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="AccessoriesBoMByOrder(1)">ALL(EXCEL)</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+  
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.KnittingProgram_BuyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/KnittingProgram/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.KnittingProgram_OrderNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.KnittingProgram_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.KnittingProgram_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/KnittingProgram/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.KnittingProgram_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.KnittingProgramt_StyleNo').append(
+                        $('<option/>').attr('value', '').text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.KnittingProgram_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.KnittingProgram_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        function AccessoriesStatus(reportTypeId) {
+            var form = $('.AccessorisStatusDetailForm');
+            var data = form.serialize();
+            var url = '/Inventory/AccessoriesReceive/AccessoriesStatusReport?' + data + '&ReportType=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+        function AccessoriesBoM(reportTypeId) {
+        
+            var form = $('.AccessorisStatusDetailForm');
+            var orderStyleRefId = $('.KnittingProgram_StyleNo').val();
+            var IsShowReport = true;
+            if (orderStyleRefId.length === 0) {
+                alert('Select Style No');
+            } else {
+                var url = '/Merchandising/Consumption/StyleWiseConsumtionDetail?OrderStyleRefId=' + orderStyleRefId + '&IsShowReport=' + IsShowReport + '&ReportType=' + reportTypeId;
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    form.validate();
+                    if (!form.valid()) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        window.open(url);
+                    }
+                }
+            }
+           
+        }
+        function AccessoriesBoMByOrder(reportTypeId) {
+
+            var form = $('.AccessorisStatusDetailForm');
+            var orderNo = $('.KnittingProgram_OrderNo').val();
+            if (orderNo.length === 0) {
+                alert('Select Order No');
+            } else {
+                var url = '/Merchandising/Consumption/OrderWiseAccBOM?orderNo=' + orderNo + '&ReportType=' + reportTypeId;
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    form.validate();
+                    if (!form.valid()) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        window.open(url);
+                    }
+                }
+            }
+
+        }
+    </script>
+}

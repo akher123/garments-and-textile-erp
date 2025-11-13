@@ -1,0 +1,99 @@
+﻿@model SCERP.Web.Areas.Production.Models.BatchRollViewModel
+@{
+    Layout = null;
+}
+<table style="width: 100%">
+    <tr>
+        <td>
+            <div class="title-tag" style="font-weight: 600;">Dyeing Batch</div>
+            <table class="tabefont webgrid-table">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Ref No</th>
+                        <th>BatchNo</th>
+                        <th>Buyer</th>
+                        <th>Order</th>
+                        <th>Style</th>
+                        <th>Color</th>
+                        <th>Batch Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.BtRefNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.BatchNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.BuyerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.OrderName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.StyleName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.GColorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.VProBatch.BatchQty)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="title-tag" style="font-weight: 600;">Dyeing Batch Detail</div>
+            <table class="tabefont webgrid-table">
+                <thead class="webgrid-header">
+                <tr>
+                    <th>Fabric Type</th>
+                    <th>Component</th>
+                    <th>M/C Dia</th>
+                    <th>Finish Dia</th>
+                    <th>GSM</th>
+                    <th>Quantity</th>
+                    <th>Remarks</th>
+              
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var m in Model.BatchDetails)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(x => m.ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.ComponentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.MdiaSizeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.FdiaSizeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.GSM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => m.Remarks)
+                        </td>
+                   
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+  
+</table>

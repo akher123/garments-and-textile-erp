@@ -1,0 +1,112 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StyleShipmentViewModel
+@{
+    ViewBag.Title = "StyleShipmentApproval";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Approved",
+        Value = "True"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Pending",
+        Value = "False",
+        Selected = true
+    });
+}
+
+<div class="header-title">
+    <h2>Style Shipment Approval</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("ApprovedStyleShipmentList", "StyleShipment", FormMethod.Get, new {@class = "ApprovedReturnableChallanListForm submit-allow"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.StyleShipment.IsApproved, listItems, new {@class = "form-control"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.StyleShipments, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("StyleShipmentRefId", canSort: false, header: "Ref No."),
+                  grid.Column("BuyerName", canSort: false, header: "Buyer"),
+                  grid.Column("RefNo", canSort: false, header: "Order"),
+                  grid.Column("StyleName", canSort: false, header: "Style"),
+                  grid.Column("InvoiceNo", canSort: false, header: "Invoice No"),
+                  grid.Column("InvoiceDate", canSort: false, header: "InvoiceDate", format: @<text>@(item.InvoiceDate == null ? "" : item.InvoiceDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("Through", canSort: false, header: "Through"),
+                  grid.Column("ThroughCellNo", canSort: false, header: "Through Phone"),
+                  grid.Column("DriverName", canSort: false, header: "Driver Name"),
+                  grid.Column("DriverCellNo", canSort: false, header: "Driver Phone"),
+                  grid.Column("ShipmentMode", canSort: false, header: "Shipment Mode"),
+                  grid.Column(header: "IsApproved", format: @<input class="IsApprovedcbx" onclick="IsApprovedFun(this)" name="IsApprovedCheckBox" @(item.IsApproved == true ? "checked" : "") type="checkbox" value="@item.StyleShipmentId" />),
+                      grid.Column("Report", format:@<text><a href="/Inventory/StyleShipment/ShipmentDeliveryChalan?styleShipmentId=@item.StyleShipmentId" target="_blank">Challan</a></text> , canSort: false)))
+        }
+    </div>
+</section>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsApprovedFun(chechBox) {
+            var $chechBox = $(chechBox);
+            var styleShipmentId = $chechBox.val();
+            $.Ajax({
+                url: '/StyleShipment/ApprovedStyleShipment',
+                data: { StyleShipmentId: styleShipmentId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Approved/Not Approved.");
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+

@@ -1,0 +1,123 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>@(Model.Receive.ProcessReceiveId > 0 ? "Edit " : "Add ")Printing Receive </h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "PrintReceive", FormMethod.Post, new { @class = "PrintingProcessReceiveForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Receive.ProcessReceiveId)
+        <div id="findAssignedFactoryCuttingJob">
+            <fieldset>
+                <legend>Printing Delivery</legend>
+                <table style="margin-left: 100px;">
+                    <tr>
+                        <td>@Html.Label("Factory  :")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Receive.PartyId, Model.PartySelectListItem, "-Select-",new{id="factoryId"})
+                        </td>
+                        <td>@Html.Label("Criteria :")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString)
+                        </td>
+                        <td>
+                            <input type="button" class="addButton" id="PintSearchPartyWiseBalance" action="/PrintReceive/GetPrintingDeliveryJobs" target="#printingProcessDeliveryList" value="Find" />
+                        </td>
+                        <td>
+                            <input onclick="search('/Production/PrintReceive/Index')" value="Back" class="addButton" type="button" />
+                        </td>
+                      
+                    </tr>
+                </table>
+               
+            </fieldset>
+        </div>
+       <input type="button" id="toggoleButton" value="+" />
+         <div id="printingProcessDeliveryList">
+            @Html.Partial("~/Areas/Production/Views/PrintReceive/_PrintingProcessDelivery.cshtml", Model)
+        </div>
+        <table style="background-color: gray">
+            <tr>
+                <td style="width:20%">
+                    <table class="tableFont">
+                        <tr>
+                            <td>@Html.Label("REF NO:")</td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Receive.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("INVOICE NO:")</td>
+                            <td>@Html.TextBoxFor(x => x.Receive.InvoiceNo)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("INVOICE DATE:")</td>
+                            <td>@Html.TextBoxFor(x => x.Receive.InvoiceDate, new { @class = "datepicker", @data_val = "false" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("GATE ENTRY NO:")</td>
+                            <td>@Html.TextBoxFor(x => x.Receive.GateEntryNo)</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("GATE ENTRY DATE:")</td>
+                            <td>@Html.TextBoxFor(x => x.Receive.GateEntrydate, new { @class = "datepicker", @data_val = "false" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("REMARKS:")</td>
+                            <td>@Html.TextBoxFor(x => x.Receive.Remarks)</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 70%" class="JobWizeprintReceivBalance"></td>
+            </tr>
+        </table>
+         <div id="processReceiveDetail" style="margin-bottom: 15px;">
+            @if (Model.DoDictionary.Any())
+            {
+                @Html.Partial("~/Areas/Production/Views/PrintReceive/_PrintReceiveDetailLsit.cshtml", Model)
+            }
+        </div>
+        <div style="padding-left:90%;margin-top: 10px;">
+            <input type="button" class="FindPartial buttonStyle" action="/PrintReceive/Save" target="#contentRight" value="Save" />
+        </div>
+
+    }
+
+
+</section>
+
+@section scripts
+{
+   <script type="text/javascript">
+    $("#toggoleButton").click(function () {
+        var value = $(this).val();
+        if (value == '+') {
+            $(this).val("-");
+        } else {
+            $(this).val("+");
+        }
+        $("#printingProcessDeliveryList").toggle("1000");
+
+    });
+    $("#printingProcessDeliveryList").hide();
+
+    $('#PintSearchPartyWiseBalance').unbind('click').bind('click', function () {
+        var button = $(this);
+        var url = button.attr('action');
+        var form = button.parents('form:first');
+        $.Ajax({
+            url: url,
+            type: "POST",
+            data: form.serialize()
+        }).done(function (responsHtml) {
+            $('#printingProcessDeliveryList').html(responsHtml);
+        });
+    });
+
+</script> 
+}

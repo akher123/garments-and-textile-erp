@@ -1,0 +1,114 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.SalaryReportViewModel
+
+@{
+    ViewBag.Title = "Salary Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("SalarySheet", "Report", FormMethod.Get, new {@class = "ReportSearchForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Salary Report</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 10px;">
+        <table class="tabefont">
+            @{ Html.RenderPartial("~/Areas/Payroll/Views/Report/_SearchSalaryReport.cshtml", Model); }
+                                                        
+            <tr>
+                <td>
+                    @Html.Label("Employee Type: ")
+                </td>
+                <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeListItem, "--Select--", new {@class = "Hrm_EmployeeTypeId", @action = "/Payroll/Report/GetAllGradeByTypeId", @TargetClass = "Hrm_EmployeeGradeId"})              
+                <td>
+                    @Html.Label("Employee Grade: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeGradeId, Model.EmployeeGradeListItem, "--Select--", new {@class = "Hrm_EmployeeGradeId", @action = "/Payroll/Report/GetAllDesignationsByEmployeeGradeId", @TargetClass = "Hrm_EmployeeDesignationId"})     
+                </td>           
+            </tr>
+                                                        
+            <tr>
+                <td>
+                    @Html.Label("Designation:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeDesignationId, Model.EmployeeDesignationListItem, "--Select--", new {@class = "Hrm_EmployeeDesignationId"})
+                </td>
+                <td>                
+                </td>
+
+                <td>                   
+                </td>
+            </tr>
+                             
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchByEmployeeCardId, new {htmlAttributes = new {@class = "CardId"}})
+                </td>
+                <td>
+                    @Html.Label("Employee Name:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchByEmployeeName, new {htmlAttributes = new {@class = "EmployeeName"}})
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Gross Salary")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.GrossComparisonId, Model.ComparisonsListItem, "--Select--", new {@class = "GrossComparison"})                 
+                </td>
+                <td></td>
+                <td>@Html.EditorFor(x => x.GrossSalary)</td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Basic Salary")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BasicComparisonId, Model.ComparisonsListItem, "--Select--", new {@class = "BasicComparison"})                                      
+                </td>
+                <td></td>
+                <td>@Html.EditorFor(x => x.BasicSalary)</td>
+            </tr>
+                       
+            <tr>
+                <td>
+                    @Html.Label("Effective Date")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EffectiveDateComparisonId, Model.ComparisonsListItem, "--Select--", new {@class = "BasicComparison"})             
+                </td>
+                <td>          
+                </td>
+                <td>             
+                    @Html.TextBoxFor(x => x.EffectiveDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })               
+                </td>
+            </tr>                                         
+                      
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" id="showReport" class="addButton" onclick="search('@Url.Action("SalaryReport", "Report")','ReportSearchForm')" value="Show Report" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </section>
+}
+
+

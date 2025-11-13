@@ -1,0 +1,75 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.StampAmountViewModel
+@{
+    ViewBag.Title = "Stamp Amount";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.StampAmounts.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "StampAmounts", FormMethod.Get, new { @class = "StampAmountsSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(model => model.StampAmountId)
+
+    <div class="header-title">
+        <h2>Stamp Amount</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("From Date: ")
+                    </td>
+                    <td>                      
+                        @Html.TextBoxFor(x => x.SearchByFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date: ")
+                    </td>
+                    <td>      
+                        @Html.TextBoxFor(x => x.SearchByToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/StampAmounts/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.StampAmounts, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                         grid.Column("Amount", "Amount"),
+                         grid.Column("FromDate", header: "From", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>),
+                         grid.Column("ToDate", header: "To", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>),
+                         grid.Column("Detail/Edit", format: @<text><button class="edit" action="/HRM/StampAmounts/Edit?StampAmountId=@item.StampAmountId"></button></text>, canSort: false),
+                         grid.Column("Delete",format:@<text><button class="delete" action="/HRM/StampAmounts/Delete?StampAmountId=@item.StampAmountId"></button></text>, canSort: false)));
+        }
+    </div>
+</section>

@@ -1,0 +1,68 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.DocumentViewModel
+@{
+    ViewBag.Title = "StyleDocument";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Style Document List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("StyleDocument", "OrderDocument", FormMethod.Get, new {@class = "StyleDocumentForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "batch_buyerRefId"})
+                    </td>
+                    <td>
+                        @Html.Label("Order ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.RefId, Model.OrderSelectListItem, "-Select-", new {@class = "batch_OrderNo"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover OrderDocumentList">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Documents, rowCount: Model.Documents.Count(), autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                        grid.Column("RefId", header: "Order RefID", canSort: false),
+                        grid.Column("Name", header: "Title", canSort: false),
+                        grid.Column("Description", header: "Description", canSort: false),
+                        grid.Column("Download", format: @<text><a href="/Common/Document/DownLoad?Path=@item.Path"><img src="~/Content/icons/16x16/download.jpg" alt=""/> </a></text>)))
+            ;
+        }
+    </div>
+</section>
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Production/batch.js"></script>
+
+}

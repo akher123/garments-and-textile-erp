@@ -1,0 +1,157 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.ProjectDocumentInfoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "ProjectDocumentInfo", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.PhotographPath)
+
+    <fieldset>
+        <legend> Project Report </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Ref No:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.RefNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.RefNo)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Report Name:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ReportName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.ReportName)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Module Name</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ModuleId, Model.ModuleSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+                                   
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Description)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Responsible Person:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ResponsiblePerson, Model.ResonsiblePersonSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.ResponsiblePerson)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Last Update Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.LastUpdateDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.LastUpdateDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Last Updated By:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.LastUpdateBy, Model.LastUpdatedBySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.LastUpdateBy)
+                </td>
+            </tr>
+                 
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>                             
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <fieldset>
+                        <legend> Upload File </legend>
+                        <div id="uploadFile">Upload</div>
+                    </fieldset>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+                                          
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/jQuery-File-Upload/jquery.uploadfile.min.js"></script>
+    <script src="~/Scripts/SCERP/CRM/ProjectReport.js"></script>
+}

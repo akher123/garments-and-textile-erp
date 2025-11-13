@@ -1,0 +1,28 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.DocumentViewModel
+@{
+    ViewBag.Title = Model.DocumentId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "OrderDocument", FormMethod.Post, new { @class = "OrderDocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.DocumentId)
+    @Html.Partial("~/Areas/Common/Views/Document/_Edit.cshtml",Model)
+        <table>
+        <tr>
+            <td></td>
+            <td>
+                @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "OrderDocumentList" } })
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+}
+
+
+@section scripts
+{
+    <script src="~/Scripts/Common/documnet.js"></script>
+}

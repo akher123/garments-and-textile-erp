@@ -1,0 +1,144 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabStoreViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.FinishFabbricStore.FinishFabStoreId > 0 ? "Edit" : "Add");
+}
+
+@using (Html.BeginForm("Save", "FinishFabStore", FormMethod.Post, new { @class = "finishFabStore" }))
+{
+    @Html.HiddenFor(x => x.FinishFabbricStore.FinishFabStoreId)
+      @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Finish Fabric Receive</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("IRef:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FinishFabbricStore.FinishFabRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("RcvReg No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.FinishFabbricStore.RcvRegNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Invoice No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.FinishFabbricStore.InvoiceNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Invoice Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FinishFabbricStore.InvoiceDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Gate Entry No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.FinishFabbricStore.GateEntryNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Gate Entry Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FinishFabbricStore.GateEntryDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Remarks:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.FinishFabbricStore.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Challan No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FinishFabbricStore.PROD_DyeingSpChallan.DyeingSpChallanRefId, new { id = "textDyeingSpChallanRefId", @placeholder = "Search by Challan No" })
+                    @Html.HiddenFor(x => x.FinishFabbricStore.DyeingSpChallanId, new { id = "textDyeingSpChallanId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <div id="detailChallanContainner">
+            @Html.Partial("_DetailChallan", Model)
+        </div>
+        <div class="custom-modal-btn">
+            <input type="submit" value="Save" class="addButton" id="saveButton"/>
+        </div>
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+        $('#textDyeingSpChallanRefId').autocomplete({
+            source: function(request, response) {
+                var option = {
+                    url: "/FinishFabStore/DyeingSpChallanAutocomplite",
+                    type: "POST",
+                    datatype: "json",
+                    data: { searchString: request.term },
+                };
+                $.Ajax(option)
+                    .done(function(data) {
+                        response($.map(data, function(dsp) {
+                            return { label: dsp.DyeingSpChallanRefId, value: dsp.DyeingSpChallanRefId, DyeingSpChallanId: dsp.DyeingSpChallanId };
+                        }));
+                    });
+            },
+            select: function(event, ui) {
+                $('#textDyeingSpChallanId').val('');
+                var dyeingSpChallanId = ui.item.DyeingSpChallanId;
+                $('#textDyeingSpChallanId').val(dyeingSpChallanId);
+                getChallanDetail(dyeingSpChallanId);
+            },
+        });
+
+        function getChallanDetail(dyeingSpChallanId) {
+
+            $('#detailChallanContainner').load('/FinishFabStore/GetDetailChallan?dyeingSpChallanId=' + dyeingSpChallanId);
+
+        }
+    </script>
+}

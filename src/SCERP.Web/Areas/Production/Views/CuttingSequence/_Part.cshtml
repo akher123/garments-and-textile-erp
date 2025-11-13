@@ -1,0 +1,61 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingSequenceViewModel
+@{
+    Layout = null;
+
+}
+<table class="webgrid-table webgrid tabefont">
+    <tr class="webgrid-header">
+        <td></td>
+        <td>@Html.Label("Part ")</td>
+        <td>@Html.Label("Add ")</td>
+    </tr>
+    <tr>
+        <td>
+            @*@Html.HiddenFor(x => x.CuttingSequence.CuttingSequenceId)*@
+        </td>
+        <td>
+
+            @Html.DropDownListFor(x => x.CuttingSequence.ComponentRefId, Model.ComponentSelectListItem, "-Select-")
+        </td>
+        <td>
+            <input type="button" class="FindPartial" action="/CuttingSequence/AddNewPart/" target="#part" value="+" />
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.Label("SL ")</td>
+        <td>@Html.Label("Part ")</td>
+        <td>@Html.Label("Delete ")</td>
+    </tr>
+    @foreach (var part in Model.CuttingSequenceDictionary)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(x => Model.CuttingSequenceDictionary[part.Key].SlNo)
+                @Html.DisplayFor(x => Model.CuttingSequenceDictionary[part.Key].SlNo)
+            </td>
+            <td>
+                @Html.HiddenFor(x => Model.CuttingSequenceDictionary[part.Key].CuttingSequenceId)
+                @Html.HiddenFor(x => Model.CuttingSequenceDictionary[part.Key].ComponentRefId)
+                @Html.HiddenFor(x => Model.CuttingSequenceDictionary[part.Key].ComponentName)
+                @Html.DisplayFor(x => Model.CuttingSequenceDictionary[part.Key].ComponentName)
+            </td>
+            @if (part.Value.CuttingSequenceId > 0)
+            {
+                <td>
+                    <button class="delete" action="/Production/CuttingSequence/Delete?CuttingSequenceId=@part.Value.CuttingSequenceId "></button>
+                </td>
+
+            }
+            else
+            {
+                <td>
+                    <input type="button" onclick="deletePart(this)" value="X" />
+                </td>
+            }
+
+        </tr>
+    }
+
+</table>
+

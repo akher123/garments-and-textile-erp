@@ -1,0 +1,74 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>DAILY MACHINE WISE KNITTING PRODUCTION</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("MachineWiseKnitting", "KnittingRoll", FormMethod.Get, new {@class = "MachineWiseKnittingForm ignore-validation"}))
+        {
+            <table>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker"})
+                    </td>
+                    <td>
+                        @Html.DisplayName("Processor :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.KType, new SelectList(new[] {new {Value = "IN", Text = "INTERNAL"}, new {Value = "EX", Text = "EXTERNAL"}}, "Value", "Text"))
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type="text" value="@Model.DataTable.Compute("sum([" + "TTRollQty" + "])", "").ToString() Kg" readonly="readonly" style="background-color: #a5c3f9; width: auto;"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <table class="webgrid-table">
+            <thead class="webgrid-header">
+                <tr>
+                    @foreach (DataColumn col in Model.DataTable.Columns)
+            {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.DataTable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                {
+
+                            <td>@row[col.ColumnName]</td>
+                        }
+                    </tr>
+                }
+                <tr style="background-color: lightblue">
+                    <td colspan="2" style="justify-content: center">Total Qty</td>
+
+                    <td>@Model.DataTable.Compute("sum([" + "TTRollQty" + "])", "").ToString() Kg</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,84 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.EmployeeSalarySearchViewModel
+
+@{
+    ViewBag.Title = "Salary Search";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeSalaries.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "EmployeeSalarySearch", FormMethod.Get, new {@class = "EmployeeSalarySearchSearchForm"}))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Salary Search</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @{ Html.RenderPartial("~/Areas/Payroll/Views/EmployeeSalarySearch/_SalarySearchView.cshtml", Model); }
+
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                </td>
+                <td>                                      
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />  
+                                    
+                </td>
+            </tr>                                                   
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">    
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeSalaries, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                                         
+                    grid.Column("EmployeeCardId",header:"Employee Id"),
+                    grid.Column("Name", header: "Name"), 
+                    grid.Column("FromDate", header:"From Date"),
+                    grid.Column("ToDate", header: "To Date"),
+                    grid.Column("GrossSalary", header: "Gross Salary"),                                   
+                    grid.Column("BasicSalary",header:"Basic Salary"),
+                    grid.Column("HouseRent", header: "House Rent", canSort: false),
+                    grid.Column("MedicalAllowance", header: "Medical Allowance", canSort: false),
+                    grid.Column("Conveyance", header: "Transport Allowance", canSort: false),
+                    grid.Column("FoodAllowance", header: "Food Allowance", canSort: false),
+                    grid.Column("EntertainmentAllowance", header: "Entertainment", canSort: false),
+                    grid.Column("Tax", header: "Tax"),
+                    grid.Column("ProvidentFund", header: "Provident Fund", canSort: false),
+                    grid.Column("NetSalaryPaid", header: "Net Paid")                                                                                                                                                                                    
+            ));                  
+        }
+    </div>   
+</section>
+

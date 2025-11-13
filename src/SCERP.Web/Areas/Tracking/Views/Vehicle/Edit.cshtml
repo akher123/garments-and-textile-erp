@@ -1,0 +1,49 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.VehicleViewModel
+@{
+
+    ViewBag.Title = Model.VehicleId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Vehicle", FormMethod.Post, new { @class = "VehicleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VehicleId)
+    <fieldset>
+        <legend>Vehicle Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Vehicle Type :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VehicheType,new{@placeholder="Vehicle Type"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.VehicheType)
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

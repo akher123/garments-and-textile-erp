@@ -1,0 +1,126 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.TargetProductionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+    <link href="~/Content/Common/ganttStyle.css" rel="stylesheet" />
+
+}
+
+
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("PlanningBorad", "TargetProduction", FormMethod.Post, new { @class = "TargetProductionFrom" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                            <p>Sewing Production Planning</p>
+                    </td>
+                    <td>
+                        @Html.Label("Year: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.YearId, Model.YearSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label("Month: ")
+                    </td>
+                    <td>
+                        @Html.EnumDropDownListFor(x => x.MonthId)
+                        <input type="button" class="searchAction" />
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content" style="z-index: 1000">
+                                <a style="cursor: pointer" target="_blank" onclick="MontyPlanningVsProduction()">TargetVsAchieve</a>
+                                <a style="cursor: pointer" target="_blank" onclick="OrderPlanStatus(3)">Order Plan Status(Excel)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="OrderPlanStatus(1)">Order Plan Status(PDF)</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+    <div class="gantt" style="height:0px;"></div>
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/genttScript/jquery.fn.gantt.js"></script>
+
+    <script>
+        var data = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.GnettSources)))
+        $(".gantt").gantt({
+            source: data,
+            navigate: "scroll",
+            useCookie: 'true',
+            // navigate: "buttons",
+            waitText: "Please Wait...",
+            //maxScale: "hours",
+             scale: "days",
+	       
+            dow: [ "S", "M", "T", "W", "T", "F","S"],
+            months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            itemsPerPage: 23,
+            onItemClick: function (data) {
+                var action = "/Planning/TargetProduction/Edit?PlanTargetProduction.TargetProductionId=" + data + "&IsPartial=true";
+                return showModal(action);
+            },
+            onAddClick: function (dt, rowId) {
+                var str = $.datepicker.formatDate('yy-mm-dd', new Date(dt));
+                var action = "/Planning/TargetProduction/Edit?PlanTargetProduction.StartDate=" + str + "&PlanTargetProduction.LineId=" + rowId + "&IsPartial=true";
+                return showModal(action);
+            },
+            onRender: function () {
+                console.log("chart rendered");
+            }
+        });
+
+        function showModal(action) {
+            if (action) {
+                jQuery.Ajax({
+                    url: action
+                    , type: "GET"
+                    , dialog: {}
+                    , loader: { loader: "body" }
+                    , success: self.DialogOpened
+                });
+            }
+         //   e.preventDefault();
+            return false;
+        }
+
+
+        $('.fn-gantt .spacer').click(function () {
+            alert('hi');
+        });
+
+        function MontyPlanningVsProduction() {
+            var form = $('.TargetProductionFrom');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/MontyPlanningVsProduction?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+
+      function OrderPlanStatus(reportType) {
+                var searchurl = '/Planning/Report/RunningOrderSweingPlanStatus?reportType=' + reportType;
+                window.open(searchurl);
+        }
+    </script>
+}

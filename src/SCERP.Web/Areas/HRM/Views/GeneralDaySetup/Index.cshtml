@@ -1,0 +1,102 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.GeneralDaySetupViewModel
+@{
+    ViewBag.Title = "General Day Setup";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.GeneralDaySetups.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "GeneralDaySetup", FormMethod.Get, new { @class = "GeneralDaySetupSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>General Day Setup</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+    <table class="tabefont">
+
+        <tr>
+            <td>
+                @Html.Label("Company :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/Planning/GeneralDaySetup/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.Label("Branch :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Planning/GeneralDaySetup/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Unit :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Planning/GeneralDaySetup/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.Label("Department :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                <input type="button" class="searchAction" />
+            </td>
+        </tr>     
+    </table>
+
+</section>
+}
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Planning/GeneralDaySetup/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.GeneralDaySetups, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("BranchUnitDepartment.UnitDepartment.Department.Name", header: "Department ", format: @<text>@(item.BranchUnitDepartment.UnitDepartment.Department == null ? "" : item.BranchUnitDepartment.UnitDepartment.Department.Name)</text>),
+                    grid.Column("Line.Name", header: "Line ", format: @<text>@(item.Line == null ? "" : item.Line.Name)</text>),
+                    grid.Column(".BranchUnitDepartmentUnitDepartment.Unit.Name", header: "Unit ", format: @<text>@(item.BranchUnitDepartment.UnitDepartment.Unit == null ? "" : item.BranchUnitDepartment.UnitDepartment.Unit.Name)</text>),
+                    grid.Column("BranchUnitDepartment.BranchUnit.Branch.Company.Name", header: "Company ", format: @<text>@(item.BranchUnitDepartment.BranchUnit.Branch.Company == null ? "" : item.BranchUnitDepartment.BranchUnit.Branch.Company.Name)</text>),
+                    grid.Column("BranchUnitDepartment.BranchUnit.Branch.Name", header: "Branch ", format: @<text>@(item.BranchUnitDepartment.BranchUnit.Branch == null ? "" : item.BranchUnitDepartment.BranchUnit.Branch.Name)</text>),
+                    grid.Column("Detail/Edit",canSort:false,format:@<text><button class="edit" action="/HRM/GeneralDaySetup/Edit?GeneralDaySetupId=@item.GeneralDaySetupId"></button></text>),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/GeneralDaySetup/Delete?GeneralDaySetupId=@item.GeneralDaySetupId"></button></text>, canSort: false)));
+        }
+    </div>
+   
+</section>
+

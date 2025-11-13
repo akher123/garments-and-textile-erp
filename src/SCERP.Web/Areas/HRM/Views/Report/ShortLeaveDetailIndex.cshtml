@@ -1,0 +1,154 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ShortLeaveDetailReportViewModel
+
+@{
+    ViewBag.Title = "Short Leave Detail";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("ShortLeaveDetailIndex", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2>Gate Pass Detail</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @*@{ Html.RenderPartial("~/Areas/HRM/Views/Report/_SearchShortLeaveSummary.cshtml", Model); }*@
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @data_val = "false", @action = "/HRM/Report/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @data_val = "false", @action = "/HRM/Report/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByBranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @data_val = "false", @action = "/HRM/Report/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByBranchUnitDepartmentId, Model.DepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @data_val = "false", @action = "/HRM/Report/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("From :")
+                    </td>
+                    <td>                     
+                        @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("To :")
+                    </td>
+                    <td>                   
+                        @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchByEmployeeCardId, new { @class = "SearchByEmployeeCardId" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Reason Type")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReasonType, Model.ReasonTypSelectListItems, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_ReasonType"}})
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type="button" id="showReport" class="addButton" value="Show Report"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+
+
+<script type="text/javascript">
+    $('#showReport').click(function () {
+
+        var form = $(this).parents("form:first");
+        var ignoreValidation = form.hasClass("ignore-validation");
+        if (!ignoreValidation) {
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    // e.preventDefault();
+                    return false;
+                }
+                ShowReport();
+            }
+        } else {
+            ShowReport();
+        }
+        return true;
+    }
+    );
+
+    function ShowReport() {
+        var companyId = $('#SearchByCompanyId').val();
+        var branchId = $('#SearchByBranchId').val();
+        var branchUnitId = $('#SearchByBranchUnitId').val();
+        var branchUnitDepartmentId = $('#SearchByBranchUnitDepartmentId').val();
+        var departmentSectionId = $('#SearchByDepartmentSectionId').val();
+        var departmentLineId = $('#SearchByDepartmentLineId').val();
+        var fromDate = $('#StartDate').val();
+        var toDate = $('#EndDate').val();
+        var employeeCardId = $('#SearchByEmployeeCardId').val();
+        var reasonType = $('#ReasonType').val();
+
+        window.open('@Url.Action("ShortLeaveDetail", "Report")?companyId=' + companyId + '&branchId=' + branchId + '&branchUnitId=' + branchUnitId + '&branchUnitDepartmentId=' + branchUnitDepartmentId + '&departmentSectionId=' + departmentSectionId + '&departmentLineId=' + departmentLineId + '&employeeCardId=' + employeeCardId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&reasonType=' + reasonType, '_blank');
+    }
+</script>
+

@@ -1,0 +1,125 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashLCDyesChemicalViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+
+<div class="header-title">
+    <h2>Dyes Chemical Cash LC</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "CashLCDyesChemical", FormMethod.Get, new { @class = "taskForm ignore-validation" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Criteria :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.SearchString, new { @style = "", @data_val = "false", @placeholder = "Search key" })
+                </td>
+                @*<td>
+                    @Html.TextBoxFor(x => x.CommCashLc.FromDate, null, new { @style = "", @data_val = "false", @placeholder = "from date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CommCashLc.ToDate, null, new { @style = "", @data_val = "false", @placeholder = "to date", @class = "datepicker" })
+                </td>*@
+                <td>@Html.Label("")</td>
+
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+
+            </tr>
+        </table>
+
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Commercial/CashLCDyesChemical/Edit">Add New</button>
+        </div>
+
+        @*@{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CommCashLcs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("CashLcId", header: "Cash LC Id"),
+            grid.Column("CashLcNo", header: "Cash LC No"),
+            grid.Column("LcValue", header: "LC Value"),
+            grid.Column("LcDate", header: "LC Date", format: @<text>@(item.LcDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.LcDate)))</text>),
+                 grid.Column("SupplierName", header: "Supplier Name"),
+                 grid.Column("Item", header: "Item"),
+                 grid.Column("Quantity", header: "Quantity"),
+                 grid.Column("PortOfDelivery", header: "Port Of Delivery"),
+                 grid.Column("DateOfBL", header: "Date Of BL"),
+                 //grid.Column("CountryOfOrigin", header: "CountryOfOrigin"),
+                 grid.Column("PaymentTerms", header: "Payment Terms"),
+                 //grid.Column("PaymentDate", header: "Payment Date", format: @<text>@(item.PaymentDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.PaymentDate)))</text>),
+                 //grid.Column("ShipmentDate", header: "Shipment Date", format: @<text>@(item.ShipmentDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ShipmentDate)))</text>),
+                 //grid.Column("BankRef", header: "BankRef"),
+                 //grid.Column("BankRef", format: @item => Html.DropDownListFor(m => Model.CommCashLc.BankRef, new SelectList(Model.BankSelectListItem, "BankId", "BankName", @item.BankRef), new { style = "width: 150px; background-color:gray"})),
+                 grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Commercial/CashLCDyesChemical/Edit?CashLcId=@item.CashLcId"></button></text>),
+                     grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Commercial/CashLCDyesChemical/Delete?CashLcId=@item.CashLcId"></button></text>)))
+            ;
+        }*@
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CommCashLcs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                   grid.Column("CashLcId", header: "Cash LC Id"),
+                   grid.Column("CashLcNo", header: "Cash LC No"),
+                   grid.Column("LcValue", header: "LC Value"),
+                  grid.Column("LcDate", header: "LC Date", format: @<text>@(item.LcDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.LcDate)))</text>),
+                  grid.Column("SupplierName", header: "Supplier Name"),
+                  grid.Column("Item", header: "Item"),
+                  grid.Column("Quantity", header: "Quantity"),
+                  grid.Column("PortOfDelivery", header: "Port Of Delivery"),
+                  grid.Column("DateOfBL", header: "Date Of BL"),
+                  grid.Column("PaymentTerms", header: "Payment Terms"),
+                 grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Commercial/CashLCDyesChemical/Edit?CashLcId=@item.CashLcId"></button></text>),
+                 grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Commercial/CashLCDyesChemical/Delete?CashLcId=@item.CashLcId"></button></text>)))
+        }
+
+    </div>
+</section>
+
+
+
+

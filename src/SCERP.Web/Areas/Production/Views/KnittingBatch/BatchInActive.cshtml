@@ -1,0 +1,88 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = "Batch";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@using (Html.BeginForm("BatchInActive", "KnittingBatch", FormMethod.Get, new { @class = "DyeingBatchForm submit-allow" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div style="width:500px; padding-left:340px;">
+        <h3>Active/InActive Batch</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <div style="background-color: #46B9AF; ">
+            <div style="margin-left: 160px;margin-bottom:15px">
+                <table class="tabefont">
+                    <tr>
+                        <td>@Html.Label("From")</td>
+                        <td>
+                            @Html.EditorFor(x => x.FromDate, new { htmlAttributes = new { @data_val = "false", @placeholder = "Date", @style = "width:100px;" } })
+                        </td>
+                        <td>@Html.Label("To")</td>
+                        <td>
+                            @Html.EditorFor(x => x.ToDate, new { htmlAttributes = new { @data_val = "false", @placeholder = "Date", @style = "width:100px;", @class = "searchEnterKeyAction" } })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                </table>
+            </div>
+        </div>
+    </section>
+}
+<section class="search formCover">
+
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VProBatches, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                        grid.Column(header: "A/I",
+                        format: @<input class="InActiveBatch" onclick="InActiveBatch(this)" name="batchIds" @(item.BatchStatus == 0 ? "checked" : "") type="checkbox" value="@item.BatchId" />),
+                        grid.Column("BtRefNo", header: "Ref No"),
+                        grid.Column("BatchNo", header: "Batch No"),
+                        grid.Column("BatchDate", header: "Date", format: @<text>@(item.BatchDate == null ? "" : item.BatchDate.ToString("dd-MM-yyyy"))</text>),
+                                             grid.Column("PartyName", header: "Party "),
+                                             grid.Column("MachineName", header: "Machine"),
+                                             grid.Column("ColorName", header: "Color"),
+                                             grid.Column("BatchQty", header: "Qty")))
+
+        }
+    </div>
+
+</section>
+
+@section scripts{
+
+
+    <script type="text/javascript">
+        function InActiveBatch(chechBox) {
+            var $chechBox = $(chechBox);
+            var batchId = $chechBox.val();
+            $.Ajax({
+                url: '/Batch/SaveInActiveBatch',
+                data: { batchId: batchId },
+                type: 'post'
+            });
+        }
+
+    </script>
+}

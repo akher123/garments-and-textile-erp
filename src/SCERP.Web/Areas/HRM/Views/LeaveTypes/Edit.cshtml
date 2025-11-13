@@ -1,0 +1,70 @@
+﻿@model SCERP.Model.LeaveType
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+@using (Html.BeginForm("Save", "LeaveTypes", FormMethod.Post, new { @class = "leavetypeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.IsActive)
+       
+       <fieldset>
+        <legend>Leave Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Leave Type:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Title, null)
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Leave Type (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(model => model.TitleInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.TitleInBengali, null)
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

@@ -1,0 +1,110 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.OvertimeEligibleEmployeeViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">          
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Overtime Eligible Employee </td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        <b>SL. No</b>
+                    </td>
+                    <td align="center">
+                        <b>Employee Name</b>
+                    </td>
+                    <td align="center">
+                        <b>Employee ID</b>
+                    </td>
+                    <td align="center">
+                        <b>OT Date</b>
+                    </td>
+                    <td align="center">
+                        <b>OT(Hours)</b>
+                    </td>
+                    <td align="center">
+                        <b>Company</b>
+                    </td>
+                    <td align="center">
+                        <b>Branch</b>
+                    </td>
+                    <td align="center">
+                        <b>Unit</b>
+                    </td>
+                    <td align="center">
+                        <b>Department</b>
+                    </td>
+                    <td align="center">
+                        <b>Section</b>
+                    </td>
+                    <td align="center">
+                        <b>Line</b>
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var overtimeEligibleEmp in Model.OvertimeEligibleEmployeeDetails)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.EmployeeName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.EmployeeCardId ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.OvertimeDate == null ? "" : overtimeEligibleEmp.OvertimeDate.ToString("dd-MM-yyyy"))
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.OvertimeHour)
+                        </td>
+                  
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.CompanyName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.BranchName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.UnitName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.DepartmentName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.SectionName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(overtimeEligibleEmp.LineName ?? "- - -")
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+
+

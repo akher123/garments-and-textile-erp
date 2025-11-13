@@ -1,0 +1,69 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Maintenance.Models.ChallanReceiveMasterViewModel
+@{
+    ViewBag.Title = "ReturnableChallanReceiveMaster";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Returnable Challan Receive</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "ReturnableChallanReceiveMaster", FormMethod.Get, new {@class = "ReturnableChallanReceiveMasterForm submit-allow"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Maintenance/ReturnableChallanReceiveMaster/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ChallanReceiveMasterList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("ChallanNo", canSort: false, header: "ChallanNo"),
+                  grid.Column("ReceiveDate", canSort: false, header: "Receive Date", format: @<text>@(item.ReceiveDate == null ? "" : item.ReceiveDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("TotalAmount", canSort: false, header: "TotalAmount"),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Maintenance/ReturnableChallanReceiveMaster/Edit?ChallanReceiveMaster.ReturnableChallanReceiveMasterId=@item.ReturnableChallanReceiveMasterId"></button></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Maintenance/ReturnableChallanReceiveMaster/Delete?ReturnableChallanReceiveMasterId=@item.ReturnableChallanReceiveMasterId"></button></text>),
+                  grid.Column("Report", canSort: false, header: "REPORT", format: @<text><a href="/Maintenance/MaintenanceReport/ReturnableChallanReceive?ChallanReceiveMaster.ReturnableChallanReceiveMasterId=@item.ReturnableChallanReceiveMasterId" target="_blank">PDF</a></text>)));
+        }
+    </div>
+</section>
+
+
+

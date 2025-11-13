@@ -1,0 +1,70 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.WorkingDayViewModel
+@{
+    ViewBag.Title = "WorkingDay";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Working Day</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "WorkingDay", FormMethod.Get, new { @class = "WorkingDaySearchForm submit-allow" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.LabelFor(x => x.WorkingDayStatus)
+                </td>
+                <td>
+                    @Html.DropDownListFor(x=>x.WorkingDayStatus,Model.WorkingDayStatusSelectListItem)
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @class="datepicker" ,@placeholder = "From date",@style=""  })
+                </td>
+                <td>@Html.Label("To: ")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @class = "datepicker", @placeholder = "To date", @style = "" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Planning/WorkingDay/Edit">Add New</button>
+        </div>
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.WorkingDays, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        columns:
+        grid.Columns(
+        grid.Column("WorkingDate", canSort: false, header: "WorkingDate", format: @<text>@(item.WorkingDate == null ? "" : item.WorkingDate.ToString("dd-MM-yyyy"))</text>),
+        grid.Column("Remarks", canSort: false, header: "Remarks"),
+        grid.Column("DayStatus", canSort: false, header: "DayStatus", format: @<text>@(((WorkingDayStatus)item.DayStatus).ToString())</text>),
+        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Planning/WorkingDay/Edit?WorkingDay.WorkingDayId=@item.WorkingDayId"></button></text>)));
+        }
+    </div>
+</section>

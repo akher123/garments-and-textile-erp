@@ -1,0 +1,201 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeJobTypeInfoViewModel
+
+@{
+    ViewBag.Title = (Model.EmployeeCompanyInfoId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmployeeJobType", FormMethod.Post, new { @class = "EmployeeJobTypeform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmployeeCompanyInfoId)
+    
+    <fieldset>
+        <legend>Departmental Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Company:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/HRM/EmployeeCompanyInfo/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeCompanyId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Branch:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/EmployeeCompanyInfo/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeBranchId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Unit:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/EmployeeCompanyInfo/GetBranchUnitDepartmentsByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeBranchUnitId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Department:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeCompanyInfo/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeBranchUnitDepartmentId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Section:</td>
+                <td>
+                   @Html.DropDownListFor(x => x.EmployeeDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Line:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Employee Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeTypeId", @action = "/HRM/Employees/GetAllEmployeeGradesByEmployeeTypeId", @TargetClass = "Hrm_EmployeeGradeId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeTypeId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Employee Grade:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeGradeId, Model.EmployeeGradeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeGradeId", @action = "/HRM/Employees/GetAllEmployeeDesignationsByEmployeeGradeId", @TargetClass = "Hrm_EmployeeDesignationId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeGradeId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Employee Designation:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeDesignationId, Model.EmployeeDesignationSelectListItem, "--Select--", new { @class = "Hrm_EmployeeDesignationId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeDesignationId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Job Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.JobTypeId, Model.JobTypeSelectListItem, "--Select--", new { @data_val = false })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Eligible for Overtime:</td>
+                <td>
+                    @Html.CheckBoxFor(x => x.IsEligibleForOvertime)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.IsEligibleForOvertime)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Punch Card No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.PunchCardNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.PunchCardNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">From Date:</td>
+                <td>                  
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">To Date:</td>
+                <td>        
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To Date" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeCompanyInfoCustomDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

@@ -1,0 +1,39 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.TaskTypeViewModel
+@{
+
+    ViewBag.Title = Model.TaskTypeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "TaskType", FormMethod.Post, new { @class = "ModuleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.TaskTypeId)
+    <fieldset>
+        <legend>Task Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Task Type :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.TaskType, new { @placeholder = "TaskType" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

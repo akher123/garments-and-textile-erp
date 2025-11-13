@@ -1,0 +1,94 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+@{
+    ViewBag.Title = Model.OmColor.ColorId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    
+}
+@using (Html.BeginForm("CreateColor", "BuyerOrderColorSize", FormMethod.Post, new { @class = "BuyerOrderColorSizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.OmColor.ColorId)
+    <fieldset>
+        <legend>Color</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.OmColor.ColorRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.OmColor.ColorName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.OmColor.ColorName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Code:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.OmColor.ColorCode)
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="Create" id="createColorButton"/>
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+    $('#createColorButton').unbind('click').bind('click', function () {
+        var $form = $(this).parents('form:first');
+        var data = $form.serialize();
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                $.Ajax({
+                    url: $form.attr('action'),
+                    dataType: 'json',
+                    type: 'post',
+                    data: data,
+                }).done(function (resposns) {
+                    if (resposns > 0) {
+                        $form.DialogClose();
+                    }
+
+                });
+            }
+        }
+
+
+    });
+</script>
+
+}

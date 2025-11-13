@@ -1,0 +1,72 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GreyIssueViewModel
+    @{
+        Layout = null;
+    }
+
+    @foreach (var dn in Model.KnittingOrderDelivery)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].ProgramRefId)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].ProgramRefId)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].ItemCode)
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].ColorName)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].ColorRefId)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].SizeName)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].SizeRefId)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].FSizeName)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].FinishSizeRefId)
+        </td>
+      
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].StLength)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].StLength)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].GSM)
+            @Html.HiddenFor(x => x.KnittingOrderDelivery[dn.Key].GSM)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].OrdQty))
+        </td>
+        <td>
+            @Html.DisplayFor(x =>  x.KnittingOrderDelivery[dn.Key].ProductionQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].BalanceQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].IQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].SIH)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].TRollQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].IRollQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.KnittingOrderDelivery[dn.Key].RollBalance)
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.KnittingOrderDelivery[dn.Key].RollQty, new {  @style = "width:70px;" ,@value=""})
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.KnittingOrderDelivery[dn.Key].Qty, new {@onkeyup = "addKinittingGreyDetail(event,this)" ,@style="width:70px;"})
+        </td>
+        <td>
+            <input type="button" onclick="removeRow(this)" value="X"/>
+        </td>
+    </tr>
+}

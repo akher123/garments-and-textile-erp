@@ -1,0 +1,34 @@
+﻿@using System.Data
+@model DataTable
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "TNA UPDATE LOG";
+}
+<div>
+    <div style="margin:5px;"></div>
+    <fieldset>
+        <legend>TNA Activity Log</legend>
+        <table id="tableid" class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    @foreach (DataColumn col in Model.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+
+                            <td>@(row[col.ColumnName] ?? "")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>

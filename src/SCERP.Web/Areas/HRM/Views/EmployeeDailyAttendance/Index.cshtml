@@ -1,0 +1,95 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+@{
+    ViewBag.Title = "EmployeeSection";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+@using (Html.BeginForm("Index", "EmployeeDailyAttendance", FormMethod.Get, new { @class = "EmployeeDailyAttendanceSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2>Employee Daily Attendance</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @{Html.RenderPartial("~/Areas/HRM/Views/EmployeeDailyAttendance/_SearchEmployeeDailyAttendance.cshtml", Model); }
+                    </td>
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Status: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeStatus, ViewBag.EmployeeStatus as SelectList, "-Select-")
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            @Html.Button("Add New (Single)", "button", new Dictionary<string, object> { { "class", "AjaxPopup addButton" }, { "action", "/HRM/EmployeeDailyAttendance/Edit" } })
+            <input type="button" class="addButton" onclick="search('@Url.Action("EditBulkAttendance", "EmployeeDailyAttendance", new { IsSearch = true })','EmployeeDailyAttendanceSearchForm')" value="Add New (Multiple)" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeDailyAttendances, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("EmployeeName", header: "Employee Name "),
+                    grid.Column("EmployeeCardId", header: "Employee ID "),
+                    grid.Column("TransactionDateTime", header: "Date", format: @<text>@(item.TransactionDateTime == null ? "" : item.TransactionDateTime.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                    grid.Column("TransactionDateTime", header: "Time", format: @<text>@(item.TransactionDateTime == null ? "" : item.TransactionDateTime.ToString("HH:mm"))</text>,canSort: false),            
+                    grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                    grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                    grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                    grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                    grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                    grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>),
+                    grid.Column("Remarks", header: "Remarks", canSort: false),
+                    grid.Column("Edit",format: @<text><button class="edit" action="/HRM/EmployeeDailyAttendance/Edit?Id=@item.EmployeeDailyAttendanceId"></button></text>,canSort: false),
+                    grid.Column("Delete",format:@<text><button class="delete" action="/HRM/EmployeeDailyAttendance/Delete/@item.EmployeeDailyAttendanceId"></button></text>, canSort: false)
+
+      ));
+        }
+    </div>
+</section>
+
+
+
+

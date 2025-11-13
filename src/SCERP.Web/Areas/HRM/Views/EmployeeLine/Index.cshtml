@@ -1,0 +1,143 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeLineInfoViewModel
+
+@{
+    ViewBag.Title = "Employee Line Info";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "EmployeeLine", FormMethod.Get, new { @class = "EmployeeLineSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee Line Info</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @action = "/HRM/EmployeeLine/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @action = "/HRM/EmployeeLine/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/EmployeeLine/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeLine/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new {@data_val = false, @class = "Hrm_DepartmentSection"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee Type: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new {@data_val = false, @class = "Hrm_EmployeeTypeId",})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Card:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Up To Date:")
+                    </td>
+                    <td>             
+                        @Html.TextBoxFor(x => x.SearchFieldModel.UpToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "UpTo Date" })
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right"><input type="button" class="searchAction" /></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input type="button" class="addButton" onclick="search('@Url.Action("AssignEmployeeLineIndex", "EmployeeLine", new { IsSearch = true })','EmployeeLineSearchForm')" value="Assign" />           
+        </div>
+        <fieldset>
+            <legend>Employes</legend>
+            <div>              
+                    @{
+                        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+                        grid.Bind(Model.EmployeeCompanyInfoModels, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                        grid.Pager(WebGridPagerModes.All);
+                        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                            grid.Column("EmployeeCardId", header: "Card Id ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                            grid.Column("EmployeeName", header: "Name", format: @<text>@(item.EmployeeName ?? "- - -")</text>),
+                            grid.Column("Designation", header: "Designation", format: @<text>@(item.Designation ?? "- - -")</text>),
+                            grid.Column("JoiningDate", header: "JoiningDate", format: @<text>@(item.JoiningDate == null ? "" : item.JoiningDate.ToString("yyyy-MM-dd"))</text>),
+                            grid.Column("DepartmentName", header: "Department", format: @<text>@(item.DepartmentName ?? "")</text>),
+                            grid.Column("SectionName", header: "Section", format: @<text>@(item.SectionName ?? "")</text>),
+                            grid.Column("LineName", header: "Line", format: @<text>@(item.LineName ?? "")</text>),
+                            grid.Column("FromDate", header: "FromDate", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("yyyy-MM-dd"))</text>)
+                            ));
+                    }              
+            </div>
+        </fieldset>
+    </div>
+</section>
+

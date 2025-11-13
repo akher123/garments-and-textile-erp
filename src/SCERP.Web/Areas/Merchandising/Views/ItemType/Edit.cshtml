@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ItemTypeViewModel
+@{
+
+    ViewBag.Title = Model.ItemType.ItemTypeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "ItemType", FormMethod.Post, new { @class = "ItemTypeForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ItemType.ItemTypeId)
+    <fieldset>
+        <legend>Item Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Title:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemType.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemType.Description)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+
+

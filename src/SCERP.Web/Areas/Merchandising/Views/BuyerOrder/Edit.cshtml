@@ -1,0 +1,256 @@
+﻿
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BuyerOrderId > 0) ? "Edit" : "Add";
+}
+@section styles
+{
+  <style type="text/css">
+    div.ui-datepicker {
+        font-size: 80.5%;
+    }
+</style>  
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+
+<div style="font-size: 12px;">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" action="/Merchandising/OmBuyer/Edit?IsSearch=true">Buyer</a>
+            <a href="#" class="AjaxPopup" action="/Merchandising/Agent/Edit?IsSearch=true">Agent</a>
+            <a href="#" class="AjaxPopup" action="/Merchandising/Consignee/Edit?IsSearch=true">Consignee</a>
+            <a href="#" class="AjaxPopup" action="/Merchandising/Season/Edit?IsSearch=true">Season</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Save", "BuyerOrder", FormMethod.Post, new { @class = "BuyerOrderSearchForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BuyerOrderId)
+        <fieldset>
+            <legend>Buyer Order </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Order Ref."))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        @Html.Label("Order No")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.RefNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                   
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Order Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OrderDate,new{@class="datepicker"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                  
+
+                    <td>
+                        @Html.Label("Sample Order#")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.SampleOrdNo)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Buyer")
+
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.BuyerRefId,Model.BuyerSelectListItem,"-select-",new{@id="buyerDropDown"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Buyer Order#")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.DGRefNo)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer Ref# ")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BuyerRef)
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.Quantity)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Quantity,new{@placeholder="Qty in Pcs"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Value")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.OAmount,new{@placeholder="$"})&#36;
+                    </td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Merchandiser")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.MerchandiserId, Model.MerchandisersSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Agent")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.AgentRefId, Model.AgentsSelectListItem, "N/A",new{@id="agentDropDown"})
+                       
+                    </td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Shipping Agent")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ShipagentRefId, Model.SheAgentSelectListItem, "N/A")
+                    
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Consignee")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ConsigneeRefId, Model.ConsigneesSelectListItem, "N/A", new { @id = "consigneeDropDown" })
+                     
+                    </td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Payment Term")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.PayTermRefId, Model.PayTermSelectListItem, "-select-")
+                      
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Garments Type")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.OrderTypeRefId, Model.OTypeSelectListItem, "-select-")
+                
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Ship Mode")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.SMode, Model.ShipModeSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Season")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.SeasonRefId, Model.SeasonSelectListItem, "-select-", new {@id = "seasonDropdownId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.Label("Order Type")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.SCont, Model.SubContactSelectListItem)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Order Staatus")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.OrderStatus, Model.OrderStatusSelectListItem, "-select-", new { @id = "orderStatusDropdownId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Remarks")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Remarks)
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td >
+                        @Html.Label("Fabrication")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextAreaFor(model => model.Fab, new {@style = "width: 98%"})
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" class="addButton" value="Save"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+    }
+</div>
+
+
+
+

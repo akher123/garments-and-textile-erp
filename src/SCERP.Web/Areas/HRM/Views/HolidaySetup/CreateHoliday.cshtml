@@ -1,0 +1,81 @@
+﻿
+@model SCERP.Model.HolidaysSetup
+@{
+   
+    Layout =(Model!=null)?null: "~/Views/Shared/_Layout.Dialog.cshtml";
+    var btnName = (Model != null) ? "Edit" : "Save";
+}
+
+@using (Html.BeginForm("Save", "HolidaySetup", FormMethod.Post, new { @class = "HolidaySetupForm" }))
+{ 
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model=>model.Id)
+    @Html.ValidationSummary(false)
+    
+    <fieldset>
+        <legend>Holiday Setup</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Start Date</td>
+                <td>                    
+                    @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.StartDate, null, new { style = "display:none;" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">End Date</td>
+                <td>                  
+                    @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EndDate, null, new { style = "display:none;" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Title</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Title, null, new { style = "display:none;" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td></td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Description, null, new { style = "display:none;" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+
+                    <input type="button" class="holidaySetUp-save addButton" onclick="saveHoliday()" value="@btnName" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

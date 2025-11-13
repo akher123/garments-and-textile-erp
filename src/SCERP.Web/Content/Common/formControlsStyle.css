@@ -1,0 +1,148 @@
+﻿input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 20px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+input[type="email"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 20px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+input[type="datetime"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 12px;
+    height: 20px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+input[type="number"] {
+    border: 1px solid #ccc;
+    height: 20px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+input[type="date"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 20px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+textarea {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 60px;
+    margin: 0;
+    padding: 6px;
+    width: 300px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.fieldTitleCls {
+    color: #666;
+    float: left;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 130px;
+    /*width: auto;*/
+}
+
+select {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    padding: 5px;
+    width: 314px;
+    font-family: 'Nunito', sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #ffffff url('../images/down-arrow.png') no-repeat 97% center !important;
+    /*width: 12px;*/
+    height: auto;
+}
+
+input[type="text"]:hover, input[type="text"]:focus, 
+input[type="email"]:hover, input[type="email"]:focus, 
+input[type="datetime"]:hover, input[type="datetime"]:focus, 
+input[type="number"]:hover, input[type="number"]:focus, 
+input[type="date"]:hover, input[type="date"]:focus, 
+textarea:hover, textarea:focus, 
+select:hover, select:focus {
+    border-color: #00B1F0;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.075), 0 0 5px rgba(3, 108, 59, 0.2) inset;
+    box-shadow: 0 1px 1px rgba(0,0,0,.075), 0 0 5px rgba(3, 108, 59, 0.2) inset;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: 'Nunito', sans-serif;
+}
+
+.IndivisualField {
+    border: 0 none;
+    margin-bottom: 1px;
+    margin-top: 1px;
+    min-height: 29px;
+    padding: 0;
+    padding-left: 10px;
+    float: left;
+}
+
+.tableFont {
+    font-size: 12px;
+}
+
+.tabefont {
+    font-size: 14px !important;
+}
+
+.labelInstruction {
+    color: #D04A48;
+}
+
+fieldset {
+    background: #ffffff;
+    border: 1px solid #dfdfdf;
+}
+fieldset:last-child {
+    margin-bottom: 20px;
+}
+legend {
+    font-size: 14px;
+}
+
+.cus-label-widthitem2 {
+    display: inline-block;
+    width: 68px;
+}
+
+
+.formCover {
+    /*width: auto;
+    box-shadow: 3px 5px 10px #ccc;*/
+    overflow: auto;
+    margin: 3px auto 20px;
+    padding: 10px 8px 20px;
+    width: auto;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 3px #d5d5d5;
+}

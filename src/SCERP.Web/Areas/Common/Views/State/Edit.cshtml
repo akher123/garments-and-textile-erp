@@ -1,0 +1,81 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Common.Models.ViewModel.StateViewModel
+@{
+    ViewBag.Title = Model.StateId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "State", FormMethod.Post, new { @class = "Stateform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.StateId)
+    <fieldset>
+        <legend>State</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Country:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CountryId,Model.CountrySelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.StateName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("State :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.StateName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.StateName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Latitude:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Latitude)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Longitude:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Longitude)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

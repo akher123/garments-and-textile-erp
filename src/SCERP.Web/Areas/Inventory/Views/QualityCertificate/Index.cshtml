@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.QualityCertificateViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Quality Certificate</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "QualityCertificate", FormMethod.Get, new {@class = "QualityCertificateSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@data_val = "false", @placeholder = "From date",@class="datepicker"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        @Html.Label("GRN Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.IsGrnConverted, Model.IsGrnConvertedSelectListItem, "All")
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.QualityCertificates, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                grid.Column("QCReferenceNo", header: String.Format("{0}", "Q.C Ref."), format: @<text>@(item.QCReferenceNo ?? "")</text>),
+                grid.Column("SendingDate", header: "QC date", format: @<text>@(item.SendingDate == null ? "" : item.SendingDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("RequisitionNo", header: "ReqNo ", format: @<text>@(item.RequisitionNo ?? "")</text>, canSort: false),
+                grid.Column("GateEntry", header: String.Format("{0}", "G.E.N"), format: @<text>@(item.GateEntry ?? "")</text>, canSort: false),
+                grid.Column("InvoiceNo", header: "InvNo ", format: @<text>@(item.InvoiceNo ?? "")</text>, canSort: false),
+                grid.Column("PurchaseReferencePersonName", header: "Ref Person", format: @<text>@(item.PurchaseReferencePersonName ?? "")</text>, canSort: false),
+                grid.Column("Update", format:@<text> <button class="edit" action="/Inventory/QualityCertificate/UpdateQualityCertificate?ItemStoreId=@item.ItemStoreId&QualityCertificateId=@item.QualityCertificateId "></button>  </text>, canSort: false),
+               grid.Column("Delete", format: @<text><button class="delete" action="/Inventory/QualityCertificate/Delete?QualityCertificateId=@item.QualityCertificateId"></button></text>, canSort: false),
+               grid.Column("GRN", format: @<text><input type="button" class="Edit_Button" action="/Inventory/GoodsReceivingNote/Edit?QualityCertificateId=@item.QualityCertificateId" value=@(item.IsGrnConverted==true? "Converted" : "Convert")></text>, canSort: false),
+                
+             @*grid.Column("Report", format:@<text> <input type="button" onclick="search('@Url.Action("Report", "QualityCertificate", new { QualityCertificateId =item.QualityCertificateId})')" value="RView" />
+                </text>, canSort: false)*@
+               
+                 grid.Column("Export",format:@<text><a target="_blank" href="/Inventory/QualityCertificate/Report?QualityCertificateId=@item.QualityCertificateId">PDF</a></text>, canSort: false)));
+        }
+
+    </div>
+</section>
+

@@ -1,0 +1,107 @@
+﻿@using SCERP.Common
+@using WebGrease
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeWorkGroupViewModel
+@{
+    ViewBag.Title = "Employee WorkGroup";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+
+}
+@using (Html.BeginForm("Create", "EmployeeWorkGroup", FormMethod.Get, new { @class = "EmployeeWorkGroupSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Assign Employee WorkGroup </h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            @Html.Partial("~/Areas/HRM/Views/EmployeeWorkGroup/_SearchEmployeeWorkGroup.cshtml", Model)
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+}
+<section class="search formCover">
+
+    <div class=" additem">
+        @using (Html.BeginForm("Save", "EmployeeWorkGroup", FormMethod.Post))
+        {
+            <fieldset>
+                <legend>Employees</legend>
+                <div style="overflow: auto;">
+                    <div style="height: 200px;">
+                        @{
+
+            var grid = new WebGrid(canPage: false, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeCompanyInfos, autoSortAndPage: false);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                        grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox" /></text>),
+                 grid.Column("EmployeeName", header: "Employee Name"),
+                 grid.Column("EmployeeCardId", header: "Employee ID "),
+                 grid.Column("Designation", header: "Designation "),
+                 grid.Column("CompanyName", header: "Company "),
+                 grid.Column("BranchName", header: "Branch "),
+                 grid.Column("UnitName", header: "Unit"),
+                 grid.Column("DepartmentName", header: "Department")))
+                        }
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Target WorkGroup</legend>
+                <table class="tabefont">
+                    <tr>
+                        <td></td>
+                        <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("WorkGroup :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.WorkGroupId, Model.WorkGroupSelectListItem, "-Select-", new { @class = "Hrm_WorkGroupId" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                            @Html.ValidationMessageFor(x => x.WorkGroupId)
+                        </td>
+                        <td>
+                            @Html.Label("Assign Date :")
+                        </td>
+                        <td>                           
+                            @Html.TextBoxFor(x => x.Date, new { @class = "datepicker", @data_val = "false", @placeholder = "Date" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                            @Html.ValidationMessageFor(x => x.Date)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1"></td>
+                        <td>
+                            <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Save" />
+                        </td>
+                        <td>
+                            <input type="button" class="addButton" onclick="search('@Url.Action("Index", "EmployeeWorkGroup")','EmployeeWorkGroupSearchForm')" value="Back" />
+                        </td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        }
+    </div>
+
+</section>
+@section scripts{
+    <script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>
+}

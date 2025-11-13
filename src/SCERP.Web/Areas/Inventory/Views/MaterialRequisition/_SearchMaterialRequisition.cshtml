@@ -1,0 +1,54 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialRequisitionViewModel
+<tr>
+    <td>
+        @Html.Label("Company :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+    </td>
+    <td>
+        &nbsp;   &nbsp;  &nbsp;
+        @Html.Label("Branch :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+    </td>
+
+    <td>
+        &nbsp;  &nbsp;   &nbsp;
+        @Html.Label("Unit :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+    </td>
+
+
+</tr>
+<tr>
+    <td>
+      
+        @Html.Label("Department :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+    </td>
+    <td>
+        &nbsp;   &nbsp;  &nbsp;
+        @Html.Label("Section :")
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+    </td>
+    <td>
+        &nbsp;   &nbsp;  &nbsp;
+        @Html.Label("Line :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+    </td>
+
+</tr>
+
+
+

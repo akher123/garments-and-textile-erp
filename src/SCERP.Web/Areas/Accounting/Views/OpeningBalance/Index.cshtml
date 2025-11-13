@@ -1,0 +1,65 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.OpeningBalanceViewModel
+
+@{
+    ViewBag.Title = "Opening Balance";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Save", "OpeningBalance", FormMethod.Get, new {@class = "OpeningBalanceForm submit-allow ignore-validation"}))
+{
+
+<div class="header-title">
+    <h2>Opening Balance</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        <table class="tabefont">
+            <tr>
+                <td> @Html.DisplayName("Sector Name :") </td>
+                <td> @Html.DropDownListFor(x => x.SectorId, null, "--Select--", new { @disabled = "disabled" }) </td>
+
+                <td> @Html.DisplayName("Account Head :") </td>
+                <td> @Html.TextBoxFor(p => p.AccountHead, new {@class = "AccountName"}) </td>
+                <td> </td>
+            </tr>
+
+            <tr>
+                <td> @Html.DisplayName("Debit") </td>
+                <td> @Html.TextBoxFor(p => p.Debit) </td>
+
+                <td> @Html.DisplayName("Credit") </td>
+                <td> @Html.TextBoxFor(p => p.Credit) </td>
+                <td> <input type="button" id="btnVoucherSave" class="addButton" value="Save" /> </td>
+            </tr>
+
+        </table>
+    </div>
+</section>
+
+}
+
+@section scripts
+{
+    <script type="text/javascript">        
+
+        $('#AccountHead').autocomplete(
+        {
+            source: '@Url.Action("TagSearch", "OpeningBalance")'
+        });
+
+
+        $('#btnVoucherSave').unbind('click').bind('click', function (event) {
+            event.preventDefault();
+            var $Button = $(this);
+            var form = $Button.parents('form:first');
+            var option = {
+                url: '/OpeningBalance/Save',
+                type: "POST",
+                data: form.serialize(),
+            };
+            jQuery.Ajax(option);
+        });
+     
+    </script>
+}

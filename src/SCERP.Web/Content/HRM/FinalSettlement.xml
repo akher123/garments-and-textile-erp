@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	     <td align="left" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{COMPANY_NAME}
+        </td>
+		 <td align="right" valign="bottom">
+          
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{COMPANY_ADDRESS}
+        </td>
+		 <td align="right">
+          
+        </td>
+      </tr>
+	  
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="350px"></td>
+        <td width="200px" align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">চূড়ান্ত নিষ্পত্তিকরন</td>
+        <td width="150px"></td>
+        <td>তারিখ : {PREPARARION_DATE}</td>
+      </tr>    
+      <tr>
+        <td></td>
+        <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">{MONTH}-{YEAR}</td>
+        <td></td>
+        <td></td>
+      </tr> 
+    </table>   
+    
+    <table width="850px" height="20px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;"></td>
+      </tr>	
+    </table> 
+	                                                            
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td colspan="15" >প্রতিষ্ঠানের চাকুরী হইতে পদত্যাগ / চাকুরী অবসান / চাকুরীচ্যুতি / বরখাস্ত এর পরিপ্রেক্ষতে জনাব/জনাবা</td>
+            <td></td>
+            <td></td>
+            <td></td>   
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><b>নামঃ</b>&nbsp;&nbsp;&nbsp;{EMP_NAME}</td>
+            <td width="100px"></td>
+            <td><b>আইডি কার্ডঃ</b>&nbsp;&nbsp;&nbsp;{EMP_CARDID}</td>
+            <td></td>                        
+            <td><b>পদবীঃ</b>&nbsp;&nbsp;&nbsp;{EMP_DESIGNATION}</td>       
+        </tr>
+        <tr>
+            <td></td>
+            <td><b>সেকশনঃ</b>&nbsp;&nbsp;&nbsp;{EMP_SECTION}</td>
+            <td></td>
+            <td><b>বিভাগঃ</b>&nbsp;&nbsp;&nbsp;{EMP_DEPARTMENT}</td>
+            <td></td>                        
+            <td></td>       
+        </tr>    
+     </table>
+        
+     <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td>এর চুড়ান্ত নিষ্পত্তিকরন নিম্নলিখিতভাবে সম্পন্ন করা হইলঃ</td>                     
+        </tr>
+        <tr>            
+            <td height="20px"></td>                     
+        </tr>
+     </table>
+     
+     <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td Width="245px">১)চাকুরীতে যোগদানের তারিখঃ</td>   
+            <td Width="240px">{JOINING_DATE}</td>                 
+        </tr>
+        <tr>
+            <td>২)চাকুরী ছাড়ার তারিখঃ</td>  
+            <td>{QUIT_DATE}</td>
+        </tr>
+        <tr>
+            <td >৩)চাকুরীকালীন সময়ে মোট কার্যকালঃ </td> 
+            <td>{SERVICE_YEAR} বছর {SERVICE_MONTH} মাস {SERVICE_DAY} দিন </td>
+        </tr>
+     </table> 
+        
+     <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td Width="260px">৪)অর্জিত ছুটি/প্রাপ্ত ছুটিঃ</td>  
+            <td Width="240px">{EARN_LEAVE} দিন(যদি থাকে)</td>
+            <td Width="220px">দৈনিক মোট মজুরিঃ</td>
+            <td Width="220px">{DAILY_GROSS} টাকা</td>
+        </tr>
+                
+        <tr>
+            <td>৫)প্রাপ্য/মজুরীকৃত সার্ভিস বেনিফিটঃ</td>
+            <td>{SERVICE_BENEFIT} দিন(যদি থাকে)</td>
+            <td></td>
+            <td></td>                   
+        </tr>
+        
+        <tr>   
+            <td>৬)বর্তমান মাসে মোট কার্যদিবসঃ</td>
+            <td>{TOTAL_WORKDAYS} দিন</td>
+            <td>মোট অতিরিক্ত কর্মঘন্টাঃ</td>
+            <td>{TOTAL_OTHOURS} ঘন্টা</td>  
+	      <tr>
+        
+        <tr>   
+            <td>৭)মোট প্রদেয় কর্মদিবসঃ</td>
+            <td>{TOTAL_PAYDAYS} দিন</td>
+            <td>অতিরিক্ত কর্মঘন্টার হারঃ</td>
+            <td>{OVERTIME_RATE} টাকা</td>  
+	      <tr>
+        
+         <tr>   
+            <td>৮)বর্তমান মজুরীঃ</td>
+            <td>{GROSS_SALARY} দিন</td>
+            <td>দৈনিক মূল মজুরীঃ</td>
+            <td>{DAILY_BASIC} টাকা</td>  
+	      <tr>
+        
+        <tr>   
+            <td>৯)মূল মজুরীঃ</td>
+            <td>{BASIC_SALARY} টাকা</td>
+            <td>কর্মে অনুপস্থিতঃ</td>
+            <td>{ABSENT_DAYS} দিন</td>  
+	      <tr>
+    </table>  
+    
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        
+        <tr>   
+            <td>১০)প্রাপ্য সুবিধাঃ মজুরী(অ.কর্মঘন্টা)</td>
+            <td>&nbsp;&nbsp;&nbsp;{BENEFIT_GIVEN} টাকা </td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;অর্জিত ছুটির প্রাপ্যঃ</td>
+            <td>{EARN_LEAVE_AMOUNT} টাকা</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;সার্ভিস বেনিফিট প্রাপ্যঃ</td>
+            <td>{SERVICE_BENEFIT_AMOUNT} টাকা</td>
+	      <tr>
+    </table>   
+     
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td Width="260px">১১)মোট প্রাপ্যঃ</td>  
+            <td Width="240px">{TOTAL_PAID_AMOUNT} টাকা </td>
+            <td Width="220px">হাজিরা বোনাসঃ</td>
+            <td Width="220px">{ATTENDANCE_BONUS} টাকা</td>
+        </tr>
+    </table>
+   
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        
+        <tr>   
+            <td>১২)কর্তনাদিঃ(কর্মে অনুপস্থিত)</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ABSENT_FEE} টাকা</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;অগ্রিমঃ</td>
+            <td>{ADVANCE} টাকা</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;অন্যান্য সমন্বয়(যদি থাকে)</td>
+            <td>{OTHER_DEDUCTION} টাকা</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;স্ট্যাম্প</td>
+            <td>{STAMP_AMOUNT}</td>
+	      <tr>
+    </table>  
+   
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td Width="245px">১৩)মোট কর্তনাদিঃ</td>   
+            <td Width="240px">{TOTAL_DEDUCTION} টাকা</td>                 
+        </tr>
+        <tr>
+            <td>১৪)প্রদেয়/পরিশোধিত মোট টাকাঃ</td>  
+            <td>{NET_AMOUNT} টাকা</td>
+        </tr>
+    </table> 
+                                
+      
+            
+      <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>      
+            <td width="240px"></td>
+            <td>কথায়ঃ&nbsp; {NET_AMOUNT_INWORD} টাকা মাত্র</td>  
+            <td height="100px"></td>
+        </tr>   
+      </table>   
+      
+      <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td width="300px">-------------</td>  
+            <td width="300px">--------------------</td> 
+            <td>----------------------------------------------</td> 
+        </tr>   
+        <tr>            
+            <td width="150px">প্রস্তুতকারী&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+            <td width="150px">হিসাব রক্ষন বিভাগ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+            <td>বিভাগীয় প্রধান (মানব সম্পদ ও কমপ্লায়ন্সে)</td> 
+        </tr>  
+      </table>     
+      
+      <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>            
+            <td height="80px">আমি নিম্নস্বাক্ষরকারী উপরে উল্লিখিত মোট {NET_AMOUNT} টাকা({NET_AMOUNT_INWORD} টাকা মাত্র) বুঝিয়া পাইলাম।</td>          
+        </tr>   
+        <tr>            
+            <td>অনুলিপিঃ</td>        
+        </tr>  
+         <tr>            
+            <td>----------</td>        
+        </tr>  
+        <tr>            
+            <td>১)একাউন্টস বিভাগ</td>   
+            <td>--------------</td>  
+        </tr>
+        <tr>            
+            <td>২)ব্যক্তিগত নথি</td>  
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;স্বাক্ষর</td>  
+        </tr>
+        <tr>            
+            <td>৩)অফিস কপি</td>        
+        </tr>
+      </table>    
+    ]]>
+  </EmployeeSpecificInfo>
+
+</AppointmentLetter>

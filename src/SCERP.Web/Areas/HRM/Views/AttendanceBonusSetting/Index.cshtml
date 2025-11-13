@@ -1,0 +1,84 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceBonusSettingViewModel
+@{
+    ViewBag.Title = "Attendance Bonus Setting";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.AttendanceBonusSettings.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "AttendanceBonusSetting", FormMethod.Get, new { @class = "AttendanceBonusSettingSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(x => x.AttendanceBonusSettingId)
+
+    <div style="width:500px; padding-left:340px;">
+        <h2> Attendance Bonus Setting </h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("From Date : ")
+                </td>
+                <td>                 
+                    @Html.TextBoxFor(x => x.SearchByFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("To Date: ")
+                </td>
+                <td>     
+                    @Html.TextBoxFor(x => x.SearchByToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/AttendanceBonusSetting/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.AttendanceBonusSettings, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                grid.Column("AbsentDays", "Absent Days"),
+                grid.Column("LateDays", "Late Days"),
+                grid.Column("LeavewithoutApplication", "Leave without Application"),
+                grid.Column("LeavewithApplication", "Leave with Application"),
+                grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("ToDate", header: "ToDate", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("Detail/Edit", format: @<text><button class="edit" action="/HRM/AttendanceBonusSetting/Edit?AttendanceBonusSettingId=@item.AttendanceBonusSettingId"></button></text>, canSort: false),
+                grid.Column("Delete", format: @<text><button class="delete" action="/HRM/AttendanceBonusSetting/Delete/@item.AttendanceBonusSettingId"></button></text>, canSort: false)))
+            ;
+        }
+    </div>
+
+</section>
+
+

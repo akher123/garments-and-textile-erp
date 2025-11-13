@@ -1,0 +1,82 @@
+﻿@using System.Globalization
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.TrialBalanceViewModel
+
+@{
+    ViewBag.Title = "Cost Centre";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Cost Centre Report</h2>
+</div>
+
+@using (Html.BeginForm("CostCentre", "Report", FormMethod.Get, new { @class = "CostCentreForm submit-allow ignore-validation" }))
+{
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriodBalanceSheet.cshtml")
+
+                <tr>
+                    <td>@Html.DisplayName("Company Name: ")</td>
+                    <td>@Html.DropDownList("sectorId", null, "- Select -", new { style = "", @disabled = "disabled" })</td>
+
+                    <td>@Html.DisplayName("Sector Name: ")</td>
+                    <td>@Html.DropDownList("CostCentresMultilayers", null, "- Select -", new { style = "", @class = "cost" })</td>
+
+                    <td>
+                        <button class="search" type="button" onclick=" search('/Accounting/Report/CostCentre', 'CostCentreForm') " />
+                        @*<input id="btnPrint" type="button" onclick=" javascript: PrintCostCentre(); " value="Print" />*@
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TrialBalance, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    grid.Column("ClasslHead", header: "Main Head"),
+                    grid.Column("GrouplHead", header: "Group Head"),
+                    grid.Column("SubGrouplHead", header: "Particulars"),
+                    grid.Column("ClosingBalance", header: "Closing Balance"),           
+                    grid.Column("SubGroupCode", header: "SubGroupCode"),
+                    grid.Column(header: "Detail", format: @<text><button class="edit" action="/Accounting/Report/CostCentreDetail?subGroupCode=@item.SubGroupCode&sectorId=@Model.SectorId&toDate=@Model.ToDate&fromDate=@Model.FromDate&costCentreId=@Model.CostCentresMultilayers"></button></text>, canSort: false)
+           ));
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function PrintCostCentre() {
+            var FpId = $('#FpId').val();
+            var SectorId = $('#sectorId').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var costId = $('#CostCentresMultilayers option:selected').val();
+            window.open("/Accounting/Report/PrintCostCentre?FpId=" + FpId + "&SectorId=" + SectorId + "&costId=" + costId + "&fromDate=" + fromDate + "&toDate=" + toDate + "&ExportType=DOC");
+        }
+    </script>
+}

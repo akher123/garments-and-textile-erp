@@ -1,0 +1,40 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.SalesContactViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+    <tr>
+        <th>LC No</th>
+        <th>LC Date</th>
+        <th>Quantity</th>
+        <th>Amount(TK) </th>
+        <th>File</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var sc in Model.SalseContacts)
+    {
+        <tr class="buyerOrderStyle-row">
+            <td>@sc.LcNo</td>
+            <td>@String.Format("{0:dd/MM/yyyy}", sc.LcDate)</td>
+            <td>@sc.Quantity</td>
+            <td>@sc.Amount</td>
+            <td>
+                <input type="button" class="Edit_Button" action="/Commercial/CommFileUpload/Index?RefId=@sc.SalseContactId&SrcType=@Convert.ToInt32(FileSource.ExportLc)" value="Upload" />
+            </td>
+            <td>
+                <input type="button" class="btnDetail" targentclass="salesContactEdit" action="/SalesContact/Edit?SalseContactId=@sc.SalseContactId">
+            </td>
+            <td>
+                <button type="button" class="deleteAction" targentclass="salesContactList" action="/SalesContact/Delete?SalseContactId=@sc.SalseContactId&LcId=@sc.LcId"></button>
+            </td>
+        </tr>
+    }
+   
+    </tbody>
+</table>

@@ -1,0 +1,107 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmBuyOrdStyleViewModel
+@{
+    ViewBag.Title = "BuyerOrder";
+    Layout = null;
+}
+
+<div class="buyerOrderStyleContainner">
+    @Html.HiddenFor(x => x.SearchString, new { @id = "OrderNoumberHiddenId" })
+    @Html.HiddenFor(x => x.BuyerOrder.OrderNo)
+    <div class="order-notes-wrapper">
+        <table>
+            <tr>
+                <td>
+                    OrderNo :
+                </td>
+                <td>@Model.BuyerOrder.OrderNo</td>
+            </tr>
+            <tr>
+                <td>
+                    Buyer :
+                </td>
+                <td>@Model.BuyerOrder.BuyerName</td>
+            </tr>
+            <tr>
+                <td>
+                    Quantity :
+                </td>
+                <td>@Model.BuyerOrder.Quantity</td>
+            </tr>
+            <tr>
+                <td>
+                    Total Style :
+                </td>
+                <td>@Model.BuyerOrder.TotalStyleInOrder</td>
+            </tr>
+            <tr>
+                <td>
+                    Season :
+                </td>
+                <td>@Model.BuyerOrder.SeasonName</td>
+            </tr>
+        </table>
+
+    </div>
+    <div id="buyerOrderStyle" class="order-detail-wrapper">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Merchandising/OmBuyOrdStyle/Edit?OrderNo=@Model.OrderNo&&SeasonRefId=@Model.BuyerOrder.SeasonRefId">Add New</button>
+        </div>
+        <div class="table-style-wrapper">
+            <table class="webgrid-table webgrid">
+                <thead class="webgrid-header">
+                <tr>
+                    <td>File</td>
+                    <th>Ref. #</th>
+                    <th>Order #</th>
+                    <th>Style</th>
+                    <th>Date</th>
+                    <th>Article #</th>
+                    <th>Season</th>
+
+                    <th>Quantity</th>
+                    <th>ShipQty</th>
+                    <th>Status</th>
+                    <th>Select</th>
+                    <th>Detail/Edit</th>
+                    <th>Shipment</th>
+
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ostyle in Model.OmBuyOrdStyles)
+                    {
+                        <tr class="buyerOrderStyle-row" id="@ostyle.OrderStyleRefId">
+                            <td>
+                                <input type="button" class="Edit_Button" action="/Commercial/CommFileUpload/Index?RefId=@ostyle.OrderStyleRefId&SrcType=@Convert.ToInt32(FileSource.OrderStyle)" value="Upload" />
+                            </td>
+                            <td>@ostyle.OrderStyleRefId</td>
+                            <td>@ostyle.OrderNo</td>
+                            <td>@ostyle.StyleName</td>
+                            <td>@String.Format("{0:dd/MM/yyyy}", ostyle.StyleentDate)</td>
+                            <td>@ostyle.BuyerArt</td>
+                            <td>@ostyle.SeasonName</td>
+                            <td>@ostyle.Quantity</td>
+                            <td>@ostyle.despatchQty</td>
+                            <td>@(ostyle.ActiveStatus ? "Running" : "Closed")</td>
+                            <td>
+                                <input type="button" onclick="selectBuyerOrderStyleRow('@ostyle.OrderStyleRefId', this)" value="✅" />
+                            </td>
+                            <td><button class="edit" action="/Merchandising/OmBuyOrdStyle/Edit?OrderStyleId=@ostyle.OrderStyleId"></button></td>
+                            <td><button class="edit" action="/Merchandising/OmBuyOrdStyle/UpdateShipQty?OrderStyleRefId=@ostyle.OrderStyleRefId"></button></td>
+                            <td><button class="deleteAction" targentclass="buyerOrderStyleContainner" action="/Merchandising/OmBuyOrdStyle/Delete?OrderStyleRefId=@ostyle.OrderStyleRefId&OrderNo=@ostyle.OrderNo"></button></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div id="AssortedColorSize" class="table-style-wrapper">
+        @Html.Partial("~/Areas/Merchandising/Views/OmBuyOrdStyle/_AssortedColorSize.cshtml", Model)
+    </div>
+</div>
+
+<script src="~/Scripts/SCERP/Merchandising/OmBuyOrdStyle.js"></script>

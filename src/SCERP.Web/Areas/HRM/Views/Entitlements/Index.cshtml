@@ -1,0 +1,71 @@
+@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EntitlementViewModel
+@{
+    ViewBag.Title = "Entitlement";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.Entitlements.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "Entitlements", FormMethod.Get, new { @class = "EntitlementsSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Benefit</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Benefit Name :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchKey)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/Entitlements/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Entitlements, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(grid.Column("Title", header: "Title"),
+                    grid.Column("Description", canSort: false),
+                    grid.Column(header: "Detail/Edit", format:
+                        @<text><button class="edit" action="/HRM/Entitlements/Edit/@item.Id"></button></text>),
+                    grid.Column(header: "Delete", format:
+                        @<text><button class="delete" action="/HRM/Entitlements/Delete/@item.Id"></button></text>
+                        )));
+        }
+
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "Entitlements", new { SearchKey = Model.SearchKey })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "Entitlements", new { SearchKey = Model.SearchKey })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>

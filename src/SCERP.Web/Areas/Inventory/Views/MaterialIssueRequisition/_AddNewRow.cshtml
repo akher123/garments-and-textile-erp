@@ -1,0 +1,69 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueRequisitionViewModel
+@{
+    Layout = null;
+
+}
+<tr class="webgrid-row-style webgrid-alternating-row">
+
+<tr class="webgrid-row-style webgrid-alternating-row">
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueRequisitionDetails[Model.Key].IsActive, new { @Value = true })
+        @Html.HiddenFor(x => x.MaterialIssueRequisitionDetails[Model.Key].CreatedBy, new { @Value = PortalContext.CurrentUser.UserId })
+        @Html.HiddenFor(x => x.MaterialIssueRequisitionDetails[Model.Key].CreatedDate, new { @Value = DateTime.Now })
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].ItemName, new { @style = "width:100px", @placeholder = "ItemName" })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].ItemDescription, new { @style = "width:100px", @placeholder = "Description" })
+    </td>
+    <td>
+
+        @Html.EditorFor(x => x.MaterialIssueRequisitionDetails[Model.Key].Machine, new { htmlAttributes = new { @style = "width:100px", @placeholder = "Machine " } })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].RequiredQuantity, new { @style = "width:100px", @placeholder = "Required Qty" })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].MeasurementUnit, new { @style = "width:100px", @placeholder = "Unit" })
+    </td>
+
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].FunctionalArea, new { @style = "width:100px", @placeholder = "Uses area" })
+    </td>
+    <td>
+
+        @Html.EditorFor(x => x.MaterialIssueRequisitionDetails[Model.Key].DesiredDate, new { htmlAttributes = new { @style = "width:100px", @placeholder = "Desired date" } })
+    </td>
+
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].Size, new { @style = "width:100px", @placeholder = "Size" })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].Brand, new { @style = "width:100px", @placeholder = "Brand" })
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.MaterialIssueRequisitionDetails[Model.Key].Origin, new { @style = "width:100px", @placeholder = "Origin" })
+    </td>
+
+    <td>
+
+        @Html.EditorFor(x => x.MaterialIssueRequisitionDetails[Model.Key].Remarks, new { htmlAttributes = new { @style = "width:100px", @placeholder = "Remarks" } })
+    </td>
+
+    <td>
+        <input type="button" class="edit-button" value="Edit" />
+    </td>
+    <td>
+        <input type="button" data="" class="delete-button" onclick="deleteRow(this)" value="-" />
+    </td>
+</tr>
+
+
+

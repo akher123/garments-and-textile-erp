@@ -1,0 +1,77 @@
+﻿@model SCERP.Model.Acc_FinancialPeriod
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit Financial Period" : "Add Financial Period";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "FinancialPeriod", FormMethod.Post, new {@class = "FinancialPeriodform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CDT)
+    @Html.HiddenFor(model => model.EDT)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.HiddenFor(model => model.CreatedBy)
+
+    <table class="tableFont" style="width: 560px; height: 200px;">
+        <tr>
+            <td> &nbsp; </td>
+            <td align="left" colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"}) </td>
+        </tr>
+
+        <tr>
+            <td> &nbsp; </td>
+            <td class="fieldTitleCls"> Period Name </td>
+            <td> @Html.EditorFor(model => model.PeriodName) </td>                            
+            <td> @Html.Label("*", new {@class = "labelInstruction"}) </td>                            
+            <td> @Html.ValidationMessageFor(model => model.PeriodName, "Required") </td>                            
+        </tr>
+        
+        <tr>
+            <td> &nbsp; </td>
+            <td class="fieldTitleCls"> Start Date </td>
+            <td>    
+                @Html.TextBoxFor(x => x.PeriodStartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+            </td>                                
+            <td> @Html.Label("*", new {@class = "labelInstruction"}) </td>                            
+            <td> @Html.ValidationMessageFor(model => model.PeriodStartDate, "Required") </td>                            
+        </tr>
+                
+        <tr>
+            <td> &nbsp; </td>
+            <td class="fieldTitleCls"> End Date </td>
+            <td>                
+                @Html.TextBoxFor(x => x.PeriodEndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+             </td>                            
+            <td> @Html.Label("*", new {@class = "labelInstruction"}) </td>                            
+            <td> @Html.ValidationMessageFor(model => model.PeriodEndDate, "Required") </td>                            
+        </tr>
+               
+        <tr>
+            <td> &nbsp; </td>
+            <td class="fieldTitleCls"> Active Status </td>
+            <td> @Html.DropDownList("ActiveStatus", "- Select Status -") </td>                            
+            <td> @Html.Label("*", new {@class = "labelInstruction"}) </td>                            
+            <td> @Html.ValidationMessageFor(model => model.ActiveStatus, "Required") </td>                            
+        </tr>
+                      
+        <tr>
+            <td> &nbsp;</td>
+            <td class="fieldTitleCls"> Sort Order </td>
+            <td> @Html.EditorFor(model => model.SortOrder) </td>                            
+            <td> @Html.Label("*", new {@class = "labelInstruction"}) </td>                           
+            <td> @Html.ValidationMessageFor(model => model.SortOrder, "Required") </td>                            
+        </tr>
+
+        <tr>
+            <td style="width: 5px;"> </td>                           
+            <td style="width: 150px;"> </td>                          
+            <td style="width: 300px;"> @Html.SaveButton() </td>                           
+            <td style="width: 1px;"> </td>                          
+            <td style="width: 100px;"> </td>                            
+        </tr>
+    </table>
+}
+

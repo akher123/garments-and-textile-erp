@@ -1,0 +1,50 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.FabricReturnViewModel
+@{
+    Layout = null;
+}
+
+<br/>
+<div class="addButton-wrapper">
+    <button class="AjaxPopup addButton" action="/Inventory/CollarCuffReceive/Edit?FabricReturn.ProgramId=@Model.FabricReturn.ProgramId">Add New</button>
+</div>
+<div>
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Program</th>
+                <th>ChallanNo</th>
+                <th>Date</th>
+                <th>GrayQty</th>
+                <th>Qty(Pcs)</th>
+                <th>RestYarnQty</th>
+                <th>WstYarnQty</th>
+                <th>Remarks</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fabReturn in Model.FabricReturns)
+            {
+                <tr>
+                    <td>@fabReturn.PLAN_Program.ProgramRefId</td>
+                    <td>@fabReturn.ReturnChallanNo</td>
+                    <td>@fabReturn.ReturnDate.ToString("dd/MM/yyyy")</td>
+                    <td>@fabReturn.FabQty</td>
+                    <td>@fabReturn.QtyInPcs</td>
+                    <td>@fabReturn.ReturnYarnQty</td>
+                    <td>@fabReturn.WstYarnQty</td>
+                    <td>@fabReturn.Remarks</td>
+                    <td>
+                        <button class="edit" action="/Inventory/CollarCuffReceive/Edit?FabricReturn.FabricReturnId=@fabReturn.FabricReturnId"></button>
+                    </td>
+                    <td>
+                        <button class="deleteAction" targentclass="fabricReturnContent" action="/Inventory/CollarCuffReceive/Delete?FabricReturnId=@fabReturn.FabricReturnId&ProgramId=@fabReturn.ProgramId"></button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

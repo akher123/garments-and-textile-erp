@@ -1,0 +1,96 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.OutStationDutyViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.OutStationDutyId > 0) ? "Edit" : "Add";
+    var dispaly = (Model.OutStationDutyId > 0) ? "" : "none";
+    var dispalyForEdit = (Model.OutStationDutyId > 0) ? "none" : "";
+}
+<fieldset>
+    <legend>OutStation Duty</legend>
+    @using (Html.BeginForm("Save", "OutStationDuty", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.OutStationDutyId)
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">@Html.LabelFor(x => x.EmployeeCardId)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.EmployeeCardId, new { @class = "employeeCardId" })
+                    @Html.ValidationMessageFor(m => m.EmployeeCardId)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/OutStationDuty/GetEmployeeDetailByEmployeeCadID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr id="employeeDetail_containner">
+
+
+                @if (Model.VEmployeeCompanyInfoDetail.EmployeeCompanyInfoId > 0)
+                {
+                    @Html.Partial("~/Areas/HRM/Views/OutStationDuty/_EmployeeDetails.cshtml", Model.VEmployeeCompanyInfoDetail, new ViewDataDictionary { { "OutStationDutyId", Model.OutStationDutyId } })
+                }
+
+                <td></td>
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr>
+
+                <td class="fieldTitleCls">@Html.LabelFor(x => x.DutyDate):</td>
+                <td>                    
+                    @Html.TextBoxFor(x => x.DutyDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.ValidationMessageFor(m => m.DutyDate)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">@Html.LabelFor(x => x.Location):</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Location)
+                    @Html.ValidationMessageFor(m => m.Location)
+
+                </td>
+
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">@Html.LabelFor(x => x.Purpose):</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Purpose)
+                    @Html.ValidationMessageFor(m => m.Location)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+
+                <td></td>
+                <td id="displayButton" style="display: @dispaly">
+                    @Html.SaveButton()
+                </td>
+
+            </tr>
+        </table>
+
+    }
+</fieldset>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/FilterEmployee.js"></script>
+}

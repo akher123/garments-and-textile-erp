@@ -1,0 +1,26 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceBonusViewModel
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Employee Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItems, "--Select--", new {@class = "Hrm_EmployeeTypeIdForDesignation", @action = "/HRM/AttendanceBonus/GetEmployeeDesignationByEmployeeTypeId", @TargetClass = "Hrm_EmployeeDesignationId"})
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+
+                <td>
+                    @Html.Label("Employee Designation :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeDesignationId, Model.EmployeeDesignationSelectListItem, "--Select--", new { @class = "Hrm_EmployeeDesignationId", @data_val = false })
+                </td>
+
+                <td><input type="button" class="searchAction" /></td>
+            </tr>
+        </table>
+    </div>
+</section>

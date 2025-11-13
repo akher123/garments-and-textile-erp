@@ -1,0 +1,116 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Quality Certificat";
+}
+
+@using (Html.BeginForm("UpdateQc", "ReceiveAgainstPo", FormMethod.Post, new { @class = "ReceiveAgainstPoForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ReceiveAgainstPo.MaterialReceiveAgstPoId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Quality Certification</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("RefNo:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+                    @Html.DisplayName("Qc Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.QcDate, new {  @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <div>
+            <table id="ReceivedAgstPoDetail" class="webgrid-table">
+                <thead style="text-align: center" class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+
+                        <th>
+                            @Html.Label(Model.ReceiveAgainstPo.StoreId == 1 ? "Brand" : "Color")
+                        </th>
+                        <th>
+                            @Html.Label(Model.ReceiveAgainstPo.StoreId == 1 ? "Count" : "Size")
+                        </th>
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("Quantity")
+                        </th>
+                        <th>
+                            @Html.Label("Rejected Quantity")
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var m in Model.Dictionary)
+                    {
+                        <tr id="newRow-@Model.Dictionary[m.Key].ItemId">
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoId)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoDetailId)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedRate)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedRate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedQty)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedQty)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Dictionary[m.Key].RejectedQty)
+                               
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div style="float: right">
+
+
+                <table class="tabefont">
+                    <tr>
+
+                        <td>
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+}
+

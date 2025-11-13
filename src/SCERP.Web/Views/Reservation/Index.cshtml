@@ -1,0 +1,133 @@
+﻿@using System.ServiceModel
+@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Enums
+@using DayPilot.Web.Mvc.Events.Scheduler
+@{
+    ViewBag.Title = "Sewing Production Plan";
+     Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+
+<style type="text/css">
+
+    .scheduler_default_rowheader_inner {
+        border-right: 1px solid #ccc;
+    }
+
+    .scheduler_default_rowheadercol2 {
+        background: White;
+    }
+
+        .scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner {
+            top: 2px;
+            bottom: 2px;
+            left: 2px;
+            background-color: transparent;
+            border-left: 5px solid #1a9d13; /* green */
+            border-right: 0px none;
+        }
+
+    .status_dirty.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner {
+        border-left: 5px solid #ea3624; /* red */
+    }
+
+    .status_cleanup.scheduler_default_rowheadercol2 .scheduler_default_rowheader_inner {
+        border-left: 5px solid #f9ba25; /* orange */
+    }
+</style>
+
+<div style="margin-bottom: 20px;">
+    Sewing Unit:
+    @Html.DropDownList("Filter", new SelectListItem[]
+        {
+            new SelectListItem() { Text = "All", Value = "0" },
+            new SelectListItem() { Text = "Unit-A", Value = "1" },
+            new SelectListItem() { Text = "Unit-B", Value = "2" },
+            new SelectListItem() { Text = "Unit-C", Value = "3" },
+            new SelectListItem() { Text = "Unit-D", Value = "4" },
+        },
+        new { @onchange = "filter('room', this.value)" }
+    )
+</div>
+
+
+@Html.DayPilotScheduler("dp", new DayPilotSchedulerConfig
+{
+    BackendUrl = Url.Action("Backend", "Scheduler"),
+    Scale = TimeScale.Manual,
+
+    EventHeight = 35,
+
+    TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+    TimeRangeSelectedJavaScript = "create(start, end, resource);",
+    TimeRangeSelectingJavaScript = "selecting(args)",
+
+    EventClickHandling = EventClickHandlingType.JavaScript,
+    EventClickJavaScript = "edit(e);",
+
+    EventMoveHandling = EventMoveHandlingType.CallBack,
+    EventResizeHandling = EventResizeHandlingType.CallBack,
+
+    TimeHeaders = new TimeHeaderCollection()
+    {
+        new TimeHeader(GroupBy.Month),
+        new TimeHeader(GroupBy.Day)
+    },
+
+    HeaderColumns = new RowHeaderColumnCollection()
+    {
+        new RowHeaderColumn("LINE", 100),
+        //new RowHeaderColumn("QTY", 80),
+        //new RowHeaderColumn("STATUS", 80)
+    }
+})
+
+<script>
+    function modal() {
+        var m = new DayPilot.Modal();
+        m.closed = function () {
+            dp.clearSelection();
+            var data = this.result;
+            if (data == "OK") {
+                dp.commandCallBack("refresh");
+            }
+
+        };
+        return m;
+    }
+
+    function create(start, end, resource) {
+        var action ='@Url.Action("Create", "Reservation")?PlanTargetProduction.StartDate=' + start + "&PlanTargetProduction.EndDate=" + end + "&PlanTargetProduction.LineId=" + resource;
+        jQuery.Ajax({
+            url: action
+            , type: "GET"
+            , dialog: {}
+            , success: self.DialogOpened
+        });
+       // modal().showUrl('@Url.Action("Create", "Reservation")?start=' + start + "&end=" + end + "&resource=" + resource);
+    }
+    function edit(e) {
+        modal().showUrl('@Url.Action("Edit", "Reservation")?id=' + e.id());
+    }
+
+    function filter(property, value) {
+        if (!dp.clientState.filter) {
+            dp.clientState.filter = {};
+        }
+        if (dp.clientState.filter[property] != value) { // only refresh when the value has changed
+            dp.clientState.filter[property] = value;
+            dp.commandCallBack('filter');
+        }
+    }
+
+    function selecting(args) {
+        var duration = Math.floor(new DayPilot.Duration(args.end.getTime() - args.start.getTime()).totalDays());
+        var s = duration > 1 ? "s" : "";
+
+        args.left.enabled = true;
+        args.left.html = "Start:<br/>" + args.start.toString("M/d/yyyy");
+        args.right.enabled = true;
+        args.right.html = "End:<br/>" + args.end.toString("M/d/yyyy") + "<br/>" + duration + " night" + s;
+    }
+
+</script>

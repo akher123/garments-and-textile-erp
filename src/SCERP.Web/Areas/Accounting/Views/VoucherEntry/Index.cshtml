@@ -1,0 +1,141 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    ViewBag.Title = "Journal Voucher";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@functions
+{
+    public static string GetVoucherName(string type)
+    {
+       return new[]
+                {
+                    new {VoucherTypeId = "JV", Value = "Journal Voucher"},
+                    new {VoucherTypeId = "CP", Value = "Cash Payment"},
+                    new {VoucherTypeId = "CR", Value = "Cash Receipt"},
+                    new {VoucherTypeId = "BP", Value = "Bank Payment"},
+                    new {VoucherTypeId = "BR", Value = "Bank Receipt"},
+                    new {VoucherTypeId = "CV", Value = "Contra Voucher"},
+                    new {VoucherTypeId = "IV", Value = "Integration Voucher"}
+                }.First(x => x.VoucherTypeId == type).Value;
+    }
+}
+
+@using (Html.BeginForm("Index", "VoucherEntry", FormMethod.Post, new { @class = "VoucherEntrySearchForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.IsSearch)
+    
+    <div class="header-title">
+        <h2>Voucher List</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x.VoucherList.FromDate, new { @class = "datepicker", @style = "width:100px;", @data_val = "false", @placeholder = "From Date" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.VoucherList.ToDate, new { @class = "datepicker", @style = "width:100px;", @data_val = "false", @placeholder = "To Date" })
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x =>x.VoucherList.VoucherRefNo, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+
+                    <td>
+                        <div>
+                            <div style="float: left">
+                                <input type="button" class="searchAction" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="addButton-wrapper">
+        <button class="AjaxPopup addButton" action="/Accounting/VoucherEntry/Edit">New Voucher</button>
+        <button class="AjaxPopup addButton" action="/Accounting/VoucherEntry/EditMultiCurrency">New Voucher Multicurrency</button>
+        <div style=" margin-bottom: 3px; margin-right:13px; float: right;">
+            <input type="button" value="VStatement" class="ShowVLButton addButton" />
+        </div> 
+    </div>
+        
+    <div class="additem">
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: SCERP.Common.AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VoucherLists, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        columns: grid.Columns(
+         grid.Column(header: "Cheque", format: @<text>@Html.ActionLink("Cheque", "Cheque", "Report", new { item.Id }, new { @target = "_blank", @style = "visibility:" + (item.VoucherType != "BP" ? "hidden" : "") })   </text>),
+        grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+        grid.Column("SectorName", header: "SectorName"),
+        grid.Column("Date", header: "Date", format: @<text>@(item.Date == null ? "" : item.Date.ToString("dd-MM-yyyy"))</text>),
+        grid.Column("VoucherType", header: "Voucher Type", format: item => GetVoucherName(item.VoucherType)),
+        grid.Column("VoucherNo", header: "Ref No"),
+        grid.Column("VoucherRefNo", header: "Voucher No"),
+        grid.Column("Particulars", header: "Particulars"),
+        grid.Column("ActiveCurrencyId", header: "Currency", format: @<text>@(item.ActiveCurrencyId == null ? "" : Enum.GetName(typeof(CurrencyType), item.ActiveCurrencyId))</text>),
+        grid.Column("Amount", header: "Amount"),
+        grid.Column(header: "Edit", format: @<text><button class="edit" action="/Accounting/VoucherEntry/Edit/@item.Id"></button></text>, canSort: false),
+        grid.Column(header: "Edit(M.C)", format: @<text><button class="edit" action="/Accounting/VoucherEntry/EditMultiCurrency/@item.Id"></button></text>, canSort: false),
+        grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Accounting/VoucherEntry/Delete/@item.Id"></button></text>),
+        grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "Voucher", "Report", new { item.Id }, new { @target = "_blank" })   </text>),
+        grid.Column(header: "Print(M.C)", format: @<text>@Html.ActionLink("Print", "VoucherMultiCurrency", "Report", new { item.Id }, new { @target = "_blank" })   </text>),
+        grid.Column(header: "CostCentre", format: @<text><button class="edit" action="/Accounting/VoucherSagregationToCostCentre/Edit?Id=@item.Id&TotalAmount=@item.Amount"></button></text>, canSort: false)
+        ));
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.ShowVLButton').on('click', function () {
+            var form = $('.VoucherEntrySearchForm');
+            var url = "/VoucherEntry/VoucherSummary/";
+            jQuery.ajax({
+                url: url,
+                dataType: 'html',
+                data: form.serialize(),
+                type: "GET",
+                success: function (response) {
+                    var data = response;
+                    var popupWindow = window.open('', '', 'width=810,height=520,left=0,top=0,toolbar=0,status=0');
+                    popupWindow.document.open();
+                    popupWindow.document.write('<HTML>\n<HEAD>\n');
+                    popupWindow.document.write('<link rel="stylesheet" type="text/css" href="~/Content/Common/PdfReport.css"/>');
+                    popupWindow.document.write('</HEAD>\n');
+                    popupWindow.document.write('<BODY >\n');
+                    popupWindow.document.write(data);
+                    popupWindow.document.write('</BODY>\n');
+                    popupWindow.document.write('</HTML>\n');
+                    popupWindow.document.close();
+                    popupWindow.focus();
+                    // popupWindow.print();
+                    //  popupWindow.close();
+                }
+            });
+        })
+    </script>
+}

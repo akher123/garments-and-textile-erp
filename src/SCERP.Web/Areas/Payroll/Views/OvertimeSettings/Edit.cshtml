@@ -1,0 +1,86 @@
+﻿@model SCERP.Web.Areas.Payroll.Models.ViewModels.OvertimeSettingsViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "OvertimeSettings", FormMethod.Post, new { @class = "Unitform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.CreatedBy)
+    <fieldset>
+        <legend>Overtime Settings</legend>
+        <table class="tabefont">
+            
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Overtime Hours:</td>
+                <td>
+                    @Html.EditorFor(x => x.OvertimeHours)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.OvertimeHours)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Overtime Rate:</td>
+                <td>
+                    @Html.EditorFor(x => x.OvertimeRate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.OvertimeRate)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">From:</td>
+                <td>                 
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.FromDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">To:</td>
+                <td>                  
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td colspan="1"></td>
+
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+
+
+

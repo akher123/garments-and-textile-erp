@@ -1,0 +1,119 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabricOrderViewModel
+@{
+    ViewBag.Title = Model.FabricOrder.FabricOrderId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "FabricOrder", FormMethod.Post, new { @class = "FabricOrderform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.FabricOrder.FabricOrderId)
+    <fieldset>
+        <legend>Fabric Work Order </legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Buyer")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.FabricOrder.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "fabricOrder_buyerRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Order")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.FabricOrder.OrderNo, Model.OrderSelectListItem, "-Select-", new { @class = "fabricOrder_OrderNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    <input type="button" class="buttonStyle" onclick="findStyleListByOrder(this)" value="Find" />
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div id="styleListdiv">
+                        @Html.Partial("~/Areas/Merchandising/Views/FabricOrder/_StyleList.cshtml", Model)
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FabricOrder.FabricOrderRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td>
+                    @Html.Label("Supplier :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.FabricOrder.SupplierId, Model.SupplierSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order Date:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.FabricOrder.OrderDate, new { @class = "datepicker" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td>
+                    @Html.Label("Ex Date:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.FabricOrder.ExpDate, new { @class = "datepicker" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td colspan="5">
+                    @Html.TextAreaFor(x => x.FabricOrder.Remarks, new { @style = "width:500px;height:80px;" })
+                </td>
+
+                <td >
+                    @Html.SaveButton()
+                </td>
+             
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/fabricOrder.js"></script>
+}

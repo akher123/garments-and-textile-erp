@@ -1,0 +1,28 @@
+
+@model SCERP.Model.CommonModel.Messaging
+@{
+
+    Layout = null;
+}
+
+<link href="~/Content/chatbox.css" rel="stylesheet" />
+
+<div class="footer">
+
+    <button class="open-button" onclick="openForm()"> <i class="fa fa-comments" aria-hidden="true"></i> Chat</button>
+
+    <div class="chat-popup" id="myForm">
+        @using (Html.BeginForm("SendChatMessage", "Messaging", FormMethod.Post, new { @class = "form-container",id="chat_form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(x => x.ReceiverId, new { id = "message_ReceiverId" })
+            <h2>Chat Box</h2> <br />
+            <input type="search" placeholder=" Type Receiver Name" name="Search" id="search" required>
+            @Html.TextAreaFor(x => x.MessageText, new { @type = "search", @placeholder = "Type message.." })
+            <button type="button" id="message_send" class="btn"> <i class="fa fa-paper-plane" aria-hidden="true"></i>Send</button>
+            <button type="button" class="btn cancel" onclick="closeForm()"> <i class="fa fa-times" aria-hidden="true"></i> Close</button>
+        }
+    </div>
+ 
+
+</div>

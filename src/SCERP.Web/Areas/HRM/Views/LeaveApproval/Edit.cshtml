@@ -1,0 +1,502 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeLeaveViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Leave Approval from HR";
+}
+
+@using (Html.BeginForm("Save", "LeaveApproval", FormMethod.Post, new { @class = "EmployeeLeaveform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Leave Approval</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 530px; margin-top: 15px; border-style: solid; border-color: lightblue; border-width: thin;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                Employee Id
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.EmployeeCardId, new { @class = "employeeCardId", style = "width: 150px;" })
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                <input type="button" class="Search" value="Search" onclick="SearchEmployeeDataButton(); ">
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Name</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Name" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Company
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Company" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Branch</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Branch" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Unit
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Unit" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Department</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Department" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Section
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Section" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Line</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Line" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Type
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Type" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Grade</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Grade" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Designation
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Designation" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Joining Date:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="JoiningaDate" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+                </td>
+
+                <td align="left">
+                    <table width="450px">
+                        <tr>
+                            <td><div id="tab"></div> </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 530px; border-style: solid; border-color: lightblue; border-width: thin;" class="auto-style1">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                Leave Type
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DropDownListFor(x => x.LeaveTypeId, Model.LeaveTypeSelectListItem, new { @disabled = false })
+                                @Html.ValidationMessageFor(model => model.LeaveType)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Applied Period:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("From:")                                                               
+                                @Html.TextBoxFor(x => x.AppliedFromDate, new { @class = "datepicker", @data_val = "false", @disabled = false, @placeholder = "To", style = "width:100px", @onchange = "DayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.AppliedFromDate)
+
+                                @Html.DisplayName("To:")                                
+                                @Html.TextBoxFor(x => x.AppliedToDate, new { @class = "datepicker", @data_val = "false", @disabled = false, @placeholder = "To", style = "width:100px", @onchange = "DayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.AppliedToDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Submit Date:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>                               
+                                @Html.TextBoxFor(x => x.SubmitDate, new { @class = "datepicker", @data_val = "false", @disabled = false, @placeholder = "To", style = "width:100px" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Applied Day(s):")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.AppliedTotalDays, new { @readonly = "readonly", @style = "background-color: #F2F2F2;" })
+                                @Html.ValidationMessageFor(model => model.AppliedTotalDays)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Leave Purpose:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.LeavePurpose, new { @disabled = false })
+                                @Html.ValidationMessageFor(model => model.LeavePurpose)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Address During Leave:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.AddressDuringLeave, new { @disabled = false })
+                                @Html.ValidationMessageFor(model => model.AddressDuringLeave)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Emergency Phone No:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.EmergencyPhoneNo, new { @disabled = false })
+                                @Html.ValidationMessageFor(model => model.EmergencyPhoneNo)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td style="vertical-align: top">
+                    <table style="width: 550px; border-style: solid; border-color: lightblue; border-width: thin;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayName("Recommended Status:")</td>
+                            <td>&nbsp;</td>
+                            <td>@Html.DropDownListFor(x => x.RecommendationStatus, Model.LeaveStatusWorkerSelectListItem, "- Select -", new { @disabled = false })</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Recommended Period:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("From:")                               
+                                @Html.TextBoxFor(x => x.RecommendedFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", @disabled = false, style = "width:100px", @onchange = "RecommendedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.RecommendedFromDate)
+
+                                @Html.DisplayName("To:")                               
+                                @Html.TextBoxFor(x => x.RecommendedToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", @disabled = false, style = "width:100px", @onchange = "RecommendedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.RecommendedToDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Recommended Day(s):")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>                                
+                                @Html.TextBoxFor(x => x.RecommendedTotalDays, new { @class = "datepicker", @data_val = "false", @placeholder = "To", @readonly = "readonly", @style = "background-color: #F2F2F2;" })
+                                @Html.ValidationMessageFor(model => model.RecommendedTotalDays)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Recommendation Comments:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.RecommendationComment, new { @disabled = false })
+                                @Html.ValidationMessageFor(model => model.RecommendationComment)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayName("Recommendation Date:")</td>
+                            <td>&nbsp;</td>
+                            <td>                                
+                                @Html.TextBoxFor(x => x.RecommendationStatusDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", @disabled = false, style = "width:100px" })
+                                @Html.ValidationMessageFor(model => model.RecommendationStatusDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayName("Approval Status:")</td>
+                            <td>&nbsp;</td>
+                            <td>@Html.DropDownListFor(x => x.ApprovalStatus, Model.ApprovalStatusSelectListItem, "- Select -")</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Approval Period:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("From:")                               
+                                @Html.TextBoxFor(x => x.ApprovedFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "ApprovedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.RecommendedFromDate)
+
+                                @Html.DisplayName("To:")                               
+                                @Html.TextBoxFor(x => x.ApprovedToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "ApprovedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.RecommendedToDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Approved Day(s):")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ApprovedTotalDays)
+                                @Html.ValidationMessageFor(model => model.ApprovedTotalDays)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Approval Comments:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ApprovalComment)
+                                @Html.ValidationMessageFor(model => model.ApprovalComment)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayName("Approval Date:")</td>
+                            <td>&nbsp;</td>
+                            <td>                     
+                                @Html.TextBoxFor(x => x.ApprovalStatusDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px" })
+                                @Html.ValidationMessageFor(model => model.ApprovalStatusDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Consumed Period:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("From:")                                
+                                @Html.TextBoxFor(x => x.ConsumedFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "ConsumedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.ConsumedFromDate)
+
+                                @Html.DisplayName("To:")                                
+                                @Html.TextBoxFor(x => x.ConsumedToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "ConsumedDayCalculation()" })
+                                @Html.ValidationMessageFor(model => model.ConsumedToDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Consumed Day(s):")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ConsumedTotalDays)
+                                @Html.ValidationMessageFor(model => model.ConsumedTotalDays)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Days Before:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.JoinedBeforeDays, new { style = "width:100px", @onchange = "ResumeDateCalculation()" })
+                                @Html.ValidationMessageFor(model => model.JoinedBeforeDays)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Resume Date:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>                      
+                                @Html.TextBoxFor(x => x.ResumeDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                                @Html.ValidationMessageFor(model => model.ResumeDate)
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td>@Html.SaveButton()</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </table>
+
+    </fieldset>
+}
+
+<script src="~/Scripts/SCERP/EmployeeLeave.js"></script>

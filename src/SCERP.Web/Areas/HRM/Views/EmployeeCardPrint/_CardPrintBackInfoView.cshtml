@@ -1,0 +1,90 @@
+﻿@model SCERP.Model.EmployeeCardInfo
+
+@{
+    Layout = null;
+}
+
+<style type="text/css">
+    .image {
+        position: relative;
+        /*background-image: url('~/Content/images/IdCardBack.jpg');*/
+        /*height: 870px;
+        width: 550px;*/
+        -webkit-print-color-adjust: exact;
+    }
+
+        .image .text {
+            /*font-size: 24px;*/
+            left: 20px;
+            /*padding-top: 30px;*/
+            position: absolute;
+            top: 35px;
+            /*width: 380px;*/
+        }
+
+    #reportContainner {
+        margin-top: 0px;
+    }
+</style>
+
+<table>
+    <tr>
+        <td>
+            <div class="image" style="height: 306px; width: 192px;">
+               <img alt="" src="~/Content/images/IdCardBack.jpg" />
+                <div class="text">
+                    <table style="margin-left:0px; margin-top:35px; font-size:10px;">
+                        <tr>
+                            <td align="center">
+                                @{
+                                    if (Model.IsBangla)
+                                    {
+                                        @Html.DisplayName("যদি খুঁজে পান, কার্ডটি এই ঠিকানায় ফেরত পাঠান: ") <br /><br />
+                                        @Html.DisplayName(" ঠিকানা: ")<br />
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("If found, kindly return this card to:") <br /><br />
+                                        @Html.DisplayName("Address:")<br />
+                                    }
+                                }
+                                @Model.Address1 <br />
+                                @Model.Address2 <br /> <br />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                T: @Model.Telephone <br />
+                                F: @Model.Fax <br />
+                                M: @Model.Mobile <br />
+                                E: @Model.Email <br />
+                                W: @Model.Website <br /><br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                @{
+                                    if (Model.IsBangla)
+                                    {
+                                        @Html.DisplayName("শুধুমাত্র চাকরিরত অবস্থায় এই কার্ড গ্রহণযোগ্য")<br />
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("This card is valid until holder is in Job")<br />
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+
+
+

@@ -1,0 +1,196 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    ViewBag.Title = Model.CuttingBatch.CuttingBatchId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    int sl = 1;
+}
+@section styles
+{
+    @*<link href="~/Content/Common/FixedHeaderTable.css" rel="stylesheet" />*@
+}
+<div class="header-title">
+    <h2>Cutting Job Card Approval</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("CuttingApproval", "JobCard", FormMethod.Get, new { @class = "JobCardForm ignore-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(x => x.IsSearch)
+            <fieldset>
+                <legend>Cutting Job Card</legend>
+                <div id="cuttingJobMaster">
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Buyer :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "CuttingBatch_buyerRefId" })
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Order No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, "-ALL-", new {@class = "CuttingBatch_OrderNo"})
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Style No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new { @class = "CuttingBatch_StyleNo" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Color :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.ColorRefId, Model.ColorSelectListItem, "-ALL-", new {@class = "CuttingBatch_Color"})
+                            </td>
+
+                            <td>
+                                @Html.Label("Sequence :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.ComponentRefId, Model.ComponentSelectListItem, "-ALL-", new { @class = "CuttingBatch_sequence" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Status :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.ApprovalStatus, Model.ApprovalStatusSelectListItem)
+                            </td>
+
+                            <td>
+                                <input type="button" class="searchAction" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+
+        <table id="table-1" class="fixed_headers webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>SL</th>
+                    <th>REF NO</th>
+                    <th>DATE</th>
+                    <th> BUYER</th>
+                    <th>STYLE</th>
+                    <th>COLOR</th>
+                    <th>SEQUENCE</th>
+                    <th>JOB NO</th>
+                    <th>M/P</th>
+                    <th>PLY</th>
+                    <th>C/QTY</th>
+                    <th>REJ.QTY</th>
+                    <th>REJECT(%)</th>
+                    <th>F.QTY</th>
+                    <th>F(%)</th>
+                    <th>PROCESS</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var cuttingApproval in Model.VwCuttingApprovalList)
+                {
+                    <tr>
+                        <td>
+                            @sl
+                        </td>
+                        <td>
+                            @cuttingApproval.CuttingBatchRefId
+                        </td>
+                        <td>
+                            @String.Format("{0:dd/MM/yyyy}", cuttingApproval.CuttingDate)
+                        </td>
+                        <td>
+                            @cuttingApproval.BuyerName
+                        </td>
+
+                        <td>
+                            @cuttingApproval.StyleName
+                        </td>
+                        <td>
+                            @cuttingApproval.ColorName
+                        </td>
+                        <td>
+                            @cuttingApproval.ComponentName
+                        </td>
+                        <td>
+                            @cuttingApproval.JobNo
+                        </td>
+                        <td>
+                            @cuttingApproval.MarkerPcs
+                        </td>
+                        <td>
+                            @cuttingApproval.Ply
+                        </td>
+                        <td>
+                            @cuttingApproval.TotalQty
+                        </td>
+                        <td>
+                            @cuttingApproval.RejectQty
+                        </td>
+                        <td>
+                            @(cuttingApproval.TotalQty <= 0 ? String.Format("{0:0.00}", (cuttingApproval.RejectQty * 100.0m / 1)) : String.Format("{0:0.00}", (cuttingApproval.RejectQty * 100.0m / cuttingApproval.TotalQty)))
+                        </td>
+                        <td>
+                            @(cuttingApproval.TotalQty - cuttingApproval.RejectQty)
+                        </td>
+                        <td>
+                            @(cuttingApproval.TotalQty <= 0 ? String.Format("{0:0.00}", ((cuttingApproval.TotalQty - cuttingApproval.RejectQty) * 100.0 / 1)) : String.Format("{0:0.00}", (cuttingApproval.TotalQty - cuttingApproval.RejectQty) * 100.0 / cuttingApproval.TotalQty))
+                        </td>
+                        <td>
+                            <input type="checkbox" onclick="approvalStatus(this)" @(cuttingApproval.ApprovalStatus == "A" ? "checked" : "") value="@cuttingApproval.CuttingBatchId" />
+                        </td>
+                    </tr>
+                    sl++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</section>
+
+
+
+@section scripts
+{
+    
+    <script type="text/javascript">
+
+        function approvalStatus(chechBox) {
+            var $chechBox = $(chechBox);
+            var cuttingBatchId = $chechBox.val();
+            var tr = $chechBox.closest('tr');
+            $.Ajax({
+                url: '/JobCard/SaveApprovalStatus/',
+                data: { cuttingBatchId: cuttingBatchId },
+                type: 'post'
+            }).done(function (approvalStatust) {
+                if (approvalStatust == true) {
+                    tr.remove();
+                } else {
+                    alert('Failed To Approval Process');
+                }
+
+            });
+        }
+    </script>
+
+    <script src="~/Scripts/SCERP/Production/cuttingJobCard.js"></script>
+}

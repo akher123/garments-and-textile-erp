@@ -1,0 +1,57 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessSequenceViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Save", "ProcessSequence"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ProcessSequenceId)
+    @Html.ValidationSummary(true)
+       
+    <table>
+
+        <tr>
+            <td>
+                @Html.TextBoxFor(x => x.OrderStyleRefId, new { @id = "OrderStyleRefId", @readonly = "readonly", @style = "background-color: #778899;" })
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.ProcessRow, new { @readonly = "readonly", @style = "background-color: #778899;" })
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.ProcessRefId, Model.ProcessesSeasonsSelectListItem, "-Select-")
+            </td>
+            <td>
+                @Html.Button("Add", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "StyleProcessSequence" } })
+            </td>
+            <td>
+                <input type="button" value="Default" id="defaultButton" class="addButton" />
+            </td>
+        </tr>
+
+    </table>
+}
+
+
+<script type="text/javascript">
+    $('#defaultButton').unbind('click').bind('click', function() {
+        var form = $(this).parents('form:first');
+        if ($('#OrderStyleRefId').val().length > 0) {
+            jQuery.Confirm("Do you want to save default sequenc !!", function (r) {
+                
+                if (r) {
+                    jQuery.Ajax({
+                        url: '/ProcessSequence/SaveDefault/',
+                        type: "POST",
+                        data: form.serialize()
+          , container: '.StyleProcessSequence'
+                    });
+                }
+            });
+         
+        } else {
+            alert('Please Select Style');
+        }
+      
+    });
+</script>

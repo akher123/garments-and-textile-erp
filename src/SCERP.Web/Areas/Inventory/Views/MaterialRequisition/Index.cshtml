@@ -1,0 +1,89 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialRequisitionViewModel
+@{
+    ViewBag.Title = "MaterialRequisition";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "MaterialRequisition", FormMethod.Get, new { @class = "MaterialRequisitionSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Material Requisition</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            
+            @{Html.RenderPartial("~/Areas/Inventory/Views/MaterialRequisition/_SearchMaterialRequisition.cshtml", Model); }
+            <tr>
+                <td>
+                    @Html.Label(String.Format("{0}", @"Req Note No:"))
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.RequisitionNoteNo, new { @placeholder = "Search By Req. Note No." ,@data_val=false})
+                </td>
+                <td>
+                    @Html.Label(String.Format("{0}", @"SPR Status:"))
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.IsModifiedByStore,Model.ModifiedByStoreSelectListItem,"ALL", new { @placeholder = "Modified Status", @data_val = false })
+                </td>
+                &nbsp;   &nbsp;  &nbsp;
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <input type="button" onclick="search('@Url.Action("Edit", "MaterialRequisition")','MaterialRequisitionSearchForm')" value="Add New" />
+        </div>
+        <div style="width: 1024px; overflow: auto">
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.VMaterialRequisitions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                var gridColumns = new List<WebGridColumn>();
+                gridColumns.Add(grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>));
+                gridColumns.Add(grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>));
+                gridColumns.Add(grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "--")</text>));
+                gridColumns.Add(grid.Column("Line", header: "Line ", format: @<text>@(item.LineName ?? "--")</text>));
+                gridColumns.Add(grid.Column("RequisitionNoteNo", header: "Req.NoteNo", format: @<text>@(item.RequisitionNoteNo ?? "--")</text>));
+                gridColumns.Add(grid.Column("CreatedByEmployeeName", header: "PreparedBy", format: @<text>@(item.CreatedByEmployeeName ?? "--")</text>, canSort: false));
+                gridColumns.Add(grid.Column("RequisitionNoteDate", header: "Req.Note date", format: @<text>@(item.RequisitionNoteDate == null ? "" : item.RequisitionNoteDate.ToString("dd-MM-yyyy"))</text>, canSort: false));
+                gridColumns.Add(grid.Column("Remarks", header: "Remarks ", format: @<text>@(item.Remarks ?? "--")</text>));
+                if (Model.IsUserIsStorePerson)
+                {
+                    gridColumns.Add(grid.Column("SPR", format:@<text><input type="button" onclick="search('@Url.Action("Edit", "StorePurchaseRequisition", new { MaterialRequisitionId = item.MaterialRequisitionId, IsComeFromRequsition=true })')" value="@(item.IsModifiedByStore == false ? "Convert" : "Converted")" /></text>, canSort: false));
+                    gridColumns.Add(grid.Column("Detail/Edit", format:@<text> <input type="button" onclick="search('@Url.Action("Edit", "MaterialRequisition", new { MaterialRequisitionId = item.MaterialRequisitionId })')" value="Edit" /> </text>, canSort: false));
+                }
+                else
+                {
+                    gridColumns.Add(grid.Column("IsSentToStore", header: "Sent To Store ", format: @<text>@(item.IsSentToStore == false ? "No" : "Yes")</text>));
+                    gridColumns.Add(grid.Column("IsModifiedByStore", header: "Modified By Store", format: @<text>@(item.IsModifiedByStore == false ? "No" : "Yes")</text>));
+                    gridColumns.Add(grid.Column("Detail/Edit", format:@<text> <input type="button" onclick="search('@Url.Action("Edit", "MaterialRequisition", new { MaterialRequisitionId = item.MaterialRequisitionId, IsComeFromRequsition=true})')" value="Edit" /> </text>, canSort: false));
+                    gridColumns.Add(grid.Column("Delete", format:@<text><button class="delete" action="/Inventory/MaterialRequisition/Delete?StorePurchaseRequisitionId=@item.MaterialRequisitionId"></button></text>, canSort: false));
+                }
+            }
+            @grid.GetHtml( htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(gridColumns.ToArray()))
+        </div>
+    </div>
+</section>

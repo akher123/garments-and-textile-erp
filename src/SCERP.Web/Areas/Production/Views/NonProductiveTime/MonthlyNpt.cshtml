@@ -1,0 +1,103 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.NonProductiveTimeViewModel
+@{ ViewBag.Title = "NPT";
+ Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Monthly Non Productive Time information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("MonthlyNpt", "NonProductiveTime", FormMethod.Get, new {@class = "NonProductiveTimeForm submit-allow"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@data_val = "false", @class = "datepicker", @id = "nptFromDate"})
+                    </td>
+                    <td>
+                        @Html.Label("To Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@data_val = "false", @class = "datepicker", @id = "nptToDate"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="monthlyNapt(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="monthlyNapt(3)">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.NonProductiveTimes, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header text-center",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("NptRefId", header: "Ref ID"),
+                        grid.Column("BuyerName", header: "Buyer"),
+                        grid.Column("OrderName", header: "Order"),
+                        grid.Column("StyleName", header: "Style"),
+                        grid.Column("MachineName", header: "Line"),
+                        grid.Column("Supervisor", header: "Supervisor"),
+                        grid.Column("CatergoryName", header: "Category"),
+                        grid.Column("Manpower", header: "M/P"),
+                        grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.StartTime ?? ""), header: "StartTime"),
+                        grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.EndTime ?? ""), header: "EndTime"),
+                        grid.Column("ResponsibleDepartment", header: "Res.Dept"),
+                        grid.Column("Solution", header: "How Solved")))
+            ;
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        function monthlyNapt(rType) {
+            var fromDate = $('#nptFromDate').val();
+            var toDate = $('#nptToDate').val();
+            var searchurl = '/Production/NonProductiveTime/MonthlyNptReport?fromDate=' + fromDate + '&toDate=' + toDate + '&reportType=' + rType;
+            window.open(searchurl);
+        }
+
+    </script>
+
+}

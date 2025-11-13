@@ -1,0 +1,30 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.FeedbackViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Feedback";
+}
+
+@using (Html.BeginForm("Save", "Feedback", FormMethod.Post, new {@class = "feedbackform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend> Requirement </legend>
+
+        <table class="tabefont">                 
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Image:</td>
+                <td>                    
+                    <img src="@Url.Content(Model.PhotographPath)" alt="Image" width="850" height="485" />
+                </td>
+                <td>                  
+                </td>
+                <td>                    
+                </td>
+            </tr>        
+        </table>
+    </fieldset>
+}

@@ -1,0 +1,87 @@
+﻿@using SCERP.Common
+@model SCERP.Model.Custom.EmployeeInOutEditView
+
+@{
+    ViewBag.Title = "Employee In Out Edit";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Save", "EmployeeInOutEdit", FormMethod.Post, new { @class = "EmployeeInOutForm ignore-validation" }))
+{
+    <div class="header-title">
+        <h2>Employee In Out Edit</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("In Out Name: ") </td>
+                    <td> @Html.DropDownList("InOutName") </td>
+                    <td> @Html.Label("Employee Card Id: ") </td>
+                    <td> @Html.TextBoxFor(x => x.EmployeeCardId) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Date: ") </td>
+                    <td>                       
+                        @Html.TextBoxFor(x => x.TransactionDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Transaction Date" })
+                    </td>
+                    <td> </td>
+                    <td> </td>
+
+                    <td style="float: right">
+                        <input type="button" class="FindPartial addButton" action="/EmployeeInOutEdit/Index/" target="#contentRight" value="Find" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Status: ")  </td>
+                    <td> @Html.DropDownList("Status")  </td>
+                    <td> @Html.Label("In Time: ") </td>
+                    <td> @Html.TextBoxFor(x => x.InTime) </td>            
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Out Time: ") </td>
+                    <td> @Html.TextBoxFor(x => x.OutTime) </td>
+                    <td> @Html.Label("Delay Minutes: ") </td>
+                    <td> @Html.TextBoxFor(x => x.LateInMinutes) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.OTHours) </td>
+                    <td> @Html.Label("Extra OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.ExtraOTHours) </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Weekend OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.WeekendOTHours) </td>
+                    <td> @Html.Label("Holiday OT Hours: ") </td>
+                    <td> @Html.TextBoxFor(x => x.HolidayOTHours) </td>
+                    <td> </td>
+                </tr>
+                                                                 
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> <input type="button" class="SubmitButton addButton" value="Save" /> </td>
+                    <td> </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+}

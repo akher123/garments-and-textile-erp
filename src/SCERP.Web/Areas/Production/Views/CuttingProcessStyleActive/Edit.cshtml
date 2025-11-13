@@ -1,0 +1,157 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingProcessStyleActiveViewModel
+@{
+
+    ViewBag.Title = Model.CuttingProcessStyleActive.CuttingProcessStyleActiveId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "CuttingProcessStyleActive", FormMethod.Post, new { @class = "CuttingProcessStyleActiveForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CuttingProcessStyleActive.CuttingProcessStyleActiveId)
+    <fieldset>
+        <legend>Style In Cutting</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CuttingProcessStyleActive.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Order No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CuttingProcessStyleActive.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Style No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CuttingProcessStyleActive.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Start Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CuttingProcessStyleActive.StartDate, new { @class = "datepicker", @data_val = "false", id = "startDate" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("End Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CuttingProcessStyleActive.EndDate, new { @class = "datepicker", @data_val = "false", id="endDate"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        $('.CuttingBatch_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/CuttingProcessStyleActive/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+            $('.CuttingBatch_OrderNo').empty();
+            $('.CuttingBatch_StyleNo').empty();
+            $('.CuttingBatch_sequence').empty();
+        }
+
+        function populateDropDown(obj) {
+            $('.CuttingBatch_OrderNo').append(
+                $('<option/>')
+                    .attr('value', obj.OrderNo)
+                    .text(obj.RefNo)
+            );
+        }
+
+        $('.CuttingBatch_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/CuttingProcessStyleActive/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.CuttingBatch_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.CuttingBatch_StyleNo').append(
+                            $('<option/>')
+                                .attr('value', this.OrderStyleRefId)
+                                .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("No Order Found")
+                    );
+                }
+            });
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+

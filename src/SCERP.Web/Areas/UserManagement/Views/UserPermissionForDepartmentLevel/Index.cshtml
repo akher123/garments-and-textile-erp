@@ -1,0 +1,88 @@
+﻿@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserPermissionForDepartmentLevelViewModel
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+<link href="~/Content/Common/treeView.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Save", "UserPermissionForDepartmentLevel", FormMethod.Post, new { @class = "UserPermissionForDepartmentLevelForm" }))
+{
+     <div style="width:auto; padding-left:300px;">
+        <h2>User Permission For Department Level</h2>
+    </div>
+    <div >
+        <section class="search formCover" style="margin-bottom: 3px;">
+            <div style="margin-top: 5px; padding: 4px;">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("User")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.UserName, Model.UserSelectListItem, "-select-", new { @class = "UserPermissionForDepartmentLevel", @action = "/UserManagement/UserPermissionForDepartmentLevel/UserPermissionForDepartmentLevelByUserName" })
+                        </td>
+                        <td>
+                            <input type="submit" class="SubmitButton addButton" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="search formCover">
+            <div class="tree additem">
+                <ul>
+                    @foreach (var companye in Model.UserCompanies)
+                    {
+                        <li>
+                            <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span style="font-size: 20px; color: #006400"> <input type="checkbox" value="@companye.CompanyId" id="check-@companye.CompanyId" /> @companye.CompanyName</span>
+                            <ul>
+                                @foreach (var branch in companye.Branches)
+                                {
+                                    <li>
+                                        <a></a><span>&nbsp;&nbsp;</span>
+                                        <span style="font-size: 20px; color: #800000"> <input type="checkbox" value="@companye.CompanyId-@branch.BranchId" id="check-@companye.CompanyId-@branch.BranchId" />@branch.BranchName</span>
+                                        <ul>
+                                            @foreach (var unit in branch.Units)
+                                            {
+                                                <li>
+                                                    <a></a><span>&nbsp;&nbsp;</span>
+                                                    <span style="font-size: 20px; color: #1e90ff"><input type="checkbox" value="@companye.CompanyId-@branch.BranchId-@unit.BranchUnitId" id="check-@companye.CompanyId-@branch.BranchId-@unit.BranchUnitId" /> @unit.UnitName </span>
+                                                    <ul>
+                                                        @foreach (var department in unit.Departments)
+                                                        {
+                                                            <li>
+                                                                <a></a>
+                                                                <span>&nbsp;&nbsp;</span><span style="font-size: 20px; color: #008b8b"><input type="checkbox" value="@companye.CompanyId-@branch.BranchId-@unit.BranchUnitId-@department.BranchUnitDepartmentId" id="check-@companye.CompanyId-@branch.BranchId-@unit.BranchUnitId-@department.BranchUnitDepartmentId" name="CompanyBranchUnitDepartment" />@department.DepartmentName</span>
+                                                                <ul>
+                                                                    <li>
+
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+    </div>
+
+}
+@section scripts
+{
+    <script src="~/Scripts/SCERP/treeView.js"></script>
+    <script src="~/Scripts/SCERP/UserManagement/UserPermissionForDepartmentLevel.js"></script>
+}
+
+
+

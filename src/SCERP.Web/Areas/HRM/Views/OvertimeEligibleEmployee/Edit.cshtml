@@ -1,0 +1,66 @@
+﻿@model SCERP.Model.OvertimeEligibleEmployee
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.OvertimeEligibleEmployeeId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "OvertimeEligibleEmployee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.OvertimeEligibleEmployeeId)
+    @Html.HiddenFor(model => model.IsActive)
+      @Html.HiddenFor(model => model.EmployeeId)
+    <fieldset>
+        <legend>Edit Overtime </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Overtime Date :")
+                </td>
+                <td>             
+                    @Html.TextBoxFor(x => x.OvertimeDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+           
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Overtime Hour :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.OvertimeHour)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                 
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(x => x.Remarks)
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks)
+                </td>
+             
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+              
+            </tr>
+         
+        </table>
+
+    </fieldset>
+}
+
+

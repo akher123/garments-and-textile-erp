@@ -1,0 +1,110 @@
+﻿@model SCERP.Web.Areas.Production.Models.BatchRollViewModel
+@{
+    ViewBag.Title = Model.VwBatchRoll.BatchRollId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<div class="header-title">
+    <h2>Assign Roll In Bacth</h2>
+</div>
+<div class="formCover">
+    @Html.Partial("~/Areas/Production/Views/BatchRoll/_BatchRollAdd.cshtml", Model)
+    @using (Html.BeginForm("Save", "BatchRoll", FormMethod.Post, new { @id = "BatchRollAddForm" }))
+    {
+        <div class="title-tag" style="font-weight: 600;">Roll In Batch</div>
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <table style="width: 100%">
+                        <tr>
+
+                            @Html.HiddenFor(x => x.VwBatchRoll.BatchId)
+                            <td>
+                                <table class="tabefont webgrid-table">
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Roll")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.VwBatchRoll.RollRefNo, new { @id = "autocompliteRollSerach", @action = "/BatchRoll/GetRoll",@onkeydown="return (event.keyCode!=13)"})
+                                            @Html.HiddenFor(x => x.VwBatchRoll.KnittingRollId, new { @id = "knitting_rollId" })
+                                            @Html.HiddenFor(x => x.VwBatchRoll.KnittingRollIssueId, new { @id = "Knitting_rollIssueId" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.VwBatchRoll.Quantity, new { @placeholder = "Roll Qty", id = "roll_qty", @onkeydown = "return (event.keyCode!=13)" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.VwBatchRoll.Remarks, new { @placeholder = "Remarks", @onkeydown = "return (event.keyCode!=13)" })
+                                        </td>
+                                        <td>
+                                            <input type="button" id="saveRollBatch" action="/BatchRoll/Save/" target=".batchRollContainner" value="Save" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="batchRollContainner">
+                                @Html.Partial("~/Areas/Production/Views/BatchRoll/_BatchRollList.cshtml", Model)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $('#saveRollBatch').unbind('click').bind('click', function () {
+            var datatarget = $(this).attr('target');
+            var option = {
+                url: $(this).attr('action'),
+                type: "POST",
+                data: $('#BatchRollAddForm').serialize()
+            };
+
+            $.Ajax(option)
+                .done(function (repons) {
+                    $(datatarget).html(repons);
+                    cleare();
+                });
+        });
+
+        $('#autocompliteRollSerach').autocomplete({
+            source: function (request, response) {
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    data: { searchKey: request.term }
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        response($.map(data, function (roll) {
+                            return { label: "Roll :" + roll.RollRefNo + " Qty: " + roll.Quantity, value: roll.RollRefNo, knittingRollId: roll.KnittingRollId, knittingRollIssueId: roll.KnittingRollIssueId, quantity: roll.Quantity };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var knittingRollId = ui.item.knittingRollId;
+                var knittingRollIssueId = ui.item.knittingRollIssueId;
+                var quantity = ui.item.quantity;
+                $('#knitting_rollId').val(knittingRollId);
+                $('#Knitting_rollIssueId').val(knittingRollIssueId);
+                $('#roll_qty').val(quantity);
+            },
+
+        });
+
+        function cleare() {
+            
+            $('#autocompliteRollSerach').val('');
+            $('#knitting_rollId').val('');
+            $('#Knitting_rollIssueId').val('');
+            $('#roll_qty').val('');
+        }
+    </script>
+}

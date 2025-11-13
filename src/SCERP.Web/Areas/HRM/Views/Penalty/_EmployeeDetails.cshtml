@@ -1,0 +1,51 @@
+﻿@model SCERP.Model.VEmployeeCompanyInfoDetail
+@{
+    Layout = null;
+}
+@Html.HiddenFor(x => x.EmployeeId)
+<td>
+    <table style="font-family:Arial; width: 460px; border:1px solid" class="tabefont">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td><b>Employee:</b></td>
+                        <td>@Model.EmployeeName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Employee ID:</b></td>
+                        <td>@Model.EmployeeCardId</td>
+                    </tr>
+                    <tr>
+                        <td><b>Comapany:</b></td>
+                        <td>@Model.CompanyName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Branch:</b></td>
+                        <td>@Model.BranchName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Unit:</b></td>
+                        <td>@Model.UnitName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Department:</b></td>
+                        <td>@Model.DepartmentName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Section:</b></td>
+                        <td>@Model.SectionName</td>
+                    </tr>
+                    <tr>
+                        <td><b>Line:</b></td>
+                        <td>@Model.LineName</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <img src="@Url.Content(Model.PhotographPath)" alt="@Model.EmployeeName" width="230" height="150" />
+            </td>
+        </tr>
+    </table>
+</td>
+

@@ -1,0 +1,136 @@
+﻿@using System.Web.UI.WebControls
+@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserRoleFeatureViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>User Role Feature Permission</h2>
+</div>
+
+@section styles
+{
+    <link href="~/Content/Common/treeView.css" rel="stylesheet" />
+}
+
+<div>
+    @using (Html.BeginForm("Save", "UserRole", FormMethod.Post, new { @class = "userRoleForm" }))
+    {
+        <section class="search formCover" style="margin-bottom: 3px;">
+            <div style="float:left;padding:2px;">
+
+                <div style="margin-top: 5px; padding:2px;">
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Company")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CompId, Model.CompanySelectListItem, "-Select-", new { @onchange = "getUsersByCompany(this)" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("User")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.UserName, Model.UserSelectListItem, "-Select-", new { @class = "user_name" })
+                            </td>
+                            <td>
+                                <input type="button" class="addButton" value="Assign" id="saveUserRole" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("New User")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.NewUserName, Model.UserSelectListItem, "-Select-", new { @class = "user_name" })
+
+                            </td>
+                            <td>
+                                <input type="button" class="addButton" value="C&P" id="saveNewUserRole" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+            </div>
+            <div>
+                <div class="tree additem">
+                    @if (Model != null && Model.ModuleFeatureTreeViews.Any())
+                    {
+                        <ul>
+
+                            @{
+                                var moduleFeatureTreeView = Model.ModuleFeatureTreeViews.FirstOrDefault();
+                            }
+                            @if (moduleFeatureTreeView != null)
+                            {
+                                @GetTreeView(Model.ModuleFeatureTreeViews.ToList(), moduleFeatureTreeView.ParentFeatureId)
+                            }
+                        </ul>
+                    }
+                </div>
+
+
+            </div>
+
+        </section>
+    }
+</div>
+
+@helper GetTreeView(List<SCERP.Web.Areas.UserManagement.Models.ViewModels.ModuleFeatureTreeView> treeViews, int? parentID)
+{
+    foreach (var child in treeViews.Where(a => a.ParentFeatureId.Equals(parentID)))
+    {
+        <li>
+            @{
+                var submenu = treeViews.Count(a => a.ParentFeatureId.Equals(child.Id));
+            }
+
+            @if (Request.IsAuthenticated)
+            {
+                if (submenu > 0)
+                {
+                    <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-size: 20px; color: #006400">
+                        @child.FeatureName
+                        <input type="checkbox" id="check_@(child.ModuleFeatureId + "__3")" class="check" value="@(child.ModuleFeatureId + "_3")" name="AccessLevel" /><span style="font-weight: normal; font-size: 12px;">Accessible</span>
+                        <input style="display: none" type="checkbox" value="@child.ModuleFeatureId" id="check__@child.ModuleFeatureId" class="check" name="ModuleFeatureId" />
+                        <input style="display: none" type="checkbox" id="check_@(child.ModuleFeatureId + "__1")" class="check" value="@(child.ModuleFeatureId + "_1")" name="AccessLevel" />
+                        <input style="display: none" type="checkbox" id="check_@(child.ModuleFeatureId + "__2")" class="check" value="@(child.ModuleFeatureId + "_2")" name="AccessLevel" />
+                    </span>
+
+                }
+                else
+                {
+                    <input type="checkbox" value="@child.ModuleFeatureId" id="check__@child.ModuleFeatureId" class="check" name="ModuleFeatureId" />
+                    <span style="color: #800000"> @child.FeatureName </span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <input type="checkbox" id="check_@(child.ModuleFeatureId + "__1")" class="check" value="@(child.ModuleFeatureId + "_1")" name="AccessLevel" />
+                    <label style="color: #00bfff">View</label>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <input type="checkbox" id="check_@(child.ModuleFeatureId + "__2")" class="check" value="@(child.ModuleFeatureId + "_2")" name="AccessLevel" />
+                    <label style="color: #00bfff">Add/Edit</label>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <input type="checkbox" id="check_@(child.ModuleFeatureId + "__3")" class="check" value="@(child.ModuleFeatureId + "_3")" name="AccessLevel" />
+                    <label style="color: #dc143c">Delete</label>
+                }
+
+                if (submenu <= 0)
+                {
+                    continue;
+                }
+                <ul>
+                    @GetTreeView(treeViews, child.Id)
+                </ul>
+            }
+        </li>
+    }
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/UserManagement/userRole.js"></script>
+}

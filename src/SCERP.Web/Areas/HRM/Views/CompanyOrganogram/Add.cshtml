@@ -1,0 +1,69 @@
+﻿@model SCERP.Model.EmployeeDesignationViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Add Hierarchy";
+}
+
+@using (Html.BeginForm("SaveHierarchy", "CompanyOrganogram", FormMethod.Post, new { @class = "companyorganogramform" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+        <table class="tabefont" style="width:570px;">
+            <tr>
+                <td>&nbsp;</td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td class="fieldTitleCls">Designation</td>
+                <td>
+                   @Html.DropDownList("DesignationId", ViewBag.RestDesignationId as SelectList, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.DesignationId)
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td>&nbsp;</td>
+                <td class="fieldTitleCls">Supervisor Designation</td>
+                <td>
+                    @Html.DropDownList("SupervisorDesignationId", ViewBag.SupervisorDesignationId as SelectList, "-Select-")
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.SupervisorDesignationId)
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 5px;">
+                    &nbsp;
+                </td>
+                <td style="width: 50px;">
+                    &nbsp;
+                </td>
+                <td style="width:300px;">
+                    @Html.SaveButton()
+                </td>
+                <td style="width: 1px;">
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+        </table>
+    </div>
+}
+

@@ -1,0 +1,159 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+@{
+    ViewBag.Title = "Control Summary";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Control Summary Forth Layer</h2>
+</div>
+
+@using (Html.BeginForm("ControlSummary", "Report", FormMethod.Get, new { @class = "ControlSummaryForm submit-allow ignore-validation" }))
+{
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+
+                <tr>
+                    <td>@Html.DisplayName("Print Format: ")</td>
+                    <td>@Html.DropDownList("PrintFormatId", null, new { style = "" })</td>
+
+                    <td>@Html.DisplayName("Company Name: ")</td>
+                    <td>@Html.DropDownList("sectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "", @disabled = "disabled" })</td>
+
+                    <td>@Html.DisplayName("Control Head: ")</td>
+                    <td>@Html.TextBoxFor(p => p.GlId, new { @class = "AccountName", style = "" })</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right">
+                        @*<button class="search" type="button" onclick="search('/Accounting/Report/ControlLedger', 'GeneralLedgerForm')" />*@
+                        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintGL()" value="Print" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @*@Html.DisplayName("Cost Centre :")*@
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px; visibility: hidden;" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+}
+
+@*<div class="additem" style="margin-top: 20px;margin-bottom: 20px; width: 1015px;">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.GeneralLedger, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                            tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                                         firstText: "First",
+                                         lastText: "Last",
+                                         nextText: "Next",
+                                         mode: WebGridPagerModes.All,
+                                         previousText: "Previous",
+                                         columns: grid.Columns(
+
+                                         grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                                         grid.Column("Particulars", header: "Particulars"),
+                                         grid.Column("TotalDebit", header: "Debit"),
+                                         grid.Column("TotalCredit", header: "Credit"),
+                                         grid.Column("Balance", header: "Balance")
+                        ));
+        }
+    </div>*@
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+        $('body').on('keydown', 'input, select, textarea', function (e) {
+            var self = $(this)
+              , form = self.parents('form:eq(0)')
+              , focusable
+              , next
+            ;
+            if (e.keyCode == 13) {
+                focusable = form.find('input,a,select,button,textarea').filter(':visible');
+                next = focusable.eq(focusable.index(this) + 1);
+                if (next.length) {
+                    next.focus();
+                } else {
+                    form.submit();
+                }
+                return false;
+            }
+        });
+
+
+        function PrintGL() {
+            var FpId = $('#FpId').val();
+            var SectorId = $('#sectorId').val();
+            var GlId = $('#GlId').val().replace(/[_\W]+/g, "-");
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var SectorText = $("#sectorId option:selected").text();
+            var FileType = $('#PrintFormatId option:selected').text();
+            window.open("/Accounting/Report/ControlSummaryPrint?FpId=" + FpId + "&SectorId=" + SectorId + "&SectorText=" + SectorText + "&fromDate=" + fromDate + "&toDate=" + toDate + "&GlId=" + GlId + "&ExportType=" + FileType);
+        }
+
+        function getCostCentreBySector(sectorId) {   // This is for cascade dropdown
+
+            var url = "/BankVoucherEntry/GetCostCentreBySector";
+            $.ajax({
+                url: url,
+                type: "get",
+                data: { "sectorId": sectorId },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length != 0) {
+
+                        var items = "<option value='" + 0 + "'>" + " -Select - " + "</option>";
+
+                        $.each(data, function (i, costCentre) {
+
+                            items += "<option value='" + costCentre.Id + "'>" + costCentre.CostCentreName + "</option>";
+                        });
+                        $('.CostCentre').html(items);
+                    } else {
+                        var items = '<option>Not found</option>';
+                        $('.CostCentre').html(items);
+                    }
+                }
+            });
+        }
+
+        var temp = $('#GlId').val();
+        if (temp == 0)
+            $('#GlId').val('');
+
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("TagSearchThirdLayer", "Report")'
+            });
+
+    </script>
+}
+

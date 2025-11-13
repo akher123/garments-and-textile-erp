@@ -1,0 +1,47 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceViewModel
+
+@{
+    ViewBag.Title = "CM Info Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("CMInfo", "Report", FormMethod.Get, new {@class = "ReportSearchForm "}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3> CM Info Report </h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+          
+            <tr>
+                <td> @Html.Label("From :") </td>                                    
+                <td> @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })</td>                                    
+                <td> @Html.Label("To :") </td>                                    
+                <td> @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>  
+                <td> <input type="button" id="showReport" value="Show Report" /> </td>                                   
+            </tr>
+                   
+        </table>
+    </section>
+}
+
+<script type="text/javascript">
+    $('#showReport').click(function(e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+    }
+    );
+</script>

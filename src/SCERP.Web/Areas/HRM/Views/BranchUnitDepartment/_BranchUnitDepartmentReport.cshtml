@@ -1,0 +1,80 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitDepartmentViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+    var companyName = (Model.Branches.Any()) ? Model.Branches[0].Company.Name : "";
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">@companyName</td>
+            </tr>
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Branch Unit Department</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        <b>SL. No</b>
+                    </td>
+                    <td align="center">
+                        <b>Company</b>
+                    </td>
+                    <td align="center">
+                        <b>Branch</b>
+
+                    </td>
+
+                    <td  align="center">
+                        <b>Unit</b>
+
+                    </td>
+                    <td align="center">
+                        <b>Department</b>
+
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var branchUnitDept in Model.BranchUnitDepartments)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(branchUnitDept.BranchUnit.Branch.Company == null ? "" : @branchUnitDept.BranchUnit.Branch.Company.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@branchUnitDept.BranchUnit.Branch == null ? "" : @branchUnitDept.BranchUnit.Branch.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@branchUnitDept.UnitDepartment.Unit == null ? "" : @branchUnitDept.UnitDepartment.Unit.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@branchUnitDept.UnitDepartment.Department == null ? "" : @branchUnitDept.UnitDepartment.Department.Name)
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+

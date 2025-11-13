@@ -1,0 +1,11 @@
+﻿@using System.Text
+@{
+    Layout = null;
+    
+    var url = ViewBag.ReportUrl as StringBuilder;
+}
+<section class="search formCover" style="width: 100%">
+    @Html.ReportViewer(url.ToString())
+</section>
+
+  

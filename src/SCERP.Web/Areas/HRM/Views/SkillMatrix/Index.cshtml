@@ -1,0 +1,70 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixViewModel
+@{ 
+    ViewBag.Title = "SkillMatrix";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Skill Matrix</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "SkillMatrix", FormMethod.Get, new { @class = "SkillMatrixForm submit-allow" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/SkillMatrix/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwSkillMatrixEmployeeList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("EmployeeName", canSort: false, header: "Employee"),
+                  grid.Column("EmployeeCardId", canSort: false, header: "EmployeeId"),
+                  grid.Column("BranchName", canSort: false, header: "Branch"),
+                  grid.Column("UnitName", canSort: false, header: "Unit"),
+                  grid.Column("DepartmentName", canSort: false, header: "Department"),
+                  grid.Column("LineName", canSort: false, header: "Line"),
+                  grid.Column("Designation", canSort: false, header: "Designation"),
+                  grid.Column("GrossSalary", canSort: false, header: "Salary"),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/SkillMatrix/Edit?SkillMatrix.SkillMatrixId=@item.SkillMatrixId"></button></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/HRM/SkillMatrix/Delete?SkillMatrixId=@item.SkillMatrixId"></button></text>)));
+        }
+    </div>
+</section>

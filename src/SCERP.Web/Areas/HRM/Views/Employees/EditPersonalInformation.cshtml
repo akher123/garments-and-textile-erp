@@ -1,0 +1,171 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeePersonalInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<fieldset style="margin-top:10px; margin-right: 10px; margin-bottom: 20px;">
+    <legend>Personal Information</legend>
+    @using (Html.BeginForm("EditEmployeePersonalInfo", "Employees", FormMethod.Post, new { @ID = "EmployeePersonalInfo", @class = "EmployeePersonalInfo" }))
+    {
+        <table class="tabefont">
+            <tr>
+                <td class="fieldTitleCls">Spouse's Name:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpousesName)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.SpousesName)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Spouse's Name (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(m => m.SpousesNameInBengali)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Marital Status:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaritalStateId, Model.MaritalStateSelectListItem, "--Select--")
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Marriage Anniversary:</td>
+                <td>
+                    @Html.EditorFor(m => m.MariageAnniversary)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Nationality:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Nationality)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Nationality)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Nationality (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(m => m.NationalityInBengali)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">National Id No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.NationalIdNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NationalIdNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Birth Registration No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.BirthRegistrationNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.BirthRegistrationNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Tax Identification No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.TaxIdentificationNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.TaxIdentificationNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Driving License No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.DrivingLicenseNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.DrivingLicenseNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Passport No:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.PassportNo)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PassportNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Blood Group:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.BloodGroupId, Model.BloodGroupSelectListItem, "--Select--")
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" class="SubmitButton addButton" value="Save" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</fieldset>
+
+
+

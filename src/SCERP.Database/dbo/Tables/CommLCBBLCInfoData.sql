@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[CommLCBBLCInfoData] (
+    [LCBBLCInfoDataId]   INT              IDENTITY (1, 1) NOT NULL,
+    [CompId]             NVARCHAR (3)     NULL,
+    [BBLCNo]             NVARCHAR (100)   NULL,
+    [LCDate]             DATE             NULL,
+    [LcValue]            DECIMAL (18, 2)  NULL,
+    [DocsValue]          DECIMAL (18, 2)  NULL,
+    [InvoiceNo]          NVARCHAR (100)   NULL,
+    [InvoiceDate]        DATE             NULL,
+    [SupplierName]       NVARCHAR (50)    NULL,
+    [SupplierCountry]    NVARCHAR (50)    NULL,
+    [Item]               NVARCHAR (50)    NULL,
+    [LCQty]              DECIMAL (18, 2)  NULL,
+    [DocsQty]            DECIMAL (18, 2)  NULL,
+    [DocsReceiveDate]    DATE             NULL,
+    [IncomingPort]       NVARCHAR (50)    NULL,
+    [DocsReceiverAgent]  NVARCHAR (50)    NULL,
+    [DocsReceiverPerson] NVARCHAR (50)    NULL,
+    [GoodsInHouseDate]   DATE             NULL,
+    [CreatedBy]          UNIQUEIDENTIFIER NULL,
+    [EditedBy]           UNIQUEIDENTIFIER NULL,
+    [EditedDate]         DATETIME         NULL,
+    [CreatedDate]        DATETIME         NULL,
+    CONSTRAINT [PK_CommImportDocsData] PRIMARY KEY CLUSTERED ([LCBBLCInfoDataId] ASC)
+);
+

@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.PortOfLoadingViewModel
+@{
+    ViewBag.Title = Model.PortOfLoadingId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "PortOfLoading", FormMethod.Post, new { @class = "PortOfLoadingform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.PortOfLoadingId)
+    <fieldset>
+        <legend>Port Of Loading</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PortOfLoadingRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Port Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.PortOfLoadingName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.PortOfLoadingName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Country:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CountryId, Model.CountrySelectListItem, "-Select-", new { @class = "Country_forCity" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

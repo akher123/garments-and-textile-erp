@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[OM_SampleOrder] (
+    [SampleOrderId]  INT              IDENTITY (1, 1) NOT NULL,
+    [RefId]          CHAR (6)         NOT NULL,
+    [MerchandiserId] INT              NOT NULL,
+    [BuyerId]        BIGINT           NOT NULL,
+    [OrderNo]        VARCHAR (50)     NULL,
+    [ArticleNo]      VARCHAR (50)     NULL,
+    [Season]         VARCHAR (100)    NULL,
+    [Agent]          VARCHAR (100)    NULL,
+    [OrderDate]      DATE             NULL,
+    [OrderQty]       INT              NULL,
+    [StyleCount]     INT              NULL,
+    [Remarks]        NVARCHAR (250)   NULL,
+    [CompId]         CHAR (3)         NOT NULL,
+    [CreatedBy]      UNIQUEIDENTIFIER NOT NULL,
+    [CreatedDate]    DATE             NOT NULL,
+    [EditedBy]       UNIQUEIDENTIFIER NULL,
+    [EditedDate]     DATE             NULL,
+    [IsApproved]     BIT              NOT NULL,
+    [ApprovedBy]     UNIQUEIDENTIFIER NULL,
+    [ApprovedDate]   DATE             NULL,
+    CONSTRAINT [PK_OM_SampleOrder] PRIMARY KEY CLUSTERED ([SampleOrderId] ASC),
+    CONSTRAINT [FK_OM_SampleOrder_OM_Buyer] FOREIGN KEY ([BuyerId]) REFERENCES [dbo].[OM_Buyer] ([BuyerId]),
+    CONSTRAINT [FK_OM_SampleOrder_OM_Merchandiser] FOREIGN KEY ([MerchandiserId]) REFERENCES [dbo].[OM_Merchandiser] ([MerchandiserId])
+);
+

@@ -1,0 +1,68 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.EmailUserViewModel
+@{
+    ViewBag.Title = "Mail User";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Mail User Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "EmailUser", FormMethod.Get, new { @class = "EmailUserSearchForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Common/EmailUser/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmailUsers, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("EmailUserRefId", header: "ID"),
+                        grid.Column("EmailUserName", header: "User Name"),
+                        grid.Column("EmailAddress", header: "EmailAddress"),
+                        grid.Column("Phone", header: "Phone"),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Common/EmailUser/Edit?EmailUser.EmailUserId=@item.EmailUserId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Common/EmailUser/Delete?EmailUser.EmailUserId=@item.EmailUserId"></button></text>)))
+            ;
+        }
+    </div>
+</section>
+

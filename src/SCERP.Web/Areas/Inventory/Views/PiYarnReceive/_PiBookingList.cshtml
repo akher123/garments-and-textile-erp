@@ -1,0 +1,52 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var m in Model.Dictionary)
+{
+    <tr id="newRow-@Model.Dictionary[m.Key].ColorRefId">
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].CompId)
+            @Html.HiddenFor(x => x.Dictionary[m.Key].OrderStyleRefId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].StyleName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].ItemId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].FColorRefId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].FColorName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].ColorRefId, new { @id = "lot_" + m.Key })
+            @Html.TextBoxFor(x => x.Dictionary[m.Key].ColorName, new { @onclick = "getLot(this,'" + m.Key + "')" ,@style="width:80px;"})
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.Dictionary[m.Key].SizeRefId)
+            @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].TotalAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].TotalRcvQty)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Dictionary[m.Key].BalanceQty)
+        </td>
+
+        <td>
+            @Html.TextBoxFor(x => x.Dictionary[m.Key].ReceivedRate, new { @style = "width: 60px;" })
+        </td>
+
+        <td>
+            @Html.TextBoxFor(x => x.Dictionary[m.Key].ReceivedQty, new { @style = "width: 60px;" })
+
+        </td>
+        <td>
+            <input type="button" value="-" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

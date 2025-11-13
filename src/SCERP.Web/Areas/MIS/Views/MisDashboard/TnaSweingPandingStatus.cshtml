@@ -1,0 +1,64 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var mnm1 = "";
+    var mnm2 = "";
+}
+<div class="header-title">
+    <h2>SWEING PANDING STATUS AS PER TNA PLANING</h2>
+</div>
+<section class="formCover">
+    <div class="mis-title">MERCHANDISER AND BUYER WISE ORDER STATUS</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.SummaryDataTable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.SummaryDataTable.Rows)
+            {
+                <tr>
+
+
+                    @foreach (DataColumn col in Model.SummaryDataTable.Columns)
+                    {
+
+                        if (col.ColumnName == "Merchandiser")
+                        {
+                            mnm2 = row[col.ColumnName].ToString();
+                            if (mnm2 == mnm1)
+                            {
+                                <td style="border-top: none;border-bottom:none"></td>
+                            }
+                            else
+                            {
+                                <td style="border-bottom:none">@mnm2</td>
+                                mnm1 = mnm2;
+                            }
+
+
+
+                        }
+                        else
+                        {
+                            <td>
+                                @row[col.ColumnName]
+                            </td>
+                        }
+
+                    }
+
+
+                </tr>
+            }
+        <tr>
+            <td style="border-bottom: none; border-left: none;border-right:none" colspan="6"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>

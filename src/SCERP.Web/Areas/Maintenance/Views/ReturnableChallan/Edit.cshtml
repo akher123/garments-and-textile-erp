@@ -1,0 +1,276 @@
+﻿@using System.Text.RegularExpressions
+@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReturnableChallan.ReturnableChallanId > 0 ? "Edit" : "Add");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "ReturnableChallan", FormMethod.Post, new { @class = "ReturnableChallan ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.ReturnableChallan.ReturnableChallanId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Returnable Challan</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.ReturnableChallanRefId, new { @readonly = "readonly", id = "txtReturnableChallanRefId", style = "background-color: #F0ECE7;" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("M/S :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.Messrs)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.ReturnableChallan.Address)
+                </td>
+                <td> 
+                </td>
+                <td>
+                    @Html.Label("Challan Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.ChallanDate, new { @class = "datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.Phone)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Through :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.RefferancePerson)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("EmployeeId :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.EmployeeCardId)
+                </td>
+                <td>
+                </td>
+                <td>
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.Department)
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Designation :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallan.Designation)
+                </td>
+                <td>
+                </td>
+            </tr>
+
+        </table>
+
+        <hr />
+        <table class="tabefont" id="returnableChallanDetailInput">
+            <tr>
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.ReturnableChallanDetail.ItemName, new { @class = "itemName", id="returnableChallan_ItemName" })
+                </td>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallanDetail.Unit, new { @class = "unit",id="returnableChallan_ItemUnit" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.ReturnableChallanDetail.Remarks, new { @class = "remarks",id="returnableChallan_Remarks" })
+                </td>
+                <td>
+                    @Html.Label("ChallanQty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReturnableChallanDetail.DeliveryQty, new { @class = "deliveryQtyEnterVent",id="returnableChallan_DeliveryQty" , Value = "", @data_val = "false" })
+                </td>
+            </tr>
+        </table>
+
+        <hr />
+
+
+        <table id="returnableChallanDetailListingTable" class="webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label("Description ")
+                    </th>
+
+                    <th>
+                        @Html.Label("Unit ")
+                    </th>
+                    <th>
+                        @Html.Label("Remarks")
+                    </th>
+                    <th>
+                        @Html.Label("DeliveryQty ")
+                    </th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th> 
+                    <th>
+                        @Html.Label("Edit")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                  @Html.Partial("~/Areas/Maintenance/Views/ReturnableChallan/_AddNewRow.cshtml",Model)
+            </tbody>
+
+        </table>
+
+        <div class="custom-modal-btn">
+            <input type="submit" class="addButton" id="btnSave" value="Save" />
+        </div>
+
+    </fieldset>
+}
+
+@section scripts
+{
+    <script>
+        var selectedKey = '';
+        $('.deliveryQtyEnterVent').unbind("keypress").bind("keypress", function (e) {
+            var key = e.which;
+            if (key == 13)  //the enter key code
+            {
+                e.preventDefault();
+                var addNewItem = $('#returnableChallanDetailInput :input');
+                var $table = $('table#returnableChallanDetailListingTable tbody');
+                var $itemName = $('.itemName').val();
+                var $unit = $('.unit').val();
+                var $deliveryQty = $('.deliveryQtyEnterVent').val();
+                var option = {
+                    url: "/ReturnableChallan/AddNewRow/",
+                    type: "POST",
+                    data: addNewItem.serialize()
+                };
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    addNewItem.validate();
+                    if (!addNewItem.valid()) {
+                        return false;
+                    } else {
+                        var message = "";
+                        if ($itemName.length <= 0) {
+                            message += "Select Item Name.";
+                        }
+                        if ($unit.length <= 0) {
+                            message += "Select Unit Name.";
+                        }
+                        if ($deliveryQty.length <= 0) {
+                            message += "Select delivery Qty Name.";
+                        }
+                        if (message.length > 0) {
+                            alert(message);
+                        }
+                        else {
+                            $.Ajax(option).done(function (htmlResponse) {
+
+                                if (selectedKey.length > 0) {
+                                    $('table#returnableChallanDetailListingTable tbody tr#newRow-' + selectedKey).replaceWith(htmlResponse);
+                                } else {
+                                    $table.append(htmlResponse);
+                                }
+
+                                //$table.append(htmlResponse);
+
+
+                                ////// $('#newRow-'+$itemName.toLowerCase().replace(/\s+/g, '')).remove();
+                                addNewItem.val('');
+                                $('.itemName').focus();
+
+                                selectedKey = '';
+                            });
+                        }
+                    }
+
+                }
+
+            }
+
+        });
+
+        //$(".deliveryQtyEnterVent").each(function () {
+        //    $(this).keyup(function () {
+        //        this.value = this.value.replace(/[^0-9]/g, '');
+        //    });
+        //});
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+
+
+
+        function editRow(key) {
+
+            $('#returnableChallan_ItemName').val($('#returnableChallan_ItemName_' + key).val());
+            $('#returnableChallan_ItemUnit').val($('#returnableChallan_ItemUnit_' + key).val());
+            $('#returnableChallan_Remarks').val($('#returnableChallan_Remarks_' + key).val());
+            $('#returnableChallan_DeliveryQty').val($('#returnableChallan_DeliveryQty_' + key).val());
+
+            selectedKey = key;
+
+        }
+    </script>
+}
+
+
+
+
+
+

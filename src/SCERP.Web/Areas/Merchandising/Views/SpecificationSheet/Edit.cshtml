@@ -1,0 +1,271 @@
+﻿@using SCERP.Model
+@model SCERP.Model.Mrc_SpecificationSheet
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Garments specification entry form ";
+}
+<div style="font-size: 12px;">
+
+    @using (@Html.BeginForm("Save", "SpecificationSheet", FormMethod.Post, new { @class = "formSpecificationSheet", name = "formSpecificationSheet" }))
+    {
+
+        @Html.HiddenFor(x => x.SpecificationSheetId)
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Style specification </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Mrc_BuyerContactPerson.Mrc_Buyer.BuyerName)
+                    </td>
+                    <td>
+                        @Html.DropDownList("BuyerId", null, "-select-", new { @class = "buyerDropDownList" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("Contact Person")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.ContactPersonId, null, "-select-", new { @class = "contactPersonDropDownList" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.StyleNo)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.StyleNo)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.JobNo)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.JobNo, new {@readonly = "readonly", })
+                       
+                    </td>
+                </tr>
+
+                <tr>
+                   
+                    <td>
+                        @Html.LabelFor(model => model.Brand)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Brand)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.ReferenceNo)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReferenceNo)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                   
+                    <td>
+                        @Html.LabelFor(model => model.StyleDescription)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.StyleDescription)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.StyleDescription, "Required")
+                     
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.Season)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Season)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                   
+                </tr>
+                <tr>
+                  
+                    <td>
+                        @Html.LabelFor(model => model.Department)
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Department)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.Department, "Required")
+
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.Material)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Material)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.Material, "Required")
+
+                    </td>
+                   
+                 
+                </tr>
+                <tr>
+                  
+                    <td>
+                        @Html.LabelFor(model => model.FabricationDescription)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.FabricationDescription)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.FabricationDescription, "Required")
+
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.Finishing)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Finishing)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.Finishing, "Required")
+
+                    </td>
+                   
+
+                </tr>
+                <tr>
+                   
+                    <td>
+                        @Html.LabelFor(model => model.ItemGroup)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.ItemGroup)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.ItemGroup, "Required")
+
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.ApproximateQuantity)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.ApproximateQuantity)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.ApproximateQuantity, "Required")
+                      
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.SizeRange)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.SizeRange)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.SizeRange, "Required")
+
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.LeadTimeInDays)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.LeadTimeInDays)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.LeadTimeInDays, "Required")
+                    </td>
+
+                  
+
+                </tr>
+                <tr>
+                    
+                    <td>
+                        @Html.LabelFor(model => model.EntryDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.EntryDate)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.EntryDate, "Required")
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.LabelFor(model => model.ShipmentDate)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ShipmentDate)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.ShipmentDate, "Required")
+                    </td>
+
+                 
+                </tr>
+                <tr>
+                    
+                    <td>
+                        @Html.LabelFor(model => model.Remarks)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Remarks)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.Remarks, "Required")
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("Merchandiser")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.MerchandiserId, null, "-select-")
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.MerchandiserId, "Required")
+                    </td>
+
+                </tr>
+
+            </table>
+            @if (Model.SpecificationSheetId == 0)
+            {
+                @Html.Partial("~/Areas/Merchandising/Views/SpecificationSheet/_UploadSpecSheet.cshtml")
+            }
+            else
+            
+            {  <div>
+                   @Html.Partial("~/Areas/Merchandising/Views/SpecificationSheet/_UploadSpecSheet.cshtml")
+               </div>
+                  <div style="float: left">
+                     <fieldset style="width: 400px;">
+                         <legend>
+                             <span>SpecSheet Image</span>
+                         </legend>
+                         @Html.Partial("~/Areas/Merchandising/Views/SpecificationSheet/_UploadedImage.cshtml", Model.Mrc_SpecificationSheetImage)
+                     </fieldset>
+                 </div>
+                <div >
+                    <fieldset style="width:400px;">
+                        <legend>
+                            <span>SpecSheet Document</span>
+                        </legend>
+                        @Html.Partial("~/Areas/Merchandising/Views/SpecificationSheet/_UploadedDocument.cshtml", Model.Mrc_SpecificationSheetDocument)
+                    </fieldset>
+                </div>
+          
+            }
+            <div style="float: right">
+                @Html.SaveButton()
+            </div>
+        </fieldset>
+    }
+</div>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/SpecificationSheet.js"></script>
+}
+
+

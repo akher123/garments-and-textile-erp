@@ -1,0 +1,39 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.TaskStatusViewModel
+@{
+
+    ViewBag.Title = Model.TaskStatusId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "TaskStatus", FormMethod.Post, new { @class = "TaskStatusForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.TaskStatusId)
+    <fieldset>
+        <legend>Task Status</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Task Status :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.TaskStatus, new { @placeholder = "TaskStatus" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

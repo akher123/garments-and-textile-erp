@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[OM_CompConsumptionDetail] (
+    [CompConsumptionDetailId] BIGINT          IDENTITY (1, 1) NOT NULL,
+    [QuantityP]               DECIMAL (18, 2) NULL,
+    [CompID]                  VARCHAR (3)     NULL,
+    [OrderStyleRefId]         VARCHAR (10)    NULL,
+    [CompomentSlNo]           INT             NULL,
+    [ConsRefId]               VARCHAR (10)    NULL,
+    [GColorRefId]             VARCHAR (4)     NULL,
+    [GSizeRefId]              VARCHAR (4)     NULL,
+    [PColorRefId]             VARCHAR (4)     NULL,
+    [PSizeRefId]              VARCHAR (4)     NULL,
+    [GSM]                     DECIMAL (18, 5) NULL,
+    [Length]                  DECIMAL (18, 5) NULL,
+    [Width]                   DECIMAL (18, 5) NULL,
+    [PPQty]                   DECIMAL (18, 5) NULL,
+    [Weight]                  DECIMAL (18, 5) NULL,
+    [PAllow]                  DECIMAL (18, 5) NULL,
+    [TQty]                    DECIMAL (18, 5) NULL,
+    [LayQty]                  INT             NOT NULL,
+    [BaseColorRefId]          VARCHAR (4)     NULL,
+    [TableWidthID]            VARCHAR (4)     NULL,
+    [ProcessLoss]             DECIMAL (18, 5) NULL,
+    [ApprovedLD]              VARCHAR (25)    NULL,
+    [RequiredQty]             INT             NULL,
+    CONSTRAINT [PK_OM_CompConsumptionDetail] PRIMARY KEY CLUSTERED ([CompConsumptionDetailId] ASC)
+);
+

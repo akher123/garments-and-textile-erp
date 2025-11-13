@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Branch] (
+    [Id]                   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                 NVARCHAR (100)   NOT NULL,
+    [NameInBengali]        NVARCHAR (100)   NOT NULL,
+    [CompanyId]            INT              NOT NULL,
+    [FullAddress]          NVARCHAR (MAX)   NOT NULL,
+    [FullAddressInBengali] NVARCHAR (MAX)   NOT NULL,
+    [PostOffice]           NVARCHAR (100)   NULL,
+    [PostOfficeInBengali]  NVARCHAR (100)   NULL,
+    [PostCode]             NVARCHAR (100)   NULL,
+    [Phone]                NVARCHAR (100)   NOT NULL,
+    [Email]                NVARCHAR (100)   NULL,
+    [Fax]                  NVARCHAR (100)   NULL,
+    [PoliceStationId]      INT              NULL,
+    [DistrictId]           INT              NULL,
+    [CreatedDate]          DATETIME         NULL,
+    [CreatedBy]            UNIQUEIDENTIFIER NULL,
+    [EditedDate]           DATETIME         NULL,
+    [EditedBy]             UNIQUEIDENTIFIER NULL,
+    [IsActive]             BIT              NOT NULL,
+    CONSTRAINT [PK_Branch] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Branch_Company] FOREIGN KEY ([CompanyId]) REFERENCES [dbo].[Company] ([Id]),
+    CONSTRAINT [FK_Branch_District] FOREIGN KEY ([DistrictId]) REFERENCES [dbo].[District] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Branch_PoliceStation] FOREIGN KEY ([PoliceStationId]) REFERENCES [dbo].[PoliceStation] ([Id])
+);
+

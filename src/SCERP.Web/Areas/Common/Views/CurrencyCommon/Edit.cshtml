@@ -1,0 +1,95 @@
+﻿@model SCERP.Model.Currency
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.CurrencyId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "CurrencyCommon", FormMethod.Post, new { @class = "CurrencyCommonForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CurrencyId)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <fieldset>
+            <legend>Currency </legend>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Name, "Required")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.NameInBengali)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.NameInBengali)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.NameInBengali, "Required")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.CurrencyCode)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.CurrencyCode)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.CurrencyCode, "Required")
+                    </td>
+                </tr>
+                <tr>
+                   
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </fieldset>
+         @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+    }
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

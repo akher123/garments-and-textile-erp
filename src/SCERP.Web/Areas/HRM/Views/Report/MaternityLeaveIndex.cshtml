@@ -1,0 +1,78 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.DynamicReportHeadViewModel
+
+@{
+    ViewBag.Title = "Maternity Leave Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("MaternityLeavePrint", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3> Maternity Leave Report </h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <fieldset>
+            <legend> Maternity Leave </legend>
+
+            <table>
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="3"> </td>
+                </tr>
+                
+                <tr>
+                    <td> @Html.Label("Employee Card Id:") </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchByEmployeeCardId)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Effective Date :") </td>
+                    <td>                     
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> <input type="button" id="showReport" value="Show Report" /> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+        </fieldset>
+    </section>
+}
+
+<script type="text/javascript">
+    $('#showReport').click(function (e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+    }
+    );
+
+</script>
+
+
+
+

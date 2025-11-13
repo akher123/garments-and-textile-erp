@@ -1,0 +1,107 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmBrandViewModel
+@{
+    ViewBag.Title = Model.BrandId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "OmBrand", FormMethod.Post, new { @class = "OmBrandform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.BrandId)
+    @Html.HiddenFor(model => model.IsSearch)
+    <fieldset>
+        <legend>Brand</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BrandRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Brand Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.BrandName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.BrandName)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @if (!Model.IsSearch)
+                    {
+                        @Html.SaveButton()
+                    }
+                    else
+                    {
+                        <input type="button" value="Save" id="brandSaveButton" />
+                    }
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+    $('#brandSaveButton').unbind('click').bind('click', function () {
+        var $form = $(this).parents('form:first');
+        var data = $form.serialize();
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                $.Ajax({
+                    url: $form.attr('action'),
+                    dataType: 'json',
+                    type: 'post',
+                    data: data,
+                }).done(function (brandList) {
+                    $('#brandDropdownId').empty();
+                    if (brandList.length > 0) {
+                        $('#brandDropdownId').append(
+
+                      $('<option/>')
+                          .attr('value', '')
+                          .text("-Select-")
+                  );
+                        $.each(brandList, function (brand) {
+                            $('#brandDropdownId').append(
+                                $('<option/>')
+                                    .attr('value', this.BrandRefId)
+                                    .text(this.BrandName)
+                            );
+                        });
+                        $form.DialogClose();
+                    }
+
+
+                });
+            }
+        }
+    });
+</script>
+
+}
+

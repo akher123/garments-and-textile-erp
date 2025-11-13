@@ -1,0 +1,57 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{ ViewBag.Title = "Production Capacity";
+ Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Production Capacity</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("ProductionCapacity", "MisReport", FormMethod.Get, new { @class = "productionCapacityReportForm submit-allow" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Filter Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FilterDate, new { @class = "datepicker", id = "FilterDateId" })
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <a class="dropbtn custom-table-dropbtn">Report</a>
+                            <div class="dropdown-content custom-table-dropdown-content">
+                                <input type="button" value="PDF" target="_blank" onclick="showProductionCapacity(1)" />
+                                <input type="button" value="EXEL" target="_blank" onclick="showProductionCapacity(3)" />
+                            </div>
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </table>
+        }
+
+    </div>
+</section>
+@section scripts
+{
+
+    <script type="text/javascript">
+        function showProductionCapacity(reportType) {
+            var data = $('.productionCapacityReportForm').serialize();
+            var searchurl = '/MIS/MisReport/ProductionCapacity?' + data + '&ReportType=' + reportType;
+            window.open(searchurl);
+        }
+
+    </script>
+
+}

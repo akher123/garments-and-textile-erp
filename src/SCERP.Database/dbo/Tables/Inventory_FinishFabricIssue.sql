@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Inventory_FinishFabricIssue] (
+    [FinishFabIssueId]     BIGINT           IDENTITY (1, 1) NOT NULL,
+    [FinishFabIssureRefId] VARCHAR (8)      NOT NULL,
+    [PartyId]              BIGINT           NOT NULL,
+    [ChallanNo]            VARCHAR (150)    NOT NULL,
+    [ChallanDate]          DATETIME         NOT NULL,
+    [Remarks]              VARCHAR (200)    NULL,
+    [VehicleType]          VARCHAR (150)    NULL,
+    [DriverName]           VARCHAR (150)    NULL,
+    [DriverPhone]          VARCHAR (50)     NULL,
+    [CreatedBy]            UNIQUEIDENTIFIER NOT NULL,
+    [EditedBy]             UNIQUEIDENTIFIER NULL,
+    [IsApproved]           BIT              NOT NULL,
+    [CompId]               VARCHAR (3)      NOT NULL,
+    [ApprovedBy]           UNIQUEIDENTIFIER NULL,
+    [IsReceived]           BIT              NULL,
+    [ReceivedBy]           UNIQUEIDENTIFIER NULL,
+    [Commerns]             NVARCHAR (250)   NULL,
+    [ReceivedDate]         DATE             NULL,
+    [VoucherMasterId]      BIGINT           NULL,
+    [Posted]               CHAR (1)         NULL,
+    CONSTRAINT [PK_Inventory_FinishFabricIssue] PRIMARY KEY CLUSTERED ([FinishFabIssueId] ASC),
+    CONSTRAINT [FK_Inventory_FinishFabricIssue_Party] FOREIGN KEY ([PartyId]) REFERENCES [dbo].[Party] ([PartyId])
+);
+

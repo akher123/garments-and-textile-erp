@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Mrc_LabDipDevelopment] (
+    [LabDipDevelopmentId]    INT              IDENTITY (1, 1) NOT NULL,
+    [SpecSheetId]            INT              NOT NULL,
+    [LabRoomSendingStatusId] INT              NULL,
+    [CurrencyId]             INT              NULL,
+    [KeyProcessId]           INT              NOT NULL,
+    [LabDipReadyStatusId]    INT              NULL,
+    [LabRoomSendingDate]     DATETIME         NULL,
+    [FabricationId]          INT              NULL,
+    [Quantity]               INT              NULL,
+    [LabDipPrice]            DECIMAL (18, 3)  NULL,
+    [NumberOfOption]         INT              NULL,
+    [Remarks]                NVARCHAR (MAX)   NULL,
+    [CreatedDate]            DATETIME         NULL,
+    [CreatedBy]              UNIQUEIDENTIFIER NULL,
+    [EditedDate]             DATETIME         NULL,
+    [EditedBy]               UNIQUEIDENTIFIER NULL,
+    [IsActive]               BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_LabDipDevelopment] PRIMARY KEY CLUSTERED ([LabDipDevelopmentId] ASC),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Currency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([CurrencyId]),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Mrc_Fabrication] FOREIGN KEY ([FabricationId]) REFERENCES [dbo].[Mrc_Fabrication] ([FabricationId]),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Mrc_KeyProcess] FOREIGN KEY ([KeyProcessId]) REFERENCES [dbo].[Mrc_KeyProcess] ([KeyProcessId]),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Mrc_ReadyStatus] FOREIGN KEY ([LabDipReadyStatusId]) REFERENCES [dbo].[Mrc_ReadyStatus] ([ReadyStatusId]),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Mrc_SendingStatus] FOREIGN KEY ([LabRoomSendingStatusId]) REFERENCES [dbo].[Mrc_SendingStatus] ([SendingStatusId]),
+    CONSTRAINT [FK_Mrc_LabDipDevelopment_Mrc_SpecificationSheet] FOREIGN KEY ([SpecSheetId]) REFERENCES [dbo].[Mrc_SpecificationSheet] ([SpecificationSheetId])
+);
+

@@ -1,0 +1,77 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeWorkGroupViewModel
+@{
+    ViewBag.Title = "Employee WorkGroup";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.VEmployeeWorkGroupDetails.Count > 0) ? "" : "none";
+}
+@using (Html.BeginForm("Index", "EmployeeWorkGroup", FormMethod.Get, new { @class = "EmployeeWorkGroupSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Employee WorkGroup</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+            <table class="tabefont">              
+                @Html.Partial("~/Areas/HRM/Views/EmployeeWorkGroup/_SearchEmployeeWorkGroup.cshtml", Model)
+                <tr>
+                    <td>
+                        @Html.Label("WorkGroup :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByWorkGroupId, Model.WorkGroupSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_WorkGroupId" } })
+                    </td>
+                </tr>
+            </table>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <input type="button" class="addButton" onclick="search('@Url.Action("Create", "EmployeeWorkGroup", new { IsSearch = true })','EmployeeWorkGroupSearchForm')" value="Assign" />
+            <input type="button" class="addButton" onclick="search('@Url.Action("Edit", "EmployeeWorkGroup", new { IsSearch = true })','EmployeeWorkGroupSearchForm')" value="Change" />
+        </div>
+        <fieldset>
+            <legend>Employes</legend>
+            <div style="overflow: auto;">
+                <div style="height: 200px;">
+                    @{
+                        var grid = new WebGrid(canPage: false, canSort: true, ajaxUpdateContainerId: "grid");
+                        grid.Bind(Model.VEmployeeWorkGroupDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.EmployeeName ?? "")</text>),
+                    grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                    grid.Column("WorkGroupName", header: "WorkGroup ", format: @<text>@(item.WorkGroupName ?? "")</text>),
+                    grid.Column("AssignedDate", header: "Assigned date ", format: @<text>@(item.AssignedDate == null ? "" : item.AssignedDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                    grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                    grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                    grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                    grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                    grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/EmployeeWorkGroup/Delete?EmployeeWorkGroupId=@item.EmployeeWorkGroupId"></button></text>, canSort: false)));
+                    }
+                </div>
+            </div>
+        </fieldset>
+    </div>
+                <div class="exportReport">
+                    <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "EmployeeWorkGroup", new { SearchByDepartmentSectionId=Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, SearchByWorkGroupId = Model.SearchFieldModel.SearchByWorkGroupId, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+                    <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "EmployeeWorkGroup", new { SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, SearchByWorkGroupId = Model.SearchFieldModel.SearchByWorkGroupId, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId })" title="print" src="~/Content/images/print-icon.png" />
+                </div>
+</section>
+

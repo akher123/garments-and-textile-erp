@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[CommCashLCDyesChemical] (
+    [CashLcId]         INT              IDENTITY (1, 1) NOT NULL,
+    [CashLcNo]         NVARCHAR (20)    NULL,
+    [LcDate]           DATETIME         NULL,
+    [Item]             NVARCHAR (50)    NULL,
+    [Quantity]         DECIMAL (18, 2)  NULL,
+    [SupplierName]     NVARCHAR (50)    NULL,
+    [ShipmentMode]     NVARCHAR (10)    NULL,
+    [PortOfDelivery]   NVARCHAR (50)    NULL,
+    [DateOfBL]         DATETIME         NULL,
+    [CountryOfOrigin]  NVARCHAR (30)    NULL,
+    [PaymentTerms]     NVARCHAR (50)    NULL,
+    [BillOfImportCode] NVARCHAR (50)    NULL,
+    [BillOfImport]     DECIMAL (18, 2)  NULL,
+    [BillOfEntry]      NVARCHAR (100)   NULL,
+    [DateOfBill]       DATETIME         NULL,
+    [LcValue]          DECIMAL (18, 2)  NULL,
+    [BankRef]          INT              NULL,
+    [PaymentDate]      DATETIME         NULL,
+    [CreatedDate]      DATETIME         NULL,
+    [EditedDate]       DATETIME         NULL,
+    [CreatedBy]        UNIQUEIDENTIFIER NULL,
+    [EditedBy]         UNIQUEIDENTIFIER NULL,
+    [Remarks]          NVARCHAR (200)   NULL,
+    CONSTRAINT [PK_CommCashLCDyesChemical] PRIMARY KEY CLUSTERED ([CashLcId] ASC)
+);
+

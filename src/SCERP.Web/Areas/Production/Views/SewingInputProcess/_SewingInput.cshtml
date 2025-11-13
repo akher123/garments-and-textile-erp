@@ -1,0 +1,154 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = null;
+}
+@Html.HiddenFor(x => x.SewingInputProcess.SewingInputProcessId)
+<table>
+    <tr>
+        <td style="width: auto"><table class="tabefont webgrid-table">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>@Html.Label("InputDate")</td>
+                    <td>@Html.TextBoxFor(x => x.SewingInputProcess.InputDate, new { @class = "datepicker",@data_val="false" , id = "txtInputDate", style = "width: 100px;" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("InputTime")</td>
+                    <td>@Html.TextBoxFor(x => x.InputTime, new { @class = "timePicker", @placeholder = "Input Time", style = "width: 100px;" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Hour")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingInputProcess.HourId, Model.HourSelectListItem, "-Select-", new { @class = "HourId", style = "width: 116px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Line")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SewingInputProcess.LineId, Model.MachineSelectListItem,"-Select-", new { @class = "LineId", style = "width: 116px;" })
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>@Html.Label("Batch No")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SewingInputProcess.BatchNo, new { @class = "HourId", style = "width: 100px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Job No")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SewingInputProcess.JobNo, new { style = "width: 100px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Remark")</td>
+                    <td>@Html.TextAreaFor(x => x.SewingInputProcess.Remarks, new { style = "width: 100px;" })</td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+</table ></td>
+        <td style="width: 80%"><table class="tabefont webgrid-table webgrid webgrid-alternating-row tableFocusInputText">
+    <thead>
+        @foreach (var porcess in Model.PivotDictionary)
+        {
+            <tr>
+                <td>
+                    @porcess.Key
+                </td>
+                @foreach (var col in @porcess.Value)
+                {
+                    <td>
+                        @col
+                    </td>
+                }
+            </tr>
+        }
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.Label("InputQty")
+            </td>
+            @foreach (var test in Model.SewingInputProcessDetailDictionary)
+            {
+                <td>
+                    @Html.TextBoxFor(x => Model.SewingInputProcessDetailDictionary[test.Key].InputQuantity, new { @style = "width:90%;", @class = "TextBoxStyle ratioTextBox" })
+                    @Html.HiddenFor(x => Model.SewingInputProcessDetailDictionary[test.Key].CompId)
+                    @Html.HiddenFor(x => Model.SewingInputProcessDetailDictionary[test.Key].SizeRefId)
+                </td>
+
+            }
+            <td>
+                <span id="totalRatio">@Model.SewingInputProcessDetailDictionary.Sum(x => x.Value.InputQuantity)</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="@(Model.SewingInputProcessDetailDictionary.Count + 2)">
+                <div style="float:right">
+                    <input type="button" onclick="SaveSewingInput(this)" class="addButton" value="Save" />
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $('.tableFocusInputText').formNavigation();
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".ratioTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totalRatio").html(sum);
+    }
+    $(".ratioTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+    $('.allowNumeric').keyup(function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 0) {
+            $('#btnAddRollCutting').prop('disabled', false);
+        } else {
+            $('#btnAddRollCutting').prop('disabled', true);
+        }
+    });
+
+    function SaveSewingInput(btnObj) {
+        var button = $(btnObj);
+        var form = button.parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                return false;
+            } else {
+                $.Ajax({
+                    url: form.attr('action'),
+                    dataType: "JSON",
+                    type: "POST",
+                    data: form.serialize()
+                }).done(function (model) {
+                    if (model.SaveStatus == true) {
+                        var target = '#plate';
+                        $(target).html(model.partialView);
+                        $('#txtSewingInputProcessRefId').val(model.refId);
+                        alert(model.StatusMessage);
+                    }
+
+                });
+            }
+        }
+    }
+</script>
+
+
+

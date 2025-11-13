@@ -1,0 +1,84 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml"; ;
+}
+
+
+@using (Html.BeginForm("LcStatus", "Lc", FormMethod.Get, new { @class = "LcStatusForm ignore-validation" }))
+{
+
+    <div class="header-title">
+        <h2>LC STATUS</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Status: ") </td>
+                    <td> @Html.DropDownListFor(model => model.RStatus, Model.StatusSelectListItem, new { id = "RstatusId" }) </td>
+
+                    <td> @Html.Label("Bank : ") </td>
+                    <td> @Html.DropDownListFor(model => model.ReceivingBankId, Model.BankSelectListItem, "-ALL-") </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input type="button" value="PDF" class="addButton" onclick="javascript: lcStatusReport();" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+
+}
+
+
+<section class="search formCover">
+    <div class="additem">
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>EXPORT LC/SC NO</th>
+                    <th>VALUE</th>
+                    <th>COMUSSION(%)</th>
+                    <th>COMMUSSION VALUE</th>
+                    <th>BTB OPEN</th>
+                    <th>BTB BALANCE</th>
+                    <th>SHIP DATE</th>
+                    <th>BUYER</th>
+                    <th>10% PC IN TKA</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var lc in Model.VwCommLcInfos)
+                {
+                    <tr class="buyerOrderStyle-row">
+                        <td>@lc.LcNo</td>
+                        <td>@lc.LcAmount</td>
+                        <td>@lc.CommissionPrc</td>
+                        <td>@lc.CommissionsAmount</td>
+                        <td>@lc.BbLcAmount</td>
+                        <td>@(lc.LcAmount - lc.BbLcAmount)</td>
+                        <td>@String.Format("{0:dd/MM/yyyy}", lc.ShipmentDate)</td>
+                        <td>@lc.BuyerName</td>
+                        <td>@lc.PcAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+@section scripts
+{
+
+    <script type="text/javascript">
+        function lcStatusReport() {
+            var data = $('.LcStatusForm').serialize();
+            var searchurl = '/Commercial/Report/LcStatusReport?' + data;
+            window.open(searchurl);
+        }
+
+    </script>
+
+}

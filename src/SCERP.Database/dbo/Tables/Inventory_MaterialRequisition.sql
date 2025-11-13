@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Inventory_MaterialRequisition] (
+    [MaterialRequisitionId]  INT              IDENTITY (1, 1) NOT NULL,
+    [BranchUnitDepartmentId] INT              NOT NULL,
+    [DepartmentSectionId]    INT              NULL,
+    [DepartmentLineId]       INT              NULL,
+    [RequisitionNoteNo]      NVARCHAR (100)   NOT NULL,
+    [RequisitionNoteDate]    DATETIME         NOT NULL,
+    [SubmittedTo]            UNIQUEIDENTIFIER NULL,
+    [ModifiedBy]             UNIQUEIDENTIFIER NULL,
+    [PreparedBy]             UNIQUEIDENTIFIER NOT NULL,
+    [IsSentToStore]          BIT              NOT NULL,
+    [SendingDate]            DATETIME         NOT NULL,
+    [Remarks]                NVARCHAR (MAX)   NULL,
+    [IsModifiedByStore]      BIT              NOT NULL,
+    [CreatedDate]            DATETIME         NULL,
+    [CreatedBy]              UNIQUEIDENTIFIER NULL,
+    [EditedDate]             DATETIME         NULL,
+    [EditedBy]               UNIQUEIDENTIFIER NULL,
+    [IsActive]               BIT              CONSTRAINT [DF_Inventory_MaterialRequisition_IsActive] DEFAULT ((1)) NOT NULL,
+    CONSTRAINT [PK_Inventory_MaterialRequisition] PRIMARY KEY CLUSTERED ([MaterialRequisitionId] ASC),
+    CONSTRAINT [FK_Inventory_MaterialRequisition_BranchUnitDepartment] FOREIGN KEY ([BranchUnitDepartmentId]) REFERENCES [dbo].[BranchUnitDepartment] ([BranchUnitDepartmentId]),
+    CONSTRAINT [FK_Inventory_MaterialRequisition_DepartmentLine] FOREIGN KEY ([DepartmentLineId]) REFERENCES [dbo].[DepartmentLine] ([DepartmentLineId]),
+    CONSTRAINT [FK_Inventory_MaterialRequisition_DepartmentSection] FOREIGN KEY ([DepartmentSectionId]) REFERENCES [dbo].[DepartmentSection] ([DepartmentSectionId])
+);
+

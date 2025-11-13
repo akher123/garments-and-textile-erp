@@ -1,0 +1,141 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherToCostCentreViewModel
+
+@{
+    ViewBag.Title = (Model.Id > 0 ? "Voucher to Cost Centre" : "Voucher to Cost Centre ");
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<fieldset>
+    
+    <legend><strong>Voucher to Cost Centre</strong></legend>
+
+    @using (Html.BeginForm("Save", "VoucherSagregationToCostCentre", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(x => x.CostCentreId)
+
+        <table class="tabefont">
+
+            <tr>               
+                <td>@Html.DisplayName("Date")</td>                          
+                <td>@Html.DisplayName("Ref No")</td>
+                <td>@Html.DisplayName("Voucher No")</td>
+                <td>@Html.DisplayName("Account Head")</td>
+                <td>@Html.DisplayName("Cost Centre")</td>  
+                <td>@Html.DisplayName("Total Amount")</td>                               
+                <td>@Html.DisplayName("Amount")</td>
+                <td></td>
+            </tr>
+
+            <tr>                
+                <td>@Html.TextBoxFor(model => model.VoucherDate, new {style = "width:100px;", type = "date"})</td>                                          
+                <td>@Html.TextBoxFor(model => model.VoucherRefNo, new {style = "width:100px;", @readonly = "readonly", @autofocus = "autofocus", @class = "voucherRefNo"})</td>
+                <td>@Html.TextBoxFor(model => model.VoucherNo, new {style = "width:100px;", @readonly = "readonly"})</td>
+                <td>@Html.DropDownListFor(x => x.AccountHeadId, Model.GlAccountsSelectListItem, new {@class = "GlHead", style = "width:160px;height: 35px;"})</td> 
+                <td>@Html.DropDownListFor(x => x.CostCentreId, Model.CostCentreSelectListItem, new {@class = "CostCentre", style = "width:160px;height: 35px;"})</td>
+                <td>@Html.TextBoxFor(x => x.TotalAmount, new { @style = "width: 100px;",@readonly = "readonly", @id = "TotalAmount" })</td>                            
+                <td>@Html.TextBoxFor(x => x.Amount, new {@style = " width: 100px;", @id = "Amount"})</td>     
+                <td>
+                    <input type="button" style="width: 70px; height: 35px;" onclick=" AppendRow() " value="Add" />
+                </td>                                                   
+            </tr>
+
+            <tr>
+                <td style="height: 10px;" colspan="6"></td>
+            </tr>
+                 
+            <tr>
+                <td colspan="6" style="height: 10px;"></td>
+            </tr>
+
+            <tr>
+                <td width="800px" colspan="8">
+                    <table width="900px" style="width: 915px;" class="gridtable tabefont" id="VoucherToCostCentreTable">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>Date</th>
+                                <th width="70px">Ref No</th>
+                                <th>Voucher No</th>
+                                <th>Account Code</th>
+                                <th width="170px">Account Name</th>
+                                <th width="130px">Cost Centre</th>
+                                <th>CID</th>
+                                <th>Amount</th>                         
+                                <th>Delete</th>
+                            </tr>
+                        </thead>                      
+                    </table>
+                </td>
+            </tr>   
+            
+            <tr>
+                <td>
+                    <input type="button" value="Save" onclick="Save()" />
+                </td>               
+            </tr>                                               
+        </table>
+    }
+</fieldset>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Acc_VoucherToCostCentre.js"></script>
+    
+    <script type="text/javascript">
+
+        var Id = @Model.Id;
+
+        if (Id > 0) {
+
+            jQuery.ajax({
+                url: "/VoucherSagregationToCostCentre/GetVoucherToCostCentreDetail",
+                data: { "Id": Id },
+                type: "GET",
+                success: function(r) {
+                    if (!r.Success) {
+
+                        alert('Detail data did not found');
+
+                    } else if (r.Success) {
+
+                        var temp = r.data;
+                        $(temp).each(function(index, t) {
+                            bindRow(t);
+                        });
+                    }
+                }
+            });
+        }
+
+        function bindRow(t) {
+
+            var tr = '';
+            tr = $('<tr  id="' + t.Id + '" >');
+            tr.append('<td>' + t.Id + '</td>');
+            tr.append('<td>' + t.Date + '</td>');
+            tr.append('<td>' + t.RefNo + '</td>');
+            tr.append('<td>' + t.VoucherNo + '</td>');
+            tr.append('<td>' + t.AccountCode + '</td>');
+            tr.append('<td>' + t.AccountName + '</td>');
+            tr.append('<td>' + t.CostCentre + '</td>');
+            tr.append('<td>' + t.CID + '</td>');
+            tr.append('<td>' + t.Amount + '</td>');
+            tr.append('<td><input type="button" class="del"  value="Delete" /></td>');
+            tr.append('</tr>');
+
+            $('#VoucherToCostCentreTable').append(tr);
+        }
+
+    </script>
+}
+

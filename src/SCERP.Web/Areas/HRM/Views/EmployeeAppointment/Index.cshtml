@@ -1,0 +1,66 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Appointment Letter";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Search", "EmployeeAppointment", FormMethod.Get, new {@class = "EmployeeAppointmentSearchForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Appointment Letter</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>   
+            
+            <tr>
+                <td>
+                    @Html.Label("Prepare Date :")
+                </td>                
+                <td>        
+                    @Html.TextBoxFor(x => x.Date, new { @class = "datepicker", @data_val = "false", @placeholder = "date" })
+                </td>
+                <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+            </tr>
+                       
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchByEmployeeCardId, new {htmlAttributes = new {@class = "CardId"}})
+                </td>
+                <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+            </tr>
+               
+            <tr>
+                <td> </td>               
+                <td height="40px"><input type="button" class="addButton" id="ShowLetter" value="Generate Appointment Letter" /></td>
+                <td>  </td>
+                <td> </td>
+            </tr>
+        </table>
+    </section>
+}
+
+<script type="text/javascript">
+
+    $('#ShowLetter').click(function() {
+
+        $(this).searchAction();
+        
+    });
+    
+</script>
+
+
+

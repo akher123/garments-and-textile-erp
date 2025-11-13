@@ -1,0 +1,91 @@
+﻿@using SCERP.Common
+@model  SCERP.Web.Areas.Merchandising.Models.ViewModel.ThreadConsumptionViewModel
+@{
+    ViewBag.Title = "Thread Consumption";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Thread Consumption Summary</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "ThreadConsumption", FormMethod.Get, new {@class = "ThreadConsumptionForm"}))
+        {
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Style")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input onclick="search('/Merchandising/ThreadConsumption/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Consumptions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+
+                  grid.Column("Report", format:@<text> <a href="/Merchandising/ThreadConsumption/GetThreadConsumptionsReport?ThreadConsumptionId=@item.ThreadConsumptionId" target="_blank">Pdf</a> </text>, canSort: false),
+                  grid.Column("BuyerName", canSort: false, header: "Buyer"),
+                  grid.Column("OrderName", canSort: false, header: "Order"),
+                  grid.Column("StyleName", canSort: false, header: "Style"),
+                  grid.Column("ItemName", canSort: false, header: "Item"),
+                  grid.Column("SizeName", canSort: false, header: "Size"),
+                  grid.Column("EntryDate", canSort: false, header: "EntryDate", format: @<text>@(item.EntryDate == null ? "" : item.EntryDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("Remarks", canSort: false, header: "Remarks"),
+                  grid.Column("Edit", canSort: false, format: @<text><input type="button" onclick="search('/Merchandising/ThreadConsumption/Edit?Consumption.ThreadConsumptionId=@item.ThreadConsumptionId')" value="Edit" /></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/ThreadConsumption/Delete?ThreadConsumptionId=@item.ThreadConsumptionId"></button></text>),
+                  grid.Column("Approved", format: @<text> <input type="checkbox" onclick="ApprovedThreadConsumption(this)" @(item.IsApproved ? "checked" : "") value="@item.ThreadConsumptionId" />  </text>)));
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function ApprovedThreadConsumption(chechBox) {
+            var $chechBox = $(chechBox);
+            var hreadConsumptionId = $chechBox.val();
+            $.Ajax({
+                url: '/ThreadConsumption/ApproveThreadConsumption/',
+                data: { ThreadConsumptionId: hreadConsumptionId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}

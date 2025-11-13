@@ -1,0 +1,177 @@
+﻿@using SCERP.Common
+@model SCERP.Model.Custom.EmployeeInfoCustomModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Employees", FormMethod.Get, new { @class = "EmployeeSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Company: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/HRM/Employees/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    </td>
+
+                    <td> @Html.Label("Branch: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/Employees/GetAllBranchUnitsByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                    </td>
+
+                    <td> @Html.Label("Unit: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/Employees/GetBranchUnitDepartmentsByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Department: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/Employees/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                    </td>
+
+                    <td> @Html.Label("Section: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                    </td>
+
+                    <td> @Html.Label("Line: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Employee Type: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeTypeId", @action = "/HRM/Employees/GetAllEmployeeGradesByEmployeeTypeId", @TargetClass = "Hrm_EmployeeGradeId" })
+                    </td>
+
+                    <td> @Html.Label("Employee Grade: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeGradeId, Model.EmployeeGradeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeGradeId", @action = "/HRM/Employees/GetAllEmployeeDesignationsByEmployeeGradeId", @TargetClass = "Hrm_EmployeeDesignationId" })
+                    </td>
+
+                    <td> @Html.Label("Employee Designation: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeDesignationId, Model.EmployeeDesignationSelectListItem, "--Select--", new { @class = "Hrm_EmployeeDesignationId" })
+                    </td>
+                </tr>
+
+                <tr>
+                    @*<td>
+                            @Html.Label("Blood Group: ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeBloodGroupId, Model.EmployeeBloodGroupSelectListItem, "--Select--")
+                        </td>*@
+
+                    <td> @Html.Label("Gender: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeGenderId, Model.GenderSelectListItem, "--Select--")
+                    </td>
+
+                    <td> @Html.Label("Employee ID: ") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                    </td>
+
+                    <td> @Html.Label("Employee Name: ") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Mobile Number: ") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeMobileNo)
+                    </td>
+
+                    <td> @Html.Label("Status: ") </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeStatus, ViewBag.EmployeeStatus as SelectList, "-Select-")
+                    </td>
+
+                    <td>
+                        @*<input type="button" onclick="search('@Url.Action("Index", "Employees")','EmployeeSearchForm')" class="search" value="Search" />*@
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input class="addButton" onclick="search('/HRM/Employees/CreateNewEmployee')" value="Add New" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Employees, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("SerialNo", header: "S/L", format: @<text>@(item == null ? "" : item.SerialNo)</text>),
+                        grid.Column("Employee.EmployeeCardId", header: "Employee Id", format: @<text>@(item.Employee == null ? "" : item.Employee.EmployeeCardId)</text>),
+                        grid.Column("Employee.Name", header: "Name", format: @<text>@(item.Employee == null ? "" : item.Employee.Name)</text>),
+                        grid.Column("Employee.Gender.Title", header: "Gender", format: @<text>@(item.Employee.Gender == null ? "" : item.Employee.Gender.Title)</text>),
+                        grid.Column("EmployeePresentAddress.MobilePhone", header: "Mobile Number", canSort: false, format: @<text>@(item.EmployeePresentAddress == null ? "" : item.EmployeePresentAddress.MobilePhone)</text>),
+                        grid.Column("Company.Name", header: "Company", format: @<text>@(item.Company == null ? "" : item.Company.Name)</text>),
+                        grid.Column("Branch.Name", header: "Branch", format: @<text>@(item.Branch == null ? "" : item.Branch.Name)</text>),
+                        grid.Column("Unit.Name", header: "Unit", format: @<text>@(item.Unit == null ? "" : item.Unit.Name)</text>),
+                        grid.Column("Department.Name", header: "Department", format: @<text>@(item.Department == null ? "" : item.Department.Name)</text>),
+                        grid.Column("DepartmentSection.Section.Name", header: "Section", format: @<text>@(item.DepartmentSection.Section.Name ?? "")</text>),
+                        grid.Column("DepartmentLine.Line.Name", header: "Line", format: @<text>@(item.DepartmentLine.Line.Name ?? "")</text>),
+                        grid.Column("EmployeeDesignation.Title", header: "Designation", format: @<text>@(item.EmployeeDesignation == null ? "" : item.EmployeeDesignation.Title)</text>),
+                        grid.Column("Employee.Status", header: "Status ", format: @<text>@(item == null ? "---" : (item.Employee.Status == 1 ? "Active" : "InActive"))</text>),
+                        grid.Column(header: "Detail/Edit", format:@<text><a onclick="loadCreateNewEmployee('@Url.Action("EmployeeDetail", "Employees", new { EmployeeId = item.Employee.EmployeeId })')" style="cursor: pointer;">Detail/Edit</a></text>),
+                        grid.Column(header: "SkillMatrix", format: @<text>@Html.ActionLink("Report", "SkillMatrixPoint", "Report", new { item.Employee.EmployeeCardId }, new { @target = "_blank" })   </text>),
+                        grid.Column(header: "Delete", format:@<text><button class="delete" action="@Url.Action("DeleteEmployee", "Employees", new { EmployeeId = item.Employee.EmployeeId })"></button></text>)
+                  ));
+        }
+    </div>
+
+    @*<div class="exportReport">
+            <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "WorkGroup", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByUnitId = Model.SearchFieldModel.SearchByUnitId, SearchByWorkGroupName = Model.SearchFieldModel.SearchByWorkGroupName })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+            <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "WorkGroup", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByUnitId = Model.SearchFieldModel.SearchByUnitId, SearchByWorkGroupName = Model.SearchFieldModel.SearchByWorkGroupName })" title="Print" src="~/Content/images/print-icon.png" />
+        </div>*@
+
+</section>
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/employeeInfo.js"></script>
+    <script type="text/javascript">
+        function loadCreateNewEmployee(url) {
+            loadAction(url);
+        }
+    </script>
+}

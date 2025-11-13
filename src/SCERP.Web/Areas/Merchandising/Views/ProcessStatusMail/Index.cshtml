@@ -1,0 +1,103 @@
+﻿@using SCERP.Common
+
+@model  SCERP.Web.Areas.Merchandising.Models.ViewModel.NotificationRecipientViewModel
+
+@{
+    ViewBag.Title = "Notification";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (@Html.BeginForm("Index", "ProcessStatusMail", FormMethod.Post, new { @class = "IndexformNotification", name = "IndexformNotification" }))
+{
+    <div style="width:500px; padding-left:290px;">
+        <h2> Email and SMS Notification </h2>
+    </div>
+    
+    <section class="search formCover" style="margin-bottom: 7px;">
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer Name")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("buyerId", null, "--select--", new { @class = "ProcessMail_Buyer", @action = "/Merchandising/ProcessStatusMail/GetSepcSheetByBuyerId", @TargetClass = "ProcessMail_StyleNo" })
+                    </td>
+                    <td width="15px"></td>
+                    <td>
+                        @Html.Label("Style No")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("StyleNo", null, "--select--", new { @class = "ProcessMail_StyleNo", @action = "/Merchandising/ProcessStatusMail/GetJobNumberByStyleNo", @TargetClass = "ProcessMail_JobNumber" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Job Number")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("SpecSheetId", null, "--select--", new { @class = "ProcessMail_JobNumber", @action = "/Merchandising/ProcessStatusMail/GetOrderNoByJobNo", @TargetClass = "ProcessMail_OrderNumber" })
+                    </td>
+                    <td></td>
+                    @*<td>
+                        @Html.Label("Order Number")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("OrderId", null, "--select--", new { @class = "ProcessMail_OrderNumber" })
+                    </td>*@
+
+                    <td>
+                        <button class="search" type="button" onclick=" search('/Merchandising/ProcessStatusMail/Index', 'IndexformNotification') " />
+                    </td>
+                </tr>
+            </table>
+
+        </section>
+             
+    <section class="search formCover">
+        <div class="additem ">
+            <div style="margin-bottom: 3px;">                
+            </div>
+
+            @{                
+                        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+                        grid.Bind(Model.Notifications, rowCount: Model.Notifications.Count(), autoSortAndPage: false);
+                        grid.Pager(WebGridPagerModes.All);
+                        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                           
+                               grid.Column("NotificationRecipientId", header: "NotificationRecipientId"),
+                               grid.Column("ProcessName", header: "Process Name"),
+                               grid.Column("ReceiverName", header: "Receiver Name"),
+                               grid.Column("SendCopyToEmail", header: "Send Copy To Email"),
+                               grid.Column("SendCopyToPhone", header: "Send Copy To Phone"),
+                               grid.Column("IsNotifyByEmail", header: "IsNotifyByEmail"),
+                               grid.Column("IsNotifyByPhone", header: "IsNotifyByPhone"),       
+                                
+                               grid.Column(header: "Send Mail", format: @<text> <input type="button" class="btnMail" value="Send" /> </text>),
+                               grid.Column(header: "Send SMS", format: @<text> <input type="button" class="btnSMS" value="Send" /></text>)
+      ));
+}
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/ProcessStatusMail.js"></script>   
+}

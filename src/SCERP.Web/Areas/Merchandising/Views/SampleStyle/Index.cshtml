@@ -1,0 +1,53 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleStyleViewModel
+@{
+    ViewBag.Title = "Sample Style";
+    Layout =null;
+
+}
+<div class="sampleStyleDetailList">
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/merchandising/SampleStyle/Edit?SampleOrderId=@Model.SampleOrderId">Add New</button>
+            </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.SampleStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("StyleRefId", header: "StyleRefId"),
+                        grid.Column("StyleNo", header: "StyleNo"),
+                        grid.Column("ItemName", header: "ItemName"),
+                        grid.Column("SampleType", header: "Sample Type"),
+                        grid.Column("SampleDate", canSort: false, header: "Sample Date", format: @<text>@(item.SampleDate == null ? "" : item.SampleDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("EFDate", canSort: false, header: "ExDate", format: @<text>@(item.EFDate == null ? "" : item.EFDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ColorName", header: "Color"),
+                        grid.Column("SizeName", header: "Size"),
+                        grid.Column("StyleQty", header: "Style Qty"),
+                        grid.Column("Fabrication", header: "Fabrication"),
+                        grid.Column("Gsm", header: "GSM"),
+                        grid.Column("FabQty", header: "FabricQty"),
+                        grid.Column("Remarks", header: "Remarks"),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/merchandising/SampleStyle/Edit?SampleStyle.sampleStyleId=@item.SampleStyleId"></button></text>),
+                        grid.Column("C&P", canSort: false, format: @<text><button class="edit" action="/merchandising/SampleStyle/CopyPaste?SampleStyle.sampleStyleId=@item.SampleStyleId"></button></text>),
+                        grid.Column("Delete", canSort: false, format: @<text><button class="deleteAction" targentclass="sampleStyleDetailList" action="/merchandising/SampleStyle/Delete?sampleStyleId=@item.SampleStyleId"></button></text>)))
+
+
+            }
+        </div>
+    </section>
+</div>

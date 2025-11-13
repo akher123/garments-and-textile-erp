@@ -1,0 +1,55 @@
+﻿@using iTextSharp.tool.xml.html
+@model SCERP.Model.Inventory_SubGroup
+@{
+    ViewBag.Title = Model.SubGroupId > 0 ? "Edit SubGroup" : "Add SubGroup";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("SaveSubGroup", "InventoryItem", FormMethod.Post, new { @class = "Sizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SubGroupId)
+     @Html.HiddenFor(model => model.GroupId)
+    @Html.HiddenFor(model => model.IsActive)
+    <fieldset>
+        <legend>SubGroup</legend>
+        <table class="tabefont">
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Sub GroupCode :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SubGroupCode, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SubGroupCode)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Sub Group Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SubGroupName)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SubGroupName)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+
+
+

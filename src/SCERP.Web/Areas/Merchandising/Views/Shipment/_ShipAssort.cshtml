@@ -1,0 +1,94 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ShipmentViewModel
+@{
+    Layout = null;
+}
+
+<div style="float: left; margin-right:50px;font-size: 12px;">
+    
+    <fieldset>
+        <legend>COLOR & SIZE ASSORT</legend>
+
+        @using (Html.BeginForm("UpdateShipDetail", "Shipment", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.OrdShipDetail.OrderShipRefId, new { @class = "OrdShipDetail_OrderShipRefId" })
+            @Html.HiddenFor(x => x.OrderStyleRefId)
+            <table>
+                <tr>
+                    <td>@Html.Label("Color :")</td>
+                    <td>@Html.DropDownListFor(x => x.OrdShipDetail.ColorRefId, Model.ColorSelectListItem)</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Size :")</td>
+                    <td>@Html.DropDownListFor(x => x.OrdShipDetail.SizeRefId, Model.StyleSelectListItem, new { @class = "ordShipDetailSize" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Quantity :")</td>
+                    <td>@Html.TextBoxFor(x => x.OrdShipDetail.Quantity,new{@class="orderShipQty"})</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="button" id="updateShipDetail" value="Save" /></td>
+                </tr>
+            </table>
+        }
+    </fieldset>
+</div>
+    <div>
+        <div style="margin:5px;"></div>
+        <fieldset>
+            <legend>SHIPMENT LIST</legend>
+        <table id="tableid" class="webgrid-table webgrid webgrid-alternating-row" style="width: auto;">
+            <thead class="webgrid-header">
+                <tr>
+                    @foreach (DataColumn col in Model.AssortTable.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.AssortTable.Rows)
+                {
+                    <tr style="text-align: right">
+                        @foreach (DataColumn col in Model.AssortTable.Columns)
+                        {
+
+                            <td>@(row[col.ColumnName] ?? "")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+            </fieldset>
+</div>
+
+<script type="text/javascript">
+    $('#updateShipDetail').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var option = {
+            url: form.attr('action'),
+            type: "POST",
+            data: form.serialize(),
+        };
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                // e.preventDefault();
+                return false;
+            }
+            $.Ajax(option).done(function (htmlResult) {
+                if (htmlResult.Success == false) {
+                    return false;
+                } else {
+                    $('.buyerOrderShipAssortment').html(htmlResult);
+                }
+            });
+        }
+
+    });
+
+    $('.ordShipDetailSize').unbind('click').click('click', function() {
+        $('.orderShipQty').val('');
+    });
+</script>

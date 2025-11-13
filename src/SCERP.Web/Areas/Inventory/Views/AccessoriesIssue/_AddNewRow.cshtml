@@ -1,0 +1,105 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = null;
+}
+
+<table id="accessoriesIssueDetail" class="webgrid-table">
+    <thead class="webgrid-header">
+    <tr>
+        <th>
+            @Html.Label("ITEM")
+        </th>
+
+        <th>
+            @Html.Label("GCOLOR")
+        </th>
+        <th>
+            @Html.Label("GSIZE")
+        </th>
+        <th>
+            @Html.Label("PCOLOR")
+        </th>
+        <th>
+            @Html.Label("PSIZE")
+        </th>
+        <th>
+            @Html.Label("RATE")
+        </th>
+        <th>
+            @Html.Label("RCVD QTY")
+        </th>
+        <th>
+            @Html.Label("TTLI QTY")
+        </th>
+        <th>
+            @Html.Label("SIH")
+        </th>
+
+        <th>
+            @Html.Label("ISSUE")
+        </th>
+        <th>
+            @Html.Label("DELETE")
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var m in Model.MaterialIssueDetails)
+    {
+        <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId">
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].PurchaseOrderDetailId)
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueId)
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueDetailId)
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+            </td>
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].FColorRefId)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].FColorName)
+            </td>
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].GSizeRefId)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].GSizeName)
+            </td>
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorRefId)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+            </td>
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].SizeRefId)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)
+            </td>
+            <td>
+                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+            </td>
+            <td>
+
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].TotalRcvQty)
+            </td>
+           
+            <td>
+
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].QtyInBag)
+            </td>
+            <td>
+                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].StockInHand)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].IssueQty,new {style="width:60px;"})
+            </td>
+
+            <td>
+                <input type="button" value="-" onclick="deleteRow(this)" />
+            </td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+
+
+
+

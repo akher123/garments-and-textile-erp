@@ -1,0 +1,151 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingProcessStyleActiveViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Style In Cutting</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "CuttingProcessStyleActive", FormMethod.Get, new {@class = "CuttingProcessStyleActiveForm"}))
+        {
+            @Html.HiddenFor(model => model.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Buyer :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.VwCuttingProcessStyleActive.BuyerRefId, Model.BuyerListSelectListItem, "-Select-", new {@class = "CuttingBatch_buyerRefId"})
+                    </td>
+                    <td>
+                        @Html.DisplayName("Order No:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.VwCuttingProcessStyleActive.OrderNo, Model.OrderSelectListItem, new {@class = "CuttingBatch_OrderNo"})
+                    </td>
+                    <td>
+                        @Html.DisplayName("Style No:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.VwCuttingProcessStyleActive.OrderStyleRefId, Model.StylesSelectListItem, new {@class = "CuttingBatch_StyleNo"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Production/CuttingProcessStyleActive/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwCuttingProcessStyleActiveList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("BuyerName", header: "Buyer"),
+                        grid.Column("OrderRefNo", header: "Order No"),
+                        grid.Column("StyleName", header: "Style"),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.StartDate ?? ""), header: "Start Date"),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.EndDate ?? ""), header: "End Date"),
+                        grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Production/CuttingProcessStyleActive/Edit?CuttingProcessStyleActive.CuttingProcessStyleActiveId=@item.CuttingProcessStyleActiveId"></button></text>),
+                      grid.Column("Close", canSort: false, format: @<text><button class="edit" action="/Production/CuttingProcessStyleActive/CloseStyleActivity?cuttingProcessStyleActiveId=@item.CuttingProcessStyleActiveId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Production/CuttingProcessStyleActive/Delete?OrderStyleRefId=@item.OrderStyleRefId"></button></text>)))
+            ;
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.CuttingBatch_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/CuttingProcessStyleActive/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+            $('.CuttingBatch_OrderNo').empty();
+            $('.CuttingBatch_StyleNo').empty();
+            $('.CuttingBatch_sequence').empty();
+        }
+
+        function populateDropDown(obj) {
+            $('.CuttingBatch_OrderNo').append(
+                $('<option/>')
+                    .attr('value', obj.OrderNo)
+                    .text(obj.RefNo)
+            );
+        }
+
+        $('.CuttingBatch_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/CuttingProcessStyleActive/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.CuttingBatch_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.CuttingBatch_StyleNo').append(
+                            $('<option/>')
+                                .attr('value', this.OrderStyleRefId)
+                                .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("No Order Found")
+                    );
+                }
+            });
+        });
+    </script>
+}
+
+
+

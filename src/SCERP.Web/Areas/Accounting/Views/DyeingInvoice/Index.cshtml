@@ -1,0 +1,67 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.DyeingInvoiceViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+
+<div class="header-title">
+    <h2>Party Wise Dyeing  Bills Invoice List </h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "DyeingInvoice", FormMethod.Get, new { @class = "DyeingInvoiceSearchForm" }))
+        {
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Invoice date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.InvoiceDate, new { @data_val = "false", @class = "datepicker", @placeholder = "Date" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+    <div style="overflow-x:auto">
+        <table class="webgrid-table" style="text-align: center;display: -moz-grid-group;">
+            <thead class="webgrid-header mis-header">
+                <tr>
+
+                    <th>Party</th>
+                    <th>Party Account</th>
+                    <th>InvoiceNo</th>
+                    <th>Date</th>
+                    <th>Rate</th>
+                    <th>Qty</th>
+                    <th>BillAmount</th>
+                    <th>Voucher</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kb in Model.DyeingAccountInvoices)
+                {
+                <tr>
+                    <td>@kb.Party</td>
+                    <td>@kb.AccountName</td>
+                    <td>@kb.InvoiceNo</td>
+                    <td>@kb.InvoiceDate</td>
+                    <td>@kb.Rate</td>
+                    <td>@kb.Qty</td>
+                    <td>@kb.BillAmount</td>
+                    <td>
+                        <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/Accounting/DyeingInvoice/DyeingReceivableVoucher?Key=@kb.RefId">Post</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>

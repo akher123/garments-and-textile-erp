@@ -1,0 +1,137 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+<fieldset>
+    <legend>Output Collar and Cuff </legend>
+    <table id="tableOutputDetail">
+        <tr>
+            <td>
+                @Html.Label("", "Item")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ItemName, new { @placeholder = "Search Fabric ", id = "collarCuffItemName", @class = "itemautocompliteItem", @data_target = "#collarCuffItemCode", @action = "/Consumption/AutocompliteItem" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ItemCode, new { id = "collarCuffItemCode" })
+            </td>
+            <td>
+                @Html.Label("", "F.Color")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.ColorName, new { @placeholder = "Search Finish Color", id = "collarCuffColorName", @class = "autocompliteColorSerach", @data_target = "#collarCuffColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ColorRefId, new { id = "collarCuffColorRefId" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "F.Size")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.FinishSizeName, new { @placeholder = "Collar Or Cuff Size", id = "FinishSizeName", @class = "autocompliteSizeSerach", @data_target = "#finishSizeId", @action = "/BuyerOrderColorSize/SizeAutoComplite" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.FinishSizeRefId, new { id = "finishSizeId" })
+            </td>
+            <td>
+                @Html.Label("", "M/C GAUGE")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.GSM, new { @placeholder = "M/C GAUGE", id = "machineGauge" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "S.Length")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.SleeveLength, new { @placeholder = "S.Length", id = "stretchLength" })
+            </td>
+         
+        
+            <td>
+                @Html.Label("", "Pieces")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.NoOfCone, new { @placeholder = "Number of Items", id = "numberOfcollorCuff" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Rate")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Rate, new { @placeholder = "Rate/Pcs", id = "cllorCuffRate" })
+            </td>
+            <td>
+                @Html.Label("", "Qty(Kg)")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Quantity, new { @data_val = "false", id = "collarCuffYarnQty" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("", "Component")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.OutputProgramDetail.ComponentRefId,new SelectList(new[]{new {Text="COLLAR" ,Value="035"},new {Text="CUFF RIB" ,Value="020"}},"Value","Text"), new { @data_val = "false", id = "CollarCuffComponentRefId" })
+                @Html.HiddenFor(x => x.OutputProgramDetail.ComponentName, new { @data_val = "false", id = "CollarCuffComponentName" })
+            </td>
+            <td>
+                @Html.Label("", "Remarks")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OutputProgramDetail.Remarks, new {@placeholder = "Remarks", id = "collarCufRemarks"})
+            </td>
+            <td>
+                <button value="+" class="addButton" id="btnOutputProgDtl">+</button>
+            </td>
+           
+        </tr>
+    </table>
+    <hr />
+    <table class="webgrid-table" id="outputProgramDtlTable">
+        <thead style="background-color:#cd853f">
+            <tr>
+
+                <th>
+                    Item
+                </th>
+                <th>Component</th>
+                <th>
+                    F.Color
+                </th>
+                <th>
+                    F.Size
+                </th>
+             
+                <th>
+                    M/C GAUGE
+                </th>
+                <th>
+                    S.Length
+                </th>
+                <th>
+                    Pieces
+                </th>
+
+
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Qty(Kg)
+                </th>
+                <th>Remarks</th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.Partial("_OutputDetailRow", Model)
+        </tbody>
+    </table>
+</fieldset>

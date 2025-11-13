@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.PlanningReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Machine Capacity</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("ShowMachineCapacity", "Report", FormMethod.Get, new { @class = "ReportSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.DisplayName("Process")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessRefId,Model.ProcessSeasonsSelectListItem)
+                    </td>
+                    <td>
+                        <input type="button" class="showRdlcReport addButton" value="Show" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <iframe id="reportIfram"></iframe>
+</section>
+
+<script>
+    $('.showRdlcReport').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var data = form.serialize();
+        $('#reportIfram').attr('src', '');
+        $('#reportIfram').attr('src', '/Planning/Report/ShowMachineCapacity?' + data);
+    });
+</script>
+

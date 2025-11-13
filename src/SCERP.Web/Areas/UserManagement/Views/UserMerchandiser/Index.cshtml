@@ -1,0 +1,67 @@
+﻿@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserMerchandiserViewModel
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/treeView.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Save", "UserMerchandiser", FormMethod.Post, new { @class = "UserMerchandiser" }))
+{    <div style="width:500px; padding-left:340px;">
+        <h2>User Permission For Merchandising</h2>
+    </div>
+    <div>
+        <section class="search formCover" style="margin-bottom: 3px;">
+            <div style="margin-top: 5px; padding: 4px;">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("User")
+                        </td>
+
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeId, Model.UserSelectListItem, "-select-", new { @class = "UserMerchandiserEmployeeId", @action = "/UserManagement/UserMerchandiser/GetPermitedUserMerchandiser" })
+                        </td>
+                        <td>
+                            <input type="submit" class="SubmitButton addButton" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="search formCover">
+            <div class="tree additem">
+                <ul>
+                    <li>
+                        <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 20px; color: #006400"><input type="checkbox" class="check" />Merchandiser</span>
+                        <ul>
+                            @foreach (var merchandiser in Model.Merchandisers)
+                            {
+                                <li>
+                                    <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span style="font-size: 20px; color: #008b8b">
+                                        <input class="check" type="checkbox" value="@merchandiser.EmpId" id="check-@merchandiser.EmpId" name="MerchandiserIdList" /> @merchandiser.EmpName
+                                    </span>
+
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+    </div>
+
+}
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/treeView.js"></script>
+     <script src="~/Scripts/SCERP/UserManagement/UserMerchandiser.js"></script>
+  
+}
+

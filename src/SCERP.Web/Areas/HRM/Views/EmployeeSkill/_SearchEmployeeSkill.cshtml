@@ -1,0 +1,49 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeSkillViewModel
+@{
+    Layout = null;
+}
+
+
+
+<tr>
+    <td>
+        @Html.Label("Employee ID:")
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        @Html.Label("From Date :")
+    </td>
+    <td>        
+        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Start Date" })
+    </td>
+    <td>
+        @Html.Label("To Date :")
+    </td>
+    <td>        
+        @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "End Date" })
+    </td>
+    <td>
+        <input type="button" class="searchAction" />
+    </td>
+
+</tr>
+
+<tr>
+    @*<td>
+        @Html.Label("Employee ID:")
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+
+    </td>*@
+    @*<td>
+        <input type="button" class="searchAction" />
+    </td>*@
+</tr>

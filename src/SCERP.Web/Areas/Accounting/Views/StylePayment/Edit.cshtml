@@ -1,0 +1,177 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.StylePaymentViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.StylePaymnetId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "StylePayment", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.StylePayment.StylePaymnetId)
+    @Html.HiddenFor(x=>x.StylePayment.StylePaymentRefId)
+    
+
+    <fieldset>
+        <legend> Style Payment </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                
+                <td class="fieldTitleCls">Buyer Select :</td>
+                <td>
+                   @Html.DropDownListFor(x => x.StylePayment.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "BuyerRefId", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                
+            </tr>
+
+            <tr>
+                
+                <td class="fieldTitleCls">Order Select :</td>
+                <td>
+                    @Html.DropDownListFor(x => x.StylePayment.OrderNo, Model.OrderSelectListItem, "-ALL-", new { @class = "timeAndAction_OrderNo", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                
+            </tr>
+
+            <tr>
+                
+                <td class="fieldTitleCls">Style Select:</td>
+                <td>
+                   @Html.DropDownListFor(x => x.StylePayment.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new { id = "shipStyleRefId", @class = "timeAndAction_StyleNo", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="fieldTitleCls">Style Payment Cost Group:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.StylePayment.CostGroup, Model.CostGroupsSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+               
+                <td class="fieldTitleCls">Payment date:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.StylePayment.PayDate,new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+           
+            <tr>
+               
+                <td class="fieldTitleCls">Pay Amount:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.StylePayment.PayAount)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Remarks:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.StylePayment.Remarks)
+                </td>
+                
+            </tr>
+
+         
+            <tr>
+                
+                <td>
+                    @Html.SaveButton()
+                </td>
+                
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.BuyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.timeAndAction_OrderNo').empty();
+                $('.timeAndAction_StyleNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.timeAndAction_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.timeAndAction_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.timeAndAction_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-ALL-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.timeAndAction_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+
+           $('.timeAndAction_OrderNo').empty();
+           $('.timeAndAction_StyleNo').empty();
+        }
+    </script>
+}

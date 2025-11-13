@@ -1,0 +1,112 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Sewing Input Process</h3>
+</div>
+<section class="search formCover">
+    <div style="padding-left: 10px;padding-right: 10px;padding-top: 10px;padding-bottom: 10px;margin-left: 10px;width: auto; margin-bottom: 5px; background-color:white;">
+        @using (Html.BeginForm("Save", "SewingInputProcess", FormMethod.Post, new { @class = "SewingInputProcessForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(x => x.IsSearch)
+            <fieldset>
+                <legend>Sewing Input Process</legend>
+                <div id="cuttingJobMaster">
+                    <table class="tabefont" style="margin-left: 10px;margin-bottom: 10px; margin-left: 100px;">
+                        <tr>
+                            <td>@Html.Label("Ref No")</td>
+                            <td>@Html.TextBoxFor(x => x.SewingInputProcess.SewingInputProcessRefId, new { @readonly = "readonly", id = "txtSewingInputProcessRefId", style = "background-color: #F0ECE7;" })</td>
+                            <td>
+                                @Html.Label("", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Buyer")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingInputProcess.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "SewingInputProcess_buyerRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Order")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingInputProcess.OrderNo, Model.OrderSelectListItem, new { @class = "SewingInputProcess_OrderNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Style")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingInputProcess.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "SewingInputProcess_StyleNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Country :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingInputProcess.OrderShipRefId, Model.OrderShipSelectListItem, "ALL", new { @class = "SewingInputProcess_OrderShipRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Color")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.SewingInputProcess.ColorRefId, Model.ColorSelectListItem, new {@class = "SewingInputProcess_Color"})
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>
+                                <input type="button" class="FindPartial buttonStyle" action="/SewingInputProcess/Find/" target="#plate" value="Find"/>
+                            </td>
+                            <td>
+                                <div style="margin-bottom: 3px;">
+                                    <div class="dropdown">
+                                        <button class="dropbtn">REPORT▼</button>
+                                        <div class="dropdown-content">
+                                            <a style="cursor: pointer" target="_blank" onclick=" StyleAndColorWiseInput(1) ">PDF</a>
+                                            <a style="cursor: pointer" target="_blank" onclick=" StyleAndColorWiseInput(3) ">Excel</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+              
+                <div id="plate">
+                    @if (Model.PivotDictionary.Any())
+                    {
+                        @Html.Partial("~/Areas/Production/Views/SewingInputProcess/_Plate.cshtml", Model)
+                    }
+                </div>
+            </fieldset>
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/SewingInputProcess.js"></script>
+}

@@ -1,0 +1,43 @@
+﻿
+@model SCERP.Model.AccountingModel.Acc_GLAccounts_Hidden
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit Hidden GL Head" : "Add Hidden GL Head";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "GLAccountHidden", FormMethod.Post, new { @class = "glAccountHiddenform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+
+    <table class="tableFont" style="width: 560px; height: 100px;">
+       
+        <tr>      
+            <td>@Html.DisplayName("Account Head:")</td>
+            <td>@Html.TextBoxFor(p => p.AccountName, new { @class = "AccountName", style = "" })</td>                    
+            <td> </td>
+            <td> </td>
+        </tr>
+                 
+        <tr>           
+            <td style="width: 150px;"> </td>
+            <td style="width: 300px;"> @Html.SaveButton() </td>
+            <td style="width: 1px;"> </td>
+            <td style="width: 100px;"> </td>
+        </tr>
+    </table>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "Report")'
+            });
+
+    </script>
+}

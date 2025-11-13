@@ -1,0 +1,145 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "KnittingProgramStatus";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Knitting Program Status</h2>
+</div>
+
+<section class="search formCover">
+    <fieldset>
+        <legend>Knitting Program Status list</legend>
+        <div style="background-color: white;margin-bottom: 20px; ">
+            <div style="margin-left: 10px;">
+                @using (Html.BeginForm("KnittingProgramStatus", "KnittingProgram", FormMethod.Get, new { @class = "KnittingProgramForm ignore-validation" }))
+                {
+                    @Html.HiddenFor(x => x.IsSearch)
+                     @Html.HiddenFor(x => x.ProcessRefId)
+                 
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.DisplayName("From Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker" })
+                            </td>
+                            <td>
+                                @Html.Label("To Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker" })
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("PartyId :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.Program.PartyId, Model.PartySelectListItem, "-Select-" )
+                            </td>
+                            <td>
+                                @Html.DisplayName("Program No :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.SearchString)
+                            </td>
+                            <td>
+                                <input type="button" class="searchAction" />
+                            </td>
+                            <td>
+                                <div style="margin-left: 20px;">
+                                    <div class="dropdown">
+                                        <button class="dropbtn">REPORT▼</button>
+                                        <div class="dropdown-content">
+                                            <a style="cursor: pointer" target="_blank" onclick="KnittingProgram(1)">KnittingProgram(pdf)</a>
+                                            <a style="cursor: pointer" target="_blank" onclick="KnittingProgram(3)">KnittingProgram(xlsx)</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                }
+                <hr />
+            </div>
+        </div>
+        <div class="additem">
+            <table id="KnittingProgramListTable" class="tabefont webgrid-table webgrid webgrid-alternating-row">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Program No</th>
+                        <th>Party</th>
+                        <th>Program Date</th>
+                        <th>Expected Date</th>
+                        <th>Processor</th>
+                        <th>Buyer</th>
+                        <th>Buyer Order</th>
+                        <th>REPORT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vProgram in Model.VPrograms)
+                    {
+                        <tr>
+                            <td>
+                                @vProgram.ProgramRefId
+                            </td>
+                            <td>
+                                @vProgram.PartyName
+                            </td>
+                            <td>
+                                @vProgram.PrgDate.GetValueOrDefault().ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @vProgram.ExpDate.GetValueOrDefault().ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @vProgram.ProcessorName
+                            </td>
+                            <td>
+                                @vProgram.Buyer
+                            </td>
+                            <td>
+                                @vProgram.RefNo
+                            </td>
+                            <td>
+                                <a href="/Planning/KnittingProgram/KnittingProgramReport?ProgramId=@vProgram.ProgramId&report=0" target="_blank">PDF</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </fieldset>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+
+        function KnittingProgram(reportTypeId) {
+            var form = $('.KnittingProgramForm');
+            var data = form.serialize();
+            var url = '/Planning/Report/KnittingProgramStatusReport?' + data + '&ReportType=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                window.open(url);
+            }
+        }
+    </script>
+
+}
+
+
+
+

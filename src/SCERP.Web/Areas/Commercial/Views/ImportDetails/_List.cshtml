@@ -1,0 +1,35 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.CommImportDetailViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+    <tr>
+        <th>LC No</th>
+        <th>LC Date</th>
+        <th>Quantity</th>
+        <th>Amount(TK) </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var sc in Model.commImportDetails)
+    {
+        <tr class="buyerOrderStyle-row">
+            <td>@sc.LCNo</td>
+            <td>@String.Format("{0:dd/MM/yyyy}", sc.LCDate)</td>
+            <td>@sc.LCQty</td>
+            <td>@sc.LcValue</td>
+            <td>
+                <input type="button" class="btnDetail" targentclass="salesContactEdit" action="/ImportDetails/Edit?importDetailId=@sc.ImportDetailId">
+            </td>
+            <td>
+                <button type="button" class="deleteAction" targentclass="salesContactList" action="/ImportDetails/Delete?importDetailId=@sc.ImportDetailId&importId=@sc.ImportId"></button>
+            </td>
+        </tr>
+    }
+   
+    </tbody>
+</table>

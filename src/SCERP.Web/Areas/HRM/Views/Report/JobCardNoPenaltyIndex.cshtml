@@ -1,0 +1,205 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.DynamicReportHeadViewModel
+
+@{
+    ViewBag.Title = "Job Card Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Jobcardnpy", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2> Job Card Report </h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <fieldset>
+                <legend>Filter By</legend>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Company :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @data_val = false, @class = "SearchByCompanyId", @action = "/HRM/Report/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Branch :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @data_val = false, @class = "SearchByBranchId", @action = "/HRM/Report/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Unit :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @data_val = false, @class = "SearchByBranchUnitId", @action = "/HRM/Report/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Department :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/Report/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Section :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentSection" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Line :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Employee Type: ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_EmployeeTypeId", })
+                        </td>
+
+                        <td>
+                            @Html.Label("Employee Card:")
+                        </td>
+                        <td>
+                            @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new { @data_val = true, @class = "SearchByEmployeeCardId" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Year:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SelectedYear, Model.Years, "-Select-")
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Month:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.SelectedMonth, Model.Months, "-Select-")
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+
+                        <td>
+                            @Html.Label("From :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+
+                        <td>
+                            @Html.Label("To :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Print Format: ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SearchFieldModel.PrintFormatId, Model.PrintFormatStatusSelectListItems)
+                        </td>
+
+                        <td>
+                            <input type="button" id="showReport" class="addButton" value="Show Report" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+    </section>
+
+    <section class="search formCover">
+        <fieldset>
+            <legend>Report Information</legend>
+            <table>
+                @for (var i = 0; i < Model.ReportHeadsListCompliance.Count; i = i + 3)
+                {
+
+                    <tr>
+                        @if (i < Model.ReportHeadsListCompliance.Count)
+                        {
+                            <td width="60px"></td>
+                            <td>
+                                <input type="checkbox" value="@Model.ReportHeadsListCompliance[i].Head" name="ReportHeads" checked="checked" />
+                            </td>
+                            <td width="220px">
+                                @Html.DisplayName(Model.ReportHeadsListCompliance[i].DisplayName)
+                            </td>
+                        }
+
+
+                        @if ((i + 1) < Model.ReportHeadsListCompliance.Count)
+                        {
+                            <td width="60px"></td>
+                            <td>
+                                <input type="checkbox" value="@Model.ReportHeadsListCompliance[i + 1].Head" name="ReportHeads" checked="checked" />
+                            </td>
+                            <td width="220px">
+                                @Html.DisplayName(Model.ReportHeadsListCompliance[i + 1].DisplayName)
+                            </td>
+                        }
+
+                        @if ((i + 2) < Model.ReportHeadsListCompliance.Count)
+                        {
+                            <td width="60px"></td>
+                            <td>
+                                <input type="checkbox" value="@Model.ReportHeadsListCompliance[i + 2].Head" name="ReportHeads" checked="checked" />
+                            </td>
+                            <td width="220px">
+                                @Html.DisplayName(Model.ReportHeadsListCompliance[i + 2].DisplayName)
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </table>
+        </fieldset>
+    </section>
+}
+
+<script type="text/javascript">
+
+    $('#showReport').click(function (e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+    }
+    );
+</script>
+
+
+
+

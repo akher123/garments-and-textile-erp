@@ -1,0 +1,88 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.BachWiseIssueViewModel
+@{
+    ViewBag.Title = "BatchWiseIssue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>BatchWise Issue</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "BatchWiseIssue", FormMethod.Get, new {@class = "BatchWiseIssueSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("From date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Search key :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key", @autofocus = "autofocus"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/BatchWiseIssue/Edit">Add New</button>
+        </div>
+        <div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.VMaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                     grid.Column("BatchNo", header: "BachNo", format: @<text>@(item.BatchNo ?? "--")</text>),
+                        grid.Column("BtRefNo", header: "BtRefNo", format: @<text>@(item.BtRefNo ?? "--")</text>),
+                        grid.Column("PartyName", header: "Party", format: @<text>@(item.PartyName ?? "--")</text>),
+                        grid.Column("IssueReceiveNo", header: "IRNo ", format: @<text>@(item.IssueReceiveNo ?? "--")</text>),
+                        grid.Column("IssueReceiveDate", header: "IRDate", format: @<text>@(item.IssueReceiveDate == null ? "" : item.IssueReceiveDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("Note", header: "Remarks ", format: @<text>@(item.Note ?? "--")</text>),
+                        grid.Column("Detail/Edit", format:@<text> <button class="edit" action="/Inventory/BatchWiseIssue/Edit?MaterialIssueId=@item.MaterialIssueId"></button>  </text>, canSort: false),
+                        grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/BatchWiseIssue/Delete?MaterialIssueId=@item.MaterialIssueId"></button> </text>, canSort: false),
+                       grid.Column("CLN", format: @<text> <a href="/Inventory/Report/ChemicalIssueReport?MaterialIssueId=@item.MaterialIssueId" target="_blank">Print</a> </text>, canSort: false)));
+}
+        </div>
+    </div>
+</section>
+

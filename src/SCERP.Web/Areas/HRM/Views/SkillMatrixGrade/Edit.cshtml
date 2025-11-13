@@ -1,0 +1,63 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixGradeViewModel
+@{
+    ViewBag.Title = Model.SkillMatrixGrade.SkillMatrixGradeId> 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "SkillMatrixGrade", FormMethod.Post, new { @class = "SkillMatrixGradeForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SkillMatrixGrade.SkillMatrixGradeId)
+    @Html.HiddenFor(model=>model.SkillMatrixGrade.IsActive)
+    <fieldset>
+        <legend>Skill Matrix Process</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Grade :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SkillMatrixGrade.GradeName, new { @placeholder = "Grade" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Grade Value From:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SkillMatrixGrade.GradeValueFrom, new { @placeholder = "Grade Value From" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Grade Value To:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SkillMatrixGrade.GradeValueTo, new { @placeholder = "Grade Value To" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixViewModel
+@{
+    Layout = null;
+}
+@Html.HiddenFor(x => x.EmployeeCompanyInfo.EmployeeId)
+<td>
+    <table style="font-family:Arial; width: 460px; border:1px solid" class="tabefont">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td><b>Employee:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.EmployeeName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.EmployeeName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Employee ID:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.EmployeeCardId
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.EmployeeCardId, new { @class = "txtEmployeeCardId" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Comapany:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.CompanyName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.CompanyName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Branch:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.BranchName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.BranchName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Unit:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.UnitName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.UnitName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Department:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.DepartmentName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.DepartmentName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Section:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.SectionName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.SectionName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Line:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.LineName
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.LineName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Designation:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.Designation
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.Designation)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>GrossSalary:</b></td>
+                        <td>
+                            @Model.EmployeeCompanyInfo.GrossSalary
+                            @Html.HiddenFor(x => x.EmployeeCompanyInfo.GrossSalary)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <img src="@Url.Content(Model.EmployeeCompanyInfo.PhotographPath)" alt="@Model.EmployeeCompanyInfo.EmployeeName" width="230" height="150" />
+            </td>
+        </tr>
+    </table>
+</td>
+
+

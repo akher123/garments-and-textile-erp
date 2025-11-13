@@ -1,0 +1,72 @@
+﻿@using System.ServiceModel.Activities.Configuration
+@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.GenericNameViewModel
+@{
+    ViewBag.Title = "Generic Name";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Generic Name</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "GenericName", FormMethod.Get, new {@class = "GenericNameSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+
+                    <td>
+                        @Html.DisplayName("Criteria :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/GenericName/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.GenericNames, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column("Name", canSort: false, header: "Generic Name", format: @<text>@(item.Name ?? "--")</text>),
+                     grid.Column("Description", canSort: false, header: "Description", format: @<text>@(item.Description ?? "--")</text>),
+                    grid.Column("Edit", format:@<text> <button class="edit" action="/Inventory/GenericName/Edit?GenericName.GenericNameId=@item.GenericNameId"></button> </text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/GenericName/Delete?GenericNameId=@item.GenericNameId"></button></text>, canSort: false)));
+        }
+
+    </div>
+</section>
+
+
+

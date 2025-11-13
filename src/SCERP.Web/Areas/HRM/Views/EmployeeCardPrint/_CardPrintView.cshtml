@@ -1,0 +1,69 @@
+﻿@model SCERP.Model.Custom.EmployeeCardPrintModel
+
+@{
+    Layout = null;
+}
+
+<style type="text/css">
+    .image {
+        position: relative;
+    }
+
+        .image .text {
+            position: absolute;
+            top: 35px;
+            left: 20px;
+        }
+</style>
+
+<table>
+    <tr>
+        <td>
+            <div class="image" style="width: 192px; height: 306px;">
+                <img alt="" src="~/Content/images/IdCard.jpg" />
+                <div class="text">
+                    @{
+                        if (Model.PhotographPath != null)
+                        {
+                            FileInfo sFile = new FileInfo(Server.MapPath(@Model.PhotographPath));
+                            if (sFile.Exists)
+                            {
+                                <img style="margin-left: 25px; margin-top:34px; height:100px; width:100px;" alt="" src=@Model.PhotographPath> <br />
+                            }
+                            else
+                            {
+                                <img style="margin-left: 25px; margin-top:34px; height:100px; width:100px;" alt="" src="~/Content/images/user.png"> <br />
+                            }
+                        }
+                        else
+                        {
+                            <img style="margin-left: 25px; margin-top:34px; height:100px; width:100px;" alt="" src="~/Content/images/user.png"> <br />
+                        }
+
+                    }
+
+                    <table style="font-size:10px;">
+                        <tr>
+                            <td>@Model.EmployeeCardId</td>
+                        </tr>
+                        <tr>
+                            <td>@Model.Name </td>
+                        </tr>
+                        <tr>
+                            <td>@Model.Designation </td>
+                        </tr>
+                        <tr>
+                            <td>@Model.Section</td>
+                        </tr>
+                        <tr>
+                            <td>@Model.EmployeeJobType</td>
+                        </tr>
+                        <tr>
+                            <td>@Model.JoiningDate</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

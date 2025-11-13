@@ -1,0 +1,50 @@
+﻿@model SCERP.Model.Module
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Modules", FormMethod.Post, new { @class = "moduleform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div>
+        <fieldset>
+            <legend>Module </legend>
+            <table class="tableFont">
+                <tr>
+                    <td>Module Name :</td>
+                    <td>
+                        @Html.EditorFor(model => model.ModuleName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Description :</td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Description, new { rows = "4" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left">
+                        @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+}
+

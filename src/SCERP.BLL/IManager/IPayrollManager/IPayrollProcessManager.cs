@@ -1,0 +1,14 @@
+﻿using SCERP.Model.PayrollModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SCERP.BLL.IManager.IPayrollManager
+{
+    public interface IPayrollProcessManager
+    {
+        int ProcessBonus(int bonusRuleId);
+    }
+}

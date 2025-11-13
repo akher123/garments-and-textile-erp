@@ -1,0 +1,76 @@
+﻿
+@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.AdvanceIncomeTaxViewModel 
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.AdvanceTaxId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "AdvancedIncomeTax", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.AdvanceIncomeTax.AdvanceTaxId)
+
+
+    <fieldset>
+        <legend> Advance Income Tax </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+           
+            <tr>
+
+                <td class="fieldTitleCls">Employee Card Id:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.AdvanceIncomeTax.EmployeeCardId)
+                </td>
+
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Advance Income Tax Amount:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.AdvanceIncomeTax.Amount)
+                </td>
+
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">From:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.AdvanceIncomeTax.FromDate, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+            <tr>
+            <tr>
+
+                <td class="fieldTitleCls">To:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.AdvanceIncomeTax.ToDate, new { @class = "datepicker", htmlAttributes = new { @placeholder = "Date" } })
+                </td>
+
+            </tr>
+            
+           
+            
+
+
+            <tr>
+
+                <td>
+                    @Html.SaveButton()
+                </td>
+
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

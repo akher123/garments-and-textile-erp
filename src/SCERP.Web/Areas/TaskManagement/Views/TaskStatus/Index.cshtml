@@ -1,0 +1,60 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.TaskManagement.Models.TaskStatusViewModel
+@{ ViewBag.Title = "TaskStatus";
+ Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Task Status List</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: gray; ">
+        <div style="margin-left: 250px;">
+            @using (Html.BeginForm("Index", "TaskStatus", FormMethod.Get, new { @class = "TaskStatusForm submit-allow" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Criteria")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/TaskManagement/TaskStatus/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TaskStatusList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("TaskStatus", header: "Task Status"),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/TaskManagement/TaskStatus/Edit?TaskStatusId=@item.TaskStatusId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/TaskManagement/TaskStatus/Delete?TaskStatusId=@item.TaskStatusId"></button></text>)));
+        }
+    </div>
+</section>
+
+

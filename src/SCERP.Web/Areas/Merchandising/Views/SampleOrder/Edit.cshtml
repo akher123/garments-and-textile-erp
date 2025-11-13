@@ -1,0 +1,115 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleOrderViewModel
+@{
+    ViewBag.Title = Model.SampleOrder.SampleOrderId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "SampleOrder", FormMethod.Post, new {@class = "SampleOrderEditform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SampleOrder.SampleOrderId)
+    @Html.HiddenFor(x=>x.SampleOrder.CompId)
+
+    <fieldset>
+        <legend>Sample Order</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("RefId:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SampleOrder.RefId, new { @style = "background-color: #F0ECE7;" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Merchandiser:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SampleOrder.MerchandiserId,Model.MerchandiserSelectListItem,"All")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buyer:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SampleOrder.BuyerId, Model.BuyerSelectListItem, "All")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Agent:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleOrder.Agent)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Article No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleOrder.ArticleNo)
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Season:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleOrder.Season)
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleOrder.OrderNo)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Order Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SampleOrder.OrderDate, new {@class = "datepicker"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Quantity:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SampleOrder.OrderQty)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.SampleOrder.Remarks)
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

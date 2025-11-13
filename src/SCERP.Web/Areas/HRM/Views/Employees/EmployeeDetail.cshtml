@@ -1,0 +1,382 @@
+﻿@using System.Runtime.InteropServices
+@model SCERP.Model.Custom.EmployeeMandatoryInfoCustomModel
+
+@{
+    ViewBag.Title = "Edit  Employee";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Edit Employee</h2>
+</div>
+
+@*<style type="text/css">
+    .padding-top {
+        padding-top: 10px;
+    }
+</style>*@
+
+
+<div id="tab-container" style="font-size: 12px;">
+    <ul>
+        <li><a href="#divMandatoryInfo">Mandatory</a></li>
+        <li><a href="@Url.Action("EditPersonalInformation", "Employees")">Personal</a></li>
+        <li><a href="@Url.Action("Index", "EmployeeAddressInfo")"> Address  </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeFamilyInfo")"> Family </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeEducation")" > Education </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeCompanyInfo")"> Department </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeSalary")"> Salary </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeEntitlement")"> Benefits </a></li>
+        <li><a href="@Url.Action("Index", "Employment")"> Employment </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeBankInfo")"> Bank </a></li>
+        <li><a href="@Url.Action("Index", "EmployeeDocuments")"> Documents </a></li>
+        <li><a href="@Url.Action("EditQuitInformation", "Employees")"> Quit Info </a></li>
+        <li><a href="@Url.Action("SkillMatrix", "Employees")"> Skill Matrix </a></li>
+    </ul>
+
+
+    <div id="divMandatoryInfo">
+        <fieldset style="margin-top:10px; margin-bottom: 20px;">
+            <legend>Mandatory Information</legend>
+            @using (Html.BeginForm("EditEmployeeMandatoryInfo", "Employees", FormMethod.Post, new { @ID = "EmployeeMandatoryInfo", @class = "EmployeesSearchForm" }))
+            {
+                <div style="float: right; width: 300px;">
+                    <table style="width:200px;height:250px;">
+                        <tr>
+                            <td>
+                                <div id="imageContainer">
+                                    @if (Model.Employee.PhotographPath != null)
+                                    {
+                                       <img src='@Url.Content(Model.Employee.PhotographPath)' width="100" height="100" /> 
+                                    }
+                                    else
+                                    {
+                                    <img src="~/Content/images/user.png" width="100" height="100" />
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="image-upload-wrapper">
+                                    <div class="image-button-text-wrapper">
+                                        Upload Photo
+                                    </div>
+                                    <div class="image-button-wrapper">
+                                        <input type="file" class="image-upload" id="image-upload" name="image-upload" action="/Employees/UploadImage" />
+                                    </div>
+                                    <div class="queue" id="upload-queue@(DateTime.Now.Ticks)"></div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                @Html.HiddenFor(model => model.Employee.PhotographPath, new { @class = "photographpath" });
+                <table class="tabefont">                  
+                    <tr>
+                        <td class="fieldTitleCls">Employee Id:</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.EmployeeCardId, new { @readonly = "readonly" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.EmployeeCardId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Employee Name:</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.Name)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Employee Name (In Bengali):</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.NameInBengali)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.NameInBengali)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls">Mother's Name:</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.MothersName)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.MothersName)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls">Mother's Name (In Bengali):</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.MothersNameInBengali)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.MothersNameInBengali)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls">Father's Name:</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.FathersName)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.FathersName)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls">Father's Name (In Bengali):</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Employee.FathersNameInBengali)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.FathersNameInBengali)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Religion:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Employee.ReligionId, Model.ReligionSelectListItem, "--Select--")
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.ReligionId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Date of Birth:</td>
+                        <td>                
+                            @Html.TextBoxFor(x => x.Employee.DateOfBirth, new { @class = "datepicker", @data_val = "false", @placeholder = "DateOf Birth" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.DateOfBirth)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Gender:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Employee.GenderId, Model.GenderSelectListItem, "--Select--")
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.GenderId)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls">Mobile No:</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.EmployeePresentAddress.MobilePhone)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeePresentAddress.MobilePhone)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Joining Date:</td>
+                        <td>                           
+                            @Html.TextBoxFor(x => x.Employee.JoiningDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Joining Date" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.JoiningDate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Confirmation Date:</td>
+                        <td>                            
+                            @Html.TextBoxFor(x => x.Employee.ConfirmationDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.Employee.ConfirmationDate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Mailing Address:</td>
+                        <td>
+                            @Html.TextAreaFor(m => m.EmployeePresentAddress.MailingAddress)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeePresentAddress.MailingAddress)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Mailing Address (In Bengali):</td>
+                        <td>
+                            @Html.TextAreaFor(m => m.EmployeePresentAddress.MailingAddressInBengali)
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeePresentAddress.MailingAddressInBengali)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Company:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/Employees/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeCompanyId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Branch:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/Employees/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeBranchId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Unit:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/Employees/GetBranchUnitDepartmentsByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeBranchUnitId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Department:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeBranchUnitDepartmentId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Employee Type:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeTypeId", @action = "/HRM/Employees/GetAllEmployeeGradesByEmployeeTypeId", @TargetClass = "Hrm_EmployeeGradeId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeTypeId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Employee Grade:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeGradeId, Model.EmployeeGradeSelectListItem, "--Select--", new { @class = "Hrm_EmployeeGradeId", @action = "/HRM/Employees/GetAllEmployeeDesignationsByEmployeeGradeId", @TargetClass = "Hrm_EmployeeDesignationId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeGradeId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Employee Designation:</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeDesignationId, Model.EmployeeDesignationSelectListItem, "--Select--", new { @class = "Hrm_EmployeeDesignationId", @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.EmployeeDesignationId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldTitleCls">Eligible for Overtime:</td>
+                        <td>
+                            @Html.CheckBoxFor(x => x.IsEligibleForOvertime, new { @disabled = "disabled" })
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            @Html.ValidationMessageFor(x => x.IsEligibleForOvertime)
+                        </td>
+                    </tr>                  
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" class="SubmitButton addButton" value="Save" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            }
+        </fieldset>
+    </div>
+
+</div>
+
+
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $("#tab-container").tabs({ load: SCERP.AjaxCompleted });       
+    </script>
+}
+
+

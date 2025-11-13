@@ -1,0 +1,48 @@
+﻿@model SCERP.Web.Areas.Production.Models.GraddingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Gradding.CuttingGraddingId > 0 ? "Add" : "Edit");
+}
+@using (Html.BeginForm("Save", "Gradding", FormMethod.Post, new { @class = "Graddingform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Gradding.CuttingGraddingId)
+      @Html.HiddenFor(model => model.Gradding.CuttingBatchId)
+    <fieldset>
+        <legend>Gradding</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("From :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Gradding.FromSizeRefId, Model.SizeSelectListItem, "-Select-")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("To :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Gradding.ToSizeRefId, Model.SizeSelectListItem, "-Select-")
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Quantity :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Gradding.Quantity)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { {"style", "float: right;" }, {"class", "innerTabSaveButton addButton"}, {"TargentClass", "graddingContainer"}})
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}

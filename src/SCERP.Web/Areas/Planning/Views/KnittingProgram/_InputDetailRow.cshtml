@@ -1,0 +1,50 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var inDt in Model.InputDataTable)
+{
+    <tr id="InRow-@Model.InputDataTable[inDt.Key].ItemCode-@Model.InputDataTable[inDt.Key].ColorRefId">
+        <td>
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].MType)
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].ProgramId)
+            <span id="YarnItemName_@inDt.Key">
+                @Html.DisplayFor(x => x.InputDataTable[inDt.Key].ItemName)
+            </span>
+
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].ItemCode, new { id = "YarnItemCode_" + inDt.Key })
+        </td>
+        <td>
+            <span id="YarnColorName_@inDt.Key">
+                @Html.DisplayFor(x => x.InputDataTable[inDt.Key].ColorName)
+            </span>
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].ColorRefId, new { id = "YarnColorRefId_" + inDt.Key })
+        </td>
+        <td>
+            <span id="CountSizeName_@inDt.Key">
+                @Html.DisplayFor(x => x.InputDataTable[inDt.Key].SizeName)
+            </span>
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].SizeRefId, new { id = "CountSizeRefId_" + inDt.Key })
+        </td>
+        <td>
+            <span id="LotName_@inDt.Key">
+                @Html.DisplayFor(x => x.InputDataTable[inDt.Key].LotName)
+            </span>
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].LotRefId, new { id = "LotRefId_" + inDt.Key })
+        </td>
+
+
+        <td>
+            @Html.DisplayFor(x => x.InputDataTable[inDt.Key].Quantity)
+            @Html.HiddenFor(x => x.InputDataTable[inDt.Key].Quantity, new { id = "Quantity_" + inDt.Key })
+        </td>
+        <td>
+            <input type="button" value="Edit" onclick="editInputProgram('@inDt.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="removeRow(this)" />
+        </td>
+    </tr>
+
+}

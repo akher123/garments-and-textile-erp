@@ -1,0 +1,45 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = null;
+}
+
+<div class="additem" style="overflow-y: scroll; overflow-x: scroll;width: auto; height: 308px;">
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize>0?AppConfig.PageSize:1, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VwSewingInputProcesses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                          grid.Column("SewingInputProcessRefId", header: "RefId", canSort: false),
+                          grid.Column("BuyerName", header: "Buyer", canSort: false),
+                          grid.Column("OrderName", header: "OrderNumber", canSort: false),
+                          grid.Column("StyleName", header: "Style", canSort: false),
+                          grid.Column("ColorName", header: "Color", canSort: false),
+                          grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.InputDate ?? ""), header: "Input-Date"),
+                          grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.InputDate ?? ""), header: "Input-Time"),
+                          grid.Column("HourName", header: "Hour", canSort: false),
+                          grid.Column("MachineName", header: "Line", canSort: false),
+                          grid.Column("BatchNo", header: "BatchNo", canSort: false),
+                          grid.Column("JobNo", header: "JobNo", canSort: false),
+                          grid.Column("InputQuantity", header: "InputQty", canSort: false),
+                          grid.Column(format: (item) => string.Format( item.Locked==false?"NO":"YES"), header: "Acc.Rcvd"),
+                          grid.Column("Edit", canSort: false, format: @<text><button class="btnDetail" targentclass="sewingDetail" action="/Production/SewingInputProcess/Edit?SewingInputProcess.SewingInputProcessId=@item.SewingInputProcessId"></button></text>),
+                          grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Production/SewingInputProcess/Delete?SewingInputProcess.SewingInputProcessId=@item.SewingInputProcessId"></button></text>),
+                          grid.Column("REPORT", canSort: false, header: "Report", format: @<text><a href="/Production/ProductionReport/SweingInputReport?SewingInputProcessId=@item.SewingInputProcessId" target="_blank">PDF</a></text>)));
+    }
+</div>
+
+

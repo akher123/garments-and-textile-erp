@@ -1,0 +1,77 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessSequenceViewModel
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Style Wise Process Sequence</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "ProcessSequence", FormMethod.Get, new { @class = "ProcessSequenceSearchForm submit-allow" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table class="tabefont">
+            <tr>
+                <td class="custom-tag">Buyer ORDER LIST</td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                </td>
+                <td>@Html.Label("To")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @class = "datepicker" })
+                </td>
+
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+
+    @{
+    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model.BuyerOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+    tableStyle: "webgrid-table webgrid gridSelect",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "buyerOrderStyle-row",
+    selectedRowStyle: "buyerOrderStyle-row",
+    rowStyle: "buyerOrderStyle-row",
+    firstText: "First",
+    lastText: "Last",
+    nextText: "Next",
+    mode: WebGridPagerModes.All,
+    previousText: "Previous",
+    columns:
+    grid.Columns(
+    grid.Column("OrderNo", canSort: false, header: "Order Ref."),
+    grid.Column("OrderDate", canSort: false, header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>),
+    grid.Column("RefNo", canSort: false, header: String.Format("{0}", "Order #")),
+    grid.Column("BuyerName", canSort: false, header: String.Format("{0}", "Buyer_Name")),
+    grid.Column("BuyerRef", canSort: false, header: "BuyerOrd._#"),
+    grid.Column("TotalStyleInOrder", canSort: false, header: "No.of Style"),
+    grid.Column("Quantity", canSort: false, header: "Quantity"),
+    grid.Column("MeasurementUnit", canSort: false, header: "Unit"),
+    grid.Column("EmpName", canSort: false, header: "Merchandiser"),
+    grid.Column("Styles", canSort: false, format: @<text><button class="btnDetail" targentclass="BuyerOrdStyleLsit" action="/Planning/ProcessSequence/BuyerOrderStyleLsit?OrderNo=@item.OrderNo"></button></text>)));
+    }
+
+    <div class="title-tag">BUYER ORDER STYLE</div>
+    <div class="BuyerOrdStyleLsit">
+
+    </div>
+
+</section>
+

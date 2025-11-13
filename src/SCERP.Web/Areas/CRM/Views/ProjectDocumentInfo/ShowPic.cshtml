@@ -1,0 +1,28 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.ProjectDocumentInfoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Report Picture";
+}
+
+@using (Html.BeginForm("Save", "ProjectDocumentInfo", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+   
+
+    <fieldset>
+        <legend> Requirement </legend>
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Image:</td>
+                <td>
+                    <img src="@Url.Content(Model.PhotographPath)" alt="Image" width="850" height="485" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

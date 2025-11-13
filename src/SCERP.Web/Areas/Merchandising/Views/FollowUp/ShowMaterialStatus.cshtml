@@ -1,0 +1,47 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FollowUpViewModel
+@{
+    Layout = null;
+}
+
+<input type="button" class="@*buttonStyle*@ addButton" onclick="search('@Url.Action("MaterialOrderStyleList", "FollowUp", new {Area = "Merchandising"})')" value="Back"/>
+@Html.ActionLink("PDF", "ShowMaterialStatus", "FollowUp", new { OrderStyleRefId=Model.OrderStyleRefId, IsShowReport = true },new {@target="_blank", @class = "addButton" })
+
+<br/><br/>
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>Item Name</th>
+            <th> Unit</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Required Qty</th>
+            <th>PI Booked Qty</th>
+            <th>Remaining</th>
+            <th>Received</th>
+            <th>PI Balance</th>
+            <th>Practical Qty</th>
+            <th>Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mstatus in Model.MaterialStatusList)
+        {
+            <tr class="webgrid-row-style">
+                <td>@mstatus.ItemName</td>
+                <td >@mstatus.UnitName</td>
+                <td>@mstatus.ColorName</td>
+                <td>@mstatus.SizeName</td>
+                <td>@mstatus.ReqQty</td>
+                <td>@mstatus.PiQty</td>
+                <td>@mstatus.RemainingQty</td>
+                <td>@mstatus.RecvdQty</td>
+                <td>@mstatus.PiBalanceQty</td>
+                <td>@mstatus.PracticalQty</td>
+                <td>@mstatus.StockQty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

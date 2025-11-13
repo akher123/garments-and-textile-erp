@@ -1,0 +1,212 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeJobCardProcessViewModel
+
+@{
+    ViewBag.Title = "Employee Job Card Processed Info";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "EmployeeJobCardProcess", FormMethod.Get, new { @class = "EmployeeJobCardProcessSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee Job Card Processed Info</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@data_val = true, @class = "SearchByCompanyId", @action = "/HRM/EmployeeJobCardProcess/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@data_val = true, @class = "SearchByBranchId", @action = "/HRM/EmployeeJobCardProcess/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @data_val = true, @class = "SearchByBranchUnitId", @action = "/HRM/EmployeeJobCardProcess/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeJobCardProcess/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentSection" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee Type: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new {@data_val = false, @class = "Hrm_EmployeeTypeId",})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Card:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("Year:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SelectedYear, Model.Years, "-Select-")
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Month:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SelectedMonth, Model.Months, "-Select-")
+                        &nbsp;@Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("From :")
+                    </td>
+                    <td>                       
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Start Date" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To :")
+                    </td>
+                    <td>                      
+                        @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "End Date" })
+                        &nbsp;@Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right"><input type="button" class="searchAction" /></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input type="button" class="addButton" onclick="search('@Url.Action("Process", "EmployeeJobCardProcess", new { IsSearch = true })','EmployeeJobCardProcessSearchForm')" value="Process" />           
+        </div>
+        <fieldset>
+            <legend>Employes</legend>
+            <div style="width: 100%;">
+                @{
+                    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+                    grid.Bind(Model.EmployeeJobCardRecords, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                    grid.Pager(WebGridPagerModes.All);
+                    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                            grid.Column("Year", header: "Year", format: @<text>@(item.Year ?? "")</text>),
+                            grid.Column("Month", header: "Month", format: @<text>@(item.Month ?? "")</text>),
+                            grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("ToDate", header: "To Date", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("EmployeeCardId", header: "Card Id ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                            grid.Column("EmployeeName", header: "Name", format: @<text>@(item.EmployeeName ?? "- - -")</text>),
+                            grid.Column("EmployeeDesignation", header: "Designation", format: @<text>@(item.EmployeeDesignation ?? "- - -")</text>),
+                            grid.Column("DepartmentName", header: "Department", format: @<text>@(item.DepartmentName ?? "")</text>),
+                            grid.Column("SectionName", header: "Section", format: @<text>@(item.SectionName ?? "")</text>),
+                            grid.Column("LineName", header: "Line", format: @<text>@(item.LineName ?? "")</text>),
+                            grid.Column("MobileNo", header: "Mobile No", format: @<text>@(item.MobileNo ?? "- - -")</text>),
+                            grid.Column("EmployeeType", header: "Employee Type", format: @<text>@(item.EmployeeType ?? "- - -")</text>),
+                            grid.Column("EmployeeGrade", header: "Grade", format: @<text>@(item.EmployeeGrade ?? "- - -")</text>),
+                            grid.Column("EmployeeDesignation", header: "Designation", format: @<text>@(item.EmployeeDesignation ?? "- - -")</text>),
+                            grid.Column("JoiningDate", header: "Joining Date", format: @<text>@(item.JoiningDate == null ? "" : item.JoiningDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("QuitDate", header: "Quit Date", format: @<text>@(item.QuitDate == null ? "" : item.QuitDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("TotalDays", header: "Total Days", format: @<text>@(item.TotalDays ?? "")</text>),
+                            grid.Column("WorkingDays", header: "Working Days", format: @<text>@(item.WorkingDays ?? "")</text>),
+                            grid.Column("PresentDays", header: "Present Days", format: @<text>@(item.PresentDays ?? "")</text>),
+                            grid.Column("LateDays", header: "Late Days", format: @<text>@(item.LateDays ?? "")</text>),
+                            grid.Column("OSDDays", header: "OSD Days", format: @<text>@(item.OSDDays ?? "")</text>),
+                            grid.Column("AbsentDays", header: "Absent Days", format: @<text>@(item.AbsentDays ?? "")</text>),
+                            grid.Column("LeaveDays", header: "Leave Days", format: @<text>@(item.LeaveDays ?? "")</text>),
+                            grid.Column("LWPDays", header: "LWP Days", format: @<text>@(item.LWPDays ?? "")</text>),
+                            grid.Column("Holidays", header: "Holidays", format: @<text>@(item.Holidays ?? "")</text>),
+                            grid.Column("WeekendDays", header: "Weekend Days", format: @<text>@(item.WeekendDays ?? "")</text>),
+                            grid.Column("PayDays", header: "Pay Days", format: @<text>@(item.PayDays ?? "")</text>),
+                            grid.Column("CasualLeave", header: "Casual Leave", format: @<text>@(item.CasualLeave ?? "")</text>),
+                            grid.Column("SickLeave", header: "Sick Leave", format: @<text>@(item.SickLeave ?? "")</text>),
+                            grid.Column("MaternityLeave", header: "Maternity Leave", format: @<text>@(item.MaternityLeave ?? "")</text>),
+                            grid.Column("EarnLeave", header: "Earn Leave", format: @<text>@(item.EarnLeave ?? "")</text>),
+                            grid.Column("GrossSalary", header: "Gross Salary", format: @<text>@(item.GrossSalary ?? "")</text>),
+                            grid.Column("BasicSalary", header: "Basic Salary", format: @<text>@(item.BasicSalary ?? "")</text>),
+                            grid.Column("HouseRent", header: "House Rent", format: @<text>@(item.HouseRent ?? "")</text>),
+                            grid.Column("MedicalAllowance", header: "Medical Allowance", format: @<text>@(item.MedicalAllowance ?? "")</text>),
+                            grid.Column("Conveyance", header: "Conveyance", format: @<text>@(item.Conveyance ?? "")</text>),
+                            grid.Column("FoodAllowance", header: "FoodAllowance", format: @<text>@(item.FoodAllowance ?? "")</text>),
+                            grid.Column("EntertainmentAllowance", header: "Entertainment Allowance", format: @<text>@(item.EntertainmentAllowance ?? "")</text>),
+                            grid.Column("PerDayBasicSalary", header: "Per Day Basic Salary", format: @<text>@(item.PerDayBasicSalary ?? "")</text>),
+                            grid.Column("LWPFee", header: "LWP Fee", format: @<text>@(item.LWPFee ?? "")</text>),
+                            grid.Column("AbsentFee", header: "AbsentFee", format: @<text>@(item.AbsentFee ?? "")</text>),
+                            grid.Column("AttendanceBonus", header: "Attendance Bonus", format: @<text>@(item.AttendanceBonus ?? "")</text>),
+                            grid.Column("ShiftingBonus", header: "Shifting Bonus", format: @<text>@(item.ShiftingBonus ?? "")</text>),
+                            grid.Column("TotalOTHours", header: "Total OT Hours", format: @<text>@(item.TotalOTHours ?? "")</text>),
+                            grid.Column("TotalExtraOTHours", header: "Total Extra OT Hours", format: @<text>@(item.TotalExtraOTHours ?? "")</text>),
+                            grid.Column("TotalWeekendOTHours", header: "Total Weekend OT Hours", format: @<text>@(item.TotalWeekendOTHours ?? "")</text>),
+                            grid.Column("EmployeeOTRate", header: "OT Rate", format: @<text>@(item.EmployeeOTRate ?? "")</text>),
+                            grid.Column("TotalOTAmount", header: "Total OT Amount", format: @<text>@(item.TotalOTAmount ?? "")</text>),
+                            grid.Column("TotalExtraOTAmount", header: "Total Extra OT Amount", format: @<text>@(item.TotalExtraOTAmount ?? "")</text>),
+                            grid.Column("TotalWeekendOTAmount", header: "Total Weekend OT Amount", format: @<text>@(item.TotalWeekendOTAmount ?? "")</text>)));
+                }
+            </div>
+        </fieldset>
+    </div>
+</section>
+

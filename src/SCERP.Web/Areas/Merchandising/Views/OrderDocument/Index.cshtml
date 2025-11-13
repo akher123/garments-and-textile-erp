@@ -1,0 +1,34 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.DocumentViewModel
+@{
+    Layout = null;
+}
+
+<div class="OrderDocumentList">
+    <div class=" additem" style="font-size: 12px;">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/Merchandising/OrderDocument/Edit?RefId=@Model.RefId">Add new</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Documents, rowCount: Model.Documents.Count(), autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+            grid.Column("RefId", header: "Order RefID", canSort: false),
+            grid.Column("Name", header: "Title", canSort: false),
+            grid.Column("Description", header: "Description", canSort: false),
+            grid.Column("Edit", format: @<text><button class="edit" action="/Merchandising/OrderDocument/Edit?DocumentId=@item.DocumentId"></button></text>),
+            grid.Column("Download", format: @<text><a href="/Common/Document/DownLoad?Path=@item.Path"><img src="~/Content/icons/16x16/download.jpg" /> </a></text>),
+            grid.Column("Delete", format: @<text><button class="deleteAction" targentclass="OrderDocumentList" action="/Merchandising/OrderDocument/Delete?DocumentId=@item.DocumentId&RefId=@Model.RefId"></button></text>)));
+        }
+    </div>
+
+
+</div>

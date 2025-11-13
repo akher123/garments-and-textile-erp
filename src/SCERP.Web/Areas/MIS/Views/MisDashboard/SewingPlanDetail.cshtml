@@ -1,0 +1,35 @@
+﻿
+@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "STYLE WISE SEWING PLAN";
+} 
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+    <tr>
+        @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+        {
+            <th>@col.ColumnName</th>
+        }
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+    {
+        <tr>
+            @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+            {
+
+                <td>@row[col.ColumnName]</td>
+            }
+        </tr>
+    }
+    <tr style="background-color:#b0c4de">
+        <td colspan="3">TOTAL : </td>
+       <td>@Model.BuyerWiseOrderStyleDtable.Compute("sum([" + "QUANTITY" + "])", "").ToString()</td>
+       
+    </tr>
+    </tbody>
+</table>

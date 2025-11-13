@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	     <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;প্লামি ফ্যাশনস্ লিমিটেড
+        </td>
+		 <td align="right" valign="bottom">
+          <img src="{EMPLOYEE_PHOTOGRAPH_PATH}" width="55px" height="55px" />
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+		 <td align="right">
+          
+        </td>
+      </tr>
+	  
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="15px"></td>
+        <td width="715px"></td>
+        <td></td>
+        <td>তারিখ : {PREPARE_DATE}</td>
+      </tr>
+        
+    </table>   
+    
+    <table width="850px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">কর্মচারীর পশ্চাৎ/চাকুরী যাচাই প্রতিবেদন রিপোর্ট</td>
+      </tr>
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;"><u style="text-decoration: underline;"> Employee Background/ Job Verification Report </u></td>
+      </tr>
+    </table> 
+	                                                            
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">     
+        <tr>
+            <td></td>
+            <td>০১) যাচাইকৃত ব্যক্তির নাম </td>
+            <td> : {EMP_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০২) পদবী </td>
+            <td> : {EMP_DESIGNATION}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+         <tr>
+            <td></td>
+            <td>০৩) বিভাগ </td>
+            <td> : {EMP_DEPARTMENT}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>         
+        <tr>
+            <td></td>
+            <td>০৪) কার্ড নং </td>
+            <td> : {EMP_CARDNO}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>    
+        <tr>
+            <td></td>
+            <td>০৫) যোগদানের তারিখ </td>
+            <td> : {JOINING_DATE}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td> <b>যাচাইকৃত ব্যক্তির ঠিকানা </b> </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td>০৬) বর্তমান ঠিকানাঃ গ্রাম/মহল্লাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_ADDRESS}</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> ডাকঘরঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_POST_OFFICE}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>    
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;থানাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_POLICE_STATION}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>&nbsp;&nbsp;জেলাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_DISTRICT}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ফোন নং : {MOBILEPHONE} </td>
+            <td> </td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>     
+            <td></td>
+            <td>০৭) স্থায়ী ঠিকানাঃ &nbsp;&nbsp;গ্রাম/মহল্লাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_ADDRESS}</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> ডাকঘরঃ&nbsp;&nbsp;&nbsp;{EMP_PER_POST_OFFICE}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;থানাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_POLICE_STATION}</td>
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td> </td>
+            <td></td>
+            <td>&nbsp;&nbsp;জেলাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_DISTRICT}</td>
+            <td></td>
+            <td></td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ফোন নং : {HOMEPHONE} </td>
+            <td> </td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="08"> 
+                <Table border='1' style='border-collapse:collapse'>
+                  <tr>
+                      <td align="center" width="30px"> <b>  ক্রঃ নং </b> </td>
+                      <td align="center" width="710px"> <b> প্রত্যয়নকারী ব্যক্তির বিবরণী </b> </td>   
+                      <td align="center" width="30px"> <b>  হ্যাঁ  </b> </td>  
+                      <td align="center" width="30px"> <b>  না  </b> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০১ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তির প্রত্যয়নপত্র সঠিক কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০২ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তিকে আপনি চেনেন কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০৩ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তির পরিবারের কাউকে চেনেন কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০৪ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তি আপনার জানামতে কোন রাষ্ট্র বিরোধী কাজে জড়িত কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০৫ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তির সঙ্গে আপনার কোন আত্মীয়তার সম্পর্ক আছে কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                  <tr>
+                      <td align="center"> ০৬ </td>
+                      <td align="left"> যাচাইকৃত ব্যক্তির আবেদনপত্রে উল্লেখিত যাবতীয় তথ্যাদি সঠিক কি না? </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>
+                </Table> 
+            </td>
+            <td> </td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>                 
+        <tr>
+            <td> </td>
+            <td colspan="08"> <b>যাচাইকারীর মন্তব্যঃ </b> আমার জানামতে তাহার স্বভাব চরিত্র ভাল/ভাল না। আমি তাহার সার্বিক মঙ্গল ও উন্নতি কামনা করি। </td>
+            <td> </td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>          
+        <tr>
+            <td></td>
+            <td colspan="08"> গত {JOINING_DATE} তারিখে অত্র প্রতিষ্ঠানে যোগদান করে। উক্ত ব্যক্তির পশ্চাৎ প্রতিবেদন/পূর্বোক্ত চাকুরী সত্যতা যাচাইয়ের লক্ষ্যে গত {JOINING_DATE} তারিখে আমরা নিন্ম স্বাক্ষরিত ব্যক্তি তার প্রদত্ত বর্তমান ঠিকানায়/স্থায়ী ঠিকানায়/পূর্বের প্রতিষ্ঠানে স্বশরীরে উপস্থিত হয়ে/টেলিফোনের মাধ্যমে/চিঠির মাধ্যমে/অন্যান্য জমাকৃত সার্টিফিকেট যাচাইয়ের মাধ্যমে প্রয়োজনীয় তথ্য সংগ্রহ করি।</td>
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>   
+        <tr>
+            <td></td>
+            <td colspan="02"> প্রাপ্ত তথ্য বিবেচনায়/যাচাইকৃত ব্যক্তির প্রদানকৃত সকল ধরনের তথ্যাবলী সঠিক বলে প্রতীয়মান/প্রমাণিত হয়েছে। </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td> <b> যাচাইকারী ব্যক্তিঃ </b> </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td> নাম </td>
+            <td> : {VERIFIER_NAME}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>         
+        <tr>
+            <td></td>
+            <td> পদবী </td>
+            <td> : {VERIFIER_DESIGNATION} </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td> কার্ড নং </td>
+            <td> : {VERIFIER_CARD} </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td height="30px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td> স্বাক্ষর </td>
+            <td> : ...........................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>   
+        <tr>
+            <td height="30px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>  কর্তৃপক্ষের স্বাক্ষর   </td>
+            <td> : ...........................</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+    </table>
+                                                                                                               
+    ]]>
+  </EmployeeSpecificInfo>
+</AppointmentLetter>

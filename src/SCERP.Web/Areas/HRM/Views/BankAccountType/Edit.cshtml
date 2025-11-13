@@ -1,0 +1,50 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BankAccountTypeViewModel
+    @{
+        ViewBag.Title = Model.BankAccountTypeId > 0 ? "Edit " : "Add ";
+        Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    }
+    @using (Html.BeginForm("Save", "BankAccountType", FormMethod.Post, new { @class = "BankAccountTypeform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BankAccountTypeId)
+        <fieldset>
+            <legend>Bank Account Type</legend>
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                <tr>
+                    <td class="fieldTitleCls">Account Type:</td>
+                    <td>
+                        @Html.EditorFor(x => x.AccountType)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.AccountType)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Description:</td>
+                    <td colspan="2">
+                        @Html.TextAreaFor(x => x.Description)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        @Html.SaveButton()
+                    </td>
+
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+

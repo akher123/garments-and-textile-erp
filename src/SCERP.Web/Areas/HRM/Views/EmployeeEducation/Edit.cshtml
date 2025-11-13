@@ -1,0 +1,135 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeEducationInfoViewModel
+
+@{
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmployeeEducation", FormMethod.Post, new { @class = "EmployeeEducationform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Educational Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Education Level:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EducationLevelId, Model.EducationLevelSelectListItem, "--Select--")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EducationLevelId)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Exam Title:</td>
+                <td>
+                    @Html.EditorFor(m => m.ExamTitle)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ExamTitle)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Exam Title (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(m => m.ExamTitleInBengali)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Institution:</td>
+                <td>
+                    @Html.EditorFor(m => m.Institute)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Institute)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Institution (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(m => m.InstituteInBengali)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Result:</td>
+                <td>
+                    @Html.EditorFor(m => m.Result)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Result)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Result (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(m => m.ResultInBengali)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Passing Year:</td>
+                <td>
+                    @Html.TextBoxFor(m => m.PassingYear)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeEducationInfoDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

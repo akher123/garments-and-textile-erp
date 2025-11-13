@@ -1,0 +1,136 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashBbLcViewModel
+
+@{
+    ViewBag.Title = "Cash Back to Back LC";
+    Layout = "~/Views/Shared/_CashBbLcLayout.cshtml";
+    var displayStyle = (Model.CashBbLcInfos.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "CashBbLc", FormMethod.Get, new { @class = "bblcSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Back to Back LC Information</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Supplier Name : ") </td>
+                    <td> @Html.DropDownListFor(model => model.SupplierCompanyRefId, Model.SupplierSelectListItem, "-Select-") </td>
+
+                    <td> @Html.Label("LC Type : ") </td>
+                    <td> @Html.DropDownListFor(model => model.BbLcType, Model.LcTypeSelectListItem, "-Select-") </td>
+
+                    <td> @Html.Label("LC No : ") </td>
+                    <td> @Html.DropDownListFor(model => model.LcRefId, Model.LcSelectListItem, "-Select-") </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("From Date : ") </td>
+                    <td> @Html.EditorFor(x => x.FromDate) </td>
+
+                    <td> @Html.Label("To Date : ") </td>
+                    <td> @Html.EditorFor(x => x.ToDate) </td>
+
+                    <td></td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        @*<input type="button" value="Show Report" class="addButton" onclick=" javascript: PrintReport(); " />*@
+                    </td>
+                </tr>
+            </table>
+
+
+
+            @*<table class="tabefont">
+
+                    <tr>
+                        <td> @Html.Label("Supplier Name : ") </td>
+                        <td> @Html.DropDownListFor(model => model.SupplierCompanyRefId, Model.SupplierSelectListItem, "-Select-") </td>
+                        <td> </td>
+                        <td> @Html.Label("LC Type : ") </td>
+                        <td> @Html.DropDownListFor(model => model.BbLcType, Model.LcTypeSelectListItem, "-Select-") </td>
+                    </tr>
+                    <tr>
+                        <td> @Html.Label("From Date : ") </td>
+                        <td> @Html.EditorFor(x => x.FromDate) </td>
+                        <td> </td>
+                        <td> @Html.Label("To Date : ") </td>
+                        <td> @Html.EditorFor(x => x.ToDate) </td>
+                    </tr>
+
+                    <tr>
+                        <td> @Html.Label("LC No : ") </td>
+                        <td> @Html.DropDownListFor(model => model.LcRefId, Model.LcSelectListItem, "-Select-") <input type="button" class="searchAction" /> </td>
+                        <td> </td>
+                        <td> <input type="button" value="Show Report" class="addButton" onclick=" javascript: PrintReport(); " /> </td>
+                        <td> </td>
+                    </tr>
+
+                </table>*@
+
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            @*<button class="AjaxPopup addButton" action="/Commercial/CashBbLc/Edit/0">Add New</button>*@
+            <input onclick="search('/Commercial/CashBbLc/Edit/0')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CashBbLcInfos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    //grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/CashBbLc/Edit/@item.BbLcId"></button></text>, canSort: false),
+                    //grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "BbLcIndividual", "Report", new { item.BbLcId }, new { @target = "_blank" })   </text>),
+                    grid.Column("PI", header: "PI No", canSort: false),
+                    grid.Column("BbLcNo", header: "BBLC No", canSort: false),
+                    grid.Column("BbLcDate", "Date", format: @<text>@(item.BbLcDate == null ? "" : item.BbLcDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("BbLcAmount", header: "Amount", canSort: false),
+                    grid.Column("MatureDate", "Mature Date", format: @<text>@(item.MatureDate == null ? "" : item.MatureDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("ExpiryDate", "Expiry Date", format: @<text>@(item.ExpiryDate == null ? "" : item.ExpiryDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("IfdbcNo", header: "IFDBC No", canSort: false),
+                    grid.Column("IfdbcDate", "IFDBC Date", format: @<text>@(item.IfdbcDate == null ? "" : item.IfdbcDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("IfdbcValue", header: "IFDBC Value", canSort: false),
+                    grid.Column("Edit", canSort: false, format: @<text><input type="button" onclick="search('/Commercial/CashBbLc/Edit?id=@item.BbLcId')" value="Edit" /></text>),
+                    grid.Column("Delete", format: @<text><button class="delete" action="/Commercial/CashBbLc/Delete/@item.BbLcId"></button></text>, canSort: false)))
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var supplierId = $('#SupplierCompanyRefId').val();
+            var bbLcType = $('#BbLcType').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+
+            window.open("/Commercial/Report/CashBbLcListReport?&supplierId=" + supplierId + "&bbLcType=" + bbLcType + "&fromDate=" + fromDate + "&toDate=" + toDate + "&ExportType=DOC");
+        }
+    </script>
+}

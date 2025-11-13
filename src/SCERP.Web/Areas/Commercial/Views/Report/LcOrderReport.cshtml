@@ -1,0 +1,58 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    ViewBag.Title = "LC Order Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.LcInfos.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("LcOrderReport", "Report", FormMethod.Get, new { @class = "lcOrderReportSearchForm submit-allow ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h2> LC Order Report </h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            
+            <tr>
+                <td> @Html.Label("Search Type : ") </td>
+                <td> @Html.DropDownListFor(model => model.SearchType, Model.SearchTypeSelectListItem, "-Select-") </td> 
+                <td> </td>
+                <td> </td>                                                                                    
+            </tr>
+
+            <tr>
+                <td> @Html.Label("From Date : ") </td>                                   
+                <td> @Html.EditorFor(x => x.FromDate) </td>                                    
+                <td> @Html.Label("To Date : ") </td>                                   
+                <td>
+                    @Html.EditorFor(x => x.ToDate)
+                    <input type="button" value="Show Report" onclick=" javascript: PrintReport(); " />
+                </td>
+            </tr>
+        </table>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var searchString = $('#SearchType option:selected').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+
+            window.open("/Commercial/Report/LcOrderReportPrint?&fromDate=" + fromDate + "&toDate=" + toDate + "&searchKey=" + searchString + "&ExportType=DOC");
+        }
+
+    </script>
+}

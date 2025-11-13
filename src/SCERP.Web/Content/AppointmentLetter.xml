@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+  
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td align="center" style="font-family:SolaimanLipi;font-weight:normal;font-size: 28px;">
+        প্লামি ফ্যাশনস্ লিমিটেড 
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+      উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+      </tr>
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="15px"></td>
+        <td width="550px">তারিখ : {PREPARE_DATE}</td>
+        <td></td>
+        <td>স্মারক নং পি.এফ.এল/এইচ.আর./নিগ/  </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>    
+    </table>   
+    
+    <table width="850px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:normal;font-size:28px;">নিয়োগপত্র</td>
+      </tr>     
+    </table> 
+                                               
+    <br/>
+         
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td width="15px" ></td>
+            <td> নাম</td>
+            <td width="20px">:</td>
+            <td>{EMP_NAME}</td>
+            <td></td>            
+            <td width="100px"> </td>            
+            <td></td>
+            <td> সেকশন</td>
+            <td width="20px">:</td>
+            <td>{EMP_DEPARTMENT}</td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> পিতার নাম</td>
+            <td>:</td>
+            <td>{EMP_FATHER_NAME}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> পদবী</td>
+            <td>:</td>
+            <td>{EMP_DESIGNATION}</td>                        
+            <td> </td>
+        </tr>
+         <tr>
+            <td></td>
+            <td> মাতার নাম</td>
+            <td>:</td>
+            <td>{EMP_MOTHER_NAME}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> আইডি কার্ড</td>
+            <td>:</td>
+            <td>{EMP_CARDNO}</td>                        
+            <td> </td>
+        </tr>
+          <tr>
+            <td></td>
+            <td> স্বামী/স্ত্রীর নাম</td>
+            <td>:</td>
+            <td>{EMP_SPOUSE_NAME}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> গ্রেড</td>
+            <td>:</td>
+            <td>{EMP_GRADE}</td>                        
+            <td> </td>
+        </tr>
+        
+        <tr>
+            <td></td>
+            <td> বর্তমান ঠিকানা </td>
+            <td>:</td>
+            <td>{EMP_PRE_ADDRESS}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> স্থায়ী ঠিকানা </td>
+            <td>:</td>
+            <td>{EMP_PER_ADDRESS}</td>                        
+            <td> </td>
+        </tr>
+        
+        <tr>            
+            <td></td>
+            <td> ডাকঘর </td>
+            <td>:</td>
+            <td>{EMP_PRE_POST_OFFICE}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td>ডাকঘর</td>
+            <td>:</td>
+            <td>{EMP_PER_POST_OFFICE}</td>                        
+            <td> </td>
+        </tr>
+             
+         <tr>     
+            <td></td>
+            <td> থানা </td>
+            <td>:</td>
+            <td>{EMP_PRE_POLICE_STATION}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> থানা </td>
+            <td>:</td>
+            <td>{EMP_PER_POLICE_STATION}</td>                        
+            <td> </td>
+        </tr>
+        
+        <tr>     
+            <td></td>
+            <td> জেলা </td>
+            <td>:</td>
+            <td>{EMP_PRE_DISTRICT}</td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> জেলা </td>
+            <td>:</td>
+            <td>{EMP_PER_DISTRICT}</td>                        
+            <td> </td>
+        </tr>                                    
+    </table>
+    
+    <br/>      
+          
+    <table style="font-family:SolaimanLipi; font-weight:normal; font-size:18px;">
+      <tr>
+        <td width="15px" >        
+        </td>
+        <td style="vertical-align:top">
+          ০১)	
+        </td>
+        <td>
+           আপনার আবেদন ও কর্তৃপক্ষের সাথে সাক্ষাৎকারের ভিত্তিতে আপনাকে কারখানার {EMP_DEPARTMENT} বিভাগে {EMP_DESIGNATION}
+           পদে {EMP_GRADE} গ্রেডে {JOINING_DATE} ইং তারিখ হইতে নিয়োগ প্রদান করা হইল। 
+        </td>
+      </tr>
+      <tr>
+          <td width="15px" >        
+          </td>
+          <td style="vertical-align:top">
+            ০২)	
+          </td>
+          <td>
+            শিক্ষানবিশকাল (Probationary Period) {JOINING_DATE} ইং তারিখ থেকে {PROBATION_END_DATE} ইং তারিখ পর্যন্ত।
+            দক্ষ শ্রমিকের ক্ষেত্রে যদি উপরোক্ত ৩ মাসে দক্ষতা প্রমাণ না দিতে পারেন তাহা হইলে কর্তৃপক্ষ ইচ্ছা করিলে  আপনার আরও ৩ মাস
+            শিক্ষানবিশকাল বৃদ্ধি করিতে পারিবেন। সফলভাবে শিক্ষানবিস/সাময়িক নিয়োগকাল সম্পন্ন হওয়ার পর নিয়োগকৃত শ্রমিককে চাকুরীতে 
+            স্থায়ীকরণ করা হইয়াছে বলে বিবেচিত হইবে।
+          </td>
+      </tr>      
+      <tr>
+          <td width="15px" >        
+          </td>
+          <td style="vertical-align:top">
+            ০৩)	
+          </td>
+          <td>
+              আপনাকে কর্তৃপক্ষ যে কোন সময় আপনার পদবী/কাজের প্রকৃতি পরিবর্তন করিতে পারিবেন। 
+          </td>
+      </tr> 
+        <tr>
+          <td width="15px">        
+          </td>
+          <td style="vertical-align:top">
+            ০৪)	
+          </td>
+          <td>
+              আপনার সর্বসাকুল্যে বেতন/মজুরীর বর্ণনা নিন্মরূপ:
+          </td>
+      </tr>  
+    </table>
+     
+     <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+       <tr>
+          <td width="45px"></td>
+          <td>মূল বেতন	</td>
+          <td width="45px"></td>
+          <td>টাকা : {BASIC_SALARY}</td>
+       </tr>
+       <tr>             
+          <td></td>
+          <td>বাড়ী ভাড়া (মূল মজুরীর ৪০%)	</td>
+          <td></td>
+          <td>টাকা : {HOUSE_RENT}</td>
+       </tr>           
+       <tr>
+          <td></td>
+          <td>চিকিৎসা ভাতা</td>
+          <td></td>
+          <td>টাকা : {MEDICAL_ALLOWANCE}</td>
+       </tr>
+       <tr>
+          <td></td>
+          <td>যাতায়াত ভাতা</td>
+          <td></td>
+          <td>টাকা : {TRANSPORT}</td>
+       </tr>    
+       <tr>
+          <td></td>
+          <td>খাদ্য ভাতা	</td>
+          <td></td>
+          <td>টাকা : {FOOD_ALLOWANCE}</td>
+       </tr>       
+      
+       <tr>
+          <td></td>
+          <td>----------------------------------</td>
+          <td></td>
+          <td>----------------------------------</td>          
+       </tr>
+       <tr>
+          <td></td>
+          <td>সর্বমোট বেতন/মজুরী</td>
+          <td></td>
+          <td>টাকা : {GROSS_SALARY} (কথায় :  {AMOUNT_IN_WORDS} টাকা মাত্র) </td>          
+       </tr>
+        <tr>
+          <td></td>
+          <td>ওভারটাইমের হার</td>
+          <td></td>
+          <td>টাকা : {EMPLOYEE_OT_RATE}</td>          
+       </tr>
+     </table>
+            
+     <table style="font-family:SolaimanLipi; font-weight:normal; font-size:18px;">
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ০৫) </td>                    
+            <td>
+                কর্মঘন্টাঃ আপনার সাধারন কর্মঘন্টাঃ ৮ ঘন্টা, অতিরিক্ত কর্মঘন্টাঃ ২ ঘন্টা (যা স্বেচ্ছাধীন)।  
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ০৬) </td>                    
+            <td>
+                 খাবার ও বিশ্রামের জন্য বিরতিঃ শ্রমিক/কর্মচারীগণ খাবার এবং বিশ্রাম এর জন্য ১ (এক) ঘন্টা সময় প্রদান করা হবে।  
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ০৭) </td>                    
+            <td>
+                কর্তৃপক্ষ প্রয়োজনে আইনানুযায়ী অতিরিক্ত কাজ (ওভারটাইম) করাতে পারিবেন এবং সেক্ষেত্রে আপনাকে মূল বেতনের দ্বিগুণ হারে দেওয়া হইবে (মূল বেতন ÷ ২০৮ x {OVERTIME_RATE} x অতিরিক্ত ঘন্টা = অতিরিক্ত মজুরী টাকা)।
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ০৮) </td>                    
+            <td>
+                ছুটি ও বন্ধঃ <br />
+                ক) সাপ্তাহিক ছুটি : {WeekEnd} দিন।  <br />
+                খ) উৎসব ছুটি : সবেতনে ১১ দিন। <br />
+                গ) নৈমত্তিক ছুটি : সবেতনে ১০ দিন (উক্ত ছুটি জমা রেখে পরবর্তী বছর ভোগ করা যাবে না)। <br />
+                ঘ) চিকিৎসা ছুটি : সবেতনে ১৪ দিন (ডাক্তার কর্তৃক সার্টিফিকেট সাপেক্ষে) (উক্ত ছুটি জমা রেখে পরবর্তী বছর ভোগ করা যাবে না)। <br />
+	              ঙ) বার্ষিক ছুটি : একটানা ১ বছর চাকুরী করার পর পরবর্তী বছর পূর্ববতী বছরের প্রতি ১৮ কর্ম দিবসের কাজের জন্য ১ দিন করে সবেতনে ছুটি নিতে পারবে। <br />                 
+	              চ) মাতৃত্বকালীন সুবিধা ও ছুটিঃ মহিলাদের ক্ষেত্রে মাতৃত্বকালীন ছুটি পূর্ণ মজুরীতে ১৬ (ষোল) সপ্তাহ। তবে যাদের চাকুরীর বয়স ৬ মাস পূর্ণ হয় নাই বা বর্তমানে ২টি সন্তান জীবিত আছে সেই সকল মহিলা শ্রমিকগণ এই প্রসূতিকালীন সুবিধা পাবে না। <br />                               
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ০৯) </td>                    
+            <td>
+                অন্যান্য সুযোগ-সুবিধাদি:<br />
+                ক) চিকিৎসা সুবিধাঃ কারখানার অভ্যন্তরে কর্মকালীন সময়ে আপনার স্বাস্থ্য সেবার জন্য এই প্রতিষ্ঠানে নিয়োজিত ডাক্তার/সেবিকাগণ বিনা পয়সায় চিকিৎসা সুবিধা প্রদান করিবেন। <br />         
+                খ) কর্মরত মহিলাদের অনুর্ধ্ব ৬ বছর বয়সী বাচ্চাদের রাখার জন্য শিশু পরিচর্যা কেন্দ্রের ব্যবস্থা আছে। <br />
+	              গ) কোম্পানী কর্তৃক গ্রুপ বীমার সুবিধা প্রদান করা হবে।  <br />
+            </td>
+        </tr>
+         <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১০) </td>                    
+            <td>
+               বেতন ও মজুরী প্রদান তারিখঃ প্রতি শ্রমিক/কর্মচারীকে প্রতি মাসের ৭ কর্ম দিবসের মধ্যে  মজুরী/বেতন কোম্পানী প্রদান করিবে। <br />     
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১১) </td>                    
+            <td>
+                কোম্পানীর কার্যসম্পাদন কালে আপনাকে কোম্পানীর উন্নতির জন্য যথাসাধ্য চেষ্টা করিতে হইবে। কোন কাজে কোম্পানীর স্বার্থের বিরুদ্ধে অথবা নিজের কোন লাভ উপার্জনের জন্য আপনি নিজেকে নিয়োজিত করিতে পারিবেন না।<br />           
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১২) </td>                    
+            <td>
+               কর্তৃপক্ষ যে কোন সময় চাকুরীর শর্তাবলী দেশের শ্রম আইন আইনানুযায়ী পরিবর্তন/পরিবর্ধন করার বৈধ অধিকার সংরক্ষণ করেন।<br />  
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১৩) </td>                    
+            <td>
+               চাকুরী থাকাকালে আপনি অত্র প্রতিষ্ঠানে ব্যবসা সংক্রান্ত গোপনীয় তথ্যাদি কোন ব্যক্তি, ব্যবসা প্রতিষ্ঠান অথবা অন্য কারো নিকট প্রকাশ করিতে পারিবেন না।<br/>      
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১৪) </td>                    
+            <td>
+               আপনি যদি কোন “অসদাচরন”-এর অপরাধে দোষী প্রমাণিত হন তবে কর্তৃপক্ষ আইনানুযায়ী আপনার বিরুদ্ধে অপসারণসহ আইনানুগ যে কোন ধরনের শাস্তির ব্যবস্থা গ্রহণ করতে পারবেন। <br/>        
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১৫) </td>                    
+            <td>
+               ক) চাকুরী হইতে ইস্তফা দিতে চাইলে স্থায়ী শ্রমিকের ক্ষেত্রে ৬০ (ষাট) দিনের নোটিশ প্রদান করিতে হইবে। বিনা নোটিশে চাকুরী হইতে ইস্তফা দিতে চাইলে সেক্ষেত্রে প্রদেয় নোটিশের পরিবর্তে নোটিশ মেয়াদের জন্য মূল মজুরীর সমপরিমাণ অর্থ কর্তৃপক্ষকে প্রদান করিতে হইবে। <br />      
+	             খ) শ্রম আইন ২০০৬ এর ২৬ ধারা অনুযায়ী কর্তৃপক্ষ কোন কারণ দর্শানো ব্যতিরেকেই চাকুরী হতে আপনাকে টার্মিনেট করতে পারবেন, এক্ষেত্রে আপনি ১২০ (একশত বিশ) দিনের নোটিশ বা নোটিশের পরিবর্তে সমপরিমাণ মজুরী প্রাপ্য হবেন। <br />          
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"> </td>          
+            <td style="vertical-align:top"> ১৬) </td>                    
+            <td>
+              এই নিযুক্তি পত্র ছাড়াও দেশের প্রচলিত আইন, সরকারি ফরমান, বিধান, আদেশ ও বিজ্ঞপ্তি দ্বারা চাকুরী পরিচালিত হইবে।
+            </td>
+        </tr>   
+        <tr>
+            <td> </td>          
+            <td> </td>                    
+            <td> </td>                     
+        </tr>
+        <tr>
+            <td width="15px">  </td>          
+            <td colspan="2" align="center" style="font-weight:bold; font-size:24px;">প্রত্যায়ন </td>                    
+            <td>            
+            </td>
+        </tr>
+        <tr>
+            <td width="15px"></td>          
+            <td style="vertical-align:top"> </td>                    
+            <td>
+              আমি অত্র নিয়োগপত্র বর্ণিত শর্তাদি সম্পূর্ণরূপে পড়ে, পড়িয়ে এবং এর মর্ম অনুধাবন করে, স্বেচ্ছায়, স্বজ্ঞানে এবং অন্যের দ্বারা প্ররোচিত না হইয়া নিয়োগ পত্রে স্বাক্ষর করে ০১ (এক) কপি গ্রহণ করিলাম।            
+            </td>
+        </tr>        
+     </table>    
+     <br/>
+     <br/>   
+     <table style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">
+       <tr>
+            <td width="80px"></td>          
+            <td style="vertical-align:top"> </td>                    
+            <td>
+              ---------------------------          
+            </td>
+            <td width="450px"></td>  
+            <td>
+             ---------------
+            </td>
+        </tr> 
+        <tr>
+            <td width="80px"></td>          
+            <td style="vertical-align:top"> </td>                    
+            <td>
+                শ্রমিক/কর্মচারী স্বাক্ষর            
+            </td>
+            <td width="450px"></td>  
+            <td>
+                নিয়োগকর্তা       
+            </td>
+        </tr>        
+     </table>    
+             
+             
+    ]]>
+  </EmployeeSpecificInfo>
+    
+</AppointmentLetter>

@@ -1,0 +1,100 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ItemStoreViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Material Received List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "ItemStore", FormMethod.Get, new {@class = "ItemStoreSearchForm ignore-validation"}))
+        {
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("From date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate,  new {@data_val = "false",@class = "datepicker", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.Label("To date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate,new {@class = "datepicker" ,@data_val = "false", @placeholder = "To date"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Qc Status :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.QCStatus, Model.QcStatusSelectListItem)
+                    </td>
+
+                    <td>
+                        @Html.Label("Receive Type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReceiveType, Model.ReceiveTypeSelectListItem, "-All-")
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/ItemStore/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.InventoryItemStores, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+               tableStyle: "webgrid-table webgrid",
+               headerStyle: "webgrid-header",
+               footerStyle: "webgrid-footer",
+               alternatingRowStyle: "webgrid-alternating-row",
+               selectedRowStyle: "webgrid-selected-row",
+               rowStyle: "webgrid-row-style",
+               firstText: "First",
+               lastText: "Last",
+               nextText: "Next",
+               mode: WebGridPagerModes.All,
+               previousText: "Previous",
+               columns: grid.Columns(
+               grid.Column("SupplierCompanyName", header: "Supplier", format: @<text>@(item.SupplierCompanyName ?? "")</text>),
+               grid.Column("RequisitionNo", header: "Req No ", format: @<text>@(item.RequisitionNo ?? "")</text>),
+               grid.Column("ReceivedRegisterNo", header: "ReceRegNo", format: @<text>@(item.ReceivedRegisterNo ?? "")</text>),
+               grid.Column("GateEntry", header: "GE.No", format: @<text>@(item.GateEntry ?? "")</text>),
+               grid.Column("GateEntryDate", header: "GE Date", format: @<text>@(item.GateEntryDate == null ? "" : item.GateEntryDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+               grid.Column("LCNo", header: String.Format("{0}", "L/CNO"), format: @<text>@(item.LCNo ?? "")</text>),
+               grid.Column("InvoiceNo", header: "InvNo ", format: @<text>@(item.InvoiceNo ?? "")</text>),
+               grid.Column("InvoiceDate", header: "InvDate", format: @<text>@(item.InvoiceDate == null ? "" : item.InvoiceDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+               grid.Column("ReceivedDate", header: "RcvdDate", format: @<text>@(item.ReceivedDate == null ? "" : item.ReceivedDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+               grid.Column("Edit", canSort: false, format:@<text><button class="edit" action="/Inventory/ItemStore/Edit?ItemStoreId=@item.ItemStoreId"></button></text>),
+               grid.Column("QC", format: @<text><input type="button" class="Edit_Button" action="/Inventory/QualityCertificate/Edit?ItemStoreId=@item.ItemStoreId" value="@(Enum.GetName(typeof(QCPassStatus),item.QCStatus))" /></text>, canSort: false),
+               @*grid.Column("Report", format:@<text> <input type="button" onclick="search('@Url.Action("Report", "ItemStore", new { ItemStoreId =item.ItemStoreId })')" value="RView" /> </text>, canSort: false),*@
+               grid.Column("Delete", format: @<text><button class="delete" action="/Inventory/ItemStore/Delete?ItemStoreId=@item.ItemStoreId"></button></text>, canSort: false),
+               grid.Column("Export",format:@<text><a target="_blank" href="/Inventory/ItemStore/Report?ItemStoreId=@item.ItemStoreId">PDF</a></text>, canSort: false)
+      ));
+        }
+    </div>
+</section>

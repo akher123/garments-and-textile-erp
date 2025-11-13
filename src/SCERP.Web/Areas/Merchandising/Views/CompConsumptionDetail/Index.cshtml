@@ -1,0 +1,14 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CompConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+
+<div id="ComConsumptionDetailContainer">
+    <div style="margin-top: 5px;">
+        @Html.Partial("~/Areas/Merchandising/Views/CompConsumptionDetail/_Edit.cshtml", Model)
+    </div>
+    <div style="margin-top: 5px;" id="ComConsumptionDetailList">
+        @Html.Partial("~/Areas/Merchandising/Views/CompConsumptionDetail/_CompConsDetailList.cshtml", Model)
+    </div>
+</div>
+<script src="~/Scripts/SCERP/Merchandising/CompConsumptionDetail.js"></script>

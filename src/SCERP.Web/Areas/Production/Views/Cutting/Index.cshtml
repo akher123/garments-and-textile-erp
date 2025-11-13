@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<style type="text/css">
+    .CuttingInputList {
+        width: 100%;
+    }
+    .CuttingOutputList {
+        width: 100%;
+    }
+    .CuttingProduction {
+        width: 100%;
+    }
+</style>
+<div style="width:auto; padding-left:300px;">
+    <h2>Cutting Production </h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 10px;">
+            @using (Html.BeginForm("Index", "Cutting", FormMethod.Get, new { @class = "CuttingForm" }))
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(x => x.FromDate, new { htmlAttributes = new { @data_val = "false", @placeholder = "From date", @style = "width:100px;" } })
+                        </td>
+                        <td>@Html.Label("To")</td>
+                        <td>
+                            @Html.EditorFor(x => x.ToDate, new { htmlAttributes = new { @data_val = "false", @placeholder = "To date", @style = "width:100px;", @class = "searchEnterKeyAction" } })
+                        </td>
+                        <td>
+                            @Html.Label("Criteria")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <br />
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwPrograms, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                    grid.Column("ProcessName", header: "Process", canSort: false),
+                    grid.Column("ProgramRefId", header: "ProgramRefNo", canSort: false),
+                    grid.Column("PrgDate", header: "PrgDate", canSort: false, format: @<text>@(item.PrgDate == null ? "" : item.PrgDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("ExpDate", header: "ExpDate",canSort:false, format: @<text>@(item.PrgDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Buyer", header: "Buyer", canSort: false),
+                    grid.Column("Merchandiser", header: "Merchandiser", canSort: false),
+                    grid.Column("RefNo", header: "Order#", canSort: false),
+                    grid.Column("OrderStyleRefId", header: "StyleRef#", canSort: false),
+                    grid.Column("Quantity", header: "Quantity", canSort: false),
+                    grid.Column("Unit", header: "Unit", canSort: false),
+                    grid.Column("Styles", canSort: false, format: @<text><button class="btnDetail" targentclass="CuttingProduction" action="/Production/Cutting/CuttingList?ProrgramRefId=@item.ProgramRefId"></button></text>)));
+        }
+
+        <hr />
+        <div class="CuttingProduction " id="accordion">
+
+        </div>
+    </div>
+</section>

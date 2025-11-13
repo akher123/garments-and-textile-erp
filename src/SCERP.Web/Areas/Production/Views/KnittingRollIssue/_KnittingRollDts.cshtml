@@ -1,0 +1,72 @@
+﻿@model SCERP.Web.Areas.Production.Models.KnittingRollIssueViewModel
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend>Roll Issue Detail</legend>
+
+    <table class="tabefont webgrid-table" id="rollDetailTable">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Program No</th>
+                <th>Roll Date</th>
+           
+                <th>Roll Ref</th>
+                <th>Roll.No</th>
+                <th>Style</th>
+                <th>F.Type</th>
+                <th>M/C DIA</th>
+                <th>Wt(kg)</th>
+                <th>
+                    <input type="checkbox" class="selectAllCheckBox" />
+                    Select
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kid in Model.Dictionary)
+            {
+                <tr>
+                    <td>
+                        @kid.Value.ProgramRefId
+                    </td>
+                    <td>
+                        @String.Format("{0:dd/MM/yyyy}", kid.Value.RollDate)
+                    </td>
+                  
+                    <td>
+                        @kid.Value.RollRefNo
+                    </td>
+                    <td>
+                        @kid.Value.CharllRollNo
+                    </td>
+                    <td>
+                        @kid.Value.StyleName
+                    </td>
+                    <td>
+                        @kid.Value.ItemName
+                    </td>
+                    <td>
+                        @kid.Value.SizeName
+                    </td>
+                    <td>
+                        @kid.Value.Quantity
+                    </td>
+                    <td>
+                        <input style="display: none" type="checkbox" @(kid.Value.CountIssue== 0 ? "" : "checked") id="@kid.Value.KnittingRollId" name="RollIssueDetails[@kid.Key].RollQty" value="@kid.Value.Quantity" />
+                        <input type="checkbox" class="checkedAll" @(kid.Value.CountIssue == 0 ? "" : "checked") onclick="checkdWithData(this, '@kid.Value.KnittingRollId')" name="RollIssueDetails[@kid.Key].KnittingRollId" value="@kid.Value.KnittingRollId" />
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</fieldset>
+<script type="text/javascript">
+  
+    function checkdWithData(obj, id) {
+        $('#' + id).prop('checked', ($(obj)).is(':checked'));
+    }
+
+</script>

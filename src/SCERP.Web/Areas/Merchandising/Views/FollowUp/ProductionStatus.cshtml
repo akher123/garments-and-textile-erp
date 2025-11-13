@@ -1,0 +1,71 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FollowUpViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Production Status</h2>
+</div>
+
+@section styles
+{
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <style type="text/css">
+        .reportBody tr:hover {
+            background-color: #ffff99;
+        }
+    </style>
+}
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("ProductionStatus", "FollowUp", FormMethod.Get, new { @class = "FollowUpSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("From")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+    <section class="search formCover">
+        <div class="additem">
+            <table class="pdfReportTable webgrid-table webgrid">
+                <thead class="reportHeader webgrid-header">
+                    <tr class="reportTH">
+                        @foreach (DataColumn col in Model.DatatTable.Columns)
+                        {
+                            <th class="reportTD">@col.ColumnName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody class="reportBody scroll">
+                    @foreach (DataRow row in Model.DatatTable.Rows)
+                    {
+                        <tr class="reportTR webgrid-row-style">
+                            @foreach (DataColumn col in Model.DatatTable.Columns)
+                            {
+                                <td class="reportTD">@(row[col.ColumnName] ?? "")</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+

@@ -1,0 +1,115 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.LeaveSettingViewModel
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+
+}
+
+@using (Html.BeginForm("Save", "LeaveSetting", FormMethod.Post, new { @class = "leavesettingform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.EditedDate)
+    <fieldset>
+        <legend>Leave Setting</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>Company:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "serchByCompanyForBranchUnit", @action = "/HRM/LeaveSetting/GetAllUnitsByCompanyId", @TargetClass = "Hrm_SearchBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.CompanyId, null)
+                </td>
+            </tr>
+            <tr>
+                <td>Unit:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "Hrm_SearchBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.BranchUnitId, null)
+                </td>
+            </tr>
+            <tr>
+                <td>Employee Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeTypeId, Model.EmployeeTypeSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeeTypeId, null)
+                </td>
+            </tr>
+            <tr>
+                <td>Leave Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.LeaveTypeId, Model.LeaveTypeSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.LeaveTypeId, null)
+                </td>
+            </tr>
+
+            <tr>
+                <td>No of Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NoOfDays)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NoOfDays, null)
+                </td>
+            </tr>
+
+            <tr>
+                <td>Maximum at a time:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.MaximumAtATime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.MaximumAtATime)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+

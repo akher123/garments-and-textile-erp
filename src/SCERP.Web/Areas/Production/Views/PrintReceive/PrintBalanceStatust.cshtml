@@ -1,0 +1,126 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProductionReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>PRINT BALANCE STATUS SUMMARY</h3>
+</div>
+<div style="margin-bottom: 10px;">
+    @using (Html.BeginForm("PrintBalanceStatust", "PrintReceive", FormMethod.Post, new { @class = "BalanceStatusReportForm ignore-validation" }))
+    {
+        @Html.HiddenFor(x => x.IsSearch)
+        @Html.HiddenFor(x => x.ProcessRefId)
+        <fieldset>
+            <div id="cuttingJobMaster">
+                <table class="tabefont" style="margin-left: 60px">
+                    <tr>
+                        <td>@Html.Label("Factory  :")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.PartyId, Model.PartySelectListItem, "-Select-", new { @class = "CuttingBatch_factory" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem,new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                      
+                        <td>
+                            <div style="margin-bottom: 3px;width: 150px; ">
+                                <div class="dropdown">
+                                    <button class="dropbtn">REPORT▼</button>
+                                    <div class="dropdown-content">
+                                        <a style="cursor: pointer" target="_blank" onclick="FactoryStyleWiseBalance(1)">PDF</a>
+                                        <a style="cursor: pointer" target="_blank" onclick="FactoryStyleWiseBalance(3)">Excel</a>
+                                        <a style="cursor: pointer" target="_blank" onclick="ProcessReceiveDetailsReport()">RcvDetail</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PRINT/EMB BALANCE</td>
+                        <td>
+                            <div style="margin-bottom: 3px;width: 150px; ">
+                                <div class="dropdown">
+                                    <button class="dropbtn">REPORT▼</button>
+                                    <div class="dropdown-content">
+                                        <a style="cursor: pointer" target="_blank" onclick="PrintEmbroideryBalanceSummary(1)">PDF</a>
+                                        <a style="cursor: pointer" target="_blank" onclick="PrintEmbroideryBalanceSummary(3)">Excel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                
+                </table>
+             
+            </div>
+        </fieldset>
+    }
+    <table class="webgrid-table">
+        <thead class="webgrid-header">
+            <tr>
+                <td>Color</td>
+                <td>Order Qty</td>
+                <td>Sending Qty</td>
+                <td>Reject Qty</td>
+                <td>Receive Qty</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.DataTable.Rows)
+            {
+                <tr>
+                    @foreach (var cell in row.ItemArray)
+                    {
+                        <td>@cell.ToString()</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/ProcessBalanceStatus.js"></script>
+}
+

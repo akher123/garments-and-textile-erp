@@ -1,0 +1,103 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeWorkShiftViewModel
+@{
+
+    ViewBag.Title = "Change Shift";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<style type="text/css">
+    .display {
+        border: 1px solid;
+        width: 400px;
+        padding-bottom: 3px;
+    }
+
+    .displayRow {
+        border: 1px solid;
+        border: 1px black solid;
+        background-color: #b0c4de;
+    }
+</style>
+@using (Html.BeginForm("Save", "EmployeeWorkShift", FormMethod.Post, new { @class = "WorkShiftform" }))
+{  @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.EmployeeWorkShiftId)
+    @Html.HiddenFor(model => model.EmployeeId)
+
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Employee Workshift</legend>
+        <table class="display">
+            <tr class="displayRow">
+                <td><b>Employee Name:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.EmployeeName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Employee ID:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.EmployeeCardId</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Comapany:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.CompanyName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Branch:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.BranchName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Unit:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.UnitName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Departmen:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.DepartmentName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Section:</b></td>
+                <td>@Model.VEmployeeWorkShiftDetail.SectionName</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>LineName:</b></td>
+                <td>@(Model.VEmployeeWorkShiftDetail.LineName??"- - - ")</td>
+            </tr>
+            <tr class="displayRow">
+                <td><b>Shift Date:</b></td>
+                <td>
+                    @Model.VEmployeeWorkShiftDetail.ShiftDate.ToString("dd-MM-yyyy")
+                </td>
+            </tr>
+
+        </table>
+        <table class="tabefont">
+
+            <tr>
+                <td>
+                    @Html.Label("Work Shift:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitWorkShiftId, Model.WorkShiftSelectListItem, "-Select-")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.BranchUnitWorkShiftId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(x => x.Remarks)
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks)
+                    @Html.ValidationMessageFor(x => x.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

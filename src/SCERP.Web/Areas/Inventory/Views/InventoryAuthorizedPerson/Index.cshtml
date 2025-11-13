@@ -1,0 +1,118 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryAuthorizedPersonViewModel
+
+@{
+    ViewBag.Title = "Authorized Person";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.InventoryAuthorizedPersons.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "InventoryAuthorizedPerson", FormMethod.Get, new { @class = "InventoryAuthorizedPersonSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Inventory Process Authorized Person</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Process Type: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessTypeId, Model.InventoryProcessTypeSelectListItem, "--Select--", new {@class = "InventoryprocessType", @action = "/Inventory/InventoryAuthorizedPerson/GetInventoryProcessByProcessTypeId", @TargetClass = "SearchInventoryProcess"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Process: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessId, Model.InventoryProcessSelectListItem, "--Select--", new { @class = "SearchInventoryProcess" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/InventoryAuthorizedPerson/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.InventoryAuthorizedPersons, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                       grid.Column("ProcessTypeName", header: "ProcessType", format: @<text>@(item.ProcessTypeName ?? "")</text>),
+                       grid.Column("ProcessName", header: "Process", format: @<text>@(item.ProcessName ?? "")</text>),
+                        grid.Column("Employee.Name", header: "Name", format: @<text>@(item.Employee == null ? "" : item.Employee.Name)</text>),  
+                        grid.Column("Employee.EmployeeCardId", canSort: false, header: "Employee ID", format: @<text>@(item.Employee == null ? "" : item.Employee.EmployeeCardId)</text>),              
+                        grid.Column("Edit", format: @<text><button class="edit" action="/Inventory/InventoryAuthorizedPerson/Edit?AuthorizedPersonId=@item.AuthorizedPersonId"></button></text>, canSort: false),
+                        grid.Column("Delete", format: @<text><button class="delete" action="/Inventory/InventoryAuthorizedPerson/Delete?AuthorizedPersonId=@item.AuthorizedPersonId"></button></text>, canSort: false)));
+        }
+    </div>
+
+</section>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        $('.InventoryprocessType').on("change").bind("change", populateProcess);
+        function populateProcess() {
+            var $this = $(this);
+            var targetClass = $this.attr('TargetClass');
+            var processTypeId = $this.val();
+            $.ajax({
+                url: $this.attr('action'),
+                type: "GET",
+                dataType: "JSON",
+                data: { processTypeId: processTypeId },
+                success: function (respons) {
+                    if (respons.Success == true && respons.ProcessTypes.length > 0) {
+                        ClearDropDownList(targetClass);
+                        for (var i = 0; i < respons.ProcessTypes.length; i++) {
+
+                            $('.' + targetClass)
+                                .append($('<option>').text(respons.ProcessTypes[i].ProcessName).attr('value', respons.ProcessTypes[i].ProcessId));
+                        }
+                    } else {
+                        $('.' + targetClass)
+                            .append($('<option>').text("NotFound").attr('value', ""));
+                    }
+                }
+            });
+        };
+
+        function ClearDropDownList(selector) {
+
+            $('.' + selector)
+                .find('option').remove()
+                .end().append($('<option>').text("-select-").attr('value', ""));
+        }
+
+
+    </script>
+}

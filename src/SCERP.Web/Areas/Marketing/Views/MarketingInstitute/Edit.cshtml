@@ -1,0 +1,158 @@
+﻿@model SCERP.Web.Areas.Marketing.Models.MarketingInstituteViewModel
+@{
+    ViewBag.Title = Model.MarketingInstitute.InstituteId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "MarketingInstitute", FormMethod.Post, new { @class = "MarketingInstituteEditform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MarketingInstitute.InstituteId)
+
+    <fieldset>
+        <legend>Marketing Institute</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Organization:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.InstituteName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.MarketingInstitute.InstituteName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Area :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInstitute.District)
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Owner:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInstitute.DecisionMaker)
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Designation :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.Designation)
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+
+                    @Html.TextAreaFor(x => x.MarketingInstitute.Address)
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Mobile :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInstitute.Mobile)
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.Telephone)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Email :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.Email)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("WebSite :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.WebSite)
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.MarketingInstitute.Remarks)
+
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Status :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MarketingInstitute.StatusId, Model.MarketingStatus, "--Select--")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Entry Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInstitute.ClientEntryDate,new{@class="datepicker"} )
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Is Available :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.MarketingInstitute.IsAvailable)
+                </td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

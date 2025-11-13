@@ -1,0 +1,76 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    ViewBag.Title = "Embroidery Receive";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Embroidery Receive List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "EmbroideryReceive", FormMethod.Get, new {@class = "PrintReceiveSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>@Html.Label("Factory  :")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Receive.PartyId, Model.PartySelectListItem, "-Select-", new {id = "partyId"})
+                    </td>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key", id = "searchString"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input onclick="search('/Production/EmbroideryReceive/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Receives, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                    grid.Column("RefNo", header: "REF NO", canSort: false),
+                    grid.Column("InvoiceNo", header: "CHALLAN", canSort: false),
+                    grid.Column("InvoiceDate", canSort: false, header: "DATE", format: @<text>@(item.InvoiceDate == null ? "" : item.InvoiceDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("GateEntryNo", header: "GATE ENTRY NO", canSort: false),
+                    grid.Column("GateEntrydate", canSort: false, header: "TE ENTRY DATE", format: @<text>@(item.GateEntrydate == null ? "" : item.GateEntrydate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Delete", canSort: false, format: @<text><button class="delete" action="/Production/EmbroideryReceive/Delete?ProcessReceiveId=@item.ProcessReceiveId"></button></text>),
+                    grid.Column("Total", canSort: false, header: "REPORT", format: @<text><a href="/Production/ProductionReport/ProcessReceiveReport?ProcessReceiveRefId=@item.RefNo" target="_blank">PDF</a></text>),
+                    grid.Column("Edit", canSort: false, format: @<text> <input onclick="search('/Production/EmbroideryReceive/Edit?Receive.ProcessReceiveId=@item.ProcessReceiveId')" class="addButton" value="Edit" type="button" />  </text>)));
+
+
+        }
+    </div>
+</section>
+
+
+

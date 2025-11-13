@@ -1,0 +1,221 @@
+﻿@model SCERP.Web.Areas.Marketing.Models.MarketingInquiryViewModel
+@{
+    ViewBag.Title = Model.MarketingInquiriy.InquiryId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@{
+    var selectListContactType = new SelectList(
+    new List<SelectListItem>
+    {
+    new SelectListItem {Text = "OverPhone", Value = "OverPhone"},
+    new SelectListItem {Text = "PhysicalVisit", Value = "PhysicalVisit"},
+    new SelectListItem {Text = "Email", Value = "Email"},
+    }, "Value", "Text");
+}
+
+@using (Html.BeginForm("Save", "MarketingInquiry", FormMethod.Post, new { @class = "MarketingInquiryEditform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MarketingInquiriy.InquiryId)
+
+    <fieldset>
+        <legend>Marketing Inquiry</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Organization :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MarketingInquiriy.InstituteId, Model.MarketingInstituteSelectList, "--Select--", new { @class = "company" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Visited Date :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.InquiryDate, new { @class = "datepicker" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Owner :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.InquiryContactPerson, new { @class = "contactperson" })
+
+                </td>
+                <td>
+                  
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.Label("Mobile :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.Mobile, new { @class = "mobile" })
+
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Telephone :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.Telephone, new {@class = "telephone"})
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Email :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.Email, new {@class = "email1"})
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Marketing Person :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MarketingInquiriy.MarketingPersonId, Model.MarketingPersonSelectList, "--Select--")
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Bill No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.BillNo)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Bill Amount(BDT) :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.Amount)
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Lunch Bill(BDT) :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MarketingInquiriy.OthersAmount)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("FurtherContactType :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MarketingInquiriy.FurtherContactType, selectListContactType, "--Select--")
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+
+                    @Html.TextAreaFor(x => x.MarketingInquiriy.Remarks)
+
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("IsActive :")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.MarketingInquiriy.IsActive)
+                </td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.company').unbind('change').bind('change', function () {
+            var InstituteId = $(this).val();
+            $.Ajax({
+                url: '/Marketing/MarketingInstitute/GetJsonOfInstitute',
+                data: { InstituteId: InstituteId }
+            }).done(function (marketingInstitute) {
+
+
+
+
+                $(".contactperson").val(marketingInstitute.contactperson);
+                $(".mobile").val(marketingInstitute.mobile);
+                $(".telephone").val(marketingInstitute.telephone);
+                $(".email1").val(marketingInstitute.email);
+
+
+
+            });
+
+
+        });
+
+
+
+    </script>
+}

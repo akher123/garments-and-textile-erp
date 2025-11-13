@@ -1,0 +1,244 @@
+﻿@model SCERP.Model.Custom.ShortLeaveModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "ShortLeave", FormMethod.Post, new {@class = "ShortLeaveform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend> Gate Pass </legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 550px; margin-top: 15px; border-style: solid; border-color: lightblue; border-width: thin;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                Employee Id
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.EmployeeCardId, new {@class = "employeeCardId", style = "width: 150px;"})
+                                @Html.ValidationMessageFor(model => model.EmployeeCardId)
+                            </td>
+                            <td></td>
+                            <td>
+                                <input type="button" class="Search" value="Search" onclick="SearchEmployeeDataButton(); ">
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Name</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Name" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Company
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Company" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Branch</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Branch" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Unit
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Unit" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Department</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Department" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Designation
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Designation" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Type</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Type" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Grade
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Grade" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Section</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Section" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Line
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Line" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+                </td>               
+            </tr>
+            
+            <tr>
+                <td> </td>
+                <td> </td>                           
+            </tr>
+            
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 550px; margin-top: 15px; border-style: solid; border-color: lightblue; border-width: thin;">
+                        
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td width="130px">
+                                @Html.DisplayName("Reason Type")
+                            </td>
+                            <td>
+                                @Html.DropDownList("ReasonType","-- Select --")
+                                @Html.ValidationMessageFor(model => model.ReasonType)
+                            </td>
+                        </tr>
+                                                                    
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Reason Description")                              
+                            </td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ReasonDescription, new {@class = "ReasonDescription"})
+                                @Html.ValidationMessageFor(model => model.ReasonDescription)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Date")                        
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Date, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                                @Html.ValidationMessageFor(model => model.Date)
+                            </td>
+                        </tr>
+                          
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Time From")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FromHourKey, Model.FromHourSelectList, "Hour", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.DropDownListFor(x => x.FromMinuteKey, Model.FromMinuteSelectList, "Minute", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                &nbsp;
+                                @Html.DropDownListFor(x => x.FromPeriodKey, Model.FromPeriodSelectList, "Period", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>                        
+                        
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Time To")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.ToHourKey, Model.ToHourSelectList, "Hour", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.DropDownListFor(x => x.ToMinuteKey, Model.ToMinuteSelectList, "Minute", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                &nbsp;
+                                @Html.DropDownListFor(x => x.ToPeriodKey, Model.ToPeriodSelectList, "Period", new { style = "width:100px;" })
+                                &nbsp;
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                             
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Hours")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.TotalHours, new {@class = "TotalHours"})
+                                @Html.ValidationMessageFor(model => model.TotalHours)
+                            </td>
+                        </tr>
+                                                                                                                  
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                          
+                            </td>
+                            <td>
+                                @Html.SaveButton()
+                            </td>
+                        </tr>
+                                                                     
+                    </table>
+                </td>
+            </tr>            
+        </table>                        
+    </fieldset>
+}
+
+<script src="~/Scripts/SCERP/ShortLeave.js"></script>

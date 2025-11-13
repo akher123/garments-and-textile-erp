@@ -1,0 +1,131 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.BbLcViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BbLcId > 0) ? "Edit" : "Add";
+}
+
+<section class="search formCover tabefont">
+    @using (Html.BeginForm("Save", "BbLc", FormMethod.Post, new { @class = "bbLcform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(p => p.BbLcId)
+        <div class="additem">
+            <div style="font-size: 12px;">
+                <fieldset>
+                    <legend>Back to Back LC</legend>
+                    <table >
+
+                        <tr>
+                            <td> @Html.Label("Salse Contact : ") </td>
+                            <td> @Html.DropDownListFor(model => model.LcRefId, Model.LcSelectListItem, "-Select-", new { id = "SearchByLcId" }) </td>
+
+                            <td> @Html.Label("", "LC") </td>
+                            <td> @Html.DropDownListFor(model => model.SalseContactId, Model.SalesContactSelectListItem, "-Select-", new { @class = "SalesContactId" }) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("BBLC Type : ") </td>
+                            <td> @Html.DropDownListFor(model => model.BbLcType, Model.BbLcTypeSelectListItems, "-Select-") </td>
+
+                            <td> @Html.Label("Supplier Name: ") </td>
+                            <td> @Html.DropDownListFor(model => model.SupplierCompanyRefId, Model.SupplierSelectListItem, "-Select-") </td>
+                            <td> @Html.Label("BB LC No : ") </td>
+                            <td> @Html.TextBoxFor(p => p.BbLcNo) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("BB LC Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.BbLcDate, new { @class = "datepicker", @data_val = "false", @placeholder = "BbLc Date" }) </td>
+                            <td> @Html.Label("BB LC Amount : ") </td>
+                            <td> @Html.TextBoxFor(p => p.BbLcAmount) </td>
+                            <td> @Html.Label("BB LC Quantity : ") </td>
+                            <td> @Html.TextBoxFor(p => p.BbLcQuantity) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("Maturity Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.MatureDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Mature Date" }) </td>
+                            <td> @Html.Label("Expiry Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.ExpiryDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Expiry Date" }) </td>
+                            <td> @Html.Label("Extention Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.ExtensionDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Extension Date" }) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("IFDBC No : ") </td>
+                            <td> @Html.EditorFor(p => p.IfdbcNo) </td>
+                            <td> @Html.Label("IFDBC Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.IfdbcDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Ifdbc Date" }) </td>
+                            <td> @Html.Label("IFDBC Value : ") </td>
+                            <td> @Html.EditorFor(p => p.IfdbcValue) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("PC Section: ") </td>
+                            <td> @Html.EditorFor(p => p.PcsSanctionAmount) </td>
+                            <td> @Html.Label("Issuing Bank : ") </td>
+                            <td> @Html.DropDownListFor(model => model.IssuingBankId, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" }) </td>
+                            <td> @Html.Label("Issuing Bank Address : ") </td>
+                            <td> @Html.TextAreaFor(p => p.BbLcIssuingBankAddress) </td>
+                        </tr>
+
+                        <tr>
+                            <td> @Html.Label("Received Bank : ") </td>
+                            <td> @Html.TextBoxFor(p => p.ReceivingBank) </td>
+                            <td> @Html.Label("Received Bank Address : ") </td>
+                            <td> @Html.TextAreaFor(p => p.ReceivingBankAddress) </td>
+                            <td> @Html.Label("Beneficiary : ") </td>
+                            <td> @Html.TextBoxFor(p => p.Beneficiary) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("Partial Shipment : ") </td>
+                            <td> @Html.DropDownListFor(model => model.PartialShipment, Model.PartialShipmentSelectListItem, "-Select-") </td>
+                            <td> @Html.Label("Payment Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.PaymentDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Payment Date" }) </td>
+                            <td> @Html.Label("BTMEA No : ") </td>
+                            <td> @Html.TextBoxFor(p => p.BtmeaNo) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("BTMEA Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.BtmeaDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Btmea Date" }) </td>
+                            <td> @Html.Label("B/E No : ") </td>
+                            <td> @Html.TextBoxFor(p => p.BeNo) </td>
+                            <td> @Html.Label("B/E Date : ") </td>
+                            <td> @Html.TextBoxFor(x => x.BeDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Be Date" }) </td>
+                        </tr>
+                        <tr>
+                            <td> @Html.Label("VAT: ") </td>
+                            <td> @Html.TextBoxFor(p => p.Vat) </td>
+                            <td> @Html.Label("Description : ") </td>
+                            <td> @Html.TextAreaFor(p => p.Description) </td>
+                            <td> @Html.Label("Item Type : ") </td>
+                            <td> @Html.DropDownListFor(model => model.ItemType, Model.ItemGroupNameSelectListItem, "-Select-") </td>
+                        </tr>
+
+
+                        <tr>
+
+                            @*<td> <input type="submit" class="addButton" id="cashBbLcSaveButton" style="float: right" value="Save"/> </td>
+                                <td></td>
+
+                                <td class="pull-left">
+                                    <input onclick="search('/Commercial/BbLc/Index')" value="Back" class="addButton" type="button" />
+                                </td>*@
+                            <td colspan="5"></td>
+                            <td>
+                                @Html.SaveButton()
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </fieldset>
+            </div>
+        </div>
+
+    }
+
+</section>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Commercial/BbLc.js"></script>
+}

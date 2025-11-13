@@ -1,0 +1,68 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>User Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "UserSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("User :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchByUser)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/UserManagement/User/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Users, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        firstText: "First",
+        lastText: "Last",
+        nextText: "Next",
+        mode: WebGridPagerModes.All,
+        previousText: "Previous",
+        rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+            grid.Column("UserName", canSort: true, header: "User Name", format: @<text>@(item.UserName ?? "")</text>),
+grid.Column("EmployeeCardId", canSort: true, header: "CardId", format: @<text>@(item.Employee != null ? (item.Employee.EmployeeCardId ?? "") : "")</text>),
+grid.Column("EmployeeName", canSort: true, header: "Employee Name", format: @<text>@(item.Employee != null ? (item.Employee.Name ?? "") : "")</text>),
+grid.Column("EmailAddress", header: "Email Address", format: @<text>@(item.EmailAddress ?? "")</text>),
+grid.Column("TnaResponsible", header: "TNA", format: @<text>@(item.TnaResponsible ?? "")</text>),
+grid.Column("Edit", format:@<text><button class="edit" action="/UserManagement/User/Edit/@item.Id"></button></text>),
+grid.Column("Delete", format:@<text><button class="delete" action="/UserManagement/User/Delete/@item.Id"></button></text>)));
+        }
+
+    </div>
+</section>

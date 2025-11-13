@@ -1,0 +1,101 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    ViewBag.Title = "DailySewingInput";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>Daily Sewing Input</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 160px;margin-bottom:15px">
+            @using (Html.BeginForm("DailySewingInput", "SewingInputProcess", FormMethod.Get, new { @class = "DailySewingInput ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Input Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SewingInputProcess.InputDate, new { @class = "datepicker", @data_val = "false", @style = "width:100px;", id = "CuttingDateId" })
+                        </td>
+                        <td>@Html.Label("Line")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.SewingInputProcess.LineId, Model.MachineSelectListItem, "-Select-", new { @class = "LineId", style = "width: 180px;" })
+                        </td>
+                        <td style="width: 200px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            @Html.Label("Total Input")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.TotalInput, new { @readonly = "readonly", @style = "background-color: #6495ed; width: 50px" })
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="additem" style="overflow-y: scroll;height: 400px;">
+        @{
+            var grid = new WebGrid(canPage: false, rowsPerPage: 20, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwSewingInputProcesses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            int rowNo = (int)Model.RowNo;
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                            grid.Column("Locked", format: @<text> <input type="checkbox" onclick="SweingAccessoriesIssueLock(this)" @((item.Locked!=null && item.Locked==true)? "checked" : "") value="@item.SewingInputProcessId" />  </text>),
+                            grid.Column("SL", format: item => rowNo = rowNo + 1, canSort: false),
+                            grid.Column("SewingInputProcessRefId", header: "Ref No", canSort: false),
+                            grid.Column("BuyerName", header: "Buyer", canSort: false),
+                            grid.Column("OrderName", header: "Order", canSort: false),
+                            grid.Column("StyleName", header: "Style", canSort: false),
+                            grid.Column("ColorName", header: "Color", canSort: false),
+                            grid.Column("InputQuantity", header: "InQty", canSort: false),
+                            grid.Column("MachineName", header: "Line", canSort: false),
+                            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.InputDate ?? ""), header: "Input Date"),
+                            grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.InputDate ?? ""), header: "Input Time"),
+                            grid.Column("REPORT", canSort: false, header: "Report", format: @<text><a href="/Production/ProductionReport/SweingInputReport?SewingInputProcessId=@item.SewingInputProcessId" target="_blank">PDF</a></text>)));
+                                    }
+    </div>
+</section>
+
+
+
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function SweingAccessoriesIssueLock(chechBox) {
+            var $chechBox = $(chechBox);
+            var sewingInputProcessId = $chechBox.val();
+            $.Ajax({
+                url: '/SewingInputProcess/SweingAccessoriesIssueLock/',
+                data: { SewingInputProcessId: sewingInputProcessId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}
+

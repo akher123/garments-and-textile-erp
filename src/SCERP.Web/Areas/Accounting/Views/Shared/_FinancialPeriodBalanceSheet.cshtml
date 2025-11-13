@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+<tr>
+    <td>@Html.DisplayName("Financial Period: ")</td>
+    <td>@Html.DropDownList("FpId", null, "- Select -", new { @onchange = "SetCalenderFixedBalanceSheet(this.value)" })</td>
+
+    <td>@Html.DisplayName("Comparative Date: ")</td>
+    <td class="datepicker">@Html.TextBox("FromDate",(string)ViewBag.FromDate, new { @style = "" })</td>
+
+    <td>@Html.DisplayName("Current Date: ")</td>
+    <td class="datepicker">@Html.TextBox("ToDate", (string)ViewBag.ToDate, new { @style = "" })</td>
+</tr>
+
+
+<script src="~/Scripts/SCERP/Acc_VoucherList.js"></script>

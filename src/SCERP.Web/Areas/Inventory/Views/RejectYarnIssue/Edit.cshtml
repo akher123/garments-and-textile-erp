@@ -1,0 +1,169 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.RejectYarnIssueViewModel
+@{
+    ViewBag.Title = Model.RejectYarnIssue.RejectYarnIssueId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "RejectYarnIssue", FormMethod.Post, new { @class = "RejectYarnIssueform" }))
+{
+    <table>
+        <tr>
+            <td>
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.RejectYarnIssue.RejectYarnIssueId)
+
+                <fieldset>
+                    <legend>Reject Yarn Issue</legend>
+
+                    <table class="tabefont tableFocusInputText">
+                        <tr>
+                            <td>
+                                @Html.Label("Ref Id:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.RejectYarnIssue.RefId, new { @readonly = "readonly", id = "refId", @style = "background-color: #EEEEEE" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Issue Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.RejectYarnIssue.IssueDate, new { @class = "datepicker" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Challan No:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.RejectYarnIssue.ChallanNo, new { @placeholder = "Challan No" })
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Party:")
+                            </td>
+                            <td>
+                            
+                                @Html.DropDownListFor(x => x.RejectYarnIssue.PartyId, Model.PartySelectListItem, "-Select-")
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Remarks:")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.RejectYarnIssue.Remarks)
+                            </td>
+                            <td>
+                                <input onclick=" search('/Inventory/RejectYearIssue/Index') " value="Back" id="backButton" class="addButton" type="button" />
+                            </td>
+                            <td>
+                                <div style="float: right">
+                                    <input type="submit" class="addButton" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </fieldset>
+
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                <table class="webgrid webgrid-table">
+                    <thead class="webgrid-header">
+                        <tr>
+                            <td>Ref No</td>
+                            <td>GRN NO</td>
+                            <td>Invoice No</td>
+                            <td>Item</td>
+                            <td>Count</td>
+                            <td>Color</td>
+                            <td>Lot</td>
+                            <td>Brand</td>
+                            <td>SIH</td>
+                            <td>IQty</td>
+
+                            <td>Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="8">Total</td>
+                            <td>@Model.RejectYarnDetails.Sum(x => x.Value.RejectedQty)</td>
+                            <td>Kg</td><td></td>
+                        </tr>
+                        @foreach (var m in Model.RejectYarnDetails)
+                        {
+                            <tr>
+                                <td>@m.Key</td>
+                                <td>
+                                    @Html.HiddenFor(x => x.RejectYarnDetails[m.Key].MaterialReceiveDetailId)
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].RefNo)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].GateEntryNo)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].ItemName)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].YarnCount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].ColorName)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].YarnLot)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].Brand)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => x.RejectYarnDetails[m.Key].RejectedQty)
+
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.RejectYarnDetails[m.Key].Qty, new { @style = "width:95%;border:none;" })
+                                </td>
+                                <td>
+                                    <input type="button" value="-" onclick=" deleteRow(this) " />
+                                </td>
+                            </tr>
+                        }
+                   
+                    </tbody>
+                </table>
+
+        </tr>
+    </table>
+}
+
+<script type="text/javascript">
+    function deleteRow(buttonObj) {
+        var $tr = $(buttonObj).closest("tr");
+        $tr.remove();
+    }
+</script>

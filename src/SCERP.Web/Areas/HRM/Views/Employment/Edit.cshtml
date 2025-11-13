@@ -1,0 +1,123 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmploymentViewModel
+
+@{
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Employment", FormMethod.Post, new { @class = "Employmentform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Employment Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Company:</td>
+                <td>
+                    @Html.EditorFor(m => m.CompanyName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.CompanyName)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Company Address:</td>
+                <td>
+                    @Html.TextAreaFor(m => m.CompanyAddress)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.CompanyAddress)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Department:</td>
+                <td>
+                    @Html.EditorFor(m => m.Department)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Department)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Designation:</td>
+                <td>
+                    @Html.EditorFor(m => m.Designation)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Designation)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">Responsibilities:</td>
+                <td>
+                    @Html.TextAreaFor(m => m.Respinsibilities)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Respinsibilities)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">From Date:</td>
+                <td>              
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="fieldTitleCls">To Date:</td>
+                <td>                   
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ToDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmploymentDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

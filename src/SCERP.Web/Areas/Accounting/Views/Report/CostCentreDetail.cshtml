@@ -1,0 +1,49 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.TrialBalanceViewModel
+
+@{
+    ViewBag.Title = "Balance Sheet Detail(Cost Centre)";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<div class="additem" style="margin-top: 20px;margin-bottom: 20px; width: 1015px;">
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.TrialBalance, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+                                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                                    grid.Column("SubGrouplHead", header: "SubGroup Head"),
+                                    grid.Column("ControlHead", header: "Control Head"),
+                                    grid.Column("GlHead", header: "GL Head"),
+                                    @*grid.Column("OpeningBalance", header: "Opening Balance ", format: @<text>@(item.OpeningBalance == 0 ? "" : item.OpeningBalance)</text>),
+                                    grid.Column("Debit", header: "Debit ", format: @<text>@(item.Debit == 0 ? "" : item.Debit)</text>),*@
+                                    @*grid.Column("Credit", header: "Credit ", format: @<text>@(item.Credit == 0 ? "" : item.Credit)</text>),*@
+                                    grid.Column("ClosingBalance", header: "Amount ", format: @<text>@(item.ClosingBalance == 0 ? "" : item.ClosingBalance)</text>)
+                                    @*grid.Column(header: "Detail", format: @<text><button class="edit" action="/Accounting/Report/BalanceSheetToGeneralLedger?GlId=@item.AccountCode&fromDate=@item.FromDate&toDate=@item.ToDate&costCentreId=@item.SectorId"></button></text>, canSort: false)*@
+                    ))
+        ;
+    }
+</div>
+
+

@@ -1,0 +1,36 @@
+﻿@using System.Text.RegularExpressions
+@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var m in Model.ReturnableChallanDictionary)
+{
+    <tr id="newRow-@Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId">
+        <td>
+            @Html.DisplayFor(x => x.ReturnableChallanDictionary[m.Key].ItemName)
+            @Html.HiddenFor(x => x.ReturnableChallanDictionary[m.Key].ItemName, new { id = "returnableChallan_ItemName_" + Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId })
+            @Html.HiddenFor(x => x.ReturnableChallanDictionary[m.Key].ReturnableChallanId, new { id = "returnableChallan_Id_" + Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ReturnableChallanDictionary[m.Key].Unit)
+            @Html.HiddenFor(x => x.ReturnableChallanDictionary[m.Key].Unit, new { id = "returnableChallan_ItemUnit_" + Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ReturnableChallanDictionary[m.Key].Remarks)
+            @Html.HiddenFor(x => x.ReturnableChallanDictionary[m.Key].Remarks, new { id = "returnableChallan_Remarks_" + Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ReturnableChallanDictionary[m.Key].DeliveryQty)
+            @Html.HiddenFor(x => x.ReturnableChallanDictionary[m.Key].DeliveryQty, new { id = "returnableChallan_DeliveryQty_" + Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId })
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@Model.ReturnableChallanDictionary[m.Key].ReturnableChallanDetailId')" />
+        </td>
+    </tr>
+}
+

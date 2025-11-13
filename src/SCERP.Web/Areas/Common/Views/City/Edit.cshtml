@@ -1,0 +1,118 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.CityViewModel
+@{
+    ViewBag.Title = Model.CityId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "City", FormMethod.Post, new { @class = "Cityform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CityId)
+    <fieldset>
+        <legend>City</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Country:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CountryId,Model.CountrySelectListItem,"-Select-",new{@class="country_forState"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("State:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.StateId, Model.StateSelectListItem, "-Select-", new { @class = "State_byCountry" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("City :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CityName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Latitude:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Latitude)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Longitude:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Longitude)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+    $('.country_forState').unbind('change').bind('change', function () {
+        var countryId = $(this).val();
+        $.Ajax({
+            url: '/State/GetStateByCountry/',
+            data: { CountryId: countryId }
+        }).done(function (states) {
+            $('.State_byCountry').empty();
+            if (states.length > 0) {
+                populateDropDown({ StateId: "", StateName: "-Select-" });
+                $.each(states, function (state) {
+                    populateDropDown({ StateId: this.StateId, StateName: this.StateName });
+                });
+            } else {
+                populateDropDown({ StateId: "", StateName: "No State Found" });
+            }
+
+        });
+    });
+    function populateDropDown(obj) {
+        $('.State_byCountry').append(
+                  $('<option/>')
+                      .attr('value', obj.StateId)
+                      .text(obj.StateName)
+              );
+    }
+
+</script>
+
+}
+
+
+

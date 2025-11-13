@@ -1,0 +1,132 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.AbsentOtPenaltyViewModel
+@{
+    ViewBag.Title = "Absent OT Penalty";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Index", "AbsentOtPenalty", FormMethod.Get, new {@class = "AbsentOTPenaltySearchForm ignore-validation"}))
+{
+    @Html.HiddenFor(x => x.IsAssigneeSerached)
+
+    <div class="header-title">
+        <h2>Absent OT Penalty</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> </td>
+                    <td align="left"> @Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"}) </td>
+                </tr>
+
+                @{ Html.RenderPartial("~/Areas/HRM/Views/AbsentOtPenalty/_SearchAbsentOtPenalty.cshtml", Model); }
+
+                <tr>
+                    <td>
+                        @Html.Label("From Date:")
+                    </td>
+                    <td>                  
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                    </td>
+
+                    <td> @Html.Label("Employee ID:") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="AbsentOTPenalty(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="AbsentOTPenalty(3)">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+@if (Model.PenaltyEmployees.Count > 0)
+{
+    <section class="search formCover">
+        <div class="additem">
+            @using (Html.BeginForm("Save", "AbsentOtPenalty", FormMethod.Post))
+            {
+                <fieldset>
+                    <legend>Employes</legend>
+                    <div style="overflow: auto;">
+                        <div style="height: 200px;">
+                            @{
+                                var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                                grid.Bind(Model.PenaltyEmployees, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                                @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                                    tableStyle: "webgrid-table webgrid",
+                                    headerStyle: "webgrid-header",
+                                    footerStyle: "webgrid-footer",
+                                    alternatingRowStyle: "webgrid-alternating-row",
+                                    selectedRowStyle: "webgrid-selected-row",
+                                    rowStyle: "webgrid-row-style",
+                                    firstText: "First",
+                                    lastText: "Last",
+                                    nextText: "Next",
+                                    mode: WebGridPagerModes.All,
+                                    previousText: "Previous",
+                                    columns: grid.Columns(
+                                        grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox"/></text>),
+                                        grid.Column("EmployeeName", header: "Employee Name", format: @<text>@(item.EmployeeName ?? "")</text>),
+                                        grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                                        grid.Column("EmployeeDesignation", header: "Designation ", format: @<text>@(item.EmployeeDesignation ?? "")</text>),
+                                        grid.Column("Unit", header: "Unit", format: @<text>@(item.Unit ?? "")</text>),
+                                        grid.Column("Department", header: "Department ", format: @<text>@(item.Department ?? "")</text>),
+                                        grid.Column("Section", header: "Section ", format: @<text>@(item.Section ?? "- - -")</text>),
+                                        grid.Column("Line", header: "Line ", format: @<text>@(item.Line ?? "- - -")</text>),
+                                        grid.Column("Difference", header: "OT Amount", format: @<text>@(item.Difference ?? "- - -")</text>),
+                                        grid.Column("PenaltyOTHours", header: "Penalty OT Hours", format: @<text>@(item.PenaltyOTHours ?? "- - -")</text>)
+                                        ))
+                            }
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend height="300px">Over Time Penalty</legend>
+                    <table class="tabefont">
+                        <tr>
+                            <td> @Html.Label("From :") </td>                                                            
+                            <td>
+                                @Html.EditorFor(x => x.FromPenaltyDate)
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                                @Html.ValidationMessageFor(x => x.FromPenaltyDate)
+                            </td>
+                            <td> </td>                                                 
+                            <td> </td>                                                          
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td> <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Save" /> </td>
+                            <td>  </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            }
+        </div>
+    </section>
+}
+
+@section scripts{
+    <script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>
+   <script src="~/Scripts/SCERP/HRM/AbsentOTPenalty.js"></script>
+}

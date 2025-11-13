@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.QuitTypeViewModel
+@{
+    ViewBag.Title = Model.QuitTypeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "QuitType", FormMethod.Post, new { @class = "QuitTypeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QuitTypeId)
+    <fieldset>
+        <legend>QuitType</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+
+            <tr>
+                <td class="fieldTitleCls">QuitType:</td>
+                <td>
+                    @Html.EditorFor(x => x.Type)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Type)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Quite Type (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(x => x.TypeInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TypeInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description)
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+

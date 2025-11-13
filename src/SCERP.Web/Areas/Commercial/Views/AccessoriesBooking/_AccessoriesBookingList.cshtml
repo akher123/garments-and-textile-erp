@@ -1,0 +1,51 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = null;
+}
+
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet"/>
+
+<div class="addButton-wrapper">
+    <button class="AjaxPopup addButton" action="/Commercial/AccessoriesBooking/Edit?OrderNo=@Model.OrderNo&OrderStyleRefId=@Model.OrderStyleRefId">Add New</button>
+</div>
+<div style="min-height:350px;">
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.PurchaseOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                    grid.Column("PurchaseOrderRefId", header: "PO Ref", canSort: false),
+                    grid.Column("PurchaseOrderNo", header: "PO No", canSort: false),
+                    grid.Column("SupplierName", header: "Supplier", canSort: false),
+                    grid.Column("PurchaseOrderDate", canSort: false, header: "PO Date", format: @<text>@(item.PurchaseOrderDate == null ? "" : item.PurchaseOrderDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("ExpDate", canSort: false, header: "ExpDate", format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Detail/Edit", format: @<text> <button class="edit" action="/Commercial/AccessoriesBooking/Edit?PurchaseOrderId=@item.PurchaseOrderId&OrderStyleRefId=@item.OrderStyleRefId"></button></text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="deleteAction" targentclass="accessoriesBookingContainer" action="@Url.Action("Delete", "AccessoriesBooking", new { PurchaseOrderId = item.PurchaseOrderId, OrderStyleRefId = item.OrderStyleRefId, OrderNo = item.OrderNo })"></button></text>, canSort: false),
+              grid.Column("Report", format:@<text>
+            <div class="dropdown" style="float: right;">
+                <a class="dropbtn">Report</a>
+                <div style="z-index: 2;" class="dropdown-content">
+                    <a href="/Merchandising/Report/GetPoSheet?PurchaseOrderId=@item.PurchaseOrderId&reportTypeId=1" target="_blank">PDF</a>
+                    <a href="/Merchandising/Report/GetPoSheet?PurchaseOrderId=@item.PurchaseOrderId&reportTypeId=3" target="_blank">EXCEL</a>
+
+                </div>
+            </div>
+            </text>, canSort: false)));
+
+    }
+</div>
+
+

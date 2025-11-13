@@ -1,0 +1,135 @@
+﻿@model IEnumerable<SCERP.Model.Acc_ControlAccounts>
+@{
+
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/themes/chartOfAccountPermission.css" rel="stylesheet" />
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Chart of Account </h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("ChartOfAccount", "ControlAccount", FormMethod.Get, new { @class = "ControlAccountSearchForm ignore-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Account Name:")
+                    </td>
+                    <td>
+                        @Html.TextBox("searchKey", String.Empty, new { @data_val = "false", @placeholder = "Account Name" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                    <td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">CHART OF ACCOUNT▼</button>
+                            <div class="dropdown-content">
+
+                                <a style="cursor: pointer" target="_blank" onclick="PrintGL()">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="PrintExcelGL()">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+
+</section>
+<section class="search formCover">
+    <div class="additem" id="wrapper">
+        <div class="tree">
+
+            <ul>
+
+                @foreach (var ch1 in Model)
+                {
+                    <li >
+                        <a> </a>
+                        &nbsp; &nbsp; &nbsp;
+
+                        <!--<span style="color: purple; padding-left: 10px;"></span>--> <span id="@(ch1.Id + "_" + ch1.ParentCode + "_" + ch1.ControlCode + "_" + ch1.ControlLevel + "_" + ch1.SortOrder)" class="chartofAcc" style="color: darkblue;margin-left: 10px;">@ch1.ControlCode-- @ch1.ControlName</span>
+                        <ul id="@ch1.ControlCode">
+                            @foreach (var ch2 in ch1.Chailds)
+                            {
+                                <li>
+                                    <a> </a>
+                                    <!--<span style="color:brown"></span>--> <span id="@(ch2.Id + "_" + ch2.ParentCode + "_" + ch2.ControlCode + "_" + ch2.ControlLevel + "_" + ch2.SortOrder)" class="chartofAcc" style="color: blueviolet; ">@ch2.ControlCode- @ch2.ControlName</span>
+                                    <ul id="@ch2.ControlCode">
+                                        @foreach (var ch3 in ch2.Chailds)
+                                        {
+                                            <li >
+                                                <a> </a>
+                                                <!--<span style="color:brown"></span>--> <span id="@(ch3.Id + "_" + ch3.ParentCode + "_" + ch3.ControlCode + "_" + ch3.ControlLevel + "_" + ch3.SortOrder)" class="chartofAcc" style="color: blue; ">@ch3.ControlCode- @ch3.ControlName</span>
+
+                                                <ul id="@ch3.ControlCode">
+                                                    @foreach (var ch4 in ch3.Chailds)
+                                                    {
+                                                        <li>
+                                                            <a> </a>
+                                                            <!--<span style="color:brown"></span>--> <span id="@(ch4.Id + "_" + ch4.ParentCode + "_" + ch4.ControlCode + "_" + ch4.ControlLevel + "_" + ch4.SortOrder)" class="chartofAcc" style="color: darkred">@ch4.ControlCode- @ch4.ControlName</span>
+
+                                                            <ul id="@ch4.ControlCode">
+                                                                @foreach (var ch5 in ch4.Chailds)
+                                                                {
+                                                                    <li >
+                                                                        <!--<span style="color:brown"></span>--> <span id="@(ch5.Id + "_" + ch5.ParentCode + "_" + ch5.ControlCode + "_" + ch5.ControlLevel + "_" + ch4.SortOrder)" class="chartofAcc" style="color:indigo; ">@ch5.ControlCode- @ch5.ControlName</span>
+                                                                    </li>
+
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+
+                            }
+                        </ul>
+
+                    </li>
+
+                }
+
+            </ul>
+        </div>
+
+        <div id="event_result"></div>
+        <div id="dialog_result"></div>
+
+    </div>
+
+</section>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/chartOfAccount.js"></script>
+
+    <script type="text/javascript">
+      
+        function PrintGL() {
+            window.open("/Accounting/Report/ChartOfAccountsPrint");
+        }
+
+        function PrintExcelGL() {
+
+            window.open("/Accounting/Report/ChartOfAccountsPrintExcel");
+        }
+    </script>
+}

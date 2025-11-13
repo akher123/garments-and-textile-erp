@@ -1,0 +1,69 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.UserManagement.Models.ViewModels.ModuleViewModel
+
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Module Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "Modules", FormMethod.Get, new { @class = "ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Module :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchString)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+</section>
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/UserManagement/Modules/Edit">Add New</button>
+        </div>
+
+        @if (Model.Modules.Any())
+        {
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Modules, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+                 grid.Column("ModuleName", canSort: true, header: "Module Name", format: @<text>@(item.ModuleName ?? "")</text>),
+            grid.Column("Description", canSort:true, header: "Description", format: @<text>@(item.Description ?? "")</text>),
+            grid.Column("Edit",format:@<text><button class="edit" action="/UserManagement/Modules/Edit/@item.Id"></button></text>),
+            grid.Column("Delete",format:@<text><button class="delete" action="/UserManagement/Modules/Delete/@item.Id"></button></text>)));
+        }
+        else
+        {
+            @Html.Partial("_NoDataMessage")
+        }
+    </div>
+</section>

@@ -1,0 +1,97 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    ViewBag.Title = "Advance MaterialIssue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width: auto; padding-left:340px;">
+    <h4>Material Issue (Fabric/Accessories)</h4>
+</div>
+<section class="search formCover">
+    <div style="background-color: gray;">
+        <div style="margin-left:50px;">
+            @using (Html.BeginForm("Index", "AdvanceMaterialIssue", FormMethod.Get, new { @class = "AdvanceMaterialIssueForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("IRN Date :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                            <input type="button" target="_blank" onclick="AdvanceMaterialIssueSummary(this)" value="PDF" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/Inventory/AdvanceMaterialIssue/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.MaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column("IRefId", canSort: false, header: "RefNo", format: @<text>@(item.IRefId ?? "--")</text>),
+                    grid.Column("SlipNo", canSort: false, header: "SlipNo", format: @<text>@(item.SlipNo ?? "--")</text>),
+                    grid.Column("IRNotNo", canSort: false, header: "IRNotNo", format: @<text>@(item.IRNotNo ?? "--")</text>),
+                    grid.Column("IRNotDate", canSort: false, header: "Date", format: @<text>@(item.IRNotDate == null ? "" : item.IRNotDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("OrderNo", canSort: false, header: "OrderNo ", format: @<text>@(item.OrderNo ?? "")</text>),
+                    grid.Column("StyleNo", canSort: false, header: "StyleNo ", format: @<text>@(item.StyleNo ?? "")</text>),
+                    grid.Column("Amount", canSort: false, header: "Amount ", format: @<text>@(item.Amount ?? "")</text>),
+                    grid.Column("StoreId", canSort: false, header: "Store", format: @<text>@(((StoreType)item.StoreId).ToString())</text>),
+                    grid.Column("Edit", format:@<text> <button class="edit" action="/Inventory/AdvanceMaterialIssue/Edit?MaterialIssue.AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button> </text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/AdvanceMaterialIssue/Delete?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button></text>, canSort: false),
+                    grid.Column("PDF", format:@<text> <a href="/Inventory/AdvanceMaterialIssue/IssuePdfReport?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId" target="_blank">Print</a> </text>, canSort: false)));
+        }
+
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    function AdvanceMaterialIssueSummary(obj) {
+        var form = $(obj).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                var data = form.serialize();
+                var searchurl = '/Inventory/AdvanceMaterialIssue/IssueSummaryReport?' + data;
+                window.open(searchurl);
+            }
+        }
+
+
+    }
+</script>
+

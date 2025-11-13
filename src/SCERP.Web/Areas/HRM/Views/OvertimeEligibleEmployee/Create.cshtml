@@ -1,0 +1,148 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.OvertimeEligibleEmployeeViewModel
+@{
+    ViewBag.Title = "OvertimeEligibleEmployee";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Create", "OvertimeEligibleEmployee", FormMethod.Get, new { @class = "OvertimeEligibleEmployeeSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsAssigneeSerached)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Assign  Overtime Eligible Employee</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @{Html.RenderPartial("~/Areas/HRM/Views/OvertimeEligibleEmployee/_SearchOvertimeEligibleEmployee.cshtml", Model); }
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                </td>
+                <td colspan="1">
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+
+    </section>
+}
+
+@if (Model.EmployeeCompanyInfos.Count > 0)
+{
+    <section class="search formCover">
+
+        <div class=" additem">
+            @using (Html.BeginForm("Save", "OvertimeEligibleEmployee", FormMethod.Post))
+            {
+                <fieldset>
+                    <legend>Employes</legend>
+                    <div style="overflow: auto;">
+                        <div style="height: 200px;">
+                            @{
+                                var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                                grid.Bind(Model.EmployeeCompanyInfos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                                //grid.Pager(WebGridPagerModes.All);
+                                @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                                    tableStyle: "webgrid-table webgrid",
+                                    headerStyle: "webgrid-header",
+                                    footerStyle: "webgrid-footer",
+                                    alternatingRowStyle: "webgrid-alternating-row",
+                                    selectedRowStyle: "webgrid-selected-row",
+                                    rowStyle: "webgrid-row-style",
+                                    firstText: "First",
+                                    lastText: "Last",
+                                    nextText: "Next",
+                                    mode: WebGridPagerModes.All,
+                                    previousText: "Previous",
+                                    columns: grid.Columns(
+                                        grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox" /></text>),
+                                        grid.Column("EmployeeName", header: "Employee Name", format: @<text>@(item.EmployeeName ?? "")</text>),
+                                        grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                                        grid.Column("Designation", header: "Designation ", format: @<text>@(item.Designation ?? "")</text>),
+                                        grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                                        grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                                        grid.Column("UnitName", header: "Unit", format: @<text>@(item.UnitName ?? "")</text>),
+                                        grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                                        grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                                        grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>)))
+
+                            }
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Target Overtime</legend>
+                    <table class="tabefont">
+                        <tr>
+                            <td></td>
+                            <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @Html.Label("From :")
+                            </td>
+                            <td>                                
+                                @Html.TextBoxFor(x => x.FromOvertimeDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                                @Html.ValidationMessageFor(x => x.FromOvertimeDate)
+                            </td>
+                            <td>
+                                @Html.Label("To :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ToOvertimeDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                                @Html.ValidationMessageFor(x => x.ToOvertimeDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("OvertimeHour :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.OvertimeHour)
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                                @Html.ValidationMessageFor(x => x.OvertimeHour)
+                            </td>
+                            <td colspan="1"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(x => x.Remarks)
+                            </td>
+                            <td>
+                                @Html.TextAreaFor(x => x.Remarks)
+                            </td>
+                            <td>
+                                <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Save" />
+                            </td>
+                            <td>
+                                <input type="button" class="addButton" onclick=" search('@Url.Action("Index", "OvertimeEligibleEmployee")', 'OvertimeEligibleEmployeeSearchForm') " value="Back"/>
+                            </td>
+
+                            @*<td>
+                                <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Delete" />
+                            </td>*@
+                        </tr>
+                    </table>
+
+                </fieldset>
+            }
+        </div>
+
+    </section>
+}
+
+@section scripts{
+    <script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>
+}

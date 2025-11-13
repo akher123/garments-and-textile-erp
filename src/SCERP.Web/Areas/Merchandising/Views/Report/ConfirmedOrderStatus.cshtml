@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MerchandisingReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+
+<div class="header-title">
+    <h2>Order Status</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("", "", FormMethod.Get))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">Dropdown▼</button>
+                            <div class="dropdown-content">
+                                <a href="#" class="showRdlcReport" value="Show" action="/Merchandising/Report/RunningBuyerOrderStatus">Running Order </a>
+                                <a href="#" class="showRdlcReport" value="Show" action="/Merchandising/Report/ConfirmedOrderStatus">Order Status</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+    <div class="custom-iframe-wrapper">
+        <iframe id="reportIfram" width="98%" height="400"></iframe>
+    </div>
+</section>
+
+<script>
+    $('.showRdlcReport').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var data = form.serialize();
+        var action = $(this).attr('action');
+        $('#reportIfram').attr('src', '');
+        $('#reportIfram').attr('src', action+'?' + data);
+    });
+</script>

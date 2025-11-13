@@ -1,0 +1,89 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.TaskManagement.Models.TaskViewModel
+@{
+    ViewBag.Title = "Task List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Task List</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: gray; ">
+        <div style="margin-left: 150px;">
+            @using (Html.BeginForm("Index", "Task", FormMethod.Get, new { @class = "taskForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Criteria :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @style = "width:200px;", @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>@Html.Label("Assignee : ")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.AssigneeId, Model.AssigneeSelectListItems, "-Select-", new { @class = "AssigdedDropDownList", @style = "width:200px;" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                     
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+   
+            <div style="margin-top: 5px; margin-bottom: 5px;">
+                <button class="AjaxPopup" action="/TaskManagement/Task/Edit">Add New</button>
+                <div style="float: right;">
+                    <input type="button" value="Show Report" onclick="TaskSummary()" />
+                </div>
+            </div>
+         
+        
+       
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TaskInformations, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ModuleName", header: "Module"),
+                        grid.Column("SubjectName", header: "Subject Name"),
+                        grid.Column("TaskName", header: "Task Name"),
+                        grid.Column("TaskStatus", header: "TaskStatus"),
+                        grid.Column("Assignee", header: "Assignee"),
+                        grid.Column("TaskType", header: "TaskType"),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.AssignDate ?? ""), header: "Assigned Date"),
+                        grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.EndDate ?? ""), header: "End Date"),
+                        grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/TaskManagement/Task/Edit?TaskId=@item.TaskId"></button></text>),
+                        grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/TaskManagement/Task/Delete?TaskId=@item.TaskId"></button></text>)));
+        }
+    </div>
+</section>
+@section scripts
+{
+   <script type="text/javascript">
+    function TaskSummary() {
+                var form = $('.taskForm');
+                var data = form.serialize();
+                var searchurl = '/TaskManagement/Task/TaskSummaryReport?' + data;
+                window.open(searchurl);
+    }
+</script> 
+}

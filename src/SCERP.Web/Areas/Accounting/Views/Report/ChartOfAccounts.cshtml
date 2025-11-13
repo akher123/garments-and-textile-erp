@@ -1,0 +1,48 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+
+@{
+    ViewBag.Title = "Chart of Accounts";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>  Chart of Accounts </h2>
+</div>
+
+@using (Html.BeginForm("GeneralLedger", "Report", FormMethod.Get, new { @class = "GeneralLedgerForm submit-allow ignore-validation" }))
+{
+    <div>
+        <section class="search" style="width:1015px;">
+            <table class="tabefont">                               
+                <tr>
+                    <td>
+                   
+                    </td>
+
+                    <td>
+                
+                    </td>
+
+                    <td>
+                        <input id="btnPrint" type="button" onclick="javascript: PrintGL();" value="Print" />
+                    </td>
+                </tr>
+
+           
+
+            </table>
+        </section>
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        
+        function PrintGL() {
+        
+            window.open("/Accounting/Report/ChartOfAccountsPrint");
+        }              
+    </script>
+}
+

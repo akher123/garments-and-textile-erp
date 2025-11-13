@@ -1,0 +1,148 @@
+﻿@model SCERP.Web.Areas.Production.Models.GraddingViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Cutting Gradding</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover">
+        <fieldset>
+            <legend>Cutting Batch</legend>
+            <div style="margin-bottom: 10px;">
+
+                @using (Html.BeginForm("Index", "Gradding", FormMethod.Post, new {@class = "GraddingForm ignore-validation"}))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.IsSearch)
+
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Buyer :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "CuttingBatch_buyerRefId"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Order No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new {@class = "CuttingBatch_OrderNo"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Style No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new {@class = "CuttingBatch_StyleNo"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Color :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.ColorRefId, Model.ColorSelectListItem, new { @class = "CuttingBatch_Color" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Sequence :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.ComponentRefId, Model.ComponentSelectListItem, "-Select-", new { @class = "CuttingBatch_sequence" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Job No :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.CuttingBatchId, Model.JobNOSelectListItem, "-Select-", new { @class = "CuttingBatch_JobNo", @data_val = "false" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                           
+                            <td>
+                                @Html.Label("Ref No:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CuttingBatch.CuttingBatchRefId, Model.JobNOSelectListItem)
+                            </td>
+
+                            <td>
+                                <input type="button" class="searchAction"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                    </table>
+                }
+            </div>
+
+            <div class="additem">
+
+                @{
+                    var grid = new WebGrid(canPage: true, rowsPerPage: 50, canSort: true, ajaxUpdateContainerId: "grid");
+                    grid.Bind(Model.CuttingBatches, rowCount: Model.CuttingBatches.Count, autoSortAndPage: false);
+                    grid.Pager(WebGridPagerModes.All);
+                    @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                            grid.Column("CuttingBatchRefId", canSort: false, header: "RefId"),
+                            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.CuttingDate ?? ""), header: "Cutting Date"),
+                            grid.Column("JobNo", canSort: false, header: "JobNo"),
+                            grid.Column("ComponentName", canSort: false, header: "Sequence"),
+                            grid.Column("MarkerPcs", canSort: false, header: "Marker Pcs"),
+                            grid.Column("PLY", canSort: false, header: "PLY"),
+                            grid.Column("BundleQuantity", canSort: false, header: "Bundle Qty"),
+                            grid.Column("Total", canSort: false, header: "Total"),
+                            grid.Column("Edit", canSort: false, format: @<text><button class="btnDetail" type="button" targentclass="graddingContainer" action="/Production/Gradding/GraddingList?CuttingBatchId=@item.CuttingBatchId"></button> </text>)))
+                    ;
+
+                }
+
+
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Grading</legend>
+            <div class="graddingContainer"></div>
+        </fieldset>
+    </div>
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/cuttingJobCard.js"></script>
+}

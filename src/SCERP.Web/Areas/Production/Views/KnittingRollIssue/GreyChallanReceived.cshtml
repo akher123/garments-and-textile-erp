@@ -1,0 +1,125 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.KnittingRollIssueViewModel
+@{
+    ViewBag.Title = "DyeingSpChallan";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+
+<div class="header-title">
+    <h2>Knitting Roll Received</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("GreyChallanReceived", "KnittingRollIssue", FormMethod.Get, new { @class = "GreyChallanReceivedForm ignore-validation", }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+       
+                <tr>
+                <tr>
+                    <td>
+                        @Html.Label("", "Challan No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem" style="min-height: 900px;">
+    
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.KnittingRollIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("IssueRefNo", canSort: false, header: "ChallanNo"),
+                        grid.Column("ProgramRefId", canSort: false, header: "Program No"),
+                        grid.Column("BuyerRefId", canSort: false, header: "Buyer"),
+                        grid.Column("OrderNo", canSort: false, header: "Order"),
+                        grid.Column("BatchNo", canSort: false, header: "Challan No"),
+                        grid.Column("IssueDate", canSort: false, header: "Challan Date", format: @<text>@(item.IssueDate == null ? "" : item.IssueDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column(header: "IsReceived", format: @<input class="IsApprovedcbx" onclick="IsReceivedRollChallan(this)" name="IsApprovedCheckBox" @(item.IsRecived == true ? "checked" : "") type="checkbox" value="@item.KnittingRollIssueId" />),
+                        grid.Column("Detail", canSort: false, header: "Challan", format: @<text>
+                                                                                            <div class="dropdown">
+                                                                                                <a class="dropbtn custom-table-dropbtn">Report</a>
+                                                                                                <div class="dropdown-content custom-table-dropdown-content">
+                                                                                                    <a href="/Production/ProductionReport/KnittingRollDeliveryChallanSummary?KnittingRollIssueId=@item.KnittingRollIssueId" target="_blank">Summary</a>
+                                                                                                    <a href="/Production/ProductionReport/KnittingRollDeliveryChallan?KnittingRollIssueId=@item.KnittingRollIssueId" target="_blank">Detail</a>
+
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                         </text>),
+                                                                                                               grid.Column("Riport", canSort: false, header: "Riport", format: @<text>
+                                                                                            <div class="dropdown">
+                                                                                                <a class="dropbtn custom-table-dropbtn">Report</a>
+                                                                                                <div class="dropdown-content custom-table-dropdown-content">
+                                                                                                    <a href="/Production/ProductionReport/KnittingPartyChallan?KnittingRollIssueId=@item.KnittingRollIssueId" target="_blank">Challan</a>
+                                                                                                    <a href="/Production/ProductionReport/KnittingPartyBill?KnittingRollIssueId=@item.KnittingRollIssueId" target="_blank">BILL</a>
+
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                         </text>)))
+        }
+    </div>
+</section>
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        function IsReceivedRollChallan(chechBox) {
+            var $chechBox = $(chechBox);
+            var KnittingRollIssueId = $chechBox.val();
+            $.Ajax({
+                url: '/Production/Batch/IsReceivedRollChallan',
+                data: { KnittingRollIssueId: KnittingRollIssueId },
+                type: 'post'
+            }).done(function (status) {
+                if (status) {
+                    var $tr = $chechBox.closest('tr');
+                    $tr.remove();
+                } else {
+                    alert("Failed To Challan Received .");
+                }
+            });
+        }
+
+    </script>
+}
+

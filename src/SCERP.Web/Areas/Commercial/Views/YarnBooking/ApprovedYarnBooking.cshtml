@@ -1,0 +1,161 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Approved Yarn</h2>
+</div>
+
+<section class="common-search-section">
+
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("ApprovedYarnBooking", "YarnBooking", FormMethod.Get, new { @class = "YarnBookingBookingForm" }))
+        {
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "StyleShipment_buyerRefId", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("Order No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select-", new { @class = "StyleShipment_OrderNo", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Style No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new { id = "shipStyleRefId", @class = "StyleShipment_StyleNo", style = "width: 150px;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+
+    @{
+    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model.PurchaseOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+    tableStyle: "webgrid-table webgrid",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "webgrid-alternating-row",
+    selectedRowStyle: "webgrid-selected-row",
+    rowStyle: "webgrid-row-style",
+    firstText: "First",
+    lastText: "Last",
+    nextText: "Next",
+    mode: WebGridPagerModes.All,
+    previousText: "Previous",
+    columns:
+    grid.Columns(
+    grid.Column("PurchaseOrderRefId", header: "PO Ref", canSort: false),
+    grid.Column("PurchaseOrderNo", header: "PO No", canSort: false),
+    grid.Column("BuyerName", header: "Buyer", canSort: false),
+    grid.Column("OrderName", header: "Order", canSort: false),
+    grid.Column("StyleName", header: "Style", canSort: false),
+    grid.Column("SupplierName", header: "Supplier", canSort: false),
+    grid.Column("PurchaseOrderDate", canSort: false, header: "PO Date", format: @<text>@(item.PurchaseOrderDate == null ? "" : item.PurchaseOrderDate.ToString("dd-MM-yyyy"))</text>),
+    grid.Column("ExpDate", canSort: false, header: "ExpDate", format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+
+    grid.Column("Report", format:@<text>
+        <div class="dropdown">
+            <a class="dropbtn custom-table-dropbtn">Report</a>
+            <div style="z-index: 2;" class="dropdown-content custom-table-dropdown-content">
+                <a href="/Merchandising/Report/YarnWorkOrderSheet?PurchaseOrderId=@item.PurchaseOrderId&reportTypeId=1" target="_blank">PDF</a>
+                <a href="/Merchandising/Report/YarnWorkOrderSheet?PurchaseOrderId=@item.PurchaseOrderId&reportTypeId=3" target="_blank">EXCEL</a>
+            </div>
+        </div>
+    </text>, canSort: false)));
+
+    }
+
+</section>
+
+@section scripts{
+
+<script type="text/javascript">
+
+    $('.StyleShipment_buyerRefId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+            $('.StyleShipment_OrderNo').empty();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "Select" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+
+
+    function populateDropDown(obj) {
+        $('.StyleShipment_OrderNo').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+
+    $('.StyleShipment_OrderNo').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('.StyleShipment_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('.StyleShipment_StyleNo').append(
+                    $('<option/>').attr('value', '').text("Select")
+                );
+                $.each(styleList, function (style) {
+                    $('.StyleShipment_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('.StyleShipment_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    function removeDependentDropdown() {
+
+        $('.StyleShipment_OrderNo').empty();
+        $('.StyleShipment_StyleNo').empty();
+    }
+</script>
+}

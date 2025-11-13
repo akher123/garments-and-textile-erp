@@ -1,0 +1,51 @@
+﻿@model SCERP.Model.SkillSetDifficulty
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SkillSetDifficultyId> 0) ? "Edit" : "Add";
+}
+
+
+
+@using (Html.BeginForm("Save", "SkillSetDifficulty", FormMethod.Post, new { @class = "SkillSetDifficultySearchForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SkillSetDifficultyId)
+
+    <fieldset>
+        <legend>Skill Set Difficulty</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Difficulty Name:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.DifficultyName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.DifficultyName)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}

@@ -1,0 +1,16 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+
+<tr>
+    <td>
+        @Html.Label("From :")
+    </td>
+    <td>        
+        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+    </td>
+    <td>
+        @Html.Label("To :")
+    </td>
+    <td>     
+        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+    </td>
+</tr>

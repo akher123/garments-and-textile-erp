@@ -1,0 +1,15 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+<div id="ConsumptionDetailContainer">
+
+    <div style="margin-top: 5px;">
+        @Html.Partial("~/Areas/Merchandising/Views/ConsumptionDetail/_Edit.cshtml", Model)
+    </div>
+    <div style="margin-top: 5px;" id="ConsumptionDetailList">
+        @Html.Partial("~/Areas/Merchandising/Views/ConsumptionDetail/_ConsumtionDetailList.cshtml", Model)
+    </div>
+</div>
+
+<script src="~/Scripts/SCERP/Merchandising/consumptionDetail.js"></script>

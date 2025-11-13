@@ -1,0 +1,197 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.TargetProductionViewModel
+@{
+    ViewBag.Title = "Target Sewing Production";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "TargetProduction", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.PlanTargetProduction.TargetProductionId)
+    <fieldset>
+        <legend>Target Sewing Production</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PlanTargetProduction.TargetProductionRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buyer:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PlanTargetProduction.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { @class = "sweingPalan_buyerRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PlanTargetProduction.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { @class = "sweingPalan_OrderNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Style:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PlanTargetProduction.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "sweingPalan_StyleNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Quantity :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PlanTargetProduction.TotalTargetQty, new { @id = "StyleQuantityTextBox" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PlanTargetProduction.LineId, Model.LineSeasonsSelectListItem, "-Select-", new { @id = "lineDropDown" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Start Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PlanTargetProduction.StartDate, new { @class = "datepicker", @id = "startDateTextBox", @placeholder = "start date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("End Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PlanTargetProduction.EndDate, new { @class = "datepicker", @id = "endDateTextBox", @placeholder = "end date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.PlanTargetProduction.Remarks, new { @rows = "1", @cols = "20" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td>
+                    @if (Model.IsPartial)
+                    {
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "planningBoard" } })
+                    }
+                    else
+                    {
+                        <input type="submit" value="Save" />
+                    }
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.sweingPalan_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.sweingPalan_OrderNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.sweingPalan_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.sweingPalan_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.sweingPalan_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.sweingPalan_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-ALL-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.sweingPalan_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.sweingPalan_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+
+            $('.sweingPalan_OrderNo').empty();
+            $('.sweingPalan_StyleNo').empty();
+        }
+    </script>
+    @*<script src="~/Scripts/SCERP/Planning/targetProduct.js"></script>*@
+}

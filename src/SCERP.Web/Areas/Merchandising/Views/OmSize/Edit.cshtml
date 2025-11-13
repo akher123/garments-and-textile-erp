@@ -1,0 +1,67 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmSizeViewModel
+@{
+    ViewBag.Title = Model.SizeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "OmSize", FormMethod.Post, new { @class = "OmSizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SizeId)
+    <fieldset>
+        <legend>Size</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SizeRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Size :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.SizeName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SizeName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.TypeId,Model.ItemTypesSelectListItem,"-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TypeId)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

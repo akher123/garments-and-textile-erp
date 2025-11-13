@@ -1,0 +1,32 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleOrderViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Sample Order Management</h2>
+</div>
+<div id="sampleOrderTab">
+    <ul>
+        <li><a href="/Merchandising/SampleOrder/SampleOrderList">Sample Order</a></li>
+        <li><a id="sampleStyleHref" href="/Merchandising/SampleStyle/Index?SampleOrderId=0">Sample Style</a></li>
+        <li><a id="sampleGatePassHref" href="/Merchandising/SampleGatePass/Index?SearchString=0">Sample GatePass</a></li>
+    </ul>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $("#sampleOrderTab").tabs({
+            load: SCERP.AjaxCompleted,
+           disabled: [2]
+        });
+    </script>
+}
+
+
+
+
+
+
+

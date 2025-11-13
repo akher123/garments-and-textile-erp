@@ -1,0 +1,174 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.HouseKeepingRegisterViewModel
+@{
+    ViewBag.Title = Model.HouseKeepingRegister.HouseKeepingRegisterId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "HouseKeepingRegister", FormMethod.Post, new { @class = "HouseKeepingRegisterEditform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.HouseKeepingRegister.HouseKeepingRegisterId)
+
+    <fieldset>
+        <legend>House Keeping Item</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Receiver:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @class = "autocompliteEmployeeInfo", @placeholder = "Card ID or Name" })
+                    @Html.HiddenFor(x => x.HouseKeepingRegister.EmployeeId, new { @class = "receiverId" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Goods:")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.HouseKeepingRegister.HouseKeepingItemId, Model.HkrSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.HouseKeepingItemId)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Issue Qty :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.HouseKeepingRegister.Quantity)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.Quantity)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Rate:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.HouseKeepingRegister.Rate)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.Rate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Issue Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.HouseKeepingRegister.IusseDate, new {@class = "datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.IusseDate)
+                </td>
+            </tr>
+            @if (Model.HouseKeepingRegister.HouseKeepingRegisterId > 0)
+            {
+                    <tr>
+                <td>
+                    @Html.Label("Returen Qty :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.HouseKeepingRegister.ReturnQty)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.ReturnQty)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Returen Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.HouseKeepingRegister.ReturnDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.ReturnDate)
+                </td>
+            </tr>
+            }
+        
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.HouseKeepingRegister.Remarks)
+                </td>
+                <td></td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.HouseKeepingRegister.Remarks)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        $('.autocompliteEmployeeInfo').autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: "/MaterialIssueRequisition/AutocompliteGetEmployeeInfo",
+                    type: "GET",
+                    data: { employeeCardId: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        response($.map(data, function (employeeInfo) {
+                            return { label: employeeInfo.EmployeeCardId + "_" + employeeInfo.EmployeeName, value: employeeInfo.EmployeeName, EmployeeId: employeeInfo.EmployeeId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                $('.receiverId').val(ui.item.EmployeeId);
+                $("#autocompliteEmployeeInfo").val(ui.item.value);
+            },
+
+        });
+    </script>
+}

@@ -1,0 +1,39 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.TmModuleViewModel
+@{
+
+    ViewBag.Title = Model.ModuleId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Module", FormMethod.Post, new { @class = "ModuleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ModuleId)
+    <fieldset>
+        <legend>Module</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Module Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ModuleName, new { @placeholder = "Module Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

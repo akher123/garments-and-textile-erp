@@ -1,0 +1,356 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MCostingViewModel
+@{
+    ViewBag.Title = Model.Costing.CostingId > 0 ? "Update " : "Save ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+    <div id="costingContainner">
+        <section class="common-search-section">
+            <div class="search formCover common-search-wrapper">
+                @using (Html.BeginForm("Save", "Costing", FormMethod.Post, new { @class = "Costingform", @id = "inputform" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.Costing.CostingId, new { @id = "costingId" })
+                    @Html.HiddenFor(model =>  model.Costing.ImagePath, new { @class = "documentPathHidden" })
+                    <table>
+                        <tr>
+
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Buyer :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.BuyerName, new { @id = "bname", @placeholder = "Buyer", @data_index = "1" })
+                                        </td>
+                                        <td>
+                                        </td>
+
+                                        <td>
+                                            @Html.Label("Buying House :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.BuyingHouse, new { @id = "bhouse", @placeholder = "Buying House", @data_index = "2" })
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Item :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.ItemName, new
+                                            {
+                                                @id = "itemname",
+                                                @placeholder = "Item Name",
+                                                @data_index = "3"
+                                            })
+                                        </td>
+                                        <td></td>
+
+                                        <td>
+                                            @Html.Label("Size :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.Size, new { @id = "size", @placeholder = "Size", @data_index = "4" })
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Color :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.Color, new { @id = "color", @placeholder = "Color", @data_index = "5" })
+                                        </td>
+                                        <td></td>
+
+                                        <td>
+                                            @Html.Label("Fabrication :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.Fabrication, new { @id = "fabrication", @placeholder = "Fabrication", @data_index = "6" })
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Quantity :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.Quantity, new { @id = "qty", @placeholder = "Quantity", @data_index = "7", @onkeyup = "calculate()" })
+                                        </td>
+                                        <td></td>
+
+                                        <td>
+                                            @Html.Label("Shipment Date :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.ShipDate, new { @id = "shipdate", @class = "datepicker", @data_index = "8" })
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("Remarks :")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.Costing.Remarks, new { @id = "remarks", @placeholder = "Remarks", @data_index = "9", @onkeyup = "calculate()" })
+                                        </td>
+                                        <td></td>
+
+                                        <td>
+                                            <input type="button" class="FindPartial addButton" action="/Costing/Save/" target="#costingContainner" value="@ViewBag.Title" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @if (Model.Costing.CostingId == 0)
+                                            {
+                                                <fieldset>
+                                                    <legend> Upload Image(.jpeg,.png) </legend>
+                                                    <div id="uploadFile" action="/Common/Document/DocumentFileUpload?RefId=@Model.Costing.CostingId" style="width: 100px">Upload</div>
+                                                </fieldset>
+                                            }
+                                            else
+                                            {
+                                                <div class="avatar">
+                                                    <a href="@(Model.Costing.ImagePath == null ? "" : Url.Content(Model.Costing.ImagePath))" data-spzoom>
+                                                        <img src="@(Model.Costing.ImagePath == null ? " " : Url.Content(Model.Costing.ImagePath))" class="img-responsive" width="200" height="130" alt="thumb" />
+                                                    </a>
+                                                </div>
+                                            }
+
+                                        </td>
+
+                                       
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td>
+                                            <input onclick="search('/Merchandising/Costing/Index')" value="Back" id="backButton" class="addButton" type="button" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                    </table>
+                }
+
+                @if (Model.Costing.CostingId > 0)
+                {
+            <table class="webgrid-table tabefont">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Perticular</th>
+                        <th>Item Cost</th>
+                        <th>Process Loss (%)</th>
+                        <th>Con</th>
+                        <th>Price/pc</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+
+                <tr>
+                    <td> @Html.Label("Yarn") </td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Yarn, new { @id = "yarn", @placeholder = "Yarn Cost", @onkeyup = "updateCosting('Yarn',this,event)", @data_index = "10", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td> @Html.TextBoxFor(model => model.Costing.Target, new { @id = "target", @placeholder = "Target", @data_index = "22", @onkeyup = "updateCosting('Target',this,event)", @style = "width=99%;background-color:pink" }) </td>
+
+
+                </tr>
+                <tr>
+                    <td> @Html.Label("Knitting") </td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Knitting, new { @id = "knitting", @placeholder = "Knitting Cost", @onkeyup = "updateCosting('Knitting',this,event)", @data_index = "11", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td> @Html.Label("Dyeing") </td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Dyeing, new { @id = "dyeing", @placeholder = "Dyeing Cost", @onkeyup = "updateCosting('dyeing',this,event)", @data_index = "12", @style = "width=99%;background-color:pink" }) </td>
+
+
+                    <td> @Html.TextBoxFor(model => model.Costing.ProcessLoss, new { @id = "processLoss", @placeholder = "Process Loss", @onkeyup = "updateCosting('ProcessLoss',this,event)", @data_index = "13", @style = "width=99%;background-color:pink" }) </td>
+                    <td> @Html.TextBoxFor(model => model.Costing.ConsDzn, new { @id = "consdzn", @placeholder = "Consumption", @data_index = "14", @onkeyup = "updateCosting('ConsDzn',this,event)", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td> @Html.TextBoxFor(model => model.Costing.PriceDzn, new { @id = "pricedzn", @placeholder = "Price Per Dzn", @readonly = "readonly", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("AOP") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Aop, new { @id = "aop", @placeholder = "AOP Cost", @onkeyup = "updateCosting('Aop',this,event)", @data_index = "15", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td> @Html.Label("Print") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.PrintCost, new { @id = "print", @placeholder = "Print Cost", @onkeyup = "updateCosting('PrintCost',this,event)", @data_index = "16", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Embo") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Embroidery, new { @id = "Embro", @placeholder = "Embo Cost", @onkeyup = "updateCosting('Embroidery',this,event)", @data_index = "17", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Trims") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.TrimsAccss, new { @id = "trimsAccss", @placeholder = "Trims Cost", @onkeyup = "updateCosting('TrimsAccss',this,event)", @data_index = "18", @style = "width=99%;background-color:pink" }) </td>
+                    <td></td>
+
+
+                </tr>
+                <tr>
+
+                    <td> @Html.Label("CM") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Cm, new { @id = "cm", @placeholder = "CM", @onkeyup = "updateCosting('Cm',this,event)", @data_index = "19", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td> @Html.Label("Others") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Others, new { @id = "others", @placeholder = "Others", @onkeyup = "updateCosting('Others',this,event)", @data_index = "20", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+                </tr>
+                <tr>
+
+                    <td> @Html.Label("Commercial 3%") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.CommercialCharge, new { @id = "commercialCharge", @placeholder = "Commercial", @onkeyup = "updateCosting('CommercialCharge',this,event)", @data_index = "21", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+
+
+                </tr>
+                <tr>
+
+                    <td> @Html.Label("Total") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.Total, new { @id = "total", @placeholder = "Total", @readonly = "readonly", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <td> @Html.Label("Price/pc") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.CostPerPcs, new { @id = "costPerPcs", @placeholder = "Cost Per Pcs", @readonly = "readonly", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+
+                </tr>
+                @*<tr>
+                    <td> @Html.Label("Per Pcs") </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> @Html.TextBoxFor(model => model.Costing.CostPerPcs, new { @id = "costPerPcs", @placeholder = "Cost Per Pcs", @readonly = "readonly", @style = "width=99%;background-color:pink" }) </td>
+
+                    <td></td>
+
+                </tr>*@
+            </table>
+                }
+
+            </div>
+        </section>
+    </div>
+
+@section scripts
+{
+    <script>
+
+        function updateCosting(fieldKey, obj,event) {
+            var costingId = $('#costingId').val();
+            var $textBox = $(obj);
+            var value = $textBox.val();
+            if (event.which === 13) {
+                $.Ajax({
+                    url: "/Merchandising/Costing/UpdateCosting",
+                    data: {costingId:costingId,fieldName:fieldKey,Value:value},
+                    type: 'POST',
+                    dataType: "JSON"
+                }).done(function (resp) {
+                    if (resp.status > 0) {
+                        updateCostingData(resp.data);
+                        event.preventDefault();
+                        var index = parseFloat($textBox.attr('data-index'));
+                        $('[data-index="' + (index + 1).toString() + '"]').focus();
+                    } else {
+                        alert("Update Failed");
+                    }
+                  
+                });
+            
+            }
+          
+        }
+
+        function updateCostingData(data) {
+            $('#yarn').val(data.Yarn);
+            $('#knitting').val(data.Knitting);
+            $('#dyeing').val(data.Dyeing);
+            $('#aop').val(data.Aop);
+            $('#printCost').val(data.PrintCost);
+            $('#embroidery').val(data.Embroidery);
+            $('#trimsAccss').val(data.TrimsAccss);
+            $('#cm').val(data.Cm);
+            $('#commercialCharge').val(data.CommercialCharge);
+            $('#others').val(data.Others);
+            $('#total').val(data.Total);
+            $('#costPerPcs').val(data.CostPerPcs);
+            $('#processLoss').val(data.ProcessLoss);
+            $('#pricedzn').val(data.PriceDzn);
+            
+        }
+    </script>
+
+    <script src="~/Scripts/Common/documnet.js"></script>
+
+}
+

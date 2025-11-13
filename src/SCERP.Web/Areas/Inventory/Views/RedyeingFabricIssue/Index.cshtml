@@ -1,0 +1,101 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.RedyeingFabricIssueViewModel
+@{
+    ViewBag.Title = "Redyeing Fabric Issue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Redyeing Fabric Issue </h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "RedyeingFabricIssue", FormMethod.Get, new { @class = "RedyeingFabricIssueForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem" style="min-height: 150px;">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/RedyeingFabricIssue/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.RedyeingFabricIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("Approved", format: @<text> <input type="checkbox" onclick="ApproveRedyeingIssue(this)" @(item.IsApproved ? "checked" : "") value="@item.RedyeingFabricIssueId" />  </text>),
+                        grid.Column("RefNo", canSort: false, header: "RefNo"),
+                        grid.Column("Party.Name", canSort: false, header: "Party"),
+                        grid.Column("ChallanNo", canSort: false, header: "ChallanNo"),
+                        grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Inventory/RedyeingFabricIssue/Edit?RedyeingFabricIssue.RedyeingFabricIssueId=@item.RedyeingFabricIssueId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Inventory/RedyeingFabricIssue/Delete?RedyeingFabricIssueId=@item.RedyeingFabricIssueId"></button></text>),
+                        grid.Column("Report", format:@<text>
+                                                         <div class="dropdown">
+                                                             <a class="dropbtn custom-table-dropbtn">PDF</a>
+                                                             <div class="dropdown-content custom-table-dropdown-content">
+                                                                 <a href="/Inventory/RedyeingFabricIssue/RedyeingFabricIssueReport?RedyeingFabricIssueId=@item.RedyeingFabricIssueId" target="_blank">Issue</a>
+                                                             </div>
+                                                         </div>
+                                                      </text>, canSort: false)
+                        ));
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function ApproveRedyeingIssue(chechBox) {
+            var $chechBox = $(chechBox);
+            var redyeingFabricIssueId = $chechBox.val();
+            $.Ajax({
+                url: '/RedyeingFabricIssue/ApproveRedyeingIssue/',
+                data: { RedyeingFabricIssueId: redyeingFabricIssueId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}

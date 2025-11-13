@@ -1,0 +1,140 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+@functions
+{
+    public static string GetVoucherName(string type)
+    {
+        return new[]
+                {
+                    new {VoucherTypeId = "JV", Value = "Journal Voucher"},
+                    new {VoucherTypeId = "CP", Value = "Cash Payment"},
+                    new {VoucherTypeId = "CR", Value = "Cash Receipt"},
+                    new {VoucherTypeId = "BP", Value = "Bank Payment"},
+                    new {VoucherTypeId = "BR", Value = "Bank Receipt"},
+                    new {VoucherTypeId = "CV", Value = "Contra Voucher"}
+                }.First(x => x.VoucherTypeId == type).Value;
+    }
+
+
+}
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="14" align="left">
+                    <img src="~/Content/images/Plummy_logo.png" width="80px" height="50px" />
+                </td>
+                <td colspan="15" align="center">
+                    <b>Plummy Fashions Limited</b><br />
+                    <span style="font-size: 12px;"> North Norshingpur, Fatullah, Narayongonj</span>
+                    <br />Voucher Statement
+                </td>
+                <td colspan="15" align="right"> ERP/ACC - 0016/01 </td>
+
+                <td colspan="15" align="right">
+                    <input type="button" onclick="printVoucherList()" class="noprint" value="Print" />
+                </td>
+            </tr>
+            <tr>
+
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        SL. No
+                    </td>
+
+                    <td align="center">
+                        Date
+                    </td>
+
+                    <td align="center">
+                        Voucher Type
+                    </td>
+                    <td align="center">
+                        Voucher No
+                    </td>
+                    <td align="center">
+                        Ref No
+                    </td>
+                    <td align="center">
+                        Particulars
+                    </td>
+
+                    <td align="center">
+                        Amount
+                    </td>
+
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var vocher in Model.VoucherLists)
+                {
+                    <tr class="reportTR" align="center">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+
+                        <td class="reportTD">
+                            @vocher.Date.ToString("dd-MM-yyyy")
+                        </td>
+                        <td class="reportTD">
+                            @GetVoucherName(vocher.VoucherType)
+                        </td>
+                        <td class="reportTD">
+                            @vocher.VoucherRefNo
+                        </td>
+                        <td class="reportTD">
+                            @vocher.VoucherNo
+                        </td>
+                        <td class="reportTD">
+                            @vocher.Particulars
+                        </td>
+                        <td class="reportTD" align="right">
+                            @vocher.Amount
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+                <tr class="reportTotalCalculationTR">
+                    <td colspan="6" class="reportTD" align="right" style="font-size: 14px;"><strong>Total :</strong></td>
+                    <td class="reportTotalCalculationTD" align="right"><strong>@Model.VoucherLists.Sum(x => x.Amount)</strong></td>
+                </tr>
+            </tbody>
+
+        </table>
+        <div style="margin-top: 20px;">
+            <div style="width: 150px; float: left">
+                <hr />
+                <strong>
+                    Prepared By
+                </strong>
+            </div>
+            <div style="width: 150px;float: left;margin-left: 20px;">
+                <hr />
+                <strong>
+                    Managing Director
+                </strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function printVoucherList() {
+        window.print();
+    }
+</script>

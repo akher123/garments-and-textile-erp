@@ -1,0 +1,51 @@
+﻿@using iTextSharp.tool.xml.html
+@model SCERP.Web.Areas.Common.Models.ViewModel.MeasurementUnitViewModel
+@{
+    ViewBag.Title = Model.UnitId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "MeasurementUnit", FormMethod.Post, new { @class = "MeasurementUnitform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.UnitId)
+
+   <fieldset>
+     
+       <div class="tabefont">
+           <div>
+               @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })
+           </div>
+           <div >
+               <div>
+                   @Html.Label("Measurement Unit:")
+               </div>
+               <div>
+                   
+                   @Html.EditorFor(x => x.UnitName, new { htmlAttributes = new { @class = "text ui-widget-content ui-corner-all" } })
+                   @Html.Label("*", new { @class = "labelInstruction" })
+               </div>
+               <div>
+                   @Html.ValidationMessageFor(x => x.UnitName)
+               </div>
+           </div>
+           <div>
+               <div>
+                   @Html.Label("Description:")
+               </div>
+               <div>
+                   @Html.TextAreaFor(x => x.Description,  new { @class = "text ui-widget-content ui-corner-all"  })
+               </div>
+           </div>
+           <div>
+               <div>
+                   @Html.SaveButton()
+               </div>
+           </div>
+       </div>
+    </fieldset>
+}
+
+
+
+

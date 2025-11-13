@@ -1,0 +1,247 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.BachWiseIssueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaterialIssueId > 0 ? "Edit" : "Add");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+    #batchInfo {
+        width: auto;
+        height: auto;
+        background: #add8e6;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "BatchWiseIssue", FormMethod.Post, new { @class = "BatchWiseIssue ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.MaterialIssueRequisitionId)
+    @Html.HiddenFor(x => x.MaterialIssueId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Batch Wise Issue</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("IRef:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("IRN No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+
+                    @Html.Label("IRN date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Batch No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BatchNo, new { @id = "BatchNoTextBox",@placeholder="SearchBy Batch No", @data_target = "#BtRefNoHiddenText", @action = "/BatchWiseIssue/BatchAutoComplite" })
+                    @Html.HiddenFor(x => x.BtRefNo, new { @id = "BtRefNoHiddenText" })
+                    @*@Html.DropDownListFor(x => x.BtRefNo, Model.BatcheSelectListItem, "-select-", new { @class = "batchRefNo" })*@
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Remarks")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Note, new { @class = "bwi_remarks" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Topping Type:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.ToppingType, Model.ToppingSelectListItem, "-Select-", new { id = "batch_topping"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Quantity")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Quantity,new{id="batch_qty", @readonly = "readonly",@style="background-color:pink" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+               
+            </tr>
+        </table>
+        <div id="batchInfo" style="font-size: 12px;"></div>
+        <hr />
+        <table class="tabefont">
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Item:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false" })
+                    @Html.HiddenFor(x => x.IssueDetail.ItemId, new { @class = "itemHiddenField" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("RQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.RequiredQuantity, new { @class = "requiredQuantity", @data_val = "false" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    @Html.DisplayName("SinH:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.StockInHand, new { @class = "stockInHand", @data_val = "false", @style = "background-color: #b0c4de;" })
+
+                </td>
+
+                <td>
+
+                    @Html.DisplayName("IQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.IssuedQuantity, new { @class = "issuedQuantity", @data_val = "false" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.DisplayName("IRate:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.IssuedItemRate, new { @class = "issuedItemRate  ", @data_val = "false", @style = "background-color: #b0c4de;" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Remarks:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.Remarks, new { @class = "remarks enterVent", @data_val = "false" })
+                </td>
+
+            </tr>
+        </table>
+        <hr />
+
+        <table id="BatchWiseIssueDetail" class="tabefont gridtable" style="width:540px;">
+            <thead style="text-align: center">
+                <tr>
+                    <th>
+                        @Html.Label("Item")
+                    </th>
+
+                    <th>
+                        @Html.Label("SInH")
+                    </th>
+                    <th>
+                        @Html.Label("RQty")
+                    </th>
+                    <th>
+                        @Html.Label("IQty")
+                    </th>
+                    <th>
+                        @Html.Label("IRate")
+                    </th>
+
+                    <th>
+                        @Html.Label("Remarks")
+                    </th>
+
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.MaterialIssueDetails)
+                {
+                    <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId">
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueDetailId, new { @class = "mIDetailId-" + @Model.MaterialIssueDetails[m.Key].ItemId })
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueId)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].StockInHand)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].StockInHand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate)
+                        </td>
+                        <td>
+                            @Html.ValueFor(x => x.MaterialIssueDetails[m.Key].Remarks, "{0:dd/MM/yyyy}")
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].Remarks)
+                        </td>
+
+                        <td>
+                            <input type="button" value="-" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <hr />
+        <p style="float: right">
+            <input type="submit" value="Save" id="saveBwIsButton" />
+        </p>
+
+    </fieldset>
+}
+<script src="~/Scripts/SCERP/Inventory/batchWiseIssue.js"></script>

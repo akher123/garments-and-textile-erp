@@ -1,0 +1,123 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var buyerName1 = "";
+    var buyerName2 = "";
+}
+<div class="header-title">
+    <h2>MANAGEMENT INFORMATION SYSTEM (DASHBOARD DETAIL)</h2>
+
+</div>
+<section class="formCover">
+    @*<div class="mis-title">BUYER WISE ORDER STATUS DETAIL</div>*@
+    <div class="mis-title">
+        B/F. Qty :<input checked="checked" type="checkbox" class="showHide" disabled="disabled" value="0" />&nbsp;
+        Ord. Qty :<input checked="checked" type="checkbox" class="showHide" value="1" />&nbsp;
+        Value    :<input checked="checked" type="checkbox" class="showHide" value="2" />&nbsp;
+        Shipped  :<input checked="checked" type="checkbox" class="showHide" value="3" />
+        Balance   :<input checked="checked" type="checkbox" class="showHide" value="4" />
+    </div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody style="border: 1px solid #012b52;">
+            @foreach (System.Data.DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+            {
+                <tr>
+
+                    @{
+
+                buyerName2 = row.ItemArray[0].ToString();
+                if (buyerName1 == buyerName2)
+                {
+                    <td class="tr_@row.ItemArray[1]" style="border-top: none; border-bottom: none; "></td>
+
+                }
+                else
+                {
+                    buyerName1 = buyerName2;
+                    <td class="tr_@row.ItemArray[1]" style="border-bottom: none">@buyerName2</td>
+                }
+                switch (row.ItemArray[1].ToString())
+                {
+                    case "0":
+                        <td class="tr_@row.ItemArray[1]">B/F. Qty (Pcs)</td>
+                        break;
+                    case "1":
+                    <td class="tr_@row.ItemArray[1]">Ord. Qty (Pcs)</td>
+                        break;
+                    case "2":
+                    <td class="tr_@row.ItemArray[1]">Value ($)</td>
+                        break;
+                    case "3":
+                    <td class="tr_@row.ItemArray[1]">Shipped (Pcs)</td>
+                        break;
+                    case "4":
+                    <td class="tr_@row.ItemArray[1]">Blance (Pcs)</td>
+                        break;
+
+                }
+                for (int i = 2; i < row.ItemArray.Length; i++)
+                {
+                    if (row.ItemArray[i].ToString() == "0")
+                    {
+                        <td style="color: #444444"></td>
+                    }
+                    else
+                    {
+                        switch (row.ItemArray[1].ToString())
+                        {
+
+
+                            case "0":
+                                <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+                                break;
+                            case "1":
+                            <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+                                break;
+                            case "2":
+                            <td style="background-color: lightblue;color: #444444">@row.ItemArray[i].ToString()</td>
+                                break;
+                            case "3":
+                            <td class="tr_@row.ItemArray[1]">@row.ItemArray[i].ToString()</td>
+                                break;
+                            case "4":
+                            <td class="tr_@row.ItemArray[1]" style="background-color: lightseagreen;color: #ffffff">@row.ItemArray[i].ToString()</td>
+                                break;
+
+                        }
+
+                    }
+
+                }
+
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>
+
+<script type="text/javascript">
+
+    $('.showHide:checkbox').change(function () {
+        var value = $(this).val();
+        if (this.checked) {
+            $('.tr_' + value).toggle();
+        } else {
+
+            $('.tr_' + value).toggle();
+        }
+    });
+
+
+</script>
+

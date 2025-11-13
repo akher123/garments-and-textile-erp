@@ -1,0 +1,71 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDesignationViewModel
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+
+    <table class="pdfReportTable" style="border: 0;margin-bottom: 5px;">
+
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Employee Designation List</td>
+            </tr>
+            <tr>
+                <td class="clsDate">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <table class="pdfReportTable" border="1">
+        <thead class="reportThead">
+            <tr class="reportTR">
+                <td class="reportTH">
+                    SI.No
+                </td>
+                <td class="reportTH">
+                    Title
+                </td>
+                <td class="reportTH">
+                    Employee Type
+                </td>
+                <td class="reportTH">
+                    Grade
+                </td>
+                <td class="reportTH">
+                    Description
+                </td>
+            </tr>
+        </thead>
+        <tbody class="reportBody">
+
+            @foreach (var employeeDesignation in Model.EmployeeDesignations)
+            {
+                <tr class="reportTR">
+                    <td class="reportTD">
+                        @rowCount
+                    </td>
+                    <td class="reportTD">
+                        @employeeDesignation.Title
+                    </td>
+                    <td class="reportTD">
+                        @(employeeDesignation.EmployeeType == null ? "" : employeeDesignation.EmployeeType.Title)
+                    </td>
+                    <td class="reportTD">
+                        @(employeeDesignation.EmployeeGrade == null ? "" : employeeDesignation.EmployeeGrade.Name)
+                    </td>
+                    <td class="reportTD">
+                        @employeeDesignation.Description
+                    </td>                   
+                </tr>
+                rowCount += 1;
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

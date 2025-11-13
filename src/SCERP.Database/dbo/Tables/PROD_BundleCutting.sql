@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[PROD_BundleCutting] (
+    [BundleCuttingId]   BIGINT       IDENTITY (1, 1) NOT NULL,
+    [CompId]            VARCHAR (3)  NULL,
+    [CuttingBatchId]    BIGINT       NOT NULL,
+    [CuttingBatchRefId] VARCHAR (6)  NULL,
+    [BundleRef]         VARCHAR (6)  NULL,
+    [BundleNo]          VARCHAR (6)  NULL,
+    [RollNo]            VARCHAR (2)  NULL,
+    [SizeRefId]         VARCHAR (4)  NULL,
+    [XSC]               VARCHAR (2)  NULL,
+    [ColorRefId]        VARCHAR (4)  NULL,
+    [ComponentRefId]    VARCHAR (3)  NULL,
+    [Quantity]          INT          NULL,
+    [BundleStart]       INT          NULL,
+    [BundleEnd]         INT          NULL,
+    [PSL]               VARCHAR (2)  NULL,
+    [SSL]               VARCHAR (2)  NULL,
+    [BatchNo]           VARCHAR (12) NULL,
+    [Combo]             VARCHAR (15) NULL,
+    [RollName]          VARCHAR (25) NULL,
+    [OrderStyleRefId]   VARCHAR (7)  NULL,
+    CONSTRAINT [PK_PROD_BundleCutting] PRIMARY KEY CLUSTERED ([BundleCuttingId] ASC),
+    CONSTRAINT [FK_PROD_BundleCutting_PROD_CuttingBatch] FOREIGN KEY ([CuttingBatchId]) REFERENCES [dbo].[PROD_CuttingBatch] ([CuttingBatchId])
+);
+

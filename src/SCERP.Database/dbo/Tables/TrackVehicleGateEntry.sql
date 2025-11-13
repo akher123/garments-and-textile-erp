@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[TrackVehicleGateEntry] (
+    [VehicleGateEntryId]  BIGINT           IDENTITY (1, 1) NOT NULL,
+    [GateEntryNumber]     INT              NOT NULL,
+    [CompanyId]           NVARCHAR (3)     NOT NULL,
+    [EmployeeId]          UNIQUEIDENTIFIER NULL,
+    [ConfirmationMediaId] INT              NOT NULL,
+    [VehicleId]           INT              NOT NULL,
+    [VehicleNumber]       NVARCHAR (25)    NOT NULL,
+    [InvoiceNumber]       NVARCHAR (25)    NULL,
+    [FromWhere]           NVARCHAR (100)   NULL,
+    [ConfirmedBy]         NVARCHAR (100)   NULL,
+    [EntryDate]           DATETIME         NOT NULL,
+    [ExitDate]            DATETIME         NULL,
+    [Remarks]             NVARCHAR (MAX)   NULL,
+    [CheckOutStatus]      INT              NOT NULL,
+    [CreatedBy]           UNIQUEIDENTIFIER NULL,
+    [CreatedDate]         DATETIME         NULL,
+    [EditedBy]            UNIQUEIDENTIFIER NULL,
+    [EditedDate]          DATETIME         NULL,
+    [IsActive]            BIT              NOT NULL,
+    CONSTRAINT [PK_Vehicle] PRIMARY KEY CLUSTERED ([VehicleGateEntryId] ASC),
+    CONSTRAINT [FK_TrackVehicleGateEntry_TrackConfirmationMedia] FOREIGN KEY ([ConfirmationMediaId]) REFERENCES [dbo].[TrackConfirmationMedia] ([ConfirmationMediaId]),
+    CONSTRAINT [FK_TrackVehicleGateEntry_TrackVehicle] FOREIGN KEY ([VehicleId]) REFERENCES [dbo].[TrackVehicle] ([VehicleId])
+);
+

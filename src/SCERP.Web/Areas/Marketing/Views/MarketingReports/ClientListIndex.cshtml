@@ -1,0 +1,69 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Marketing.Models.MarketingInstituteViewModel
+@{
+    ViewBag.Title = "Marketing Institute";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    //Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<section class="search formCover">
+    <div class="additem">
+        <div class="dropdown" style="float: right">
+            <a class="dropbtn custom-table-dropbtn">Export</a>
+            <div class="dropdown-content custom-table-dropdown-content">
+                <input id="btnPrint" class="addButton" type="button" onclick=" javascript: PrintMarketingClientList(1); " value="PDF" />
+                <input id="btnPrint" class="addButton" type="button" onclick=" javascript: PrintMarketingClientList(3); " value="EXCEL" />
+            </div>
+        </div>
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.MarketingInstitutes, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         firstText: "First",
+                         lastText: "Last",
+                         nextText: "Next",
+                         mode: WebGridPagerModes.All,
+                         previousText: "Previous",
+                         columns:
+                         grid.Columns(
+                         grid.Column("InstituteId", header: "InstituteId"),
+                         grid.Column("InstituteName", header: "Institute Name"),
+                         grid.Column("District", header: "District"),
+                         grid.Column("Address", header: "Address"),
+                         grid.Column("DecisionMaker", header: "DecisionMaker"),
+                         grid.Column("Designation", header: "Designation"),
+                         grid.Column("Mobile", header: "Mobile"),
+                         grid.Column("Email", header: "Email")
+                                                                                                                                                                                              //grid.Column("WebSite", header: "WebSite"),
+                                                                                                                                                                                              //grid.Column("Remarks", header: "Remarks"),
+                                                                                                                                                                                              //grid.Column("InquiryDate", "Inquiry Date", format: @<text>@(item.ClientEntryDate == null ? "" : item.ClientEntryDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                                                                                                                                                                                              //grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Marketing/MarketingInstitute/Edit?MarketingInstitute.InstituteId=@item.InstituteId"></button></text>),
+                                                                                                                                                                                              //grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Marketing/MarketingInstitute/Delete?InstituteId=@item.InstituteId"></button></text>)
+                                                                                                                                                                                              ));
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function PrintMarketingClientList(reportType) {
+               
+            window.open("/Marketing/MarketingReports/ClientList?reportType=" + reportType);
+            }
+
+           
+
+    </script>
+}

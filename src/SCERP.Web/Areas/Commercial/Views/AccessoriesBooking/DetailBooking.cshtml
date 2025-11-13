@@ -1,0 +1,72 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.PurchaseOrderId > 0 ? "Detail Accessories Booking" : "");
+}
+
+<table class="webgrid-table">
+    <thead style="text-align: center" class="webgrid-header">
+    <tr>
+       
+      
+        <th>
+            @Html.Label("PrdName")
+        </th>
+
+        <th>
+            @Html.Label("Color")
+        </th>
+        <th>
+            @Html.Label("Size")
+        </th>
+        <th>
+            @Html.Label("Quantity")
+        </th>
+        <th>
+            @Html.Label("Rate")
+        </th>
+
+        <th>
+            @Html.Label("Unit")
+        </th>
+    </tr>
+    </thead>
+    <tbody style="justify-content: center">
+
+        @for (var index = 0; index < Model.PurchaseOrderDetails.Count(); index++)
+        {
+            <tr class="webgrid-row-style">
+             
+                <td>
+
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ColorName)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].SizeName)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].xRate)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].UnitName)
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+        
+

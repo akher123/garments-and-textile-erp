@@ -1,0 +1,22 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+
+<table class="tabefont">
+    <tr>
+        <td>
+            <fieldset>
+                <legend>Input Program</legend>
+                @Html.Partial("~/Areas/Planning/Views/Program/_InputProgram.cshtml", Model)
+            </fieldset> 
+        </td>
+        <td>
+            <fieldset>
+                <legend>Output Program</legend>
+                @Html.Partial("~/Areas/Planning/Views/Program/_OutputProgram.cshtml", Model)
+            </fieldset>
+        </td>
+    </tr>
+  
+</table>

@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    Layout = null;
+}
+<div style="height: 250px; overflow-x: auto;">
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                <th>SL No</th>
+                <th>Job No</th>
+                <th>Ref No</th>
+                <th>Buyer</th>
+                <th>Order</th>
+                <th>Style</th>
+                <th>Color</th>
+                <th>Tag</th>
+                <th>SendQuantity</th>
+                <th>RecvQuantity</th>
+                <th>Balance</th>
+                <th>PROCESS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cutseq in Model.ReceiveBalances.Select((x, i) => new { index = i + 1, value = x }))
+            {
+                <tr>
+                    <th>@cutseq.index</th>
+                    <td>@cutseq.value.JobNo</td>
+                    <td>@cutseq.value.CuttingBatchRefId</td>
+                    <td>@cutseq.value.BuyerName</td>
+                    <td>@cutseq.value.OrderNo</td>
+                    <td>@cutseq.value.StyleName</td>
+                    <td>@cutseq.value.ColorName</td>
+                    <td>@cutseq.value.TagName</td>
+                    <td>@cutseq.value.SendQuantity</td>
+                    <td>@cutseq.value.RecvQuantity</td>
+                    <td>@(cutseq.value.SendQuantity - cutseq.value.RecvQuantity)</td>
+                    <td>
+                        <input type="button" class="btnDetail" targentclass="JobWizeprintReceivBalance" action="/EmbroideryReceive/GetEmbroieryReciveBalance?CuttingBatchRefId=@cutseq.value.CuttingBatchRefId&ReceiveDetail.CuttingBatchId=@cutseq.value.CuttingBatchId&ReceiveDetail.CuttingTagId=@cutseq.value.CuttingTagId&ReceiveDetail.ColorRefId=@cutseq.value.ColorRefId" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

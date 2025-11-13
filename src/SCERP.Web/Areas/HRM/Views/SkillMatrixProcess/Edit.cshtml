@@ -1,0 +1,49 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixProcessViewModel
+@{
+    ViewBag.Title = Model.SkillMatrixProcess.SkillMatrixProcessId> 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "SkillMatrixProcess", FormMethod.Post, new { @class = "SkillMatrixProcessForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SkillMatrixProcess.SkillMatrixProcessId)
+    @Html.HiddenFor(model=>model.SkillMatrixProcess.IsActive)
+    <fieldset>
+        <legend>Skill Matrix Process</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Process Name:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SkillMatrixProcess.ProcessName, new { @placeholder = "Process Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Display Order:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SkillMatrixProcess.DisplayOrder, new { @placeholder = "Display Order" })
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

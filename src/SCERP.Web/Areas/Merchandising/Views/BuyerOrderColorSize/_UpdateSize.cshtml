@@ -1,0 +1,86 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("SaveSize", "BuyerOrderColorSize", FormMethod.Post, new { @class = "BuyerOrderStyleSizeForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Size.OrderStyleSizeId, new { @class = "Size_OrderStyleStyleSize" })
+    @Html.HiddenFor(model => model.Size.OrderStyleRefId, new { @class = "Order_StyleRefId" })
+    <table>
+        <tr>
+
+            <td>
+                @Html.HiddenFor(model => model.Size.SizeRefId, new { @class = "Size_SizeRef" })
+                @Html.TextBoxFor(x => x.SizeSearchSetring, new { @placeholder = "Size", @class = "Size_SearchString" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                <input type="submit" id="SaveStyleSize"  class="addButton" value="@Model.ButtonName" />
+            </td>
+            <td>
+                <input type="button" onclick="ClearStyleSize()" class="addButton" value="Clear" />
+            </td>
+        </tr>
+
+    </table>
+}
+
+<script type="text/javascript">
+    $('.Size_SearchString').autocomplete({
+        source: function (request, response) {
+            var option = {
+                url: "/BuyerOrderColorSize/SizeAutoComplite",
+                type: "POST",
+                datatype: "html",
+                data: { serachString: request.term },
+            };
+
+            $.Ajax(option)
+                .done(function (data) {
+                    $('.Size_SizeRef').val('');
+                    response($.map(data, function (size) {
+                        return { label: size.SizeName, value: size.SizeName, SizeRefId: size.SizeRefId };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var sizeRefId = ui.item.SizeRefId;
+            $('.Size_SizeRef').val(sizeRefId);
+        },
+
+    });
+
+
+$('#SaveStyleSize').unbind('click').bind('click', function () {
+    var form = $(this).parents('form:first');
+    var option = {
+        url: form.attr('action'),
+        type: "POST",
+        data: form.serialize(),
+        load: SCERP.AjaxCompleted
+    };
+    if (jQuery.validator && jQuery.validator.unobtrusive) {
+        form.validate();
+        if (!form.valid()) {
+            // e.preventDefault();
+            return false;
+        }
+        $.Ajax(option).done(function (htmlResult) {
+            if (htmlResult.Success == false) {
+                return false;
+            } else {
+                $('#StyleSizeContainer').html(htmlResult);
+                $('.Size_SizeRef').val('');
+                $('.Size_SearchString').val('');
+            }
+        });
+    }
+
+});
+
+</script>

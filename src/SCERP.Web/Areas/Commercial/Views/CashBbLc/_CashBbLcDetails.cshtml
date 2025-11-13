@@ -1,0 +1,31 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashBbLcViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.CommCashBbLcDetailsDct)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.CommCashBbLcDetailsDct[m.Key].Item)
+            @Html.HiddenFor(x => x.CommCashBbLcDetailsDct[m.Key].Item, new { id = "Item_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.CommCashBbLcDetailsDct[m.Key].Quantity)
+            @Html.HiddenFor(x => x.CommCashBbLcDetailsDct[m.Key].Quantity, new { id = "Quantity_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.CommCashBbLcDetailsDct[m.Key].Rate)
+            @Html.HiddenFor(x => x.CommCashBbLcDetailsDct[m.Key].Rate, new { id = "Rate_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.CommCashBbLcDetailsDct[m.Key].Remarks)
+            @Html.HiddenFor(x => x.CommCashBbLcDetailsDct[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+        </td>
+
+       
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

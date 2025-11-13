@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Production.Models.FinishingProcessViewModel
+@{
+    Layout = null;
+}
+<div>
+    <table>
+        <tr>
+            <td>
+                <input type="button" id="toggoleButton" value="+" />
+                <div id="FinishingProcessList">
+                    @if (Model.VwFinishingProcess.Any())
+                    {
+                        @Html.Partial("~/Areas/Production/Views/IronFinishing/_IronFinishList.cshtml", Model)
+                    }
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                @if (Model.PivotDictionary.Any())
+                {
+                    @Html.Partial("~/Areas/Production/Views/IronFinishing/_IronFinishInput.cshtml", Model)
+                }
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <script type="text/javascript">
+
+        $("#toggoleButton").click(function () {
+            var value = $(this).val();
+            if (value == '+') {
+                $(this).val("-");
+            } else {
+                $(this).val("+");
+            }
+            $("#FinishingProcessList").toggle("1000");
+
+        });
+        $("#FinishingProcessList").hide();
+    </script>

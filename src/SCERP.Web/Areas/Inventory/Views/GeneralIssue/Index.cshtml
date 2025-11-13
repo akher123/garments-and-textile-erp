@@ -1,0 +1,142 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueViewModel
+@{
+    ViewBag.Title = "GeneralIssue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>General Issue</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "GeneralIssue", FormMethod.Get, new { @class = "GeneralIssueSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("From date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Search key :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/GeneralIssue/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VMaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                        grid.Column("IssueReceiveNoteNo", header: "IRN No", format: @<text>@(item.IssueReceiveNoteNo ?? "--")</text>),
+grid.Column("IssueReceiveNoteDate", header: "IRN Date", format: @<text>@(item.IssueReceiveNoteDate == null ? "" : item.IssueReceiveNoteDate.ToString("dd-MM-yyyy"))</text>),
+grid.Column("IssueReceiveNo", header: "Ref No ", format: @<text>@(item.IssueReceiveNo ?? "--")</text>),
+grid.Column("IssueReceiveDate", header: "IR Date", format: @<text>@(item.IssueReceiveDate == null ? "" : item.IssueReceiveDate.ToString("dd-MM-yyyy"))</text>),
+grid.Column("PreparedByEmployeeName", header: "IR Person", format: @<text>@(item.PreparedByEmployeeName ?? "--")</text>),
+grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "--")</text>),
+grid.Column("Line", header: "Line ", format: @<text>@(item.LineName ?? "--")</text>),
+grid.Column("MachineName", header: "Machine ", format: @<text>@(item.MachineName ?? "--")</text>),
+grid.Column("Remarks", header: "Remarks ", format: @<text>@(item.Note ?? "--")</text>),
+grid.Column("Detail/Edit", format:@<text> <button class="edit" action="/Inventory/GeneralIssue/Edit?MaterialIssueId=@item.MaterialIssueId"></button>  </text>, canSort: false),
+grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/GeneralIssue/Delete?MaterialIssueId=@item.MaterialIssueId"></button> </text>, canSort: false),
+grid.Column("Export", format: @<text> <a href="/Inventory/Report/GetGeneralItemIssue?MaterialIssueId=@item.MaterialIssueId" target="_blank">Print</a> </text>, canSort: false)));
+        }
+
+    </div>
+</section>
+
+
+
+
+
+

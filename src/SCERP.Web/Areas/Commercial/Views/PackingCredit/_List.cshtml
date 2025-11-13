@@ -1,0 +1,46 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PackingCreditViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+    <tr>
+        <th>PC Date</th>
+        <th>PC Amount(BDT) </th>
+        <th>PC Amount(USD) </th>
+        <th>File </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var pc in Model.PackingCredits)
+    {
+        <tr class="buyerOrderStyle-row">
+
+            <td>@String.Format("{0:dd/MM/yyyy}", pc.CreatedDate)</td>
+            <td>@pc.Amount</td>
+            <td>@pc.UsdAmount</td>
+            <td>
+                <input type="button" class="Edit_Button" action="/Commercial/CommFileUpload/Index?RefId=@pc.PackingCreditId&SrcType=@Convert.ToInt32(FileSource.Pc)" value="Upload" />
+            </td>
+            <td>
+                <input type="button" class="btnDetail" targentclass="packingCreditEdit" action="/PackingCredit/Edit?PackingCreditId=@pc.PackingCreditId">
+            </td>
+            <td>
+                <button type="button" class="deleteAction" targentclass="packingCreditList" action="/PackingCredit/Delete?PackingCreditId=@pc.PackingCreditId&LcId=@pc.LcId"></button>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>Total PC Amount :</td>
+        <td>@Model.PackingCredits.Sum(x => x.Amount)</td>
+        <td>@Model.PackingCredits.Sum(x => x.UsdAmount)</td>
+    </tr>
+    </tbody>
+</table>
+
+
+

@@ -1,0 +1,63 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetMasterViewModel
+@{
+    ViewBag.Title = "CostSheetMaster";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Cost Sheet Master</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 250px;">
+            @using (Html.BeginForm("Index", "CostSheetTemplate", FormMethod.Get, new { @class = "CostSheetTemplateForm" }))
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer ")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CostSheetMaster.BuyerId, Model.BuyerSelectListItems, "-Select-", new {@class = "buyerddl"})
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+                <input onclick="search('/Merchandising/CostSheetMaster/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CostSheetMasters, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("CostSheetMasterRefId", header: "CostSheetRefId"),
+                  grid.Column("BuyerId", header: "BuyerId"),
+                  grid.Column("OrderNo", header: "OrderNo"),
+                  grid.Column("StyleNo", header: "StyleNo"),
+                  grid.Column("Item", header: "Item"),
+                  grid.Column("Edit", canSort: false, format: @<text> <input onclick="search('/Merchandising/CostSheetMaster/Edit?CostSheetMaster.CostSheetMasterId=@item.CostSheetMasterId')" value="Edit" type="button" />  </text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/CostSheetMaster/Delete?CostSheetMasterId=@item.CostSheetMasterId"></button></text>),
+                  grid.Column("Report", canSort: false, header: "REPORT", format: @<text><a href="/Merchandising/CostSheetMaster/InitialCostingReport?CostSheetMaster.CostSheetMasterId=@item.CostSheetMasterId" target="_blank">PDF</a></text>)));
+}
+    </div>
+</section>

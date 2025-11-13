@@ -1,0 +1,177 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmBuyOrdStyleViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Add Shipment Quantity";
+}
+
+@using (Html.BeginForm("SaveShipQty", "OmBuyOrdStyle", FormMethod.Post, new { @class = "OmBuyOrdStyleSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.OrderStyleId)
+    <fieldset>
+        <legend>Add Shipment Quantity</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("", String.Format("{0}", "Ref. #"))
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.OrderStyleRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Order No")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Season")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.SeasonName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td>
+                    @Html.Label("", "Ref. Date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.StyleentDate, new { @style = "background-color: #778899", @readonly = "readonly",@class="datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("Style")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.StyleName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Article # ")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.BuyerArt, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Brand")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.BrandName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Category")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.CatName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Quantity)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.Quantity, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.LabelFor(model => model.VomBuyOrdStyle.Rate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.Rate, new { @style = "background-color: #778899", @readonly = "readonly" })&#36;
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Discount(%)")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.Discount, new { @style = "background-color: #778899", @readonly = "readonly" })&#36;
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Value")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.Amt, new { @style = "background-color: #778899", @readonly = "readonly" })&#36;
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.Label("LC Status")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.LCSTID, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("LC")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.VomBuyOrdStyle.PI, new { @style = "background-color: #778899", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Ship Qty")
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.despatchQty,new { @style = "background-color:rosybrown" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Status")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(model => model.ActiveStatus)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "buyerOrderStyleContainner" } })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+}
+

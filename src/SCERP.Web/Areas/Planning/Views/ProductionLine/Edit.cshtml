@@ -1,0 +1,129 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProductionLineViewModel
+@{
+    ViewBag.Title = (Model.ProductionLineId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "ProductionLine", FormMethod.Post, new { @class = "ProductionLineform" }))
+{  @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.EditedDate)
+    @Html.HiddenFor(model => model.ProductionLineId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Production Line</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/Planning/ProductionLine/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Planning/ProductionLine/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Planning/ProductionLine/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.DepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.LineId, Model.LineSelectListItem, "-Select-")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("No of Operator:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NoOfOperator)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.NoOfOperator)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Line Efficiency(%):")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.LineEfficiency)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.LineEfficiency)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Capacity Available:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CapacityAvailable)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.CapacityAvailable)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("From Date:")
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.FromDate)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.FromDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("To Date:")
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.ToDate)
+                    @Html.ValidationMessageFor(x => x.ToDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

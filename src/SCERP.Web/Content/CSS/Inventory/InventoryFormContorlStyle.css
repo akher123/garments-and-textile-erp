@@ -1,0 +1,70 @@
+﻿input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 15px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;    
+}
+input[type="email"] {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    height: 15px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;    
+}
+
+input[type="datetime"] {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-size: 12px;
+    height: 15px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;      
+}
+
+input[type="number"] {
+    border: 1px solid #ccc;
+    height: 15px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;     
+}
+
+input[type="date"] {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 15px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;
+}
+
+textarea {
+    border: 1px solid #ccc;
+    border-radius: 0;
+    height: 40px;
+    margin: 0;
+    padding: 6px;
+    width: 200px;
+}
+.fieldTitleCls {
+    color: #666;
+    float: left;
+    font-family: Verdana;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 130px;
+    /*width: auto;*/
+}
+select{
+    border: 1px solid #ccc;
+    border-radius: 0;
+    padding: 0 5px;   
+    width: 214px;
+    height: 29px;
+}
+   
+ 

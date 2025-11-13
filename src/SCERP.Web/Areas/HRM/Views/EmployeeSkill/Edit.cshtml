@@ -1,0 +1,140 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeSkillViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.EmployeeSkillId > 0) ? "Edit" : "Add";
+    var dispaly = (Model.EmployeeSkillId > 0) ? "" : "none";
+    var dispalyForEdit = (Model.EmployeeSkillId > 0) ? "none" : "";
+}
+<fieldset>
+    <legend>Employee Skill </legend>
+    @using (Html.BeginForm("Save", "EmployeeSkill", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.EmployeeSkillId)
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">@Html.LabelFor(x => x.EmployeeCardId)</td>
+                <td>
+                    @Html.TextBoxFor(m => m.EmployeeCardId, new { @class = "employeeCardId" })
+                    @Html.ValidationMessageFor(m => m.EmployeeCardId)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/EmployeeSkill/GetEmployeeDetailByEmployeeCadID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr id="employeeDetail_containner">
+
+
+                @if (Model.VEmployeeCompanyInfoDetail.EmployeeCompanyInfoId > 0)
+                {
+                    @Html.Partial("~/Areas/HRM/Views/EmployeeSkill/_EmployeeDetails.cshtml", Model.VEmployeeCompanyInfoDetail, new ViewDataDictionary { { "EmployeeSkillId", Model.EmployeeSkillId } })
+                }
+
+                <td></td>
+            </tr>
+        </table>
+        <table class="tabefont">
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">From Date:</td>
+                <td>             
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.FromDate)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">To Date:</td>
+                <td>        
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To Date" })
+                </td>
+                <td colspan="1"></td>
+            </tr>                 
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Skill Set Difficulty:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.SkillSetDifficultyId, Model.SkillSetDifficultySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.SkillSetDifficultyId)
+                </td>
+            </tr>
+                     
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Skill Set Category:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.CategoryId, Model.SkillSetCategorySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.CategoryId)
+                </td>
+            </tr>
+                     
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Skill Operation:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.SkillOperationId, Model.SkillOperationSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.SkillOperationId)
+                </td>
+            </tr>         
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Efficiency:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Efficiency)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Efficiency) 
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td id="displayButton" style="display: @dispaly">
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    }
+</fieldset>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/FilterEmployee.js"></script>
+}

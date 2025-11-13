@@ -1,0 +1,58 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GenericNameViewModel
+@{
+    ViewBag.Title = Model.GenericName.GenericNameId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "GenericName", FormMethod.Post, new { @class = "GenericNameform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GenericName.GenericNameId)
+    <fieldset>
+        <legend>Generic Name</legend>
+        <table class="tabefont">
+           
+            <tr>
+                <td>
+                    @Html.Label("Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.GenericName.Name)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.GenericName.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Description :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.GenericName.Description)
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+      
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

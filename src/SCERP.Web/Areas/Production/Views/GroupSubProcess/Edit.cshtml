@@ -1,0 +1,36 @@
+﻿@model SCERP.Web.Areas.Production.Models.GroupSubProcessModel
+@{
+    ViewBag.Title = Model.GroupSubProcess.GroupSubProcessId > 0 ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "GroupSubProcess", FormMethod.Post, new { @class = "groupSubProcessform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GroupSubProcess.GroupSubProcessId)
+    <fieldset>
+        <legend>Finishing SubProcess</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Name:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupSubProcess.GroupName)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

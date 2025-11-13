@@ -1,0 +1,35 @@
+﻿@using iTextSharp.text.pdf
+@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = null;
+}
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Planning/Program/Edit?OrderStyleRefId=@Model.OrderStyleRefId">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Programs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                grid.Columns(
+                grid.Column("ProgramRefId", header: "Ref No"),
+                grid.Column("OrderStyleRefId", header: "Style Ref"),
+                grid.Column("PrgDate", header: "PrgDate",format: @<text>@(item.PrgDate == null ? "" : item.PrgDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("ExpDate", header: "ExpDate",format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Planning/Program/Edit?ProgramId=@item.ProgramId&ProcessRefId=@item.ProcessRefId&OrderStyleRefId=@item.OrderStyleRefId"></button></text>),
+                grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="StyleProgramLsit" action="/Planning/Program/Delete?ProgramRefId=@item.ProgramRefId&OrderStyleRefId=@item.OrderStyleRefId"></button></text>)));
+        }
+

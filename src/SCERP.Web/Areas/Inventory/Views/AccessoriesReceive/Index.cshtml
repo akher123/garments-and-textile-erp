@@ -1,0 +1,145 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    ViewBag.Title = "AccessoriesReceive";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Accessories Receive (PI/BOOKING)</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "AccessoriesReceive", FormMethod.Get, new {@class = "accessoriesReceiveSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("MRR Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+         
+                    </td>
+                    <td>
+                        <div class="addButton-wrapper">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="accessoriesRcvDetailStatus(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="accessoriesRcvDetailStatus(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem" style="min-height: 700px;">
+       
+        <div class="addButton-wrapper">
+            <input onclick="search('/Inventory/AccessoriesReceive/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ReceiveAgainstPos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("RefNo", canSort: false, header: "RefNo", format: @<text>@(item.RefNo ?? "--")</text>),
+                    grid.Column("InvoiceNo", canSort: false, header: "InvoiceNo ", format: @<text>@(item.InvoiceNo ?? "")</text>),
+                    grid.Column("Mrc_SupplierCompany.CompanyName", canSort: false, header: "Supplier", format: @<text>@(item.Mrc_SupplierCompany.CompanyName ?? "--")</text>),
+                    grid.Column("QcStatus", canSort: false, header: "QcStatus", format: @<text>@(item.QcStatus ? "Sent" : "UnSent")</text>),
+                    grid.Column("GrnStatus", canSort: false, header: "GrnStatus", format: @<text>@(item.GrnStatus ? "Sent" : "UnSent")</text>),
+                    grid.Column("Edit", format:@<text>
+                                                   <input onclick="search('/Inventory/AccessoriesReceive/Edit?ReceiveAgainstPo.MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId')" value="Edit" class="addButton" type="button" />
+
+                                                </text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/AccessoriesReceive/Delete?MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId"></button></text>, canSort: false),
+                    grid.Column("Update", canSort: false, format: @<text>
+                        <div class="dropdown">
+                            <a class="dropbtn custom-table-dropbtn">Convert</a>
+                            <div class="dropdown-content custom-table-dropdown-content">
+                                <a style="cursor: pointer" class="AjaxPopup" action="/Inventory/AccessoriesReceive/EditQc?ReceiveAgainstPo.MaterialReceiveAgstPoId=@item.Materialreceiveagstpoid">QC</a>
+                                <a style="cursor: pointer" class="AjaxPopup" action="/Inventory/AccessoriesReceive/EditGrn?ReceiveAgainstPo.MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId">GRN</a>
+                            </div>
+                        </div> </text>),
+            grid.Column("Report", format:@<text>
+                        <div class="dropdown">
+                            <a class="dropbtn custom-table-dropbtn">Show</a>
+                            <div class="dropdown-content custom-table-dropdown-content">
+                                <a href="/Inventory/AccessoriesReceive/MaterialReceivedAgainstPoOrBookingReport?MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId&Key=MRR" target="_blank">MRR</a>
+                                <a href="/Inventory/AccessoriesReceive/MaterialReceivedAgainstPoOrBookingReport?MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId&Key=QC" target="_blank">QC</a>
+                                <a href="/Inventory/AccessoriesReceive/MaterialReceivedAgainstPoOrBookingReport?MaterialReceiveAgstPoId=@item.MaterialReceiveAgstPoId&Key=GRN" target="_blank">GRN</a>
+                            </div>
+                        </div>
+            </text>, canSort: false)
+
+         ));
+        }
+
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    
+    <script type="text/javascript">
+
+        function accessoriesRcvDetailStatus(reportType) {
+                var form = $('.accessoriesReceiveSearchForm');
+                var data = form.serialize();
+                var searchurl = '/Inventory/AccessoriesReceive/GetAccessoriesRcvDetailStatus?' + data + '&reportType=' + reportType;
+                window.open(searchurl);
+            
+        
+    }
+
+
+   
+</script>
+
+    
+}
+
+
+
+

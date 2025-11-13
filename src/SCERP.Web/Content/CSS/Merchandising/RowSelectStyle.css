@@ -1,0 +1,29 @@
+﻿.padding-top {
+    padding-top: 10px;
+}
+
+.webgrid .buyerOrderStyle-row {
+    cursor: pointer;
+    width: auto;
+}
+
+ .webgrid .buyerOrderStyle-row td {
+    padding: 5px;
+    width: auto;
+}
+
+.webgrid .buyerOrderStyle-row tr:hover, tr.selected {
+     /*background-color: #FFA85C;*/
+     background: darkorange;
+}
+
+
+.buyerOrderDetailContainer {
+    overflow: auto;
+    margin-top: 5px;
+    /*margin-bottom: 20px;
+    padding-bottom: 10px;*/
+    /*margin-left: 32px;
+    font-size: 12px;
+    width: 100%;*/
+}

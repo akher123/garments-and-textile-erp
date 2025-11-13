@@ -1,0 +1,40 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ApprovedOvertimeHoureViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+
+        <tr>
+            @foreach (DataColumn col in Model.DataTable.Columns)
+            {
+                <th>@col.ColumnName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.DataTable.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.DataTable.Columns)
+                {
+                    if (col.ColumnName == "DepartmentLineId")
+                    {
+                        <td>
+                            <a style="color: blueviolet;padding: 2px;cursor: pointer;" class="AjaxPopup" action="/HRM/LineOvertimeHoure/EmployeeOtHour?TransactionDate=@row["DATE"]&DepartmentLineId=@row["DepartmentLineId"]">@row["LINE"]</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@row[col.ColumnName]</td>
+                    }
+
+
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>

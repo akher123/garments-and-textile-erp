@@ -1,0 +1,104 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProductionReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>EMBROIDERY BALANCE STATUS SUMMARY</h3>
+</div>
+<div style="margin-bottom: 10px;">
+    @using (Html.BeginForm("PrintBalanceStatusReport", "ProductionReport", FormMethod.Post, new { @class = "BalanceStatusReportForm ignore-validation" }))
+    {
+        @Html.HiddenFor(x => x.IsSearch)
+        @Html.HiddenFor(x => x.ProcessRefId)
+        <fieldset>
+            <div id="cuttingJobMaster">
+                <table class="tabefont" style="margin-left: 60px">
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Color :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.ColorRefId, new List<SelectListItem>(), new { @class = "CuttingBatch_Color" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Sequence :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.ComponentRefId, Model.ComponentSelectListItem, "-Select-", new { @class = "CuttingBatch_sequence" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Tag :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingTagId, new List<SelectListItem>(), "-Select-", new { @class = "cuttingTagId" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            <div style="margin-bottom: 3px;width: 150px; ">
+                                <div class="dropdown">
+                                    <button class="dropbtn">REPORT▼</button>
+                                    <div class="dropdown-content">
+                                        <a style="cursor: pointer" target="_blank" onclick="processBalanceStatus(1)">Receive Balance (PDF)</a>
+                                        <a style="cursor: pointer" target="_blank" onclick="processBalanceStatus(3)">Receive Balance (Excel)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </fieldset>
+    }
+</div>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/ProcessBalanceStatus.js"></script>
+}

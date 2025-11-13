@@ -1,0 +1,439 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	     <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;প্লামি ফ্যাশনস্ লিমিটেড
+        </td>
+		 <td align="right" valign="bottom">
+          <img src="{EMPLOYEE_PHOTOGRAPH_PATH}" width="55px" height="55px" />
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+		    <td align="right">          
+        </td>
+      </tr>	  
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td width="15px"></td>
+            <td width="715px"></td>
+            <td></td>
+            <td>তারিখ : {PREPARE_DATE}</td>
+        </tr>        
+    </table>   
+    
+    <table width="850px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:24px;">ছুটির আবেদন পত্র</td>
+      </tr>    
+    </table> 
+	                                                            
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;"> অংশ - ১ </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td width="300px"> আবেদনকারীর নাম : {EMP_NAME} </td>
+            <td></td>
+            <td width="100px"></td>
+            <td > কার্ড নং : {EMP_CARDNO} </td>            
+            <td></td>            
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> পদবী : {EMP_DESIGNATION} </td>
+            <td></td>
+            <td>  </td>
+            <td> বিভাগ : {EMP_DEPARTMENT}</td>            
+            <td></td>            
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> চাকুরীতে যোগদানের তারিখ : {JOINING_DATE} </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10"> ছুটির প্রকারঃ নৈমিত্তিক/অসুস্থতা/অর্জিত ছুটি/মাতৃত্বকালীন ছুটি/অন্যান্যঃ........................................................................... দিন</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td colspan="10"> ................................/................................./{YEAR} হইতে .............................../..................................../{YEAR} পর্যন্ত </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10"> ছুটির কারণঃ............................................................................................................................................... </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10"> ছুটিতে থাকাকালীন সময়ে যোগাযোগের ঠিকানা.......................................................................................................... </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10">আবেদনকারীর স্বাক্ষর &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; সুপারিশকারীর স্বাক্ষর &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; বিভাগীয় প্রধানের স্বাক্ষর </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;"> অংশ - ২ </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td colspan="08"> ছুটি শেষে যোগদানের তারিখঃ ..................../..................../{YEAR} </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="04"> 
+                <Table border='1' style='border-collapse:collapse'>
+                  <tr>
+                      <td align="center" width="180px"> <b> &nbsp; ছুটির বিবরণ &nbsp; </b> </td>
+                      <td align="center" width="180px"> <b> প্রাপ্য ছুটি</b> </td>   
+                      <td align="center" width="180px"> <b> &nbsp; ভোগকৃত ছুটি &nbsp; </b> </td>  
+                      <td align="center" width="180px"> <b> &nbsp; অব্যবহৃত ছুটি &nbsp; </b> </td>  
+                  </tr>
+                  <tr>
+                      <td align="left">&nbsp; ক) নৈমিত্তিক ছুটি </td>
+                      <td align="center"> ১০ দিন </td>   
+                      <td align="center"> {CASUAL_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {CASUAL_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; খ) অসুস্থতা ছুটি </td>
+                      <td align="center"> ১৪ দিন </td>   
+                      <td align="center"> {SICK_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {SICK_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; গ) অর্জিত ছুটি </td>
+                      <td align="center"> {EARN_LEAVE} দিন</td>   
+                      <td align="center"> {EARN_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {EARN_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; ঘ) মাতৃত্বকালীন ছুটি </td>
+                      <td align="center"> {MATERNITY_LEAVE} </td>   
+                      <td align="center"> {MATERNITY_LEAVE_ENJOY} </td>  
+                      <td align="center"> {MATERNITY_LEAVE_LEFT} </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; ঙ) অন্যান্য </td>
+                      <td align="left">  </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>                
+                </Table> 
+               
+            </td>                    
+            <td colspan="04">
+                <Table border='1' style='border-collapse:collapse'>
+                     <tr>
+                        <td align="center" height= "143px" width = "200px"> <b> </b> </td>                    
+                    </tr> 
+                    <tr>
+                        <td align="center" height= "25px" width = "200px"> <b> মানব সম্পদ বিভাগ</b> </td>                    
+                    </tr>
+                </table>
+            </td>        
+        </tr>  
+        <tr>
+            <td></td>
+            <td colspan="08"> <hr> </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>                                                                                                                                                                 
+    </table>
+    
+    <table width="850px">
+        <tr>
+            <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:24px;">ছুটির অনুমতি পত্র</td>
+        </tr>      
+    </table> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td width="15px"></td>
+            <td width="715px"></td>
+            <td></td>
+            <td>তারিখ : {PREPARE_DATE}</td>
+        </tr>        
+    </table>  
+       
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+          <tr>
+            <td></td>
+            <td width="300px"> আবেদনকারীর নাম : {EMP_NAME} </td>
+            <td></td>
+            <td width="100px"></td>
+            <td > কার্ড নং : {EMP_CARDNO} </td>            
+            <td></td>            
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> পদবী : {EMP_DESIGNATION} </td>
+            <td></td>
+            <td>  </td>
+            <td> বিভাগ : {EMP_DEPARTMENT}</td>            
+            <td></td>            
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+       <tr>
+            <td></td>
+            <td colspan="10"> ছুটির প্রকারঃ নৈমিত্তিক/অসুস্থতা/অর্জিত ছুটি/মাতৃত্বকালীন ছুটি/অন্যান্যঃ........................................................................... দিন</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>        
+        <tr>
+            <td></td>
+            <td colspan="10"> ................................/................................./{YEAR} হইতে .............................../..................................../{YEAR} পর্যন্ত </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>
+       <tr>
+            <td></td>
+            <td colspan="08"> মঞ্জুর করা হইল। ছুটি শেষে কাজে যোগদানের তারিখ ..................../..................../{YEAR}</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>    
+        
+         <tr>
+            <td></td>
+            <td colspan="04"> 
+                <Table border='1' style='border-collapse:collapse'>
+                  <tr>
+                      <td align="center" width="180px"> <b> &nbsp; ছুটির বিবরণ &nbsp; </b> </td>
+                      <td align="center" width="180px"> <b> প্রাপ্য ছুটি</b> </td>   
+                      <td align="center" width="180px"> <b> &nbsp; ভোগকৃত ছুটি &nbsp; </b> </td>  
+                      <td align="center" width="180px"> <b> &nbsp; অব্যবহৃত ছুটি &nbsp; </b> </td>  
+                  </tr>
+                  <tr>
+                      <td align="left">&nbsp; ক) নৈমিত্তিক ছুটি </td>
+                      <td align="center"> ১০ দিন </td>   
+                      <td align="center"> {CASUAL_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {CASUAL_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; খ) অসুস্থতা ছুটি </td>
+                      <td align="center"> ১৪ দিন </td>   
+                      <td align="center"> {SICK_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {SICK_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; গ) অর্জিত ছুটি </td>
+                      <td align="center"> {EARN_LEAVE} দিন</td>   
+                      <td align="center"> {EARN_LEAVE_ENJOY} দিন </td>  
+                      <td align="center"> {EARN_LEAVE_LEFT} দিন </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; ঘ) মাতৃত্বকালীন ছুটি </td>
+                      <td align="center"> {MATERNITY_LEAVE} </td>   
+                      <td align="center"> {MATERNITY_LEAVE_ENJOY} </td>  
+                      <td align="center"> {MATERNITY_LEAVE_LEFT} </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; ঙ) অন্যান্য </td>
+                      <td align="left">  </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>                
+                </Table> 
+               
+            </td>                    
+            <td colspan="04">
+                <Table border='1' style='border-collapse:collapse'>
+                     <tr>
+                        <td align="center" height= "143px" width = "200px"> <b> </b> </td>                    
+                    </tr> 
+                    <tr>
+                        <td align="center" height= "25px" width = "200px"> <b> মানব সম্পদ বিভাগ</b> </td>                    
+                    </tr>
+                </table>
+            </td>        
+        </tr>  
+         <tr>
+            <td></td>
+            <td colspan="08" height="40px" ></td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr> 
+    </table>
+     
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td width="15px"></td>
+            <td width="715px"></td>
+            <td></td>
+            <td>অনুমোদনকারীর স্বাক্ষর</td>
+        </tr>        
+    </table>  
+       
+    ]]>
+  </EmployeeSpecificInfo>
+</AppointmentLetter>

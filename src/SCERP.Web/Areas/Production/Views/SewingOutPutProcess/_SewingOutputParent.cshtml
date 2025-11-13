@@ -1,0 +1,42 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = null;
+}
+
+<div class="additem" style="overflow-y: scroll;height: 308px;">
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VwSewingOutputProcesses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                          grid.Column("SewingOutPutProcessRefId", header: "RefId", canSort: false),
+                          grid.Column("BuyerName", header: "Buyer", canSort: false),
+                          grid.Column("OrderName", header: "Order", canSort: false),
+                          grid.Column("StyleName", header: "Style", canSort: false),
+                          grid.Column("ColorName", header: "Color", canSort: false),
+                          grid.Column("MachineName", header: "Line", canSort: false),
+                          grid.Column("HourName", header: "Hour", canSort: false),
+                          grid.Column("ManPower", header: "M/P", canSort: false),
+                          grid.Column("OutputQuantity", header: "OutputQty", canSort: false),
+                          grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.OutputDate ?? ""), header: "Output Date"),
+                          grid.Column("Edit", canSort: false, format: @<text><button class="btnDetail" targentclass="sewingOutputDetail" action="/Production/SewingOutPutProcess/Edit?SewingOutPutProcess.SewingOutPutProcessId=@item.SewingOutPutProcessId"></button></text>),
+                          grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Production/SewingOutPutProcess/Delete?SewingOutPutProcess.SewingOutPutProcessId=@item.SewingOutPutProcessId"></button></text>)));
+    }
+</div>
+
+
+

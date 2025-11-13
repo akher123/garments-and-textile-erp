@@ -1,0 +1,104 @@
+﻿@using System.Activities.Statements
+@using iTextSharp.tool.xml.html
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewBag.Title = Model.ItemId > 0 ? "Edit Item" : "Add Item";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "InventoryItem", FormMethod.Post, new { @class = "Sizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SubGroupId)
+    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.IsActive)
+    <fieldset>
+        <legend>Item</legend>
+        <table class="tabefont">
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Item Code :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemCode, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ItemCode)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Item Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemName)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ItemName)
+                </td>
+            </tr>
+            @{
+    if (Model.SubGroupId == 18)
+    {
+        <tr>
+            <td class="fieldTitleCls">
+                @Html.Label("Generic Name")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.GenericNameId, Model.GenericNameSelectListItem, "N/A")
+            </td>
+            <td>
+                @Html.ValidationMessageFor(x => x.MeasurementUinitId)
+            </td>
+        </tr>
+                <tr>
+                    <td class="fieldTitleCls">
+                        @Html.Label("Item Type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ItemType, Model.ItemTypeSelectListItem)
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.ReorderLevel)
+                    </td>
+                </tr>
+    }
+            }
+
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("Unit")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MeasurementUinitId, Model.MeasurementUnitSelectListItem, "--Select--")
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.MeasurementUinitId)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("ReorderLevel :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.ReorderLevel)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ReorderLevel)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="1"></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

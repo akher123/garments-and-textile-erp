@@ -1,0 +1,158 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseViewModel
+@{
+    ViewBag.Title = "StorePurchase";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Store Purchase Requisition</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "StorePurchase", FormMethod.Get, new {@class = "StorePurchaseSearchForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new {@class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_DepartmentSection"}})
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_DepartmentLine"}})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Format("{0}", "Req Type :"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.RequisitionTypeId, Model.RequisitionTypeSelectListItem, "-Select-")
+                    </td>
+
+                    <td>
+                        @Html.Label("Purchase Type :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.PurchaseTypeId, Model.PurchaseTypeSelectListItem, "-Select-")
+                    </td>
+
+                    <td></td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/StorePurchase/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VStorePurchaseRequisitions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                        grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                        grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                        grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "--")</text>),
+                        grid.Column("Line", header: "Line ", format: @<text>@(item.LineName ?? "--")</text>),
+                        grid.Column("RequisitionNoteNo", header: "SRN No", format: @<text>@(item.RequisitionNoteNo ?? "--")</text>),
+                        grid.Column("RequisitionNoteDate", header: "RNDate", format: @<text>@(item.RequisitionNoteDate == null ? "" : item.RequisitionNoteDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                        grid.Column("RequisitionNo", header: "SPRNo ", format: @<text>@(item.RequisitionNo ?? "--")</text>),
+                        grid.Column("RequisitionDate", header: "SPR Date", format: @<text>@(item.RequisitionDate == null ? "" : item.RequisitionDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                        grid.Column("PreparedByEmployeeName", header: "PreparedBy", format: @<text>@(item.PreparedByEmployeeName ?? "--")</text>),
+                        grid.Column("RequsitionTypeTitle", header: "RType", format: @<text>@(item.RequsitionTypeTitle ?? "--")</text>),
+                        grid.Column("PurchaseTypeTitle", header: "PType ", format: @<text>@(item.PurchaseTypeTitle ?? "--")</text>),
+                       
+                         
+                          @*grid.Column("Report", format:@<text> <input type="button" onclick="search('@Url.Action("Report", "StorePurchaseRequisition", new { StorePurchaseRequisitionId = item.StorePurchaseRequisitionId })')" value="Show Report" />
+                        </text>, canSort: false)*@
+                       grid.Column("Edit", format:@<text> <button class="edit" action="/Inventory/StorePurchase/Edit?StorePurchaseRequisitionId=@item.StorePurchaseRequisitionId"></button>
+                        </text>, canSort: false),
+                       grid.Column("Export",format:@<text><a target="_blank" href="/Inventory/StorePurchaseRequisition/Report?StorePurchaseRequisitionId=@item.StorePurchaseRequisitionId">PDF</a></text>, canSort: false)
+
+            ));
+        }
+
+    </div>
+</section>
+
+
+
+
+
+
+
+
+

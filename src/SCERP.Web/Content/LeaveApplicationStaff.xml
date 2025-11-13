@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+   <table width="1010px" style="font-family:verdana;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	      <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:verdana;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Plummy Fashions Limited
+        </td>
+		    <td align="right" valign="bottom">
+          <img src="{EMPLOYEE_PHOTOGRAPH_PATH}" width="55px" height="55px" />
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;North Norshingpur, Kashipur, Fatullah, Narayanganj
+        </td>
+		    <td align="right">          
+        </td>
+      </tr>	  
+    </table>
+          
+    <table width="990px">    
+      <tr>
+          <td> <br/> </td>
+      </tr>
+    </table> 
+    
+    <table width="900px" style="font-family:vardana;font-weight:normal;font-size: 18px;">
+        <tr>
+            <td width="0px"></td>
+            <td width="0px"></td>
+            <td></td>
+            <td> Date : {PREPARE_DATE}</td>
+        </tr>        
+    </table>   
+    
+    <table width="930px">    
+      <tr>
+          <td align="center" style="font-family:verdana;font-weight:bold;font-size:18px;"><u style="text-decoration: underline;"> Leave Application for Staff <br> </u></td>
+      </tr>
+    </table> 
+	                                                            
+    <table border='1' style='border-collapse:collapse' style="font-family:vardana;font-weight:normal;font-size:12px;">
+        <tr>            
+            <td> ID No : {EMP_CARDNO} </td>
+            <td> Name : {EMP_NAME}</td>
+            <td> Designation : {EMP_DESIGNATION} </td>
+            <td colspan="2"> Department : {EMP_DEPARTMENT}</td>             
+        </tr>  
+                                              
+        <tr>            
+            <td colspan="03"> 
+                <Table border='1' style='border-collapse:collapse'>
+                  <tr>
+                      <td align="center" width="180px"> <b> &nbsp; Leave Description &nbsp; </b> </td>
+                      <td align="center" width="180px"> <b> Entitled </b> </td>   
+                      <td align="center" width="180px"> <b> &nbsp; Availed &nbsp; </b> </td>  
+                      <td align="center" width="180px"> <b> &nbsp; Due &nbsp; </b> </td>  
+                  </tr>
+                  <tr>
+                      <td align="left">&nbsp; 1) Casual Leave </td>
+                      <td align="center"> 10 Day </td>   
+                      <td align="center"> {CASUAL_LEAVE_ENJOY} Days </td>  
+                      <td align="center"> {CASUAL_LEAVE_LEFT} Days </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; 2) Sick Leave </td>
+                      <td align="center"> 14 Days </td>   
+                      <td align="center"> {SICK_LEAVE_ENJOY} Days </td>  
+                      <td align="center"> {SICK_LEAVE_LEFT} Days </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; 3) Earn Leave </td>
+                      <td align="center"> {EARN_LEAVE} Days </td>   
+                      <td align="center"> {EARN_LEAVE_ENJOY} Days </td>  
+                      <td align="center"> {EARN_LEAVE_LEFT} Days </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; 4) Maternity Leave </td>
+                      <td align="center"> {MATERNITY_LEAVE} </td>   
+                      <td align="center"> {MATERNITY_LEAVE_ENJOY} </td>  
+                      <td align="center"> {MATERNITY_LEAVE_LEFT} </td>  
+                  </tr>
+                  <tr>
+                      <td align="left"> &nbsp; 5) Others </td>
+                      <td align="left">  </td>   
+                      <td align="center"> </td>  
+                      <td align="center"> </td>  
+                  </tr>                
+                </Table> 
+               
+            </td>                    
+            <td width = "170px">
+                Joining Date : <br><br><br>
+                Return Date : 
+            </td>    
+            <td align="center" width = "170px">
+                Balance Confirmed By :<br><br>
+                --------------------<br>
+                HR
+            </td> 
+        </tr>  
+             
+        <tr>
+             <td colspan="5" align= "center"> <br> Application to be filled by applicant </td>           
+        </tr>
+        
+        <tr>
+             <td colspan="5"> <br> Leave Reason............................................................................................................................................................................... No of Days ...........................
+             <br><br>
+             From/On .............../................/20............    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  To .............../................/20............
+             <br><br>
+             Contact Address & Phone No during Leave : <br><br><br><br>
+            
+             </td>              
+        </tr>
+        
+        <tr>
+            <td align="center" colspan="2">  
+                  <br> -----------------------------------
+                  <br> Applicant 
+            </td>
+                                   
+            <td align="center"> 
+                  <br> ---------------------------------------------
+                  <br> Substitute Name in Absence
+            </td>
+            <td align="center" colspan="2"> 
+                  <br> ---------------------------------------------
+                  <br> Signature of Substitude
+            </td>
+        </tr>        
+        
+        <tr>
+             <td colspan="5" align= "center"> <br> Sanctioning Authority </td>           
+        </tr>
+        
+        <tr>
+             <td colspan="5"> <br>               
+                  No of Days ...........................From/On .............../................/20............   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   To .............../................/20............                                         
+                  <br><br>
+             </td>              
+        </tr>
+        <tr>
+            <td align="center" colspan="2">  
+                  <br> -------------------------------------------------------
+                  <br> Recommended By (Name and Designation) 
+            </td>                                   
+            <td align="center"> 
+                  <br> ---------------------------------
+                  <br> Head of HR
+            </td>
+            <td align="center" colspan="2"> 
+                  <br> ---------------------------------
+                  <br> Approved By
+            </td>
+        </tr>  
+        
+        <tr>
+             <td colspan="5" align= "center"> <br> (To be filled by Applicant) <br> <br>
+             <b> Leave Certificate </b>
+             
+             </td>           
+        </tr>
+                              
+        <tr>
+             <td colspan="5"> <br> This is to certify that Mr./Mrs: {EMP_NAME} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID No: {EMP_CARDNO}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Department: {EMP_DEPARTMENT}
+             <br><br>
+             {EMP_NAME} is an employee of Plummy Fashions ltd. He/She has been proceeded on .....................days of approved CL/SL/EL
+             <br><br>
+             From/On .............../................/20............   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   To .............../................/20............
+             <br><br>                       
+             </td>              
+        </tr>
+        
+        <tr>
+             <td colspan="5" align= "center"> <br> HR Department </td>           
+        </tr>  
+        
+        <tr>            
+            <td colspan="03"> 
+                <Table border='1' style='border-collapse:collapse'>
+                    <tr>
+                        <td align="center" width="180px"> <b> &nbsp; Leave Description &nbsp; </b> </td>
+                        <td align="center" width="180px"> <b> Entitled </b> </td>   
+                        <td align="center" width="180px"> <b> &nbsp; Availed &nbsp; </b> </td>  
+                        <td align="center" width="180px"> <b> &nbsp; Due &nbsp; </b> </td>  
+                    </tr>
+                    <tr>
+                        <td align="left">&nbsp; 1) Casual Leave </td>
+                        <td align="center"> 10 Day </td>   
+                        <td align="center"> {CASUAL_LEAVE_ENJOY} Days </td>  
+                        <td align="center"> {CASUAL_LEAVE_LEFT} Days </td>  
+                    </tr>
+                    <tr>
+                        <td align="left"> &nbsp; 2) Sick Leave </td>
+                        <td align="center"> 14 Days </td>   
+                        <td align="center"> {SICK_LEAVE_ENJOY} Days </td>  
+                        <td align="center"> {SICK_LEAVE_LEFT} Days </td>  
+                    </tr>
+                    <tr>
+                        <td align="left"> &nbsp; 3) Earn Leave </td>
+                        <td align="center"> {EARN_LEAVE} Days </td>   
+                        <td align="center"> {EARN_LEAVE_ENJOY} Days </td>  
+                        <td align="center"> {EARN_LEAVE_LEFT} Days </td>  
+                    </tr>
+                    <tr>
+                        <td align="left"> &nbsp; 4) Maternity Leave </td>
+                        <td align="center"> {MATERNITY_LEAVE} </td>   
+                        <td align="center"> {MATERNITY_LEAVE_ENJOY} </td>  
+                        <td align="center"> {MATERNITY_LEAVE_LEFT} </td>  
+                    </tr>
+                    <tr>
+                        <td align="left"> &nbsp; 5) Others </td>
+                        <td align="left">  </td>   
+                        <td align="center"> </td>  
+                        <td align="center"> </td>  
+                    </tr>                
+                </Table>                
+            </td>   
+            
+            <td colspan="03">
+                Remarks <br>
+                ------------<br>
+                If any : <br><br><br>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HR
+                
+            </td>               
+         </tr>  
+                              
+    </table>
+                                                            
+    </table>
+            
+    ]]>
+  </EmployeeSpecificInfo>
+</AppointmentLetter>

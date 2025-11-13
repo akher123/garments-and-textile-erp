@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SCERP</title>
+
+    <style type="text/css">
+        .auto-style1 {
+            width: 100%;
+        }
+
+        .auto-style2 {
+            width: 459px;
+            height: 84px;
+        }
+    </style>
+
+    @Styles.Render("~/Content/css")
+</head>
+
+@{
+    Layout = null;
+}
+
+<body style="background-color:#EAF7FA;">
+
+    <div id="main" class="main">
+
+        <div id="HeaderMargin" class="HeaderMargin Common-Color" align="left"></div>
+        <div id="header1" align="left" class="HearderLeft Common-Color"><div id="innerHeaderLeft" style="padding-top:20px;"> <a title="Home" href="http://www.soft-code.net"> <img src="~/Content/images/logo.jpg" /></a></div></div>
+        <div id="header2" align="center" class="HearderMiddle Common-Color"> <h1>SCERP</h1> </div>
+        <div id="header3" align="right" class="HearderRight Common-Color"> <div id="innerHeaderRight" class="HeaderRightInner"><a title="Home" href="@Url.Action("Index", "Home")"> <img src="~/Content/images/Home.jpg" /></a></div></div>
+
+        <div id="menu" class="MenuLogIn">
+           
+        </div>
+
+        <div id="content-padding" class="Menu-Padding"></div>
+
+        <div id="content" style="background-color:#EAF7FA;" class="Content">
+
+            <table class="auto-style1">
+                <tr>
+                    <td width="150px" height="80px">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <table style="background-color:#E5EAFA; border-style:solid; border-width:5px;border-color:lightblue; -webkit-border-radius: 10px;">
+                            <tr>
+                                <td colspan="5">
+                                    <img alt="" class="auto-style2" src="Content/images/LoginBanner.jpg" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    @Html.DisplayName("User Name")
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    @Html.Editor("UserName")
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    @Html.DisplayName("Password")
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    @Html.Password("Password")
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td></td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <div class="btn btn-default">
+                                        <a href="@Url.Action("Index","Home")"><img src="~/Content/images/LogIn.png" /></a>
+                                    </div>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div id="content-padding-right" class="Menu-Padding"></div>
+    </div>
+
+    @*<div id="footer"></div>*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/appScripts")
+    <link href="~/Scripts/showLoading/css/showLoading.css" rel="stylesheet" />
+    <script src="~/Scripts/showLoading/jquery.showLoading.js"></script>
+    @Scripts.Render("~/bundles/scerp")
+
+
+    <link href="~/Content/Master.css" rel="stylesheet" />
+    <link href="~/Content/Menu.css" rel="stylesheet" />
+    <script src="~/Scripts/menu_jquery.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.PrintEmbroideryBalanceViewModel
+
+@{
+    ViewBag.Title = "Emblishment";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Print Embroidery Balance</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("PrintEmbroideryBalance", "CuttingTag", FormMethod.Get, new {@class = "PrintEmbroideryBalanceForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Ref No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CuttingBatch.CuttingBatchRefId, new {id = "CuttingBatchRefIdTextBoxFor"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "CuttingBatch_buyerRefId", id = "BuyerRefIdDdl"})
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new {@class = "CuttingBatch_OrderNo", id = "OrderNoDdl"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo", id = "OrderStyleRefIdDdl" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Color")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingBatch.ColorRefId, Model.ColorSelectListItem, "ALL", new { @class = "CuttingBatch_Color", @data_val = "false", id = "ColorRefIdDdl" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">Summary▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick=" PrintEmbroideryBalanceInPDF(1) ">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick=" PrintEmbroideryBalanceInPDF(3) ">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">Detail▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="PrintEmbProcessStatus(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="PrintEmbProcessStatus(3)">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>JobNo</th>
+                    <th>Ref No</th>
+                    <th>Cutt Date</th>
+                    <th>Buyer</th>
+                    <th>Order</th>
+                    <th>Style</th>
+                    <th>Color</th>
+                    <th>Tag</th>
+                    <th>P/E</th>
+                    <th>Party</th>
+                    <th> Final Cutt </th>
+                    <th> Send </th>
+                    <th> Remain </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PrintEmbroideryBalanceList)
+                {
+                    <tr>
+                        <td>@item.JobNo</td>
+                        <td>@item.CuttingBatchRefId</td>
+                        <td>@item.CuttingDate.GetValueOrDefault().ToString("dd-MMM-yyyy")</td>
+                        <td>@item.BuyerName</td>
+                        <td>@item.OrderName</td>
+                        <td>@item.StyleName</td>
+                        <td>@item.ColorName</td>
+                        <td>@item.TagName</td>
+                        <td>@(item.EmblishmentStatus == 1 ? "Print" : "Embroidery")</td>
+                        <td>@item.PartyName</td>
+                        <td>@item.FinalCut</td>
+                        <td>@item.TotalSend</td>
+                        <td>@item.RemainingQty</td>
+                    </tr>
+                }
+                <tr style="background-color: #d3d3d3;font-weight: 900;">
+                    <td colspan="10" style="text-align: right">Total</td>
+                    <td>@Model.PrintEmbroideryBalanceList.Sum(x => x.FinalCut)</td>
+                    <td>@Model.PrintEmbroideryBalanceList.Sum(x => x.TotalSend)</td>
+                    <td>@Model.PrintEmbroideryBalanceList.Sum(x => x.RemainingQty)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/PrintEmbroiderSendBalance.js"></script>
+}
+
+
+
+
+
+

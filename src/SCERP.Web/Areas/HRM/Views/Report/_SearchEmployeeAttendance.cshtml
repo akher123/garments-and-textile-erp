@@ -1,0 +1,68 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceViewModel
+
+
+<tr>
+    <td>
+        @Html.Label("Company :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+    <td>
+        @Html.Label("Branch :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitByBranchId", @TargetClass = "Hrm_BranchUnitIdForDepartmentAndWorkShift" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+</tr>
+
+<tr>
+    <td>
+        @Html.Label("Unit :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitIdForDepartmentAndWorkShift", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitDepartmentAndWorkShiftByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @OtherTargetClass = "Hrm_BranchUnitWorkShift" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+    <td>
+        @Html.Label("Department :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @data_val = false, @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeDailyAttendance/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+    </td>
+
+</tr>
+
+<tr>
+    <td>
+        @Html.Label("Section :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentSection" })
+    </td>
+    <td>
+        @Html.Label("Line :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new { @data_val = false, @class = "Hrm_DepartmentLine" })
+    </td>
+</tr>
+
+<tr>
+    <td>
+        @Html.Label("Employee Type: ")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItem, "--Select--", new { @data_val = false})
+    </td>
+    <td>
+        @Html.Label("Work Shift :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitWorkShiftId, Model.WorkShiftSelectListItem, "-Select-", new { @data_val = true, @class = "Hrm_BranchUnitWorkShift" })
+    </td>
+</tr>
+
+

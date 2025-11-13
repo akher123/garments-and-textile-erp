@@ -1,0 +1,59 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.AttendanceBonusViewModel
+
+@{
+    ViewBag.Title = "Attendance Bonus";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.AttendanceBonuses.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "AttendanceBonus", FormMethod.Get, new { @class = "AttendanceBonusSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <div class="header-title">
+        <h2>Attendance Bonus</h2>
+    </div>
+    
+    { Html.RenderPartial("~/Areas/HRM/Views/AttendanceBonus/_SearchAttendanceBonus.cshtml", Model); }
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/AttendanceBonus/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.AttendanceBonuses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                                             
+                    grid.Column("EmployeeDesignation.Title", header: "Designation", format: @<text>@(item.EmployeeDesignation == null ? "" : item.EmployeeDesignation.Title)</text>),
+                    grid.Column("Amount", header: "Amount"),
+                    grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("ToDate", header: "ToDate", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>),
+            
+                    grid.Column("Detail/Edit", canSort:false, format:@<text><button class="edit" action="/HRM/AttendanceBonus/Edit?AttendanceBonusId=@item.AttendanceBonusId"></button></text>),
+                    grid.Column("Delete", format: @<text><button class="delete" action="/HRM/AttendanceBonus/Delete?AttendanceBonusId=@item.AttendanceBonusId"></button></text>, canSort: false)));                              
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "AttendanceBonus", new { SearchByEmployeeTypeId = Model.SearchFieldModel.SearchByEmployeeTypeId, SearchByEmployeeDesignationId = Model.SearchFieldModel.SearchByEmployeeDesignationId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+    </div>  
+</section>

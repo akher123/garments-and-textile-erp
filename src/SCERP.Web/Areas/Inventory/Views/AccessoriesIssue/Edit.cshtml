@@ -1,0 +1,167 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    ViewBag.Title = (Model.MaterialIssue.AdvanceMaterialIssueId > 0 ? "Edit" : "Add");
+}
+
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "AccessoriesIssue", FormMethod.Post, new { @class = " AccessoriesIssueForm ignore-validation" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.MaterialIssue.AdvanceMaterialIssueId)
+        @Html.HiddenFor(x => x.IsSearch)
+        <fieldset>
+            <legend>Accessories Issue</legend>
+            <table>
+                <tr>
+                    <td>
+                        <table class="tabefont" >
+                            <tr>
+                                <td>
+                                    @Html.DisplayName("IRef#:")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.MaterialIssue.IRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Party :")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.MaterialIssue.PartyId, Model.PartySelectListItem, "-Select-")
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayName("IRN No:")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteNo)
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayName("IRN Date :")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteDate, new { @class = "datepicker" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Buyer :")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.MaterialIssue.BuyerRefId, Model.BuyerSelectListItem, new { @class = "accIssue_BuyerRefId" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("OrderNo :")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.MaterialIssue.OrderNo, Model.OrderSelectListItem, new { @class = "accIssue_OrderNo" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Style No:")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.MaterialIssue.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "accIssue_OrderStyleRefId" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Employee:")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.MaterialIssue.RefEmployee, new { @class = "autocompliteEmployeeInfo" })
+                                    @Html.HiddenFor(x => x.MaterialIssue.RefPerson, new { @class = "issued_EmployeeId" })
+                                </td>
+                                <td>
+                                    
+                                </td>
+                               
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Remarks:")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.MaterialIssue.Remarks)
+                                </td>
+                                <td>
+                                    
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="button" class="FindPartial addButton" action="/AccessoriesIssue/AddNewRow/" target="#accessoriesIssue" value="Find"/>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="tabefont">
+
+                            <tr>
+                                <td>
+                                    <div id="accessoriesIssue" style="overflow-x: auto; height: 325px;">
+                                        @{
+                                            @Html.Partial("~/Areas/Inventory/Views/AccessoriesIssue/_AddNewRow.cshtml", Model)
+                                        }
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="float: left">
+                                    <input onclick="search('/Inventory/AccessoriesIssue/Index')" value="Back" id="backButton" class="addButton" type="button" />
+                                </td>
+                                <td style="float: right">
+                                    <input type="button" class="FindPartial addButton" action="/Inventory/AccessoriesIssue/Save/" target="#contentRight" value="Save" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+
+        </fieldset>
+    }
+</section>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Inventory/accessoriesIssue.js"></script>
+
+}

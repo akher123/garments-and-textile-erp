@@ -1,0 +1,274 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetMasterViewModel
+@{
+    Layout = null;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="~/Content/CSS/Merchandising/CostSheetReport.css" rel="stylesheet" />
+<script type="text/javascript">
+$(document).ready(function () {
+        $("#btnPrint").click(function () {
+            //$(".print-container").printThis();
+            var contents = $(".main-container").html();
+            var frame1 = $('<iframe />');
+            frame1[0].name = "frame1";
+            frame1.css({ "position": "absolute", "top": "-1000000px" });
+            $("body").append(frame1);
+            var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+            frameDoc.document.open();
+            //Create a new HTML document.
+            frameDoc.document.write('<html><head><title></title>');
+            frameDoc.document.write('</head><body>');
+            //Append the external CSS file.
+            frameDoc.document.write('<link href="~/Content/CSS/Merchandising/CostSheetReport.css" rel="stylesheet" type="text/css" />');
+            //Append the DIV contents.
+            frameDoc.document.write(contents);
+            frameDoc.document.write('</body></html>');
+            frameDoc.document.close();
+            setTimeout(function () {
+                window.frames["frame1"].focus();
+                window.frames["frame1"].print();
+                frame1.remove();
+            }, 500);
+        });
+});
+</script>
+<div class="main-container">
+    <div class="top-bar">
+        <div class="col-item-4">
+            <span class="head-title">FACTORY</span>
+        </div>
+        <div class="col-item-4">
+            <span class="head-title">MARKETING & MERCENDISING</span>
+        </div>
+        <div class="col-item-4">
+            <span class="head-title">BASIS ORDER</span>
+        </div>
+    </div>
+    <div class="header-title">
+        <h2>INITIAL COSTING SHEET</h2>
+    </div>
+    <div class="buyer-info">
+        <table id="t01" style="width:35%; float: left; margin-right: 16%;">
+            <thead>
+            <tr>
+                <th colspan="2" style="text-align: center">
+                    @Html.Label("Buyer Information")
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.Label("Ref No :")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.CostSheetMaster.CostSheetMasterRefId, new { @class = "TextBoxStyleMarc", @readonly = "readonly", style = "background-color: #F0ECE7;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Buyer ")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.OM_Buyer.BuyerName, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("OrderNo ")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.OrderNo, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("StyleNo")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.StyleNo, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Order Qty")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.OrderQty, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Item")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.Item, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Fabrication")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.Fabrication, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Color")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.Color, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Size")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.Size, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("YarnCount")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.YarnCount, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("GSM")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.Gsm, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Item Type ")</td>
+                    <td>@Html.DisplayFor(x => x.CostSheetMaster.OM_ItemType.Description, new { @class = "TextBoxStyleMarc" })</td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="t01" style="width: 49%; float: left;">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center;">Summery of Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Knitting $ Dying Cost</td>
+                    <td> $ 4.38</td>
+                </tr>
+                <tr>
+                    <td>Total Consumtion</td>
+                    <td>$ 3.625</td>
+                </tr>
+                <tr>
+                    <td>Total Trims Cost</td>
+                    <td>& 7.98</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="job-title">
+            <h4>Job#</h4>
+        </div>
+    </div>
+    <div class="buyer-cost">
+        <table id="t01" style="width: 22%; float: left; margin-right: 5%;">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center;">Knitting & Dying Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 1))
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                        <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ", "") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table id="t01" style="width: 22%; float: left; margin-right: 2%;">
+            <thead>
+                <tr>
+                    <th colspan="2" style="text-align: center;">Triming Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 3))
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                        <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ", "") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="sample-product-wrapper">
+            <div class="sample-product">
+                <img src="~/Content/images/Blue_Tshirt.jpg" />
+            </div>
+        </div>
+        <div class="consumption-wrapper">
+            <table id="t01" style="width: 22%; float: left; margin-right: 2%;position: absolute; left: 0; top: -5px;">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="text-align: center;">Consumtion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 2))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                            <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ", "") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="cm-costing-wrapper">
+            <table id="t01" style="width: 58%; position: absolute; left: 35.7%; top: 157%;">
+                <thead>
+                    <tr>
+                        <th colspan="10" style="text-align: center;">CM Costing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TTL Cost/mc</td>
+                        <td>TTL Mc Rec/Item</td>
+                        <td>TTL Mc/Fty</td>
+                        <td>TTL Day/Month</td>
+                        <td>TTL Hr/Day</td>
+                        <td>Target Producton/Hr</td>
+                        <td></td>
+                        <td>Dollar Rate</td>
+                        <td>DZ</td>
+                        <td>CM/DZ</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>$ 5.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="t01" style="width: 58%; position: absolute; left: 35.7%; top: 175%;">
+                <thead>
+                    <tr>
+                        <th colspan="10" style="text-align: center;">Final Costing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Size</td>
+                        <td>Con/DZ</td>
+                        <td>Color</td>
+                        <td>Fab Price/Kg</td>
+                        <td>Fab Price/dz</td>
+                        <td>Trims/dzn</td>
+                        <td>CM/dz</td>
+                        <td>Profit(5%)/dz</td>
+                        <td>Price/dz</td>
+                        <td>Price/Pcs</td>
+                    </tr>
+                    <tr>
+                        <td>XL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>2.5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div>
+    <input type="button" id="btnPrint" value="Print"/>
+</div>
+</div>
+
+        
+    
+
+
+
+

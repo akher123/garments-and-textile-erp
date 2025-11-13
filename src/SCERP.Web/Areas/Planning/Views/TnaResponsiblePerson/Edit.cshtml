@@ -1,0 +1,189 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.TnaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "tna", FormMethod.Post, new { @class = "tnaform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(x => x.OrderStyleRefId, new { @Class = "BuyerOrderStyleRefId" })
+
+    <fieldset>
+        <legend>Time and Action Calendar</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Style:</td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.SearchString)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.SearchByStyleId)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Activities:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ActivityId, Model.ActivitySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActivityId)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Lead Time:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LeadTime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LeadTime)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls"> Planned Start Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.PlannedStartDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedStartDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Planned End Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.PlannedEndDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedEndDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Actual Start Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.ActualStartDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActualStartDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Actual End Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.ActrualEndDate)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActrualEndDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Responsible Person:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ResponsiblePerson, Model.ResponsiblePersonSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ResponsiblePerson)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Notify Before Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NotifyBeforeDays)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NotifyBeforeDays)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Remarks :</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#SearchString').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "Tna")'
+            });
+
+    </script>
+}

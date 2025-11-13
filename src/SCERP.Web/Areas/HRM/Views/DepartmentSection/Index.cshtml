@@ -1,0 +1,61 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.DepartmentSectionViewModel
+@{
+    ViewBag.Title = "DepartmentSection";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.DepartmentSections.Count > 0) ? "" : "none";
+}
+<div class="header-title">
+    <h2>Department Section Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "DepartmentSection", FormMethod.Get, new { @class = "DepartmentSectionSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+          
+            Html.RenderPartial("~/Areas/HRM/Views/DepartmentSection/_SearchDepartmentSection.cshtml", Model);
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/DepartmentSection/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.DepartmentSections, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("Section.Name", header: "Section ", format: @<text>@(item.Section == null ? "" : item.Section.Name)</text>),
+                    grid.Column("BranchUnitDepartment.UnitDepartment.Department.Name", header: "Department ", format: @<text>@(item.BranchUnitDepartment.UnitDepartment.Department == null ? "" : item.BranchUnitDepartment.UnitDepartment.Department.Name)</text>),
+                    grid.Column(".BranchUnitDepartmentUnitDepartment.Unit.Name", header: "Unit ", format: @<text>@(item.BranchUnitDepartment.UnitDepartment.Unit == null ? "" : item.BranchUnitDepartment.UnitDepartment.Unit.Name)</text>),
+                    grid.Column("BranchUnitDepartment.BranchUnit.Branch.Company.Name", header: "Company ", format: @<text>@(item.BranchUnitDepartment.BranchUnit.Branch.Company == null ? "" : item.BranchUnitDepartment.BranchUnit.Branch.Company.Name)</text>),
+                    grid.Column("BranchUnitDepartment.BranchUnit.Branch.Name", header: "Branch ", format: @<text>@(item.BranchUnitDepartment.BranchUnit.Branch == null ? "" : item.BranchUnitDepartment.BranchUnit.Branch.Name)</text>),
+                   grid.Column("Detail/Edit",canSort:false,format:@<text><button class="edit" action="/HRM/DepartmentSection/Edit?DepartmentSectionId=@item.DepartmentSectionId"></button></text>),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/DepartmentSection/Delete?DepartmentSectionId=@item.DepartmentSectionId"></button></text>, canSort: false)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "DepartmentSection", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchBySectionId = Model.SearchFieldModel.SearchBySectionId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "DepartmentSection", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchBySectionId = Model.SearchFieldModel.SearchBySectionId })" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>
+

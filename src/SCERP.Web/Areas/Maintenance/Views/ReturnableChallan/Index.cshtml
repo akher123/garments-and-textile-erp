@@ -1,0 +1,132 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanViewModel
+@{
+    ViewBag.Title = "ReturnableChallan";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Returnable Challan</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "ReturnableChallan", FormMethod.Get, new {@class = "ReturnableChallanForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DateFrom, new {@class = "datepicker", @data_val = "false", @placeholder = "From Date"})
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DateTo, new {@class = "datepicker", @data_val = "false", @placeholder = "To Date"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Challan Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ChallanStatus, Model.ChallanStatusSelectListItem, new {@class = "form-control"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="ChallanInfo(1)">ChallanInfo(PDF)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="ChallanInfo(3)">ChallanInfo(EXCEL)</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Maintenance/ReturnableChallan/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ReturnableChallans, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("ReturnableChallanRefId", canSort: false, header: "RefId"),
+                  grid.Column("Messrs", canSort: false, header: "Messrs"),
+                  grid.Column("Address", canSort: false, header: "Address"),
+                  grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("RefferancePerson", canSort: false, header: "RefPerson"),
+                  grid.Column("EmployeeCardId", canSort: false, header: "EmployeeId"),
+                  grid.Column("Department", canSort: false, header: "Department"),
+                  grid.Column("Designation", canSort: false, header: "Designation"),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Maintenance/ReturnableChallan/Edit?ReturnableChallan.ReturnableChallanId=@item.ReturnableChallanId"></button></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Maintenance/ReturnableChallan/Delete?ReturnableChallanId=@item.ReturnableChallanId"></button></text>),
+                  grid.Column("Report", canSort: false, header: "REPORT", format: @<text><a href="/Maintenance/MaintenanceReport/ReturnableChallan?ReturnableChallan.ReturnableChallanId=@item.ReturnableChallanId" target="_blank">PDF</a></text>)));
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function ChallanInfo(reportTypeId) {
+            var form = $('.ReturnableChallanForm');
+            var data = form.serialize();
+            var url = '/Maintenance/MaintenanceReport/ReturnableChallanInfo?' + data + '&reportTypeId=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+
+    </script>
+
+}

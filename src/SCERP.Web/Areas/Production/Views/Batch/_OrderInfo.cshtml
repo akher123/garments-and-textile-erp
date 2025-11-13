@@ -1,0 +1,87 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    Layout = null;
+}
+@if (Model.Batch.BtType ==2)
+{
+<table class="tabefont" style="width: 100%;">
+    <tr>
+        <td>
+            @Html.Label("Order No", new { @style = "width: 79px;display: inline-block" })
+        </td>
+        <td>:</td>
+        <td style="width: 275px;">
+            @Html.TextBoxFor(x => x.Batch.Gsm,new { @placeholder = "Order No", @style = "width: 275px;" })
+        </td>
+        <td>
+            @Html.Label("*", new {@class = "labelInstruction"})
+        </td>
+        <td>
+            @Html.Label("Color", new { @style = "width: 71px;display: inline-block" })
+        </td>
+        <td>:</td>
+        <td style="width: 250px;">
+            @Html.TextBoxFor(x => x.GColorName, new { @onkeyup = "ColorAutocomplite(this)", @class = "Color_GColorName", @placeholder = "Color", @style = "width: 250px;" })
+            @Html.HiddenFor(x => x.Batch.GrColorRefId, new {@class = "Color_GrColorRefId", @style = "width: 250px;"})
+        </td>
+        <td>
+            @Html.Label("*", new {@class = "labelInstruction"})
+        </td>
+    </tr>
+</table>
+}
+else
+{
+
+    <table class="tabefont" style="width: 100%;">
+        <tr>
+            <td>@Html.Label("Buyer Name")</td>
+            <td>:</td>
+            <td style="width: 278px;">
+                @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "batch_buyerRefId", @style = "width: 264px;" })
+            </td>
+            <td>
+                @Html.Label("*", new {@class = "labelInstruction"})
+            </td>
+            <td>@Html.Label("Order ", new { @style = "width: 71px;display: inline-block" })</td>
+            <td>:</td>
+            <td style="width: 250px;">
+                @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select-", new {@class = "batch_OrderNo", @style = "width: 264px;" })
+            </td>
+            <td>
+                @Html.Label("*", new {@class = "labelInstruction"})
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Style Name")</td>
+            <td>:</td>
+            <td style="width: 278px;">
+                @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new {@class = "batch_StyleNo", @style = "width: 264px;" })
+            </td>
+            <td>
+                @Html.Label("*", new {@class = "labelInstruction"})
+            </td>
+            @*<td>@Html.Label("Color", new { @style = "width: 71px;display: inline-block" })</td>
+            <td>:</td>
+            <td>
+                @Html.DropDownListFor(x => x.Batch.GrColorRefId, Model.ColorListSelectListItem, "-Select-", new {@class = "batch_Color"})
+            </td>
+            <td>
+                @Html.Label("*", new {@class = "labelInstruction"})
+            </td>*@
+            <td>
+                @Html.Label("Color", new { @style = "width: 71px;display: inline-block" })
+            </td>
+            <td>:</td>
+            <td style="width: 251px;">
+                @Html.TextBoxFor(x => x.GColorName, new { @onkeyup = "ColorAutocomplite(this)", @class = "Color_GColorName", @placeholder = "Color", @style = "width: 251px;" })
+                @Html.HiddenFor(x => x.Batch.GrColorRefId, new { @class = "Color_GrColorRefId", @style = "width: 251px;" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+        </tr>
+    </table>
+}
+

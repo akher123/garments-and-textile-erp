@@ -1,0 +1,103 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabricIssueViewModel
+@{
+    ViewBag.Title = "Finish Fabric Received";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Finish Fabric Received</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "CuttFabricReceive", FormMethod.Get, new {@class = "CuttFabricReceiveForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                   
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.FinishFabricIssue.IsReceived)
+                    </td>
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem" style="min-height: 700px;">
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.FinishFabricIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("FinishFabIssureRefId", canSort: false, header: "IssueRefId"),
+                  grid.Column("Party.Name", canSort: false, header: "Party"),
+                  grid.Column("ChallanNo", canSort: false, header: "Challan No"),
+                  grid.Column("ChallanDate", canSort: false, header: "Challan Date", format: @<text>@(item.ChallanDate == null ? "" : item.ChallanDate.ToString("dd-MM-yyyy"))</text>),
+                  grid.Column("IsRecived", canSort: false, header: "IsRecived", format: @<text>@((item.IsReceived == null|| item.IsReceived == false) ? "Not Received" : "Received")</text>),
+                  grid.Column("Commerns", canSort: false, header: "Commerns"),
+                  grid.Column("Update", canSort: false, format: @<text><button type="button" class="edit" action="/Production/CuttFabricReceive/Edit?FinishFabricIssue.FinishFabIssueId=@item.FinishFabIssueId"></button></text>),
+                  grid.Column("Report", format:@<text>
+        <div class="dropdown">
+            <a class="dropbtn custom-table-dropbtn">PDF</a>
+            <div class="dropdown-content custom-table-dropdown-content">
+                <a href="/Inventory/FinishFabricIssue/DyeingBillReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Bill(TK)</a>
+                @if (item.PartyId == 1)
+                     {
+                    <a href="/Inventory/FinishFabricIssue/FinishFabricIssueReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Issue</a>
+                     }
+                     else
+                     {
+                    <a href="/Inventory/FinishFabricIssue/FinishFabricDeliveryReport?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Delivery</a>
+                    <a href="/Inventory/FinishFabricIssue/DyeingBillDollars?FinishFabIssueId=@item.FinishFabIssueId" target="_blank">Bill($)</a>
+                     }
+                /**/
+
+            </div>
+        </div>
+    </text>, canSort: false)
+));
+        }
+    </div>
+
+</section>
+
+
+
+
+

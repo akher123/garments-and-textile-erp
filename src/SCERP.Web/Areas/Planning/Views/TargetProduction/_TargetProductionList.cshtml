@@ -1,0 +1,37 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TargetProductionViewModel
+@{
+    ViewBag.Title = "Sewing Program";
+    Layout = null;
+}
+<div>
+    <input type="button"  onclick="search('@Url.Action("Index", "TargetProduction", new { Area = "Planning" })')" value="Back" />
+    <input type="button" class="AjaxPopup " value="New Schedule" action="@Url.Action("Edit", "TargetProduction", new { Model.OrderStyleRefId, Model.ProgramRefId,Model.Quantity})" />
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.TargetProductions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid gridSelect",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "buyerOrderStyle-row",
+            selectedRowStyle: "buyerOrderStyle-row",
+            rowStyle: "buyerOrderStyle-row",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("TargetProductionRefId", canSort: false, header: String.Format("{0}", "TargetProductionRefId")),
+                    grid.Column("ProgramRefId", canSort: false, header: String.Format("{0}", "ProgramRefID")),
+                    grid.Column("OrderStyleRefId", canSort: false, header: "OrderStyleRefID."),
+                    grid.Column("MachineRefId", canSort: false, header: String.Format("{0}", "Line")),
+                    grid.Column("StartDate", canSort: false, header: "Start Date", format: @<text>@(item.StartDate == null ? "" : item.StartDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("EndDate", canSort: false, header: "End Date", format: @<text>@(item.EndDate == null ? "" : item.EndDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("StyleQty", canSort: false, header: "StyleQty"),
+                    grid.Column("Edit",canSort:false,format:@<text><button class="edit" action="/Planning/TargetProduction/Edit?TargetProductionId=@item.TargetProductionId"></button></text>),
+                    grid.Column("Delet",canSort:false,format:@<text><button class="delete" action="/Planning/TargetProduction/Delete?TargetProductionId=@item.TargetProductionId"></button></text>)));
+    }
+</div>

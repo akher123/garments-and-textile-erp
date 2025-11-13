@@ -1,0 +1,819 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D4D90B96-E62F-4E93-8C39-272156C9C1D7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SCERP.DAL</RootNamespace>
+    <AssemblyName>SCERP.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormattedDbEntityValidationException.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IAccCurrencyRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IAccountIntegrationRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\ICostCentreMultiLayerRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IGLAccountHiddenRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IStylePaymentRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IVoucherDetailRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IVoucherMasterRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IBankAdviceRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IBbLcPurchaseRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IBbLcRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ICashBbLcRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ICashLCDyesChemicalRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ICashLcRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ICommTNARepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IExportDetailRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IExportRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IImportDetailsRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IImportRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ILCBBLCInfoDataRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ILcOrderRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ILcRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\ILcStyleRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IPackingListRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IPurchaseOrderDetailRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IPurchaseOrderRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IReceiveRepository.cs" />
+    <Compile Include="IRepository\ICommercialRepository\IReportRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\ICityRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IDailyProcessRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IDocumentRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IGatePassRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IMailSendRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IMessagingRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IStateRepository.cs" />
+    <Compile Include="IRepository\ICRMRepository\ICRMReportRepository.cs" />
+    <Compile Include="IRepository\ICRMRepository\IFeedbackRepository.cs" />
+    <Compile Include="IRepository\ICRMRepository\IProjectDocumentInfoRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeInOutModelProcessRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeInOutProcessRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeJobCardModelProcessRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeJobCardProcessRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeManualOverTimeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IExceptionDayRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IGeneralDaySetupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IHeadOfDepartmentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ILineOvertimeHourRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IMaternityLeaveRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IPenaltyRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IPenaltyTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISalaryIncrementRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillMatrixDetailRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillMatrixGradeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillMatrixProcessRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillMatrixRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IAdvanceMaterialIssueDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IAdvanceMaterialIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IBookingDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IBookingRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IFabricReturnRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IFinishFabricIssueDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IFinishFabricIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IFinishFabStoreRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IGenericNameRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IGreyIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMateraialReceivedDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialReceiveAgainstPoDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialReceiveAgainstPoRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialReceivedRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IRedyeingFabricIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IReDyeingFabricReceiveRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IRejectYarnIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStockRegisterRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStyleShipmentDetail.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStyleShipmentRepository.cs" />
+    <Compile Include="IRepository\IMaintenance\IReturnableChallanDetailRepository.cs" />
+    <Compile Include="IRepository\IMaintenance\IReturnableChallanReceiveMasterRepository.cs" />
+    <Compile Include="IRepository\IMaintenance\IReturnableChallanReceiveRepository.cs" />
+    <Compile Include="IRepository\IMaintenance\IReturnableChallanRepository.cs" />
+    <Compile Include="IRepository\IMarketingRepository\IMarketingInstituteRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBulkBookingDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBulkBookingRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBulkBookingYarnDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyerOrderRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IColorRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\ICurrencyRepositoryCommon.cs" />
+    <Compile Include="IRepository\ICommonRepository\ICustomSqlQuaryRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IEmailSendRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IMeasurementUnitRepository.cs" />
+    <Compile Include="IRepository\ICommonRepository\IPartyReposity.cs" />
+    <Compile Include="IRepository\ICommonRepository\ISqlReportParameterRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IAttendanceBonusRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IAttendanceBonusSettingRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IAuthorizationTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IAuthorizedPersonRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBankAccountTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBranchUnitDepartmentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBranchUnitRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBranchUnitWorkShiftRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ICountryRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IDepartmentLineRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IDepartmentSectionRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEfficiencyRateRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeAppointmentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeCardPrintRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeCompanyInfoRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeFamilyInfoRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeJobCardRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeShortLeaveRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeGradeSalaryPercentageRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeSkillRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeWorkGroupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeWorkShiftRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IGenderRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IHRMReportRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ILineRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IMaritalStatusRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IOutStationDutyRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IOvertimeEligibleEmployeeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IProjectDocumentInfoRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IQuitTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IReligionRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISectionRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillOperationRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillSetCategoryRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillSetDifficultyRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IStampAmountRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IUnitDepartmentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IUnitRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IApprovalStatusRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IBrandRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IGoodsReceivingNoteRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IInventoryAuthorizedPersonRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IInventoryGroupRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IInventoryItemRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IInventorySubGroupRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IItemStoreDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IItemStoreRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialIssueDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialIssueRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialIssueRequisitionDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialIssueRequisitionRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialRequisitionDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IMaterialRequisitionRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IPurchaseTypeRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IQualityCertificateDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IQualityCertificateRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IRquisitiontypeRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\ISizeRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStoreLedgerRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStorePurchaseRequisitionDetailRepository.cs" />
+    <Compile Include="IRepository\IInventoryRepository\IStorePurchaseRequisitionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IAgentRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyerTnaTemplateRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyOrdShipDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyOrdShipRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyOrdStyleColorRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IBuyOrdStyleSizeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICompConsumptionDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICompConsumptionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IComponentRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsigneeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsumptionDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsumptionGroupRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsumptionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsumptionSupplierRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IConsumptionTypeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICostDefinationRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICostOrdStyleRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICostSheetDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICostSheetMasterRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ICostSheetTemplateRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IFabConsumptionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IFabricOrderDetailRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IFabricOrderRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IFabricTypeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IInquiryReository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IItemModeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IItemTypeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IMarchandisingReportRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IMerchandiserRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IMrcReportRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmBrandRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmBuyerRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmBuyOrdStyleRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmCategoryRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmColorRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmSizeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOmStyleRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IOrderTypeRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IPaymentTermRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IPortOfLoadingRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IProductionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ISampleOrderRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ISampleStyleRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IBankReconcilationListRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IBankReconcilationRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IBankVoucherEntryRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\ICashVoucherEntryRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\ICompanySectorRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IContraVoucherRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IControlAccountRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\ICostCentreRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IDepreciationChartRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IFinancialPeriodRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IGLAccountRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IJournalVoucherEntryRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IOpeningBalanceRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IPermitedChartOfAccountRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IReportAccountRepository.cs" />
+    <Compile Include="IRepository\IAccountingRepository\IVoucherListRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBloodGroupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IBranchRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ICompanyOrganogramRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ICompanyRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IDepartmentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IDistrictRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEducationLevelRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeBankInfoRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeDailyAttendanceRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeDesignationRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeDocumentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeEducationRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeEntitlementRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeGradeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeInOutRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeLeaveRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeManualAttendanceRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeePermanentAddressRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeePresentAddressRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeSalaryRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeShiftRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeSkillLevelRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeSkillSetRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmployeeTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEmploymentRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IEntitlementRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IHolidaySetupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ILeaveSettingRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ILeaveTypeRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IPoliceStationRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISalarySetupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\ISkillSetRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IWeekendRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IWorkGroupRepository.cs" />
+    <Compile Include="IRepository\IHRMRepository\IWorkShiftRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ISeasonRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ISupplierCompanyRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\ITempGroupRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IThreadConsumptionRepository.cs" />
+    <Compile Include="IRepository\IMerchandisingRepository\IYarnConsumptionRepository.cs" />
+    <Compile Include="IRepository\IMisRepository\IMisDashboardRepository.cs" />
+    <Compile Include="IRepository\IMisRepository\IUserActivityRepository.cs" />
+    <Compile Include="IRepository\IMisRepository\IMobileAppsRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IAdvanceIncomeTaxRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IEmployeeBonusRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IEmployeeCardPrintRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IEmployeeSalaryProcessConfirmRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IEmployeeSalaryProcessRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IExcludedEmployeeFromSalaryProcessRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IOvertimeSettingsRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IPayrollProcessRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IPayrollReportRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IProgramDetailRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\IProgramRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\ISalaryAdvanceRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\ISalaryHeadRepository.cs" />
+    <Compile Include="IRepository\IPayrollRepository\ISalaryMappingRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IPlanningReportRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IProcessRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IProcessSequenceDefaultRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IProcessSequenceRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IProcessTemplateRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IProductionLineRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\ITimeAndActionRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\ITNATemplateRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\IWorkingDayRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IBatchDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IBatchRollRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IBundleCuttingRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IBundleCuttingSeqCharRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICutBankRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttFabRejectRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttingBatchRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttingProcessStyleActiveRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttingSequenceRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttingTagRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ICuttingTagSupplierRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IDailyFabricReceiveRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IDownTimeCategoryRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IDyeingJobOrderRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IDyeingSpChallanDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IDyeingSpChallanRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IFinishingProcessDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IFinishingProcessRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IGraddingRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IGroupSubProcessRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IHourRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IKnittingRollIssueRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IKnittingRollRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ILayCuttingRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IMachingInterruptionRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\INonProductiveTimeRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IPartCuttingRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProcessDeliveryDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProcessDeliveryRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProcessReceiveDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProcessReceiveRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProductionDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProductionReportRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IRejectAdjustmentRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IRejectReplacementRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IRollCuttingRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ISewingInputProcessDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ISewingInputProcessRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ISewingOutputProcessDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ISewingOutPutProcessRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IStanderdMinValDetailRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IStanderdMinValueRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\ITNAHorizontalRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\ITNARepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IBatchRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IMachineRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\IProcessorRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ISubProcessRepository.cs" />
+    <Compile Include="IRepository\IProductionRepository\ITargetProductionDetailRepository..cs" />
+    <Compile Include="IRepository\IRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\IAssigneeRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\IReportImageRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\ISubjectRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\ITaskRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\ITaskStatusRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\ITaskTypeRepository.cs" />
+    <Compile Include="IRepository\ITaskManagementRepository\ITmModuleRepository.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IConfirmationMediaRepository.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IMachineActionRepsitory.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IMachineLogRepository.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IVehicleGateEntryRepository.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IVehicleRepository.cs" />
+    <Compile Include="IRepository\ITrackingRepository\IVisitorGateEntryRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IModuleFeatureRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IModuleRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IUserMerchandiserRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IUserPermissionForDepartmentLevelRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IUserPermissionForEmployeeLevelRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IUserRepository.cs" />
+    <Compile Include="IRepository\IUserManagementRepository\IUserRoleRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AccountingRepository\AccCurrencyRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\AccountIntegrationRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\BankReconcilationListRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\BankReconcilationRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\BankVoucherEntryRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\CashVoucherEntryRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\CompanySectorRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\ContraVoucherEntryRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\ControlAccountRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\CostCentreMultiLayerRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\CostCentreRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\DepreciationChartRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\FinancialPeriodRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\GLAccountHiddenRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\GLAccountRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\JournalVoucherEntryRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\OpeningBalanceRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\PermitedChartOfAccountRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\ReportAccountRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\StylePaymentRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\VoucherDetailRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\VoucherListRepository.cs" />
+    <Compile Include="Repository\AccountingRepository\VoucherMasterRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\BankAdviceRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\BbLcPurchaseRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\BbLcRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\CashBbLcRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\CashLCDyesChemicalRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\CashLcRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\CommTNARepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ExportDetailRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ExportRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ImportDetailsRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ImportRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\LCBBLCInfoDataRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\LcOrderRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\LcRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\LcStyleRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\PackingListRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\PurchaseOrderDetailRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\PurchaseOrderRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ReceiveRepository.cs" />
+    <Compile Include="Repository\CommercialRepository\ReportRepository.cs" />
+    <Compile Include="Repository\CommonRepository\CityRepository.cs" />
+    <Compile Include="Repository\CommonRepository\ColorRepository.cs" />
+    <Compile Include="Repository\CommonRepository\CurrencyRepositoryCommon.cs" />
+    <Compile Include="Repository\CommonRepository\CustomSqlQuaryRepository.cs" />
+    <Compile Include="Repository\CommonRepository\DailyProcessRepository.cs" />
+    <Compile Include="Repository\CommonRepository\DocumentRepository.cs" />
+    <Compile Include="Repository\CommonRepository\EmailSendRepository.cs" />
+    <Compile Include="Repository\CommonRepository\GatePassRepository.cs" />
+    <Compile Include="Repository\CommonRepository\MailSendRepository.cs" />
+    <Compile Include="Repository\CommonRepository\MeasurementUnitRepository .cs" />
+    <Compile Include="Repository\CommonRepository\MessagingRepository.cs" />
+    <Compile Include="Repository\CommonRepository\PartyReposity.cs" />
+    <Compile Include="Repository\CommonRepository\SqlReportParameterRepository.cs" />
+    <Compile Include="Repository\CommonRepository\StateRepository.cs" />
+    <Compile Include="Repository\CRMRepository\CRMReportRepository.cs" />
+    <Compile Include="Repository\CRMRepository\FeedbackRepository.cs" />
+    <Compile Include="Repository\CRMRepository\ProjectDocumentInfoRepository.cs" />
+    <Compile Include="Repository\FormattedDbEntityValidationException.cs" />
+    <Compile Include="Repository\HRMRepository\AttendanceBonusRepository.cs" />
+    <Compile Include="Repository\HRMRepository\AttendanceBonusSettingRepository.cs" />
+    <Compile Include="Repository\HRMRepository\AuthorizationTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\AuthorizedPersonRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BankAccountTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BranchUnitDepartmentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BranchUnitRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BranchUnitWorkShiftRepository.cs" />
+    <Compile Include="Repository\HRMRepository\CountryRepository.cs" />
+    <Compile Include="Repository\HRMRepository\DepartmentLineRepository.cs" />
+    <Compile Include="Repository\HRMRepository\DepartmentSectionRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EfficiencyRateRepository .cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeAppointmentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeCardPrintRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeCompanyInfoRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeFamilyInfoRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeInOutModelProcessRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeInOutProcessRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeJobCardModelProcessRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeJobCardProcessRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeJobCardRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeManualOverTimeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeShortLeaveRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeGradeSalaryPercentageRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeSkillRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeWorkGroupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeWorkShiftRepository.cs" />
+    <Compile Include="Repository\HRMRepository\ExceptionDayRepository.cs" />
+    <Compile Include="Repository\HRMRepository\GenderRepository.cs" />
+    <Compile Include="Repository\HRMRepository\GeneralDaySetupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\HeadOfDepartmentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\HRMReportRepository.cs" />
+    <Compile Include="Repository\HRMRepository\LineOvertimeHourRepository.cs" />
+    <Compile Include="Repository\HRMRepository\LineRepository.cs" />
+    <Compile Include="Repository\HRMRepository\MaritalStatusRepository.cs" />
+    <Compile Include="Repository\HRMRepository\MaternityLeaveRepository.cs" />
+    <Compile Include="Repository\HRMRepository\OutStationDutyRepository.cs" />
+    <Compile Include="Repository\HRMRepository\OvertimeEligibleEmployeeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\PenaltyRepository.cs" />
+    <Compile Include="Repository\HRMRepository\PenaltyTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\ProjectDocumentInfoRepository.cs" />
+    <Compile Include="Repository\HRMRepository\QuitTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\ReligionRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SalaryIncrementRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SectionRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillMatrixDetailRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillMatrixGradeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillMatrixProcessRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillMatrixRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillOperationRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillSetCategoryRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillSetDifficultyRepository.cs" />
+    <Compile Include="Repository\HRMRepository\StampAmountRepository.cs" />
+    <Compile Include="Repository\HRMRepository\UnitDepartmentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\UnitRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\AdvanceMaterialIssueDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\AdvanceMaterialIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\ApprovalStatusRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\BookingDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\BookingRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\BrandRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\FabricReturnRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\FinishFabricIssueDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\FinishFabricIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\FinishFabStoreRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\GenericNameRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\GoodsReceivingNoteRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\GreyIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\InventoryAuthorizedPersonRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\InventoryGroupRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\InventoryItemRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\InventorySubGroupRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\ItemStoreDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\ItemStoreRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MateraialReceivedDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialIssueDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialIssueRequisitionDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialIssueRequisitionRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialReceiveAgainstPoDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialReceiveAgainstPoRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialReceivedRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialRequisitionDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\MaterialRequisitionRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\PurchaseTypeRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\QualityCertificateDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\QualityCertificateRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\RedyeingFabricIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\ReDyeingFabricReceiveRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\RejectYarnIssueRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\RquisitiontypeRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\SizeRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\StockRegisterRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\StoreLedgerRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\StorePurchaseRequisitionDetailRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\StorePurchaseRequisitionRepository.cs" />
+    <Compile Include="Repository\InventoryRepository\StyleShipmentDetail.cs" />
+    <Compile Include="Repository\InventoryRepository\StyleShipmentRepository.cs" />
+    <Compile Include="Repository\Maintenance\ReturnableChallanDetailRepository.cs" />
+    <Compile Include="Repository\Maintenance\ReturnableChallanReceiveMasterRepository.cs" />
+    <Compile Include="Repository\Maintenance\ReturnableChallanReceiveRepository.cs" />
+    <Compile Include="Repository\Maintenance\ReturnableChallanRepository.cs" />
+    <Compile Include="Repository\MarketingRepository\MarketingInstituteRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\AgentRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BulkBookingDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BulkBookingYarnDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyerOrderRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyerTnaTemplateRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyOrdShipDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyOrdShipRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyOrdStyleColorRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BuyOrdStyleSizeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CompConsumptionDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CompConsumptionRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ComponentRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsigneeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsumptionDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsumptionGroupRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsumptionRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsumptionSupplierRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ConsumptionTypeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CostDefinationRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CostOrdStyleRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CostSheetDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CostSheetMasterRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\CostSheetTemplateRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\FabConsumptionRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\FabricOrderDetailRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\FabricOrderRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\FabricTypeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\BulkBookingRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\InquiryReository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ItemModeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ItemTypeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\MarchandisingReportRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\MerchandiserRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\MrcReportRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmBrandRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmBuyerRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmBuyOrdStyleRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmCategoryRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmColorRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmSizeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OmStyleRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\OrderTypeRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\PaymentTermRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\PortOfLoadingRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\SampleOrderRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\SeasonRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\SupplierCompanyRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\TempGroupRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\ThreadConsumptionRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\YarnConsumptionRepository.cs" />
+    <Compile Include="Repository\MisRepository\MisDashboardRepository.cs" />
+    <Compile Include="Repository\MisRepository\MobileAppsRepository.cs" />
+    <Compile Include="Repository\MisRepository\UserActivityRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\AdvanceIncomeTaxRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\EmployeeBonusRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\ExcludedEmployeeFromSalaryProcessRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\PayrollProcessRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\PayrollReportRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\SalaryAdvanceRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\SalaryMappingRepository.cs" />
+    <Compile Include="IRepository\IPlanningRepository\ITargetProductionRepository.cs" />
+    <Compile Include="Repository\Planning\PlanningReportRepository.cs" />
+    <Compile Include="Repository\Planning\ProgramDetailRepository.cs" />
+    <Compile Include="Repository\Planning\ProgramRepository.cs" />
+    <Compile Include="Repository\Planning\ProcessRepository.cs" />
+    <Compile Include="Repository\Planning\ProcessSequenceDefaultRepository.cs" />
+    <Compile Include="Repository\Planning\ProcessSequenceRepository.cs" />
+    <Compile Include="Repository\Planning\ProcessTemplateRepository.cs" />
+    <Compile Include="Repository\Planning\ProductionLineRepository.cs" />
+    <Compile Include="Repository\Planning\TargetProductionDetailRepository.cs" />
+    <Compile Include="Repository\Planning\TargetProductionRepository.cs" />
+    <Compile Include="Repository\Planning\TimeAndActionRepository.cs" />
+    <Compile Include="Repository\Planning\TNAHorizontalRepository.cs" />
+    <Compile Include="Repository\Planning\TNARepository.cs" />
+    <Compile Include="Repository\Planning\TNATemplateRepository.cs" />
+    <Compile Include="Repository\Planning\WorkingDayRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\BatchDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\BatchRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\BatchRollRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\BundleCuttingRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\BundleCuttingSeqCharRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CutBankRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttFabRejectRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttingBatchRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttingProcessStyleActiveRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttingSequenceRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttingTagRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\CuttingTagSupplierRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\DailyFabricReceiveRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\DownTimeCategoryRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\DyeingJobOrderRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\DyeingSpChallanDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\DyeingSpChallanRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\FinishingProcessDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\FinishingProcessRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\GraddingRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\GroupSubProcessRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\HourRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\KnittingRollIssueRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\KnittingRollRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\LayCuttingRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\MachineRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\MachingInterruptionRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\NonProductiveTimeRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\PartCuttingRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProcessDeliveryDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProcessDeliveryRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProcessorRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProcessReceiveDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProcessReceiveRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProductionDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProductionReportRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\ProductionRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\RejectAdjustmentRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\RejectReplacementRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\RollCuttingRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\SewingInputProcessDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\SewingInputProcessRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\SewingOutputProcessDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\SewingOutPutProcessRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\StanderdMinValDetailRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\StanderdMinValueRepository.cs" />
+    <Compile Include="Repository\ProductionRepository\SubProcessRepository.cs" />
+    <Compile Include="Repository\MerchandisingRepository\SampleStyleRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\AssigneeRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\ReportImageRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\SubjectRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\TaskRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\TaskStatusRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\TaskTypeRepository.cs" />
+    <Compile Include="Repository\TaskManagementRepository\TmModuleRepository.cs" />
+    <Compile Include="Repository\TrackingRepository\ConfirmationMediaRepository.cs" />
+    <Compile Include="Repository\TrackingRepository\MachineActionRepsitory.cs" />
+    <Compile Include="Repository\TrackingRepository\MachineLogRepository.cs" />
+    <Compile Include="Repository\TrackingRepository\VehicleGateEntryRepository.cs" />
+    <Compile Include="Repository\TrackingRepository\VehicleRepository.cs" />
+    <Compile Include="Repository\TrackingRepository\VisitorGateEntryRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\ModuleFeatureRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\ModuleRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\UserMerchandiserRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\UserPermissionForDepartmentLevelRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\UserPermissionForEmployeeLevelRepository.cs" />
+    <Compile Include="Repository\UserManagementRepository\UserRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BloodGroupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\BranchRepository.cs" />
+    <Compile Include="Repository\HRMRepository\CompanyOrganogramRepository.cs" />
+    <Compile Include="Repository\HRMRepository\CompanyRepository.cs" />
+    <Compile Include="Repository\HRMRepository\DepartmentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\DistrictRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EducationLevelRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeBankInfoRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeDailyAttendanceRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeDesignationRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeDocumentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeEducationRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeEntitlementRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeGradeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeInOutRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeLeaveRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeManualAttendanceRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeePermanentAddressRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeePresentAddressRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeSalaryRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeShiftRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeSkillLevelRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeSkillSetRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmployeeTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EmploymentRepository.cs" />
+    <Compile Include="Repository\HRMRepository\EntitlementRepository.cs" />
+    <Compile Include="Repository\HRMRepository\HolidaySetupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\LeaveSettingRepository.cs" />
+    <Compile Include="Repository\HRMRepository\LeaveTypeRepository.cs" />
+    <Compile Include="Repository\HRMRepository\PoliceStationRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SalarySetupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\SkillSetRepository.cs" />
+    <Compile Include="Repository\HRMRepository\WeekendRepository.cs" />
+    <Compile Include="Repository\HRMRepository\WorkGroupRepository.cs" />
+    <Compile Include="Repository\HRMRepository\WorkShiftRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\EmployeeSalaryProcessConfirmRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\EmployeeSalaryProcessRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\OvertimeSettingsRepository.cs" />
+    <Compile Include="Repository\PayrollRepository\SalaryHeadRepository.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\UserManagementRepository\UserRoleRepository.cs" />
+    <Compile Include="SCERP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SCERP.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SCERP1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SCERP.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SCERPDBContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\SCERP.DAL.dll" />
+    <Content Include="bin\Debug\SCERP.DAL.pdb" />
+    <Content Include="Database\DBScripts\CreateTable.sql" />
+    <Content Include="Database\DBScripts\InsertData.sql" />
+    <Content Include="Database\DBScripts\SCERP_Backup_19.06.2014.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="Database\DBBackup\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <EntityDeploy Include="SCERP.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SCERP1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SCERP.csdl" />
+    <None Include="SCERP.edmx.diagram">
+      <DependentUpon>SCERP.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCERP.Common\SCERP.Common.csproj">
+      <Project>{f5a8770a-24bd-4253-b1cf-cf3a5d701b86}</Project>
+      <Name>SCERP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCERP.Model\SCERP.Model.csproj">
+      <Project>{1c395cb5-b1cb-4592-b357-2d4549135788}</Project>
+      <Name>SCERP.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

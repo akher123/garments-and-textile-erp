@@ -1,0 +1,107 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+@{
+    ViewBag.Title = "EmployeeDailyAttendance";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    var dispalyForEdit = (Model.Id > 0) ? "none" : "";
+    var dispaly = (Model.Id > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Save", "EmployeeDailyAttendance", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.Id)
+    <fieldset>
+        <legend>Employee Daily Attendance (Single)</legend>
+        <table class="tabefont">
+            <tr>
+                <td>&nbsp;</td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls " style="width:105px;">@Html.Label("Employee ID")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, new { @class = "employeeCardId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                </td>
+                <td>
+                    <input style="display:@dispalyForEdit" class="addButton" action="/HRM/EmployeeDailyAttendance/GetEmployeeDetailByEmployeeCadID" type="button" id="filterbyEmployeeCadrId" value="Find" />
+                </td>
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr id="employeeDetail_containner">
+                @if (Model.EmployeeCompanyInfo != null)
+                {
+                    {
+                        Html.RenderPartial("~/Areas/HRM/Views/EmployeeDailyAttendance/_EmployeeDetails.cshtml", Model.EmployeeCompanyInfo);
+                    }
+                }
+            </tr>
+        </table>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width:100px;">Date:</td>
+                <td>
+                    @*@Html.EditorFor(x => x.Date, new { style = "width:200px;" })*@
+                    @Html.TextBoxFor(x => x.Date, new { @class = "datepicker", @data_val = "false", style = "width:200px;", @placeholder = "To date" })
+
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+             
+                <td colspan="9" align="left">
+                    @Html.ValidationMessageFor(x => x.Date)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width:100px;">Time:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.HourKey, Model.HourSelectListItem, "Hour", new { style = "width:100px;" })
+                    &nbsp;
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.DropDownListFor(x => x.MinuteKey, Model.IsMinuteSelectListItem, "Minute", new { style = "width:100px;" })
+                    &nbsp;
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    &nbsp;
+                    @Html.DropDownListFor(x => x.PeriodKey, Model.PeriodSelectListItem, "Period", new { style = "width:100px;" })
+                    &nbsp;
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td colspan="9">
+                    @Html.ValidationMessageFor(x => x.PeriodKey)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width:100px;">Remarks:</td>
+                <td>
+                    @Html.TextAreaFor(x => x.Remarks, new { style = "width:200px;" })
+                </td>
+                <td colspan="9">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td id="displayButton" style="display: @dispaly">
+                    @Html.SaveButton()
+                </td>
+                <td class="7"></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/HRM/FilterEmployee.js"></script>
+}

@@ -1,0 +1,33 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>CONSUMPTION ANALYSIS</h2>
+</div>
+@section styles
+{
+   <link href="~/Content/CSS/Merchandising/RowSelectStyle.css" rel="stylesheet" />
+}
+<div id="buyerOrderDetail" @*style="margin-top:10px; font-size: 12px;margin-left: 20px;"*@>
+    <ul>
+        <li><a id="OrderStyleListTabHref" href="/Merchandising/Consumption/OrderStyleList?SearchString=@Model.OrderStyleRefId">Style</a></li>
+        <li><a id="styleConsumptionTabHref" href="/Merchandising/Consumption/Index?OrderStyleRefId=@Model.OrderStyleRefId">Consumption</a></li>
+        <li><a id="ConsumptionDetailHref" href="/Merchandising/ConsumptionDetail/Index?ConsumptionId=@Model.ConsumptionId">Consumption Detail</a></li>
+        <li><a id="StyleWiseConsumtionDetailHref" href="/Merchandising/Consumption/StyleWiseConsumtionDetail?OrderStyleRefId=@Model.OrderStyleRefId">Consumption Summary</a></li>
+    </ul>
+
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        var postData = {};
+        $("#buyerOrderDetail").tabs({
+            load: SCERP.AjaxCompleted,
+          disabled: [1, 2,3]
+        });
+
+    </script>
+
+}

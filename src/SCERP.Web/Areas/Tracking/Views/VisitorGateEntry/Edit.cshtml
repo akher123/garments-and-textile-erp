@@ -1,0 +1,184 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.VisitorGateEntryViewModel
+@{
+
+    ViewBag.Title = Model.VisitorGateEntry.VisitorGateEntryId > 0 ? "Edit " : "Add ";
+    bool isReadOnly = Model.VisitorGateEntry.VisitorGateEntryId > 0;
+    var visible = Model.VisitorGateEntry.VisitorGateEntryId > 0 ? "visible" : "hidden";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "VisitorGateEntry", FormMethod.Post, new { @class = "VisitorGateEntryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VisitorGateEntry.VisitorGateEntryId)
+    @Html.HiddenFor(model => model.VisitorGateEntry.ImagePath,new { id="hidden_imageId"})
+    <fieldset>
+        <legend>Visitor Gate Entry</legend>
+        <table>
+            <tr>
+                <td>
+                    <table class="tabefont">
+
+                        <tr>
+                            <td>
+                                @Html.DropDownListFor(x => x.VisitorGateEntry.CheckOutStatus, Model.CheckOutStatusSelectListItem, "-Select-", new { @style = "display:none" })
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.ExitDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Exit date", @style = "display:none" })
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.CheckOutTime, new { @class = "timePicker", @style = "display:none" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Phone :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.Phone, new { @class = "PhoneTextBoxFor", @placeholder = "Phone Number" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Name :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.VisitorName, new { @class = "VisitorNameTextBoxFor", @placeholder = "Visitor Name" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Address :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.Address, new { @class = "AddressTextBoxFor", @placeholder = "Visitor Address" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("To Whom")
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.VisitorGateEntry.EmployeeId, new { @class = "EmployeeIdHiddenFor" })
+                                @Html.TextBoxFor(x => x.EmployeeName, new { @class = "ToWhomTextBoxFor", @placeholder = " To Whom" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Purpose:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.Purpose, new { @placeholder = "Purpose" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Confirmed By:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.ConfirmedBy, new { @class = "ConfirmedByTextBoxFor", @placeholder = "Employee Name" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Confirm Way:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.VisitorGateEntry.ConfirmationMediaId, Model.ConfirmationMediaListSelectListItem, "-Select-", new { @class = "ConfirmWayDropDownList" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Card Id:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.VisitorCardId, new { @placeholder = "Card Id " })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Check In Date:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.EntryDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Check In Date" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Check In Time:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.VisitorGateEntry.CheckInTime, new { @class = "timePicker", @placeholder = "Check In Time" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Remarks :")
+                            </td>
+                            <td>
+                                @Html.TextAreaFor(x => x.VisitorGateEntry.Remarks, new { @placeholder = "Remarks" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.SaveButton()
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <dv>
+                        <table class="tabefont">
+                            <tr>
+                                <td align="center"><u>Live Camera</u></td>
+                                <td></td>
+                                <td align="center"><u>Captured Picture</u></td>
+                            </tr>
+                            <tr>
+                                <td><div id="webcam"></div></td>
+                                <td>&nbsp;</td>
+                                <td><img id="imgCapture"  style="visibility: @visible; width: 320px;height: 240px" /></td>
+                            </tr>
+
+                        </table>
+                        <br />
+                        <div>
+                            <input type="button" id="upload" value="Upload" />
+                        </div>
+
+
+                    </dv>
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script src="~/Scripts/Webcam/jquery.webcam.min.js"></script>
+    <script src="~/Scripts/SCERP/Tracking/VisitorGateEntry.js"></script>
+
+}
+
+

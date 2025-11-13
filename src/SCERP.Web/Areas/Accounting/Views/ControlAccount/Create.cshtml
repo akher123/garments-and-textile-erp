@@ -1,0 +1,147 @@
+﻿@model  SCERP.Model.Acc_ControlAccounts
+@{
+    ViewBag.Title = "Add account head";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<style type="text/css">
+    input[readonly="readonly"] {
+        background-color: #b0c4de;
+    }
+</style>
+@using (Html.BeginForm("SaveControlAccount", "ControlAccount", new { @class = "ControlAccountForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.SortOrder)
+    @Html.HiddenFor(model => model.ControlLevel)
+    @Html.HiddenFor(model => model.IsActive)
+    <div>
+        <table style="width: 400px;" class="tabefont">
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Parent Code</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ParentCode, new {@readonly = "readonly"})
+                    @Html.ValidationMessageFor(model => model.ParentCode)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Parent Name</td>
+                <td>                
+                    @Html.TextBox("ParentName", null, new { @class = "ParentNameClass" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Control Code</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ControlCode, new { @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.ControlCode)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Control Name</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ControlName)
+                    @Html.ValidationMessageFor(model => model.ControlName)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="button" id="saveControlAccount" value="save" />
+                </td>
+            </tr>
+            @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+        </table>
+    </div>
+
+}
+@section scripts
+{
+    <script type="text/javascript">
+       
+        $('#ControlName').keyup(function () {
+
+            $('#ControlName').css('border-color', '');
+        });
+        $('#saveControlAccount').click(function () {
+            if ($('#ControlName').val().length == 0) {
+                $('#ControlName').css('border-color', 'red');
+            } else {
+
+                var accControlAccount =
+                {
+                    "Id": $('#Id').val(),
+                    "ParentCode": $('#ParentCode').val(),
+                    "ControlCode": $('#ControlCode').val(),
+                    "ControlName": $('#ControlName').val(),
+                    "SortOrder": $('#SortOrder').val(),
+                    "ControlLevel": $('#ControlLevel').val()
+                };
+                $.ajax({
+                    url: '/Accounting/ControlAccount/SaveControlAccount',
+                    data: accControlAccount,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Success == false && data.Success != 'undefined' && data.Error == true && data.Error != 'undefined') {
+                            $('.errorMessage').append(data.Message);
+
+                        } else {
+                            //var li = '<li id="' +
+                            //    data.ControlCode +
+                            //    '" class="parent"><a> </a><span style="color:brown">' +
+                            //    data.ControlCode +
+                            //    '-</span><span id="' +
+                            //    data.Id +
+                            //    '_' +
+                            //    data.ParentCode +
+                            //    '_' +
+                            //    data.ControlCode +
+                            //    '_' +
+                            //    data.ControlLevel +
+                            //    '_' +
+                            //    data.SortOrder +
+                            //    '" class="chartofAcc" style="color: blue"> ' +
+                            //    data.ControlName +
+                            //    '</span>';
+                            //if (accControlAccount.Id.length > 0) {
+                            //    $(this).replaceWith(li);
+                            //} else {
+                            //    $('#' + data.ParentCode).append(li);
+                            //}
+
+                           loadAction("/Accounting/ControlAccount/ChartOfAccount");// for reload
+                            $('#event_result').dialog('close');
+                            $('#event_result').dialog('destroy').remove();
+                        }
+
+                    }
+                });
+            }
+
+        });
+
+        var parentCode = $('#ParentCode').val();
+
+        $.ajax({
+            url: '/Accounting/ControlAccount/GetParentName',
+            data: {
+                "parentCode": parentCode
+            },
+                      
+            type: 'POST',
+            success: function (data) {
+                if(data.Success)
+                    $('#ParentName').val(data.Message);
+            }
+        });
+ 
+    </script>  
+}
+
+

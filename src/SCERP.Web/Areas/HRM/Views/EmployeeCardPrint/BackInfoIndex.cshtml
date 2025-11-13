@@ -1,0 +1,38 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeCardPrintViewModel
+
+@{
+    ViewBag.Title = "Employee Card Back Info Print";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeCardInfos.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("EmployeeCardBackInfoPrint", "EmployeeCardPrint", FormMethod.Get, new { @class = "EmployeeCardPrintSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 240px;">
+        <h3>Card Back Info Print</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr> 
+            @{ Html.RenderPartial("~/Areas/HRM/Views/EmployeeCardPrint/_SearchCardPrintBackInfoView.cshtml", Model); }
+         
+            <tr>
+                <td></td>
+                <td><input type="button" class="addButton" onclick="search('@Url.Action("EmployeeCardBackInfoPrint", "EmployeeCardPrint")','EmployeeCardPrintSearchForm')" value="Show Card" /></td>
+                @*<input type="submit" class="testResult" value="Show Card" />*@
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </section>   
+}

@@ -1,0 +1,101 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+@{
+    Layout = null;
+}
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+@Html.HiddenFor(model => model.OrderStyleRefId, new { @class= "Order_StyleRefId" })
+<fieldset>
+    <legend>Color and Size of <strong>@Model.OrderStyleRefId</strong> </legend>
+    <div class="dropdown custom-dropdown">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateColor">Color</a>
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">Size</a>
+        </div>
+    </div>
+    <div>
+        <div class="color-section">
+            <table>
+                <tr>
+                    <td>
+                        <div class="UpdateStyleColorContainer">
+                            @Html.Partial("~/Areas/Merchandising/Views/BuyerOrderColorSize/_UpdateColor.cshtml", Model)
+                        </div>
+                        <hr />
+                        <div id="StyleColorContainer">
+                            @Html.Partial("~/Areas/Merchandising/Views/BuyerOrderColorSize/EditColor.cshtml", Model)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="size-section">
+            <div style="float: left;">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="UpdateStyleSizeContainer">
+                                @Html.Partial("~/Areas/Merchandising/Views/BuyerOrderColorSize/_UpdateSize.cshtml", Model)
+                            </div>
+                            <hr />
+                            <div id="StyleSizeContainer">
+                                @Html.Partial("~/Areas/Merchandising/Views/BuyerOrderColorSize/EditSize.cshtml", Model)
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+         
+            <div class="order-notes-wrapper" style="width: auto;max-width: 39%;margin: 0;font-size: 13px;min-height: 308px;padding: 20px;">
+                <table>
+                    <tr>
+                        <td>
+                            OrderNo :
+                        </td>
+                        <td>@Model.BuyerOrder.OrderNo</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Buyer :
+                        </td>
+                        <td>@Model.BuyerOrder.BuyerName</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total Order Qty  :
+                        </td>
+                        <td>@Model.BuyerOrder.Quantity</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Season :
+                        </td>
+                        <td>@Model.BuyerOrder.SeasonName</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Style Name :
+                        </td>
+                        <td>@Model.OrdStyle.StyleName</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Item Name :
+                        </td>
+                        <td>@Model.OrdStyle.ItemName</td>
+                    </tr><tr>
+                             <td>
+                                 Style Qty :
+                             </td>
+                             <td>@Model.OrdStyle.Quantity</td>
+                         </tr>
+                </table>
+
+            </div>
+        </div>
+     
+    </div>
+</fieldset>
+<script src="~/Scripts/SCERP/Merchandising/BuyerOrderStyleColorSize.js"></script>

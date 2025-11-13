@@ -1,0 +1,73 @@
+﻿
+@using System.Data
+@model System.Data.DataTable
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "TNA Alert";
+    var count = 1;
+}
+<section class="formCover">
+    <div class="mis-title">TNA ALERT FOR @Model.Rows[0]["BuyerName"]</div>
+    <div style="height: 250px;overflow:scroll">
+        <table class="webgrid-table" style="text-align: center">
+            <thead class="webgrid-header mis-header">
+                <tr>
+                    <td>SL</td>
+                    <th>Oreder</th>
+                    <th>Style</th>
+                    <th>Activity</th>
+                    <th>PLan Start</th>
+                    <th>PLan End</th>
+                    <th>What</th>
+                    <th>Who</th>
+                    <th>When</th>
+                    <th>ActualStart</th>
+                    <th>ActualEnd</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.Rows)
+                {
+
+                    <tr style="font-size: 12px;">
+                        <td>@count</td>
+                        <td>
+                            @row["OrderNo"]
+                        </td>
+                        <td>
+                            @row["StyleName"]
+                        </td>
+                        <td>
+                            @row["ActivityName"]
+                        </td>
+                        <td>
+                            @row["PSDate"]
+                        </td>
+                        <td>
+                            @row["PEDate"]
+                        </td>
+                        <td>
+                            @row["Rmks"]
+                        </td>
+                        <td>
+                            @row["XWho"]
+                        </td>
+                        <td>
+                            @row["XWhen"]
+                        </td>
+                        <td>
+                            @row["ASDate"]
+                        </td>
+                        <td>
+                            @row["AEDate"]
+                        </td>
+
+                    </tr>
+                   count++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,122 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@using (Html.BeginForm("ReceivedRollsQc", "KnittingRoll", FormMethod.Get, new { @class = "ReceivedRollsQcBatchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div class="header-title">
+        <h2>Knitting Roll Quality Checking</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Program")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.KnittingRoll.ProgramRefId, new { @data_val = "false", @class = "knittingProgrmAutocomplite", @placeholder = "Program No", @action = "/KnittingRoll/ProgramAutocomplite" })
+                    </td>
+                    <td>@Html.Label("Challan")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Chalan No" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+<fieldset>
+    <legend>Roll Receive Challan Detail</legend>
+
+    <table class="tabefont webgrid-table" id="rollDetailTable">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Program No</th>
+                <th>Challan No</th>
+                <th>Roll Date</th>
+                <th>Roll Ref</th>
+                <th>Style</th>
+                <th>F.Type</th>
+                <th>M/C DIA</th>
+                <th>Wt(kg)</th>
+                <th>
+                    Select
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kid in Model.Dictionary)
+            {
+                <tr>
+                    <td>
+                        @kid.Value.ProgramRefId
+                    </td>
+                    <td>
+                        @kid.Value.CharllRollNo
+                    </td>
+                    <td>
+                        @String.Format("{0:dd/MM/yyyy}", kid.Value.RollDate)
+                    </td>
+                    <td>
+                        @kid.Value.RollRefNo
+                    </td>
+                    <td>
+                        @kid.Value.StyleName
+                    </td>
+                    <td>
+                        @kid.Value.ItemName
+                    </td>
+                    <td>
+                        @kid.Value.SizeName
+                    </td>
+                    <td>
+                        @kid.Value.Quantity
+                    </td>
+                    <td>
+                        <input type="checkbox" class="checkedAll" @(kid.Value.IsRejected.GetValueOrDefault() == false ? "" : "checked") onclick="CheckedRejectedRoll(this)" name="RollIssueDetails[@kid.Key].KnittingRollId" value="@kid.Value.KnittingRollId" />
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</fieldset>
+@section scripts{
+
+    <script type="text/javascript">
+
+        $('.knittingProgrmAutocomplite').autocomplete({
+            source: function (request, response) {
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    data: { serachString: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.ProgramRefId, value: item.ProgramRefId };
+                        }));
+                    });
+            },
+
+        });
+        function CheckedRejectedRoll(chechBox) {
+            var $chechBox = $(chechBox);
+            var KnittingRolIId = $chechBox.val();
+            $.Ajax({
+                url: '/Production/KnittingRoll/CheckedRejectedRoll',
+                data: { KnittingRollId: KnittingRolIId },
+                type: 'post'
+            })
+        }
+    </script>
+}

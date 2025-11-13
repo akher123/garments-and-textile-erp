@@ -1,0 +1,186 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.WorkShiftViewModel
+@{
+
+    ViewBag.Title = Model.WorkShiftId > 0 ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "WorkShift", FormMethod.Post, new { @class = "WorkShiftform" }))
+{  @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.EditedDate)
+    @Html.HiddenFor(model => model.WorkShiftId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Workshift</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Name</td>
+                <td>
+
+                    @Html.EditorFor(model => model.Name)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Name (In Bengali)</td>
+                <td>
+                    @Html.EditorFor(model => model.NameInBengali)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NameInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Name (Detail)</td>
+                <td>
+
+                    @Html.EditorFor(model => model.NameDetail)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NameDetail)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Name Detail (In Bengali)</td>
+                <td>
+
+                    @Html.EditorFor(model => model.NameDetailInBengali)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.NameDetailInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Start time</td>
+                <td>
+                    @Html.EditorFor(model => model.InTime, new { htmlAttributes = new { @class = "timePicker" } })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.InTime)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">End time</td>
+                <td>
+
+                    @Html.EditorFor(model => model.OutTime, new { htmlAttributes = new { @class = "timePicker" } })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.OutTime)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Buffer In Time (Minutes)</td>
+                <td>
+                    @Html.EditorFor(model => model.InBufferTime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.InBufferTime)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Max Before Time (Minutes)</td>
+                <td>
+                    @Html.EditorFor(model => model.MaxBeforeTime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.MaxBeforeTime)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Max After Time (Minutes)</td>
+                <td>
+                    @Html.EditorFor(model => model.MaxAfterTime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.MaxAfterTime)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Exceeded Max After Time (Minutes)</td>
+                <td>
+                    @Html.EditorFor(model => model.ExceededMaxAfterTime)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.ExceededMaxAfterTime)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description, new { rows = "3", cols = "28" })
+
+                </td>
+                <td></td>
+                <td>
+                
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

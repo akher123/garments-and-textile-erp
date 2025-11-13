@@ -1,0 +1,97 @@
+﻿@using System.ServiceModel.Activities.Configuration
+@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewBag.Title = "Rate Update";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Rate Update</h2>
+</div>
+<section class="common-search-section">
+    <fieldset>
+        <legend>Select Valied Month and Year</legend>
+
+        <div class="search formCover common-search-wrapper">
+
+            @using (Html.BeginForm("RateUpdate", "InventoryItem", FormMethod.Post, new { @class = "InventoryItemSearchForm ignore-validation" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.IsSearch)
+                @Html.HiddenFor(x => x.ItemId, new { @class = "ItemIdHiddenField" })
+
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Updated Date :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.UpdateDate, new { @class = "datepicker", @placeholder = "From date" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Item Name")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ItemName, new { @onkeyup = "itemAutocomplite(this)", @placeholder = "Search by Item" })
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="button" id="monthlyUpdate" class="addButton" value="Monthly Update All" />
+                        </td>
+                        <td></td>
+                        <td>
+                            <input type="button" class="SubmitButton addButton" value="Monthly Update Single" />
+                        </td>
+                    </tr>
+                </table>
+            }
+
+
+        </div>
+    </fieldset>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+      
+        function itemAutocomplite(obj) {
+            $('.ItemIdHiddenField').val('');
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/ItemStore/AutocompliteItemByBranch",
+                        type: "POST",
+                        data: { itemName: request.term },
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ItemName + "_" + item.ItemCode, value: item.ItemName, ItemId: item.ItemId };
+                            }));
+                        });
+                },
+                select: function (event, ui) {
+                    $('.ItemIdHiddenField').val(ui.item.ItemId);
+
+                },
+            });
+        }
+
+        $('#monthlyUpdate').unbind('click').bind('click', function () {
+            var option = {
+                url: "/InventoryItem/MonthlyRateUpdate",
+                type: "POST",
+                data: $('.InventoryItemSearchForm').serialize()
+            };
+            $.Ajax(option);
+        });
+    </script>
+}

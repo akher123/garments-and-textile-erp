@@ -1,0 +1,157 @@
+﻿@model SCERP.Model.Mrc_SupplierCompany
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SupplierCompanyId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("Save", "SupplierCompany", FormMethod.Post, new { @class = "SupplierCompanyForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.SupplierCompanyId)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <fieldset>
+            <legend>Supplier Company </legend>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.CompanyName)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.CompanyName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.CompanyName, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.ContactName)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ContactName)
+                    </td>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.ContactName, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Supplier Code :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.SupplierCode)
+                    </td>
+                    <td>
+                    
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.SupplierCode, "Required")
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.Address)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Address)
+                    </td>
+                    <td>
+                      
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.Phone)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Phone)
+                    </td>
+                    <td>
+                     
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Email)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Email)
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Fax)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Fax)
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Web)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Web)
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                 
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </fieldset>
+          @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

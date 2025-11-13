@@ -1,0 +1,71 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseViewModel 
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.StorePurchaseRequisitionDetails[Model.Key].ItemId">
+
+    <td>
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].StorePurchaseRequisitionDetailId, new { @class = "mIDetailId-" + @Model.StorePurchaseRequisitionDetails[Model.Key].ItemId })
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].StorePurchaseRequisitionId)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].ItemId)
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].ItemName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].Description)
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].Description)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].SizeId)
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].SizeName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].BrandId)
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].BrandName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].OriginId)
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].Origin)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].SuppliedUptoDate)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].SuppliedUptoDate)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].StockInHand)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].StockInHand)
+    </td>
+
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].LastUnitPrice)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].LastUnitPrice)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].Quantity)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].Quantity)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].ApprovedQuantity)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].ApprovedQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[Model.Key].DesiredDate)
+       
+        @{
+            var desiredDate = Model.StorePurchaseRequisitionDetails[Model.Key].DesiredDate;
+            if (desiredDate != null)
+            {
+                @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].DesiredDate, new { @Value = desiredDate.Value.ToString("dd/MM/yyyy") })
+            }
+        }
+    </td>
+    <td>
+        @Html.ValueFor(x => x.StorePurchaseRequisitionDetails[Model.Key].FunctionalArea)
+        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[Model.Key].FunctionalArea)
+    </td>
+
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+

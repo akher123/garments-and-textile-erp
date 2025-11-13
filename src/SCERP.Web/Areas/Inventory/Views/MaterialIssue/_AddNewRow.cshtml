@@ -1,0 +1,68 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueViewModel
+@{
+    Layout = null;
+    var issuedetails = Model.MaterialIssueDetails;
+}
+<tr class="webgrid-alternating-row">
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].ItemId, new { @class = "ItemHiddenField-" + Model.Key })
+        <input class="edit-mode" data-val="true" id="MaterialIssueDetails'@Model.Key'__CreatedDate" name="MaterialIssueDetails[@Model.Key].CreatedDate" type="hidden" value="@DateTime.Now" style="width:80px" />
+        <input class="edit-mode" data-val="true" id="MaterialIssueDetails'@Model.Key'__CreatedBy" name="MaterialIssueDetails[@Model.Key].CreatedBy" type="hidden" value="@PortalContext.CurrentUser.UserId" style="width:80px" />
+        <input class="edit-mode" data-val="true" id="MaterialIssueDetails'@Model.Key'__IsActive" name="MaterialIssueDetails[@Model.Key].IsActive" type="hidden" value="true" style="width:80px" />
+      
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].ItemName, new { @onkeyup = "itemAutocomplite(this," + Model.Key + ")", style = "width:150px", @placeholder = "Item Name" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.MaterialIssueDetails[Model.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", issuedetails[Model.Key].SizeId), "-Select-", new { @style = "width:150px", @onchange = "SizeWizeStockInHand(this)" })
+    </td>
+    <td>
+        
+        @Html.DropDownListFor(x => x.MaterialIssueDetails[Model.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", issuedetails[Model.Key].BrandId), "-Select-", new { @style = "width:150px", @onchange = "BrandWizeStockInHand(this)" ,@class = "brand_dropdown" })
+    </td>
+    <td>
+      
+        @Html.DropDownListFor(x => x.MaterialIssueDetails[Model.Key].OriginId, new SelectList(Model.Countries, "Id", "CountryName", issuedetails[Model.Key].OriginId), "-Select-", new { @style = "width:150px", @onchange = "OriginWizeStockInHand(this)", @class = "origin_dropdown" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].StockInHand, new { @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly", @placeholder = "Stock In Hand" })
+    </td>
+    <td>
+   
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].RequiredQuantity, new { @style = "width:100px", @placeholder = "Required Qty" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].IssuedQuantity, new { @style = "width:100px",onkeyup="Replace(this)", @placeholder = "Issued Qty" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].IssuedItemRate, new { @style = "width:100px", @placeholder = "Issued Rate" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.MaterialIssueDetails[Model.Key].CurrencyId, new SelectList(Model.Currencies, "CurrencyId", "Name", issuedetails[Model.Key].CurrencyId), new { @style = "width:150px" })
+    </td>
+
+    <td>
+      
+        @Html.DropDownListFor(x => x.MaterialIssueDetails[Model.Key].MachineId, new SelectList(Model.Machines, "MachineId", "Name", issuedetails[Model.Key].MachineId), "-Select-", new { @style = "width:150px" })
+    </td>
+    <td>
+     
+        @Html.EditorFor(x => x.MaterialIssueDetails[Model.Key].TransactionDate, new { htmlAttributes = new { @style = "width:100px", @placeholder = "Transaction date" } })
+    </td>
+    <td>
+  
+        @Html.EditorFor(x => x.MaterialIssueDetails[Model.Key].Remarks, new { htmlAttributes = new { @style = "width:100px", @placeholder = "Remarks" } })
+    </td>
+    <td>
+        <input type="button" class="edit-button" value="Edit" />
+    </td>
+
+    <td>
+        <input type="button" onclick="deleteRow(this)" value="-" />
+
+    </td>
+</tr>
+
+
+
+

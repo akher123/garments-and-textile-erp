@@ -1,0 +1,184 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeSalaryViewModel
+
+@{
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "EmployeeSalary", FormMethod.Post, new { @class = "EmployeeSalaryform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Salary Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Gross Salary:</td>
+                <td>
+                    @Html.EditorFor(m => m.GrossSalary)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.GrossSalary)
+                    <input type="button" class="Search" value="Calculate" onclick="DivideEmployeeSalary(); ">
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Basic Salary:</td>
+                <td>
+                    @Html.EditorFor(m => m.BasicSalary)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.BasicSalary)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">House Rent:</td>
+                <td>
+                    @Html.EditorFor(m => m.HouseRent)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.HouseRent)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Medical Allowance:</td>
+                <td>
+                    @Html.EditorFor(m => m.MedicalAllowance)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.MedicalAllowance)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Conveyance:</td>
+                <td>
+                    @Html.EditorFor(m => m.Conveyance)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Conveyance)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Food Allowance:</td>
+                <td>
+                    @Html.EditorFor(m => m.FoodAllowance)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FoodAllowance)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Entertainment Allowance:</td>
+                <td>
+                    @Html.EditorFor(m => m.EntertainmentAllowance)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EntertainmentAllowance)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">From:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From Date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">To:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To Date" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeSalayDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function DivideEmployeeSalary() {
+
+            var grossSalary = $('#GrossSalary').val();
+        
+            jQuery.ajax({
+                url: "/EmployeeSalary/GetEmployeeSalaryData",
+                data: {               
+                    "grossSalary": grossSalary
+                },
+                type: "POST",
+                success: function (r) {
+
+                    if (!r.Success) {
+                        alert("Employee can not be found !");
+                    } else if (r.Success) {
+
+                        $('#BasicSalary').val(r.data.BasicSalary);
+                        $('#HouseRent').val(r.data.HouseRent);
+                        $('#MedicalAllowance').val(r.data.MedicalAllowance);
+                        $('#Conveyance').val(r.data.Conveyance);
+                        $('#FoodAllowance').val(r.data.FoodAllowance);
+                        $('#EntertainmentAllowance').val(r.data.EntertainmentAllowance);                   
+
+                    } else {
+                        self.DialogOpened();
+                    }
+                }
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1C395CB5-B1CB-4592-B357-2D4549135788}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SCERP.Model</RootNamespace>
+    <AssemblyName>SCERP.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountingModel\Acc_ActiveCompanySector.cs" />
+    <Compile Include="AccountingModel\Acc_BankReconcilationList.cs" />
+    <Compile Include="AccountingModel\Acc_BankReconcilationListViewModel.cs" />
+    <Compile Include="AccountingModel\Acc_BankReconcilationMaster.cs" />
+    <Compile Include="AccountingModel\Acc_BankReconciliationDetail.cs" />
+    <Compile Include="AccountingModel\Acc_BankVoucherManual.cs" />
+    <Compile Include="AccountingModel\Acc_ClosingBalanceViewModel.cs" />
+    <Compile Include="AccountingModel\Acc_CompanySector.cs" />
+    <Compile Include="AccountingModel\Acc_ControlAccounts.cs" />
+    <Compile Include="AccountingModel\Acc_CostCentre.cs" />
+    <Compile Include="AccountingModel\Acc_CostCentreMultiLayer.cs" />
+    <Compile Include="AccountingModel\Acc_Currency.cs" />
+    <Compile Include="AccountingModel\Acc_DepreciationChart.cs" />
+    <Compile Include="AccountingModel\Acc_FinancialPeriod.cs" />
+    <Compile Include="AccountingModel\Acc_GLAccounts.cs" />
+    <Compile Include="AccountingModel\Acc_GLAccounts_Hidden.cs" />
+    <Compile Include="AccountingModel\Acc_GLAccounts_Hidden_Status.cs" />
+    <Compile Include="AccountingModel\Acc_IncomeStatementMfgModel.cs" />
+    <Compile Include="AccountingModel\Acc_OpeningClosing.cs" />
+    <Compile Include="AccountingModel\Acc_PartyAccount.cs" />
+    <Compile Include="AccountingModel\Acc_PermitedChartOfAccount.cs" />
+    <Compile Include="AccountingModel\Acc_ReportViewModel.cs" />
+    <Compile Include="AccountingModel\Acc_SalaryMapping.cs" />
+    <Compile Include="AccountingModel\Acc_StylePayment.cs" />
+    <Compile Include="AccountingModel\Acc_VoucherDetail.cs" />
+    <Compile Include="AccountingModel\Acc_VoucherLimit.cs" />
+    <Compile Include="AccountingModel\Acc_VoucherMaster.cs" />
+    <Compile Include="AccountingModel\Acc_VoucherToCostcentre.cs" />
+    <Compile Include="AccountingModel\DyeingAccountInvoice.cs" />
+    <Compile Include="AccountingModel\KnittingAccountInvoice.cs" />
+    <Compile Include="AccountingModel\PrintEmbAccountInvoice.cs" />
+    <Compile Include="AccountingModel\SPGeneralLedgerDetailReport_Result.cs" />
+    <Compile Include="AccountingModel\SPVoucherReport_Result.cs" />
+    <Compile Include="AccountingModel\VAccVoucherMaster.cs" />
+    <Compile Include="AccountingModel\VoucherList.cs" />
+    <Compile Include="AccountingModel\VoucherListViewModel.cs" />
+    <Compile Include="AccountingModel\VStylePayment.cs" />
+    <Compile Include="CommercialModel\BbLcIndividualReport.cs" />
+    <Compile Include="CommercialModel\CommAccHead.cs" />
+    <Compile Include="CommercialModel\CommBank.cs" />
+    <Compile Include="CommercialModel\CommBankAdvice.cs" />
+    <Compile Include="CommercialModel\CommBankAdviceReport.cs" />
+    <Compile Include="CommercialModel\CommBbLcInfo.cs" />
+    <Compile Include="CommercialModel\CommBbLcItemDetails.cs" />
+    <Compile Include="CommercialModel\CommBbLcPurchase.cs" />
+    <Compile Include="CommercialModel\CommBbLcPurchaseCommon.cs" />
+    <Compile Include="CommercialModel\CommCashBbLcDetail.cs" />
+    <Compile Include="CommercialModel\CommCashBbLcInfo.cs" />
+    <Compile Include="CommercialModel\CommCashLc.cs" />
+    <Compile Include="CommercialModel\CommCashLCDyesChemical.cs" />
+    <Compile Include="CommercialModel\CommCommercialInvoiceReport.cs" />
+    <Compile Include="CommercialModel\CommExport.cs" />
+    <Compile Include="CommercialModel\CommBbLcReport.cs" />
+    <Compile Include="CommercialModel\CommExportDetail.cs" />
+    <Compile Include="CommercialModel\CommExportListReport.cs" />
+    <Compile Include="CommercialModel\CommGetLcWithoutOrderReport.cs" />
+    <Compile Include="CommercialModel\CommGetOrderWithoutLcReport.cs" />
+    <Compile Include="CommercialModel\CommImport.cs" />
+    <Compile Include="CommercialModel\CommImportDetails.cs" />
+    <Compile Include="CommercialModel\CommImportDocsData.cs" />
+    <Compile Include="CommercialModel\CommLCBBLCInfoData.cs" />
+    <Compile Include="CommercialModel\CommImportExportPerformance.cs" />
+    <Compile Include="CommercialModel\CommImportExportPerformanceReport.cs" />
+    <Compile Include="CommercialModel\COMMLcInfo.cs" />
+    <Compile Include="CommercialModel\CommLcOrderSummary.cs" />
+    <Compile Include="CommercialModel\COMMLcStyle.cs" />
+    <Compile Include="CommercialModel\CommLcToOrderReport.cs" />
+    <Compile Include="CommercialModel\CommLcWithOrderDetailReport.cs" />
+    <Compile Include="CommercialModel\CommLcWithOrderSummaryReport.cs" />
+    <Compile Include="CommercialModel\CommPackingCredit.cs" />
+    <Compile Include="CommercialModel\CommPackingListDetail.cs" />
+    <Compile Include="CommercialModel\CommPackingListReport.cs" />
+    <Compile Include="CommercialModel\CommPurchaseOrder.cs" />
+    <Compile Include="CommercialModel\CommPurchaseOrderDetail.cs" />
+    <Compile Include="CommercialModel\CommReceive.cs" />
+    <Compile Include="CommercialModel\CommReceiveDetail.cs" />
+    <Compile Include="CommercialModel\CommSalseContact.cs" />
+    <Compile Include="CommercialModel\CommTNA.cs" />
+    <Compile Include="CommercialModel\VwBbLcPurchaseCommon.cs" />
+    <Compile Include="CommercialModel\VwCommBbLcPurchase.cs" />
+    <Compile Include="CommercialModel\VwCommLcInfo.cs" />
+    <Compile Include="CommercialModel\VwCommLcStyle.cs" />
+    <Compile Include="CommercialModel\VwCommPurchaseOrder.cs" />
+    <Compile Include="CommercialModel\VwPurchaseOrderDetail.cs" />
+    <Compile Include="CommonModel\BaseModel.cs" />
+    <Compile Include="CommonModel\City.cs" />
+    <Compile Include="CommonModel\Color.cs" />
+    <Compile Include="CommonModel\Currency.cs" />
+    <Compile Include="CommonModel\Document.cs" />
+    <Compile Include="CommonModel\EmailTemplate.cs" />
+    <Compile Include="CommonModel\EMailTemplateComp.cs" />
+    <Compile Include="CommonModel\EmailTemplateUser.cs" />
+    <Compile Include="CommonModel\EmailUser.cs" />
+    <Compile Include="CommonModel\GatePass.cs" />
+    <Compile Include="CommonModel\GatePassDetail.cs" />
+    <Compile Include="CommonModel\MailSend.cs" />
+    <Compile Include="CommonModel\MeasurementUnit.cs" />
+    <Compile Include="CommonModel\MessagingNotification.cs" />
+    <Compile Include="CommonModel\Messagining.cs" />
+    <Compile Include="CommonModel\Party.cs" />
+    <Compile Include="CommonModel\ProFormaInvoice.cs" />
+    <Compile Include="CommonModel\SearchModel.cs" />
+    <Compile Include="CommonModel\CustomSqlQuary.cs" />
+    <Compile Include="CommonModel\SqlReportParameter.cs" />
+    <Compile Include="CommonModel\State.cs" />
+    <Compile Include="CommonModel\UserRole.cs" />
+    <Compile Include="CommonModel\VUserReport.cs" />
+    <Compile Include="CommonModel\VwMailSend.cs" />
+    <Compile Include="CommonModel\VwParty.cs" />
+    <Compile Include="CRMModel\CRMCollaborator.cs" />
+    <Compile Include="CRMModel\CRMDocumentationOperation.cs" />
+    <Compile Include="CRMModel\CRMDocumentationReport.cs" />
+    <Compile Include="CRMModel\CRMFeedback.cs" />
+    <Compile Include="CRMModel\SPCRMDocumentationReport.cs" />
+    <Compile Include="Custom\AdvanceSalarySheetView.cs" />
+    <Compile Include="Custom\AllEmployeeJobCardView.cs" />
+    <Compile Include="Custom\AttendanceModel.cs" />
+    <Compile Include="Custom\AttendanceSearchByTimeModel.cs" />
+    <Compile Include="Custom\AttendanceSummaryByDesignationModel.cs" />
+    <Compile Include="Custom\AttendanceSummaryModel.cs" />
+    <Compile Include="Custom\BranchViewModel.cs" />
+    <Compile Include="Custom\ChartOfAccountsReportModel.cs" />
+    <Compile Include="Custom\EmployeeAllInfoModel.cs" />
+    <Compile Include="Custom\EmployeeAllInfoNewModel.cs" />
+    <Compile Include="Custom\EmployeeAllPaymentSheetView.cs" />
+    <Compile Include="Custom\EmployeeBasicInfo.cs" />
+    <Compile Include="Custom\EmployeeBonusSheetView.cs" />
+    <Compile Include="Custom\EmployeeCompanyInfoModel.cs" />
+    <Compile Include="Custom\EmployeeEarnLeaveModel.cs" />
+    <Compile Include="Custom\EmployeeInOutEditView.cs" />
+    <Compile Include="Custom\EmployeeLeaveDetailModel.cs" />
+    <Compile Include="Custom\EmployeeLeaveHistoryModel.cs" />
+    <Compile Include="Custom\EmployeeSalaryInfoModel.cs" />
+    <Compile Include="Custom\EmployeesForBonusCustomModel.cs" />
+    <Compile Include="Custom\EmployeeAddressInfoCustomModel.cs" />
+    <Compile Include="Custom\EmployeeBonusView.cs" />
+    <Compile Include="Custom\EmployeeCardPrintBackInfoModel.cs" />
+    <Compile Include="Custom\EmployeeCardPrintModel.cs" />
+    <Compile Include="Custom\EmployeeCompanyInfoCustomModel.cs" />
+    <Compile Include="Custom\EmployeeInfoCustomModel.cs" />
+    <Compile Include="Custom\EmployeeMandatoryInfoCustomModel.cs" />
+    <Compile Include="Custom\EmployeeSalarySearchModel.cs" />
+    <Compile Include="Custom\EmployeesForAdvanceSalaryCustomModel.cs" />
+    <Compile Include="Custom\EmployeesForInOutModelProcessModel.cs" />
+    <Compile Include="Custom\EmployeesForInOutProcessModel.cs" />
+    <Compile Include="Custom\EmployeesForJobCardModelProcessModel.cs" />
+    <Compile Include="Custom\EmployeesForJobCardProcessModel.cs" />
+    <Compile Include="Custom\EmployeesForSalaryProcessModel.cs" />
+    <Compile Include="Custom\EmployeesForWorkShiftCustomModel.cs" />
+    <Compile Include="Custom\ExludedEmployeeFromSalaryProcessInfoCustomModel.cs" />
+    <Compile Include="Custom\ExtraOTSheetView.cs" />
+    <Compile Include="Custom\ExtraOTWeekendOTAndHolidayOTSheetView.cs" />
+    <Compile Include="Custom\GeneralLedgerDetailModel.cs" />
+    <Compile Include="Custom\HolidayOTSheetView.cs" />
+    <Compile Include="Custom\InventorySearchField.cs" />
+    <Compile Include="Custom\JobCardEditView.cs" />
+    <Compile Include="Custom\JobCardInfoModel.cs" />
+    <Compile Include="Custom\JobCardView.cs" />
+    <Compile Include="Custom\ManpowerSummaryModel.cs" />
+    <Compile Include="Custom\PaySlipView.cs" />
+    <Compile Include="Custom\ReceivePaymentReportModel.cs" />
+    <Compile Include="Custom\SalaryAdvanceView.cs" />
+    <Compile Include="Custom\SalarySheetView.cs" />
+    <Compile Include="Custom\SalarySummaryView.cs" />
+    <Compile Include="Custom\SearchFieldModel.cs" />
+    <Compile Include="Custom\ShortLeaveDetailModel.cs" />
+    <Compile Include="Custom\ShortLeaveModel.cs" />
+    <Compile Include="Custom\ShortLeaveSummaryModel.cs" />
+    <Compile Include="Custom\SkillMatrixDetailProcess.cs" />
+    <Compile Include="Custom\SpecSheetModel.cs" />
+    <Compile Include="Custom\SpMisSewingProductionBoard.cs" />
+    <Compile Include="Custom\VoucherModel.cs" />
+    <Compile Include="Custom\WeekendBillModel.cs" />
+    <Compile Include="Custom\WeekendOTSheetView.cs" />
+    <Compile Include="HRMModel\AttendanceBonus.cs" />
+    <Compile Include="HRMModel\AttendanceBonusSetting.cs" />
+    <Compile Include="HRMModel\AuthorizationType.cs" />
+    <Compile Include="HRMModel\AuthorizedPerson.cs" />
+    <Compile Include="HRMModel\BankAccountType.cs" />
+    <Compile Include="HRMModel\BloodGroup.cs" />
+    <Compile Include="HRMModel\Branch.cs" />
+    <Compile Include="HRMModel\BranchUnit.cs" />
+    <Compile Include="HRMModel\BranchUnitDepartment.cs" />
+    <Compile Include="HRMModel\BranchUnitWorkShift.cs" />
+    <Compile Include="HRMModel\Company.cs" />
+    <Compile Include="HRMModel\CompanyOrganogram.cs" />
+    <Compile Include="HRMModel\Country.cs" />
+    <Compile Include="HRMModel\Department.cs" />
+    <Compile Include="HRMModel\DepartmentLine.cs" />
+    <Compile Include="HRMModel\DepartmentSection.cs" />
+    <Compile Include="HRMModel\District.cs" />
+    <Compile Include="HRMModel\EducationLevel.cs" />
+    <Compile Include="HRMModel\EfficiencyRate.cs" />
+    <Compile Include="HRMModel\Employee.cs" />
+    <Compile Include="HRMModel\EmployeeAddressViewModel.cs" />
+    <Compile Include="HRMModel\EmployeeAttendanceIndividual.cs" />
+    <Compile Include="HRMModel\EmployeeBankInfo.cs" />
+    <Compile Include="HRMModel\EmployeeCardInfo.cs" />
+    <Compile Include="HRMModel\EmployeeCategory.cs" />
+    <Compile Include="HRMModel\EmployeeCompanyInfo.cs" />
+    <Compile Include="HRMModel\EmployeeDailyAttendance.cs" />
+    <Compile Include="HRMModel\EmployeeDailyAttendanceViewModel.cs" />
+    <Compile Include="HRMModel\EmployeeDesignation.cs" />
+    <Compile Include="HRMModel\EmployeeDesignationViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HRMModel\EmployeeDocument.cs" />
+    <Compile Include="HRMModel\EmployeeEducation.cs" />
+    <Compile Include="HRMModel\EmployeeEntitlement.cs" />
+    <Compile Include="HRMModel\EmployeeFamilyInfo.cs" />
+    <Compile Include="HRMModel\EmployeeGrade.cs" />
+    <Compile Include="HRMModel\EmployeeHoliday.cs" />
+    <Compile Include="HRMModel\EmployeeIncrementManual.cs" />
+    <Compile Include="HRMModel\EmployeeInOut.cs" />
+    <Compile Include="HRMModel\EmployeeInOutModel.cs" />
+    <Compile Include="HRMModel\EmployeeJobCard.cs" />
+    <Compile Include="HRMModel\EmployeeJobCardModel.cs" />
+    <Compile Include="HRMModel\EmployeeLeave.cs" />
+    <Compile Include="HRMModel\EmployeeLeaveData.cs" />
+    <Compile Include="HRMModel\EmployeeLeaveHistory.cs" />
+    <Compile Include="HRMModel\EmployeeLeaveHistoryIndividual.cs" />
+    <Compile Include="HRMModel\EmployeeMandatoryInfoViewModel.cs" />
+    <Compile Include="HRMModel\EmployeeManualOverTime.cs" />
+    <Compile Include="HRMModel\EmployeePenaltyIndividual.cs" />
+    <Compile Include="HRMModel\EmployeePermanentAddress.cs" />
+    <Compile Include="HRMModel\EmployeePersonalInfoViewModel.cs" />
+    <Compile Include="HRMModel\EmployeePresentAddress.cs" />
+    <Compile Include="HRMModel\EmployeeSalaryIndividual.cs" />
+    <Compile Include="HRMModel\EmployeeShortLeave.cs" />
+    <Compile Include="HRMModel\EmployeeSkill.cs" />
+    <Compile Include="HRMModel\EmployeeSkillLevel.cs" />
+    <Compile Include="HRMModel\EmployeeSkillSet.cs" />
+    <Compile Include="HRMModel\EmployeeType.cs" />
+    <Compile Include="HRMModel\EmployeeViewModel.cs" />
+    <Compile Include="HRMModel\EmployeeWeekend.cs" />
+    <Compile Include="HRMModel\EmployeeWorkGroup.cs" />
+    <Compile Include="HRMModel\EmployeeWorkShift.cs" />
+    <Compile Include="HRMModel\Employment.cs" />
+    <Compile Include="HRMModel\Entitlement.cs" />
+    <Compile Include="HRMModel\ExceptionDay.cs" />
+    <Compile Include="HRMModel\Gender.cs" />
+    <Compile Include="HRMModel\GeneralDaySetup.cs" />
+    <Compile Include="HRMModel\HeadOfDepartment.cs" />
+    <Compile Include="HRMModel\HolidaysSetup.cs" />
+    <Compile Include="HRMModel\HouseKeepingItem.cs" />
+    <Compile Include="HRMModel\HouseKeepingRegister.cs" />
+    <Compile Include="HRMModel\HrmAbsentOTPenalty.cs" />
+    <Compile Include="HRMModel\HrmDailyOTReport.cs" />
+    <Compile Include="HRMModel\HrmMaternityPayment.cs" />
+    <Compile Include="HRMModel\HrmOTSummaryReport.cs" />
+    <Compile Include="HRMModel\HrmPenalty.cs" />
+    <Compile Include="HRMModel\HrmPenaltyType.cs" />
+    <Compile Include="HRMModel\HrmSearchModel.cs" />
+    <Compile Include="HRMModel\HrmSkillMatrix.cs" />
+    <Compile Include="HRMModel\HrmSkillMatrixDetail.cs" />
+    <Compile Include="HRMModel\HrmSkillMatrixGrade.cs" />
+    <Compile Include="HRMModel\HrmSkillMatrixProcess.cs" />
+    <Compile Include="HRMModel\LeaveSetting.cs" />
+    <Compile Include="HRMModel\LeaveType.cs" />
+    <Compile Include="HRMModel\Line.cs" />
+    <Compile Include="HRMModel\LineOvertimeHour.cs" />
+    <Compile Include="HRMModel\MaritalState.cs" />
+    <Compile Include="HRMModel\MaternityLeaveInfo.cs" />
+    <Compile Include="HRMModel\OutStationDuty.cs" />
+    <Compile Include="HRMModel\PoliceStation.cs" />
+    <Compile Include="HRMModel\QuitType.cs" />
+    <Compile Include="HRMModel\Religion.cs" />
+    <Compile Include="HRMModel\Section.cs" />
+    <Compile Include="HRMModel\SkillLevel.cs" />
+    <Compile Include="HRMModel\SkillMatrix.cs" />
+    <Compile Include="HRMModel\SkillMatrixDetail.cs" />
+    <Compile Include="HRMModel\SkillMatrixMachineType.cs" />
+    <Compile Include="HRMModel\SkillMatrixPointTable.cs" />
+    <Compile Include="HRMModel\SkillMatrixProcessName.cs" />
+    <Compile Include="HRMModel\SkillOperation.cs" />
+    <Compile Include="HRMModel\SkillSet.cs" />
+    <Compile Include="HRMModel\SkillSetCategory.cs" />
+    <Compile Include="HRMModel\SkillSetDifficulty.cs" />
+    <Compile Include="HRMModel\SPCommCMInfo.cs" />
+    <Compile Include="HRMModel\SPEmployeeCardPrintInfoBangla_Result.cs" />
+    <Compile Include="HRMModel\SPEmployeeCardPrintInfo_Result.cs" />
+    <Compile Include="HRMModel\SPGetAbsentOtPenaltyEmployee.cs" />
+    <Compile Include="HRMModel\SPGetAllBranchInfo_Result.cs" />
+    <Compile Include="HRMModel\SPGetAllEmployeeInfo_Result.cs" />
+    <Compile Include="HRMModel\SPGetAllEmployeeJobCard_Result.cs" />
+    <Compile Include="HRMModel\SPGetEmployeeActiveCompanyInfo_Result.cs" />
+    <Compile Include="HRMModel\SPGetEmployeesForBonus.cs" />
+    <Compile Include="HRMModel\SPGetEmployeesForWorkShift_Result.cs" />
+    <Compile Include="HRMModel\SPGetMaternityReport.cs" />
+    <Compile Include="HRMModel\SPGetSpecificEmployeeActiveInfo_Result.cs" />
+    <Compile Include="HRMModel\SPGetSpecificEmployeeCompanyInfo_Result.cs" />
+    <Compile Include="HRMModel\SpHrmCuttingSectionAbsent.cs" />
+    <Compile Include="HRMModel\SPShortLeaveDetail_Result.cs" />
+    <Compile Include="HRMModel\SPShortLeaveSummary_Result.cs" />
+    <Compile Include="HRMModel\Unit.cs" />
+    <Compile Include="HRMModel\UnitDepartment.cs" />
+    <Compile Include="HRMModel\VEmployeeCompanyInfoDetail.cs" />
+    <Compile Include="HRMModel\VEmployeeDailyAttendanceDetail.cs" />
+    <Compile Include="HRMModel\VEmployeeIDCardInfoInBengali.cs" />
+    <Compile Include="HRMModel\VEmployeeIDCardInfoInEnglish.cs" />
+    <Compile Include="HRMModel\VEmployeeShortLeave.cs" />
+    <Compile Include="HRMModel\VEmployeeSkillDetail.cs" />
+    <Compile Include="HRMModel\VEmployeeWorkGroupDetail.cs" />
+    <Compile Include="HRMModel\VEmployeeWorkShiftDetail.cs" />
+    <Compile Include="HRMModel\VOutStationDutyDetail.cs" />
+    <Compile Include="HRMModel\VwSkillMatrix.cs" />
+    <Compile Include="HRMModel\VwPenaltyEmployee.cs" />
+    <Compile Include="HRMModel\VwSkillMatrixEmployee.cs" />
+    <Compile Include="HRMModel\Weekend.cs" />
+    <Compile Include="HRMModel\WorkGroup.cs" />
+    <Compile Include="HRMModel\WorkShift.cs" />
+    <Compile Include="HRMModel\WorkShiftRoster.cs" />
+    <Compile Include="HRMModel\WorkShiftRosterDetail.cs" />
+    <Compile Include="InventoryModel\AccessoriesReceiveBalance.cs" />
+    <Compile Include="InventoryModel\Inventory_AdvanceMaterialIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_AdvanceMaterialIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_ApprovalStatus.cs" />
+    <Compile Include="InventoryModel\Inventory_AuthorizedPerson.cs" />
+    <Compile Include="InventoryModel\Inventory_Booking.cs" />
+    <Compile Include="InventoryModel\Inventory_BookingDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_Brand.cs" />
+    <Compile Include="InventoryModel\Inventory_FabricReturn.cs" />
+    <Compile Include="InventoryModel\Inventory_FinishFabDetailStore.cs" />
+    <Compile Include="InventoryModel\Inventory_FinishFabricIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_FinishFabricIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_FinishFabStore.cs" />
+    <Compile Include="InventoryModel\Inventory_GenericName.cs" />
+    <Compile Include="InventoryModel\Inventory_GoodsReceivingNote.cs" />
+    <Compile Include="InventoryModel\Inventory_GreyIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_GreyIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_Group.cs" />
+    <Compile Include="InventoryModel\Inventory_GroupChallan.cs" />
+    <Compile Include="InventoryModel\Inventory_Item.cs" />
+    <Compile Include="InventoryModel\Inventory_ItemLedger.cs" />
+    <Compile Include="InventoryModel\Inventory_ItemStore.cs" />
+    <Compile Include="InventoryModel\Inventory_ItemStoreDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialIssueRequisition.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialIssueRequisitionDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialReceiveAgainstPo.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialReceiveAgainstPoDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialReceived.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialReceivedDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialRequisition.cs" />
+    <Compile Include="InventoryModel\Inventory_MaterialRequisitionDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_PurchaseRequisitionApprovalFlowConfiguration.cs" />
+    <Compile Include="InventoryModel\Inventory_PurchaseType.cs" />
+    <Compile Include="InventoryModel\Inventory_QualityCertificate.cs" />
+    <Compile Include="InventoryModel\Inventory_QualityCertificateDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_RedyeingFabricIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_RedyeingFabricIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_ReDyeingFabricReceive.cs" />
+    <Compile Include="InventoryModel\Inventory_ReDyeingFabricReceiveDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_RejectYarnIssue.cs" />
+    <Compile Include="InventoryModel\Inventory_RejectYarnIssueDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_RequsitionType.cs" />
+    <Compile Include="InventoryModel\Inventory_Size.cs" />
+    <Compile Include="InventoryModel\Inventory_StockRegister.cs" />
+    <Compile Include="InventoryModel\Inventory_StoreLedger.cs" />
+    <Compile Include="InventoryModel\Inventory_StorePurchaseRequisition.cs" />
+    <Compile Include="InventoryModel\Inventory_StorePurchaseRequisitionDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_StorePurchaseRequisitionHistory.cs" />
+    <Compile Include="InventoryModel\Inventory_StyleShipment.cs" />
+    <Compile Include="InventoryModel\Inventory_StyleShipmentDetail.cs" />
+    <Compile Include="InventoryModel\Inventory_SubGroup.cs" />
+    <Compile Include="InventoryModel\KnittingOrderDelivery.cs" />
+    <Compile Include="InventoryModel\ProgramYarnRetur.cs" />
+    <Compile Include="InventoryModel\ProgramYarnWithdrow.cs" />
+    <Compile Include="InventoryModel\SpInventoryStyleShipment.cs" />
+    <Compile Include="InventoryModel\SpInvFinishFabStore.cs" />
+    <Compile Include="InventoryModel\SpRejectYarnDetail.cs" />
+    <Compile Include="InventoryModel\VGoodsReceivingNote.cs" />
+    <Compile Include="InventoryModel\VInventoryItemStore.cs" />
+    <Compile Include="InventoryModel\VInvItem.cs" />
+    <Compile Include="InventoryModel\VItemReceiveDetail.cs" />
+    <Compile Include="InventoryModel\VLoanGiven.cs" />
+    <Compile Include="InventoryModel\VMaterialIssue.cs" />
+    <Compile Include="InventoryModel\VMaterialIssueDetail.cs" />
+    <Compile Include="InventoryModel\VMaterialIssueRequisition.cs" />
+    <Compile Include="InventoryModel\VMaterialLoanReturn.cs" />
+    <Compile Include="InventoryModel\VMaterialRequisition.cs" />
+    <Compile Include="InventoryModel\VQualityCertificate.cs" />
+    <Compile Include="InventoryModel\VQualityCertificateDetail.cs" />
+    <Compile Include="InventoryModel\VStorePurchaseRequisition.cs" />
+    <Compile Include="InventoryModel\VStorePurchaseRequisitionDetail.cs" />
+    <Compile Include="InventoryModel\VwAdvanceMaterialIssue.cs" />
+    <Compile Include="InventoryModel\VwAdvanceMaterialIssueDetail.cs" />
+    <Compile Include="InventoryModel\VwBookingDetail.cs" />
+    <Compile Include="InventoryModel\VwBookingDetailReport.cs" />
+    <Compile Include="InventoryModel\VwBookingSummaryReport.cs" />
+    <Compile Include="InventoryModel\VwFinishFabricIssueDetail.cs" />
+    <Compile Include="InventoryModel\VwInventoryStyleShipment.cs" />
+    <Compile Include="InventoryModel\VwLot.cs" />
+    <Compile Include="InventoryModel\VwMaterialReceiveAgainstPo.cs" />
+    <Compile Include="InventoryModel\VwMaterialReceiveAgainstPoDetail.cs" />
+    <Compile Include="InventoryModel\VwRedyeingFabricIssueDetail.cs" />
+    <Compile Include="InventoryModel\VwReDyeingFabricReceiveDetail.cs" />
+    <Compile Include="InventoryModel\VwSpPoSheet.cs" />
+    <Compile Include="InventoryModel\VwStockPosition.cs" />
+    <Compile Include="Maintenance\MaintenanceSearchModel.cs" />
+    <Compile Include="Maintenance\Maintenance_ReturnableChallan.cs" />
+    <Compile Include="Maintenance\Maintenance_ReturnableChallanDetail.cs" />
+    <Compile Include="Maintenance\Maintenance_ReturnableChallanReceive.cs" />
+    <Compile Include="Maintenance\Maintenance_ReturnableChallanReceiveMaster.cs" />
+    <Compile Include="Maintenance\VwChallanReceiveMaster.cs" />
+    <Compile Include="Maintenance\VwReceiveDetail.cs" />
+    <Compile Include="Maintenance\VwReturnableChallan.cs" />
+    <Compile Include="Maintenance\VwReturnableChallanReceive.cs" />
+    <Compile Include="MarketingModel\MarketingInquiry.cs" />
+    <Compile Include="MarketingModel\MarketingInstitute.cs" />
+    <Compile Include="MarketingModel\MarketingPerson.cs" />
+    <Compile Include="MarketingModel\MarketingStatus.cs" />
+    <Compile Include="MerchandisingModel\BuyerTnaTemplateModel.cs" />
+    <Compile Include="MerchandisingModel\MailInformation.cs" />
+    <Compile Include="MerchandisingModel\MaterialStatus.cs" />
+    <Compile Include="MerchandisingModel\Mrc_SupplierCompany.cs" />
+    <Compile Include="MerchandisingModel\OM_ActivityResponsible.cs" />
+    <Compile Include="MerchandisingModel\OM_Agent.cs" />
+    <Compile Include="MerchandisingModel\OM_Brand.cs" />
+    <Compile Include="MerchandisingModel\OM_BulBookingDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_BulkBooking.cs" />
+    <Compile Include="MerchandisingModel\OM_BulkBookingYarnDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_Buyer.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyerOrder.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyerTnaTemplate.cs" />
+    <Compile Include="MerchandisingModel\OM_EmbWorkOrder.cs" />
+    <Compile Include="MerchandisingModel\OM_EmbWorkOrderDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_NotificationTemplate.cs" />
+    <Compile Include="MerchandisingModel\OM_SampleOrder.cs" />
+    <Compile Include="MerchandisingModel\OM_SampleStyle.cs" />
+    <Compile Include="MerchandisingModel\OM_TnaActivityLog.cs" />
+    <Compile Include="MerchandisingModel\VwBuyOrdShip.cs" />
+    <Compile Include="MerchandisingModel\VwOM_BuyOrdShip.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyOrdShip.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyOrdShipDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyOrdStyle.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyOrdStyleColor.cs" />
+    <Compile Include="MerchandisingModel\OM_BuyOrdStyleSize.cs" />
+    <Compile Include="MerchandisingModel\OM_Category.cs" />
+    <Compile Include="MerchandisingModel\OM_ConsumptionGroup.cs" />
+    <Compile Include="MerchandisingModel\OM_Color.cs" />
+    <Compile Include="MerchandisingModel\OM_CompConsumption.cs" />
+    <Compile Include="MerchandisingModel\OM_CompConsumptionDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_Component.cs" />
+    <Compile Include="MerchandisingModel\OM_Consignee.cs" />
+    <Compile Include="MerchandisingModel\OM_Consumption.cs" />
+    <Compile Include="MerchandisingModel\OM_ConsumptionDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_ConsumptionSupplier.cs" />
+    <Compile Include="MerchandisingModel\OM_ConsumptionType.cs" />
+    <Compile Include="MerchandisingModel\OM_CostDefination.cs" />
+    <Compile Include="MerchandisingModel\OM_CostOrdStyle.cs" />
+    <Compile Include="MerchandisingModel\OM_CostSheetDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_CostSheetMaster.cs" />
+    <Compile Include="MerchandisingModel\OM_CostSheetTemplate.cs" />
+    <Compile Include="MerchandisingModel\OM_FabConsumption.cs" />
+    <Compile Include="MerchandisingModel\OM_FabricOrder.cs" />
+    <Compile Include="MerchandisingModel\OM_FabricOrderDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_FabricType.cs" />
+    <Compile Include="MerchandisingModel\OM_Inquiry.cs" />
+    <Compile Include="MerchandisingModel\OM_ItemMode.cs" />
+    <Compile Include="MerchandisingModel\OM_ItemType.cs" />
+    <Compile Include="MerchandisingModel\OM_Merchandiser.cs" />
+    <Compile Include="MerchandisingModel\OM_OrderType.cs" />
+    <Compile Include="MerchandisingModel\OM_PaymentTerm.cs" />
+    <Compile Include="MerchandisingModel\OM_PortOfLoading.cs" />
+    <Compile Include="MerchandisingModel\OM_Season.cs" />
+    <Compile Include="MerchandisingModel\OM_Size.cs" />
+    <Compile Include="MerchandisingModel\OM_Style.cs" />
+    <Compile Include="MerchandisingModel\OM_TempGroup.cs" />
+    <Compile Include="MerchandisingModel\OM_ThreadConsumption.cs" />
+    <Compile Include="MerchandisingModel\OM_ThreadConsumptionDetail.cs" />
+    <Compile Include="MerchandisingModel\OM_TNA.cs" />
+    <Compile Include="MerchandisingModel\OM_TnaActivity.cs" />
+    <Compile Include="MerchandisingModel\OM_YarnConsumption.cs" />
+    <Compile Include="MerchandisingModel\OrderSheet.cs" />
+    <Compile Include="MerchandisingModel\PROD_KnittingRollIssue.cs" />
+    <Compile Include="MerchandisingModel\PROD_KnittingRollIssueDetail.cs" />
+    <Compile Include="MerchandisingModel\SMSInformation.cs" />
+    <Compile Include="MerchandisingModel\SPOrderStyleDetailForBOM.cs" />
+    <Compile Include="MerchandisingModel\VBuyerOrder.cs" />
+    <Compile Include="MerchandisingModel\VBuyOrdShipDetail.cs" />
+    <Compile Include="MerchandisingModel\VBuyOrdStyleColor.cs" />
+    <Compile Include="MerchandisingModel\VBuyOrdStyleSize.cs" />
+    <Compile Include="MerchandisingModel\VCompConsumption.cs" />
+    <Compile Include="MerchandisingModel\VCompConsumptionDetail.cs" />
+    <Compile Include="MerchandisingModel\VConsumption.cs" />
+    <Compile Include="MerchandisingModel\VConsumptionDetail.cs" />
+    <Compile Include="MerchandisingModel\VCostOrderStyle.cs" />
+    <Compile Include="MerchandisingModel\VOMBuyOrdStyle.cs" />
+    <Compile Include="MerchandisingModel\VOM_BuyOrdStyle.cs" />
+    <Compile Include="MerchandisingModel\VOrderStyleDetail.cs" />
+    <Compile Include="MerchandisingModel\VStyle.cs" />
+    <Compile Include="MerchandisingModel\VwCompConsumptionOrderStyle.cs" />
+    <Compile Include="MerchandisingModel\VwConsuptionOrderStyle.cs" />
+    <Compile Include="MerchandisingModel\VwFabricOrderDetail.cs" />
+    <Compile Include="MerchandisingModel\VwStyleFollowupStatu.cs" />
+    <Compile Include="MerchandisingModel\VwThreadConsumption.cs" />
+    <Compile Include="MerchandisingModel\VYarnConsumption.cs" />
+    <Compile Include="MisModel\MIS_UserActivity.cs" />
+    <Compile Include="PayrollModel\AdvanceIncomeTax.cs" />
+    <Compile Include="PayrollModel\BonusRule.cs" />
+    <Compile Include="PayrollModel\EmployeeBonus.cs" />
+    <Compile Include="PayrollModel\EmployeeProcessedSalary.cs" />
+    <Compile Include="PayrollModel\PayrollExcludedEmployeeFromSalaryProcess.cs" />
+    <Compile Include="PayrollModel\SPGetAdvanceSalarySheet_Result.cs" />
+    <Compile Include="PayrollModel\SPGetEmployeeBonusSheet_Result.cs" />
+    <Compile Include="PayrollModel\SPGetEmployeesForAdvanceSalary_Result.cs" />
+    <Compile Include="PayrollModel\SPGetEmployeesForBonus_Result.cs" />
+    <Compile Include="PayrollModel\SPGetExtraOTSheet_Result.cs" />
+    <Compile Include="PayrollModel\EmployeeGradeSalaryPercentage.cs" />
+    <Compile Include="PayrollModel\EmployeeSalary.cs" />
+    <Compile Include="PayrollModel\EmployeeSalary_Processed.cs" />
+    <Compile Include="PayrollModel\EmployeeSalary_Processed_Temp.cs" />
+    <Compile Include="PayrollModel\OvertimeEligibleEmployee.cs" />
+    <Compile Include="PayrollModel\OvertimeSettings.cs" />
+    <Compile Include="PayrollModel\SalaryAdvance.cs" />
+    <Compile Include="PayrollModel\SalaryHead.cs" />
+    <Compile Include="PayrollModel\SalarySetup.cs" />
+    <Compile Include="PayrollModel\spPayrollGetExcludedEmployeeFromSalaryProcessInfo_Result.cs" />
+    <Compile Include="PayrollModel\SPSalaryIncrementReport.cs" />
+    <Compile Include="PayrollModel\StampAmount.cs" />
+    <Compile Include="PayrollModel\VOvertimeEligibleEmployeeDetail.cs" />
+    <Compile Include="Planning\PLAN_Activity.cs" />
+    <Compile Include="Planning\PLAN_DailyLineLayout.cs" />
+    <Compile Include="Planning\PLAN_Process.cs" />
+    <Compile Include="Planning\PLAN_ProcessSequence.cs" />
+    <Compile Include="Planning\PLAN_ProcessSequenceDefault.cs" />
+    <Compile Include="Planning\PLAN_ProcessTemplate.cs" />
+    <Compile Include="Planning\PLAN_ProductionLine.cs" />
+    <Compile Include="Planning\PLAN_ProductionLineStatus.cs" />
+    <Compile Include="Planning\PLAN_Program.cs" />
+    <Compile Include="Planning\PLAN_ProgramDetail.cs" />
+    <Compile Include="Planning\PLAN_ResponsiblePerson.cs" />
+    <Compile Include="Planning\PLAN_StyleUF.cs" />
+    <Compile Include="Planning\PLAN_TargetProduction.cs" />
+    <Compile Include="Planning\PLAN_TargetProductionDetail.cs" />
+    <Compile Include="Planning\PLAN_TNA.cs" />
+    <Compile Include="Planning\PLAN_TNAHorizontal.cs" />
+    <Compile Include="Planning\PLAN_TNAReport.cs" />
+    <Compile Include="Planning\PLAN_TNA_Template.cs" />
+    <Compile Include="Planning\PLAN_WorkingDay.cs" />
+    <Compile Include="Planning\VProcessSequence.cs" />
+    <Compile Include="Planning\VwAssignedProgram.cs" />
+    <Compile Include="Planning\VwProgram.cs" />
+    <Compile Include="Planning\VwTargetProduction.cs" />
+    <Compile Include="Production\PartyWiseCuttiongProcess.cs" />
+    <Compile Include="Production\PrintEmbProcessStatus.cs" />
+    <Compile Include="Production\Production_Machine.cs" />
+    <Compile Include="Production\PROD_BatchDetail.cs" />
+    <Compile Include="Production\PROD_BatchRoll.cs" />
+    <Compile Include="Production\PROD_BundleCutting.cs" />
+    <Compile Include="Production\PROD_BundleCuttingSeqChar.cs" />
+    <Compile Include="Production\PROD_CutBank.cs" />
+    <Compile Include="Production\PROD_CuttFabReject.cs" />
+    <Compile Include="Production\PROD_CuttingBatch.cs" />
+    <Compile Include="Production\PROD_CuttingGradding.cs" />
+    <Compile Include="Production\PROD_CuttingProcessStyleActive.cs" />
+    <Compile Include="Production\PROD_CuttingSequence.cs" />
+    <Compile Include="Production\PROD_CuttingTag.cs" />
+    <Compile Include="Production\PROD_CuttingTagSupplier.cs" />
+    <Compile Include="Production\PROD_DailyFabricReceive.cs" />
+    <Compile Include="Production\PROD_DownTimeCategory.cs" />
+    <Compile Include="Production\PROD_DyeingJobOrder.cs" />
+    <Compile Include="Production\PROD_DyeingJobOrderDetail.cs" />
+    <Compile Include="Production\PROD_DyeingSpChallan.cs" />
+    <Compile Include="Production\PROD_DyeingSpChallanDetail.cs" />
+    <Compile Include="Production\PROD_FinishingProcess.cs" />
+    <Compile Include="Production\PROD_FinishingProcessDetail.cs" />
+    <Compile Include="Production\PROD_GroupSubProcess.cs" />
+    <Compile Include="Production\PROD_Hour.cs" />
+    <Compile Include="Production\PROD_KnittingRoll.cs" />
+    <Compile Include="Production\PROD_LayCutting.cs" />
+    <Compile Include="Production\PROD_MachingInterruption.cs" />
+    <Compile Include="Production\PROD_NonProductiveTime.cs" />
+    <Compile Include="Production\PROD_PartCutting.cs" />
+    <Compile Include="Production\PROD_ProcessDelivery.cs" />
+    <Compile Include="Production\PROD_ProcessDeliveryDetail.cs" />
+    <Compile Include="Production\PROD_Processor.cs" />
+    <Compile Include="Production\PROD_ProcessReceive.cs" />
+    <Compile Include="Production\PROD_ProcessReceiveDetail.cs" />
+    <Compile Include="Production\PROD_Production.cs" />
+    <Compile Include="Production\PROD_ProductionDetaill.cs" />
+    <Compile Include="Production\PROD_RejectAdjustment.cs" />
+    <Compile Include="Production\PROD_RejectReplacement.cs" />
+    <Compile Include="Production\PROD_RollCutting.cs" />
+    <Compile Include="Production\PROD_SewingInputProcess.cs" />
+    <Compile Include="Production\PROD_SewingInputProcessDetail.cs" />
+    <Compile Include="Production\PROD_SewingOutPutProcess.cs" />
+    <Compile Include="Production\PROD_SewingOutPutProcessDetail.cs" />
+    <Compile Include="Production\PROD_StanderdMinValDetail.cs" />
+    <Compile Include="Production\PROD_StanderdMinValue.cs" />
+    <Compile Include="Production\PROD_SubProcess.cs" />
+    <Compile Include="Production\PROD_Test.cs" />
+    <Compile Include="Production\ProSearchModel.cs" />
+    <Compile Include="Production\SpCuttingJobCard.cs" />
+    <Compile Include="Production\SpPlaningTargetProductionDetail.cs" />
+    <Compile Include="Production\SpPodProcessReceiveBalance.cs" />
+    <Compile Include="Production\SpPrintEmbroiderySummary.cs" />
+    <Compile Include="Production\SpProdDailyFabricReceive.cs" />
+    <Compile Include="Production\SpProdJobWiseRejectAdjusment.cs" />
+    <Compile Include="Production\SpProdMatchingInterruption.cs" />
+    <Compile Include="Production\VMachine.cs" />
+    <Compile Include="Production\VProBatch.cs" />
+    <Compile Include="Production\Pro_Batch.cs" />
+    <Compile Include="Production\VProcessor.cs" />
+    <Compile Include="Production\VProductionDetail.cs" />
+    <Compile Include="Production\VProgramDetail.cs" />
+    <Compile Include="Production\VSubProcess.cs" />
+    <Compile Include="Production\VwBatchRoll.cs" />
+    <Compile Include="Production\VwBundleCutting.cs" />
+    <Compile Include="Production\VwCutBank.cs" />
+    <Compile Include="Production\VwCuttFabReject.cs" />
+    <Compile Include="Production\VwCuttingApproval.cs" />
+    <Compile Include="Production\VwCuttingBatch.cs" />
+    <Compile Include="Production\VwCuttingGraddding.cs" />
+    <Compile Include="Production\VwCuttingProcessStyleActive.cs" />
+    <Compile Include="Production\VwCuttingSequence.cs" />
+    <Compile Include="Production\VwCuttingTag.cs" />
+    <Compile Include="Production\VwDyeingJobOrderDetail.cs" />
+    <Compile Include="Production\VwFabricOrder.cs" />
+    <Compile Include="Production\VwFinishingProcess.cs" />
+    <Compile Include="Production\VwFinishingProcessDetail.cs" />
+    <Compile Include="Production\VwKnittingRoll.cs" />
+    <Compile Include="Production\VwKnittingRollIssueDetail.cs" />
+    <Compile Include="Production\VwLayCutting.cs" />
+    <Compile Include="Production\VwNonProductiveTime.cs" />
+    <Compile Include="Production\VwPartCutting.cs" />
+    <Compile Include="Production\VwPartyWiseCuttiongProcess.cs" />
+    <Compile Include="Production\VwProcessDelivery.cs" />
+    <Compile Include="Production\VwProcessDeliveryDetail.cs" />
+    <Compile Include="Production\VwProdBatchDetail.cs" />
+    <Compile Include="Production\VwProdBundleSlip.cs" />
+    <Compile Include="Production\VwProdDyeingSpChallanDetail.cs" />
+    <Compile Include="Production\VwProduction.cs" />
+    <Compile Include="Production\VwProductionForecast.cs" />
+    <Compile Include="Production\VwReceivedFabricProductionSummary.cs" />
+    <Compile Include="Production\VwReturnableChallanReceiveReport.cs" />
+    <Compile Include="Production\VwRollCutting.cs" />
+    <Compile Include="Production\VwSewingInputDetail.cs" />
+    <Compile Include="Production\VwSewingInputProcess.cs" />
+    <Compile Include="Production\VwSewingInputProcessDetail.cs" />
+    <Compile Include="Production\VwSewingOutput.cs" />
+    <Compile Include="Production\VwSewingOutputDetail.cs" />
+    <Compile Include="Production\VwSewingOutputProcess.cs" />
+    <Compile Include="Production\VwStanderdMinValDetail.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskManagementModel\TmAssignee.cs" />
+    <Compile Include="TaskManagementModel\TmModule.cs" />
+    <Compile Include="TaskManagementModel\TmReportImageInfo.cs" />
+    <Compile Include="TaskManagementModel\TmSearchModel.cs" />
+    <Compile Include="TaskManagementModel\TmSubject.cs" />
+    <Compile Include="TaskManagementModel\TmTask.cs" />
+    <Compile Include="TaskManagementModel\TmTaskStatus.cs" />
+    <Compile Include="TaskManagementModel\TmTaskType.cs" />
+    <Compile Include="TaskManagementModel\vwTmTaskInformation.cs" />
+    <Compile Include="TrackingModel\TrackConfirmationMedia.cs" />
+    <Compile Include="TrackingModel\TrackingSearchModel.cs" />
+    <Compile Include="TrackingModel\TrackMachineAction.cs" />
+    <Compile Include="TrackingModel\TrackMachineLog.cs" />
+    <Compile Include="TrackingModel\TrackVehicle.cs" />
+    <Compile Include="TrackingModel\TrackVehicleGateEntry.cs" />
+    <Compile Include="TrackingModel\TrackVisitorGateEntry.cs" />
+    <Compile Include="UserRightManagementModel\Contact.cs" />
+    <Compile Include="UserRightManagementModel\Module.cs" />
+    <Compile Include="UserRightManagementModel\ModuleFeature.cs" />
+    <Compile Include="UserRightManagementModel\ModuleFeatureViewModel.cs" />
+    <Compile Include="UserRightManagementModel\User.cs" />
+    <Compile Include="UserRightManagementModel\UserLogTime.cs" />
+    <Compile Include="UserRightManagementModel\UserMerchandiser.cs" />
+    <Compile Include="UserRightManagementModel\UserPermissionForDepartmentLevel.cs" />
+    <Compile Include="UserRightManagementModel\UserPermissionForEmployeeLevel.cs" />
+    <Compile Include="UserRightManagementModel\UserRole.cs" />
+    <Compile Include="UserRightManagementModel\UserTnaResponsible.cs" />
+    <Compile Include="UserRightManagementModel\VwModuleFeature.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCERP.Common\SCERP.Common.csproj">
+      <Project>{f5a8770a-24bd-4253-b1cf-cf3a5d701b86}</Project>
+      <Name>SCERP.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\SCERP.Model.dll" />
+    <Content Include="bin\Debug\SCERP.Model.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

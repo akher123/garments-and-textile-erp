@@ -1,0 +1,96 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.GoodsReceivingNoteViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Approve Goods Receiving Notes</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("ApprovedGrn", "GoodsReceivingNote", FormMethod.Get, new {@class = "ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.IsApproved, Model.GRNApprovedStatusSelectListItem, "All")
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VGoodsReceivingNotes, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("Approved", format: @<text> <input type="checkbox" onclick="ApprovedGrn(this)" @(item.IsApproved ? "checked" : "") value="@item.GoodsReceivingNotesId"/> </text>),
+                    grid.Column("GRNNumber", header: String.Format("{0}", "GRN NO"), format: @<text>@(item.GRNNumber ?? "")</text>),
+                    grid.Column("GRNDate", header: String.Format("{0}", "GRN Date"), format: @<text>@(item.GRNDate == null ? "" : item.SendingDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("QCReferenceNo", header: String.Format("{0}", "QC Ref."), format: @<text>@(item.QCReferenceNo ?? "")</text>),
+                    grid.Column("RequisitionNo", header: "ReqNo ", format: @<text>@(item.RequisitionNo ?? "")</text>, canSort: false),
+                    grid.Column("ReceivedRegisterNo", header: "ReceRegNo", format: @<text>@(item.ReceivedRegisterNo ?? "")</text>, canSort: false),
+                    grid.Column("GateEntry", header: String.Format("{0}", "GE #"), format: @<text>@(item.GateEntry ?? "")</text>, canSort: false),
+                    grid.Column("InvoiceNo", header: "InvNo ", format: @<text>@(item.InvoiceNo ?? "")</text>, canSort: false),
+                    grid.Column("SupplierCompanyName", header: "Supplier", format: @<text>@(item.SupplierCompanyName ?? "")</text>, canSort: false),
+                    grid.Column("Report", format:@<text><a href="@Url.Action("Report", "GoodsReceivingNote", new {GoodsReceivingNotesId = item.GoodsReceivingNotesId})" target="_blank">GRN</a></text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+
+        function ApprovedGrn(chechBox) {
+            var $chechBox = $(chechBox);
+            var goodsReceivingNotesId = $chechBox.val();
+            $.Ajax({
+                url: '/GoodsReceivingNote/ApprovedGrnSave/',
+                data: { GoodsReceivingNotesId: goodsReceivingNotesId },
+                type: 'post'
+            });
+        }
+    </script>
+
+
+}

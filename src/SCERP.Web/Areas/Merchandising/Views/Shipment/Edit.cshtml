@@ -1,0 +1,165 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ShipmentViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BuyOrdShip.OrderShipId > 0) ? "Edit" : "Add";
+}
+
+
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("SaveShipmentOfOder", "Shipment", FormMethod.Post, new { @class = "BuyOrdShipSearchForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BuyOrdShip.OrderShipId)
+        
+        <fieldset>
+            <legend>Buyer Order Style Ship </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Ref. ID"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.OrderShipRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("", "Order Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("", "Style Ref.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.OrderStyleRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("", "Lot No.")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.LotNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Ship Date")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BuyOrdShip.ShipDate)
+                    </td>
+                    <td></td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.Label("Port Of Loading")
+                    </td>
+                    <td>
+
+                        @Html.DropDownListFor(model => model.BuyOrdShip.PortOfLoadingRefId, Model.PortOfLoadingSelectListItem, "-select-")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Country:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyOrdShip.CountryId, Model.CountrySelectListItem, "-Select-", new { @class = "Country_forCity" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Packing")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.BuyOrdShip.IModeRefId, Model.ModeRefIdSelectListItem, "-select-")
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Quantity")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.Quantity, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ship Quantity")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.DespatchQty)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Invoice No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BuyOrdShip.CINo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ex-Factory Date")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BuyOrdShip.DeliveryDate)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+
+                    <td></td>
+                    <td>
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "BuyOrdShipContainner" } })
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </fieldset>
+
+    }
+</div>

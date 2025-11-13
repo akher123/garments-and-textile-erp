@@ -1,0 +1,106 @@
+﻿@model SCERP.Model.Acc_BankVoucherManual
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm())
+{
+    <table class="tableFont" style="width: 570px;">
+        <tr>
+            <td>&nbsp;</td>
+            <td align="left" colspan="4"></td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Date</td>
+            <td>              
+                @Html.TextBoxFor(x => x.Date, new { @class = "datepicker", @data_val = "false", @placeholder = "Date" })
+            </td>
+            <td>                                
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.Date)
+            </td>
+        </tr>
+       
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Particulars</td>
+            <td>
+                @Html.TextBoxFor(model => model.Particulars)
+            </td>
+            <td></td>
+            <td>
+                @Html.ValidationMessageFor(model => model.Particulars)
+            </td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Cheque No</td>
+            <td>
+                @Html.TextBoxFor(model => model.CheckNo)
+            </td>
+            <td></td>
+            <td>
+                @Html.ValidationMessageFor(model => model.CheckNo)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Cheque Date</td>
+            <td>               
+                @Html.TextBoxFor(x => x.CheckDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Check Date" })
+            </td>
+            <td></td>
+            <td>
+                @Html.ValidationMessageFor(model => model.CheckDate)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Amount</td>
+            <td>
+                @Html.TextBoxFor(model => model.Amount)
+            </td>
+            <td></td>
+            <td>
+                @Html.ValidationMessageFor(model => model.Amount)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls">Type</td>
+            <td>     
+                @Html.DropDownList("Type", null, new { @class = "Type"})
+            </td>
+            <td></td>
+            <td>
+                @Html.ValidationMessageFor(model => model.Type)
+            </td>
+        </tr>
+                       
+        <tr>
+            <td style="width: 5px;">
+                &nbsp;
+            </td>
+            <td style="width: 150px;">
+                &nbsp;
+            </td>
+            <td style="width: 300px;">                                 
+            </td>
+            <td style="width: 1px;">
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+
+    </table>
+}

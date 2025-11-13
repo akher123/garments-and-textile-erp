@@ -1,0 +1,36 @@
+﻿@model SCERP.Web.Areas.Production.Models.StanderdMinValueViewModel
+@{
+    Layout = null;
+}
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Production/StanderdMinValue/Edit?OrderStyleRefId=@Model.OrderStyleRefId">Add New</button>
+        </div>
+        <div>
+            <table class="webgrid-table webgrid">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Ref No</th>
+                        <th>Style Ref.</th>
+                        <th>SMV</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var smv in Model.SmvcList)
+                    {
+                        <tr>
+                            <td>@smv.StanderdMinValueRefId</td>
+                            <td>@smv.OrderStyleRefId</td>
+                            <td>@smv.StMv</td>
+                            <td><button class="edit" action="/Production/StanderdMinValue/Edit?StanderdMinValueId=@smv.StanderdMinValueId&OrderStyleRefId=@smv.OrderStyleRefId"></button></td>
+                            <td><button class="deleteAction" targentclass="smvList" action="/Production/StanderdMinValue/Delete?StanderdMinValueId=@smv.StanderdMinValueId&OrderStyleRefId=@smv.OrderStyleRefId"></button></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+

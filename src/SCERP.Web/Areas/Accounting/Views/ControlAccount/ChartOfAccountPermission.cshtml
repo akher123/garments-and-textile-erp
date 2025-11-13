@@ -1,0 +1,102 @@
+﻿@model IEnumerable<SCERP.Model.Acc_ControlAccounts>
+
+@{
+
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/themes/chartOfAccountPermission.css" rel="stylesheet" />
+}
+
+@using (Html.BeginForm(" ControlAccount","ControlAccount",FormMethod.Post, new { @class = "ChartOfAccountPermission" }))
+{
+    <div style="width:600px; padding-left:230px;">
+        <h2>Chart of Account Permission </h2>
+    </div>
+
+    <div id="wrapper">
+        <section>
+            <div style="margin-top: 5px; padding: 4px;">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Sector Name")
+                        </td>
+                        <td>
+                            @Html.DropDownList("companySectorId", "-Select-")
+                        </td>
+                        <td>
+                            <input type="button" value="Save" id="saveChartOfAccountPermission" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <div class="tree">
+            <ul>
+
+                @foreach (var ch1 in Model)
+                {
+                    <li>
+                        <a>  </a>
+                        
+                        <input type="checkbox" />&nbsp; &nbsp;<input type="checkbox" id="@(ch1.ControlCode+"_"+ch1.ControlLevel)" name="permitedChartOfAccount" value="@(ch1.ControlCode+"_"+ch1.ControlLevel)" class="chartofAcc" /> @ch1.ControlCode-<span >@ch1.ControlName</span>
+                        <ul>
+                            @foreach (var ch2 in ch1.Chailds)
+                            {
+                                <li>
+                                    <a> </a>&nbsp; &nbsp;<input type="checkbox" id="@(ch2.ControlCode + "_" + ch2.ControlLevel)" name="permitedChartOfAccount" value="@(ch2.ControlCode + "_" + ch2.ControlLevel)" class="chartofAcc" />
+                                    @ch2.ControlCode-<span > @ch2.ControlName</span>
+                                    <ul>
+                                        @foreach (var ch3 in ch2.Chailds)
+                                        {
+                                            <li>
+                                                <a>  </a>&nbsp; &nbsp;<input type="checkbox" id="@(ch3.ControlCode + "_" + ch3.ControlLevel)" name="permitedChartOfAccount" value="@(ch3.ControlCode + "_" + ch3.ControlLevel)" class="chartofAcc" />
+                                                @ch3.ControlCode-<span > @ch3.ControlName</span>
+
+                                                <ul>
+                                                    @foreach (var ch4 in ch3.Chailds)
+                                                    {
+                                                        <li>
+                                                            <a>   </a>&nbsp; &nbsp;<input type="checkbox" id="@(ch4.ControlCode + "_" + ch4.ControlLevel)" name="permitedChartOfAccount" value="@(ch4.ControlCode + "_" + ch4.ControlLevel)" class="chartofAcc" />
+                                                            @ch4.ControlCode-<span > @ch4.ControlName</span>
+
+                                                            <ul>
+                                                                @foreach (var ch5 in ch4.Chailds)
+                                                                {
+                                                                    <li>&nbsp; &nbsp;<input type="checkbox" class="chartofAcc" id="@(ch5.ControlCode + "_" + ch5.ControlLevel)" name="permitedChartOfAccount" value="@(ch5.ControlCode + "_" + ch5.ControlLevel)" />
+                                                                        @ch5.ControlCode-<span > @ch5.ControlName</span>
+                                                                    </li>
+
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+
+                            }
+                        </ul>
+
+                    </li>
+
+                }
+
+            </ul>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/chartOfAccountPermission.js"></script>
+}
+
+
+
+

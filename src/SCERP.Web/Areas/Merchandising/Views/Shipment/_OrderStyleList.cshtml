@@ -1,0 +1,39 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model IEnumerable<SCERP.Model.MerchandisingModel.VOMBuyOrdStyle>
+@{
+    Layout = null;
+}
+
+<input type="button" class="@*buttonStyle*@ addButton" onclick="search('@Url.Action("Index", "Shipment", new {Area = "Merchandising"})')" value="Back"/>
+
+<div class="title-tag">BUYER ORDER STYLE</div>
+
+<div>
+    <table class="webgrid-table webgrid ">
+        <thead class="webgrid-header">
+        <tr>
+            <th>Order Ref.</th>
+            <th>Style Ref.</th>
+            <th>Style</th>
+            <th>Quantity</th>
+            <th>Ship Detail</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var style in Model)
+        {
+            <tr class="webgrid-alternating-row">
+                <td>@style.OrderNo</td>
+                <td>@style.OrderStyleRefId</td>
+                <td>@style.StyleName</td>
+                <td>@style.Quantity</td>
+                <td><input type="button" value="+" class="btnDetail" targentclass="shipmentinOrderList" action="/Merchandising/Shipment/ShipmentInOrdeList?OrderStyleRefId=@style.OrderStyleRefId"/></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="title-tag">SHIPMENT LIST</div>
+
+<div class="shipmentinOrderList"></div>

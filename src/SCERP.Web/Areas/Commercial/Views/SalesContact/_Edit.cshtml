@@ -1,0 +1,156 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.SalesContactViewModel
+@{
+    ViewBag.Title = "Sales Contact";
+    Layout = null;
+}
+@using (Html.BeginForm("Save", "SalesContact", FormMethod.Post, new { @class = "SalesContactForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SalseContact.SalseContactId)
+    @Html.HiddenFor(model => model.SalseContact.LcId)
+    <fieldset>
+        <legend> Sales Contact Detail</legend>
+        <table class="tabefont">
+            <tr>
+                <td> </td>
+                <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Buyer ") </td>
+                <td> @Html.DropDownListFor(model => model.SalseContact.BuyerId, Model.BuyerSelectListItem, "-Select-") </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td> </td>
+                <td> @Html.Label("LC No : ") </td>
+                <td> @Html.TextBoxFor(p => p.SalseContact.LcNo) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LC Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.LcDate, new { @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Quantity : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.Quantity) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Amount : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.Amount) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td> </td>
+                <td> @Html.Label("Maturity Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.MatureDate, new { @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Expiry Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.ExpiryDate, new { @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Extention Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.ExtensionDate, new { @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Shipment Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.ShipmentDate, new { @class = "datepicker" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td> </td>
+                <td> @Html.Label("Issuing Bank : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.LcIssuingBank) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Issuing Bank Address : ") </td>
+                <td> @Html.TextAreaFor(model => model.SalseContact.LcIssuingBankAddress) </td>
+                <td> </td>
+
+                <td> </td>
+                <td> @Html.Label("Receiving Bank : ") </td>
+                <td> @Html.DropDownListFor(model => model.SalseContact.ReceivingBankId, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" }) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Cash Intensive Date: ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.CashIncentiveDate,new { @class="datepicker"}) </td>
+                <td> </td>
+
+                <td> </td>
+                <td> @Html.Label("Cash Intensive Value(TK): : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.CashIncentiveAmount) </td>
+                <td>
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Audit Date: ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.AuditDate,new { @class="datepicker"}) </td>
+                <td> </td>
+
+                <td> </td>
+                <td> @Html.Label("Audit Value(TK): : ") </td>
+                <td> @Html.TextBoxFor(model => model.SalseContact.AuditAmount) </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Receiving Bank Address : ") </td>
+                <td> @Html.TextAreaFor(model => model.SalseContact.ReceivingBankAddress) </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td> </td>
+                <td>
+                    @Html.Button(Model.SalseContact.SalseContactId > 0 ? "Update" : "Save", "button", new Dictionary<string, object> { { "class", "addButton FindPartial" }, { "target", ".salesContactList" }, { "action", "/SalesContact/Save" } })
+                </td>
+                <td>
+                    @Html.Button("Refresh", "button", new Dictionary<string, object> { { "class", "addButton" }, { "onclick", "refreshsalesContact(this)" }, { "targetId", ".salesContactEdit" }, { "action", "/SalesContact/Refresh?LcId=" + Model.SalseContact.LcId } })
+                </td>
+                <td>
+                    <input type="button" class="dialogClose addButton" action="/Commercial/Lc/Index" value="Close" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}

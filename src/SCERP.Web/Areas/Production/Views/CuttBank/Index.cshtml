@@ -1,0 +1,126 @@
+﻿@model SCERP.Web.Areas.Production.Models.CutBangkViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>PRODUCTION CUTT BANK</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "CuttBank", FormMethod.Get, new {@class = "CutBankForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <div id="cuttingJobMaster">
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "CuttingBatch_buyerRefId", style = "width: 120px"})
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, new {@class = "CuttingBatch_OrderNo", style = "width: 120px"})
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, new {@class = "CuttingBatch_StyleNo", style = "width: 120px"})
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            <input type="button" class="addButton" id="updateCutBankButton" value="Update" />
+                            <input type="button" class="addButton" onclick="CutBankReport()" value="CutBank" />
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        }
+
+    </div>
+</section>
+
+    <section class="search formCover">
+        <div class="additem">
+            @{
+                var grid = new WebGrid(canPage: false, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.CutBanks);
+
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                rowStyle: "webgrid-row-style",
+                columns: grid.Columns(
+                    grid.Column("BuyerName", header: "BUYER", canSort: false),
+                    grid.Column("OrderRefId", header: "ORDER", canSort: false),
+                    grid.Column("StyleName", header: "STYLE", canSort: false),
+                    grid.Column("ColorName", header: "COLOR", canSort: false),
+                    grid.Column("SizeName", header: "SIZE", canSort: false),
+                    grid.Column("ComponentName", header: "SEQUENCE", canSort: false),
+                    grid.Column("OrderQty", header: "ORDERQTY", canSort: false),
+                    grid.Column("CutFQty", header: "CUTQTY", canSort: false),
+                    grid.Column("BankQty", header: "BANKQTY", canSort: false),
+                    grid.Column("BalanceQty", header: "BALANCE", canSort: false)));
+            }
+        </div>
+    </section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#updateCutBankButton').unbind('click').bind('click', function() {
+            var form = $(this).parents("form:first");
+            var action = "/CuttBank/UpdateCutBank/";
+            $.Ajax({
+                url: action,
+                type: "POST",
+                data: form.serialize(),
+            });
+        });
+        function CutBankReport() {
+
+            var form = $('.CutBankForm');
+            var orderStyleRefId = $('.CuttingBatch_StyleNo').val();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    var searchurl = '/ProductionReport/CuttBankReport?orderStyleRefId=' + orderStyleRefId;
+                    window.open(searchurl);
+                }
+            }
+
+        }
+    </script>
+    <script src="~/Scripts/SCERP/Production/ProcessBalanceStatus.js"></script>
+}

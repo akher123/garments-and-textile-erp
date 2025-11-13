@@ -1,0 +1,47 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeAppointmentViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<div style="margin-left: 20px; margin-top: 20px; width: 1039px;">
+    <div id="btnReportPrintCover" style="margin-top: 30px; margin-bottom: 20px;">
+        <div onclick="printPriview(this)" class="printReport" action="pdfReportContainer">Print</div>
+    </div>
+    <div id="pdfReportContainer">
+        <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+        <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+            <thead class="reportHeader">
+                <tr class="reportTitle">
+                    <td colspan="15" align="center"></td>
+                </tr>
+                <tr class="reportTitle">
+                    <td colspan="15" style="font-family:SolaimanLipi; font-size: 14px;" align="left"><br />@Html.Raw(@Model.AppointmentLetterInfo)</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    
+</div>
+
+<script type="text/javascript">
+    function printPriview(obj) {
+        var preintContainerId = $(obj).attr('action');
+        var prtContent = document.getElementById(preintContainerId);
+        var data = prtContent.innerHTML;
+        var popupWindow = window.open('', '', 'width=810,height=520,left=0,top=0,toolbar=0,status=0');
+        popupWindow.document.open();
+        popupWindow.document.write('<HTML>\n<HEAD>\n');
+        popupWindow.document.write('<link rel="stylesheet" type="text/css" href="~/Content/Common/PdfReport.css"/>');
+        popupWindow.document.write('</HEAD>\n');
+        popupWindow.document.write('<BODY >\n');
+        popupWindow.document.write(data);
+        popupWindow.document.write('</BODY>\n');
+        popupWindow.document.write('</HTML>\n');
+        popupWindow.document.close();
+        popupWindow.focus();
+        popupWindow.print();
+        popupWindow.close();
+    }
+</script>

@@ -1,0 +1,64 @@
+﻿@model SCERP.Model.MaritalState
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaritalStateId > 0) ? "Edit" : "Add";
+}
+
+
+@using (Html.BeginForm("Save", "MaritalStatus", FormMethod.Post, new { @class = "religionform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MaritalStateId)
+
+    <fieldset>
+        <legend>Marital Status</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Marital Status:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Title)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Marital Status (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(model => model.TitleInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.TitleInBengali)
+                </td>
+            </tr>
+           
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}

@@ -1,0 +1,357 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TNAHorizontalViewModel
+
+@{
+    ViewBag.Title = "TNA";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var displayStyle = (Model.tnaHorizon.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "TNAHorizontal", FormMethod.Get, new { @class = "tnaHorizontalSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Time and Action Calendar</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Season: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchBySeasonId, null, "--Select--")
+                    </td>
+
+                    <td>
+                        @Html.Label("Buyer: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByBuyerId, null, "--Select--")
+                    </td>
+
+                    <td>
+                        @Html.Label("Merchandiser: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchByMerchandiserId, null, "--Select--")
+                    </td>
+
+                    <td>
+                        @Html.Label("Style Name: ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.StyleName)
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*<div id="example1" class="hot handsontable"></div>*@
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.tnaHorizon, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Planning/TNAHorizontal/Edit?OrderStyleRefId=@item.OrderStyleRefId"></button></text>, canSort: false),
+                    grid.Column("MerchandiserName", header: "Merchandiser", canSort: false),
+                    grid.Column("BuyerName", header: "Buyer Name", canSort: false),
+                   // grid.Column("SeasonRefId", header: "Season", canSort: false),
+                    grid.Column("StyleName", header: "Style No", canSort: false),
+                    grid.Column("OrderNo", header: "Order No", canSort: false),
+                    grid.Column("Quantity", header: "Quantity", canSort: false),
+
+                  //  grid.Column("OrderDate", header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                 //   grid.Column("ItemName", header: "Item", canSort: false),
+                   // grid.Column("NoOfColor", header: "NoOfColor", canSort: false),
+                    //grid.Column("PI", header: "PI", canSort: false),
+                   // grid.Column("LCSTID", header: "LC Status", format: @<text>@(item.LCSTID == "2" ? "Received" : "Not Received")</text>, canSort: false),
+
+                    grid.Column("CCRD", header: "Color Card Receive Date", format: @<text>@((item.ccrd == null ? "" : item.ccrd.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.Actccrd == null ? "" : item.Actccrd.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("SAPD", header: "Style Approval", format: @<text>@((item.SAPD == null ? "" : item.SAPD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActSAPD == null ? "" : item.ActSAPD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("LDSD", header: "Lab dip submit Date", format: @<text>@((item.LDSD == null ? "" : item.LDSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActLDSD == null ? "" : item.ActLDSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("LDAD", header: "Lab dip app. Date", format: @<text>@((item.LDAD == null ? "" : item.LDAD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActLDAD == null ? "" : item.ActLDAD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+
+                    grid.Column("YBD", header: "Yarn booking Date", format: @<text>@((item.YBD == null ? "" : item.YBD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActYBD == null ? "" : item.ActYBD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("ABD", header: "Acc. booking Date", format: @<text>@((item.ABD == null ? "" : item.ABD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActABD == null ? "" : item.ActABD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("AID", header: "Acc. inhouse Date", format: @<text>@((item.AID == null ? "" : item.AID.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActAID == null ? "" : item.ActAID.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("TAD", header: "Trim card app. Date", format: @<text>@((item.TAD == null ? "" : item.TAD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActTAD == null ? "" : item.ActTAD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("YRD", header: "Yarn received Date", format: @<text>@((item.YRD == null ? "" : item.YRD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActYRD == null ? "" : item.ActYRD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("FBD", header: "Fab. booking Date", format: @<text>@((item.FBD == null ? "" : item.FBD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActFBD == null ? "" : item.ActFBD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+
+                    grid.Column("FBDD", header: "Fab. delivery Date", format: @<text>@((item.FBDD == null ? "" : item.FBDD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActFBDD == null ? "" : item.ActFBDD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("FSource", header: "Fab. Source", canSort: false),
+                    grid.Column("KSD", header: "Knitting Start Date", format: @<text>@((item.KSD == null ? "" : item.KSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActKSD == null ? "" : item.ActKSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("KCD", header: "Knitting complete Date", format: @<text>@((item.KCD == null ? "" : item.KCD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActKCD == null ? "" : item.ActKCD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("DSD", header: "Dyeing start Date", format: @<text>@((item.DSD == null ? "" : item.DSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActDSD == null ? "" : item.ActDSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("DCD", header: "Dyeing complete Date", format: @<text>@((item.DCD == null ? "" : item.DCD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActDCD == null ? "" : item.ActDCD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+
+                    //grid.Column("Quantity", header: "Order Quantity", canSort: false),
+
+                    grid.Column("PPSD", header: "PP Sample submit Date", format: @<text>@((item.PPSD == null ? "" : item.PPSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPPSD == null ? "" : item.ActPPSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("PAD", header: "PP Sample app. Date", format: @<text>@((item.PAD == null ? "" : item.PAD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPAD == null ? "" : item.ActPAD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("PPMD", header: "PP meeting Date", format: @<text>@((item.PPMD == null ? "" : item.PPMD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPPMD == null ? "" : item.ActPPMD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("CSD", header: "Cutting start Date", format: @<text>@((item.CSD == null ? "" : item.CSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActCSD == null ? "" : item.ActCSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("CCD", header: "Cutting complete Date", format: @<text>@((item.CCD == null ? "" : item.CCD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActCCD == null ? "" : item.ActCCD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("PSD", header: "Printing send Date", format: @<text>@((item.PSD == null ? "" : item.PSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPSD == null ? "" : item.ActPSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("PRD", header: "Printing received Date", format: @<text>@((item.PRD == null ? "" : item.PRD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPRD == null ? "" : item.ActPRD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("ESD", header: "Emb. send Date", format: @<text>@((item.ESD == null ? "" : item.ESD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActESD == null ? "" : item.ActESD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("EMF", header: "Emb. received Date", format: @<text>@((item.EMF == null ? "" : item.EMF.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActEMF == null ? "" : item.ActEMF.ToString("dd-MM-yyyy")))</text>, canSort: false),
+
+                    grid.Column("IPD", header: "Input Date", format: @<text>@((item.IPD == null ? "" : item.IPD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActIPD == null ? "" : item.ActIPD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("SSD", header: "Sewing start Date", format: @<text>@((item.SSD == null ? "" : item.SSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActSSD == null ? "" : item.ActSSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("SCD", header: "Sewing complete Date", format: @<text>@((item.SCD == null ? "" : item.SCD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActSCD == null ? "" : item.ActSCD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("FSD", header: "Finish start Date", format: @<text>@((item.FSD == null ? "" : item.FSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActFSD == null ? "" : item.ActFSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("FCD", header: "Finishing Comp. Date", format: @<text>@((item.FCD == null ? "" : item.FCD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActFCD == null ? "" : item.ActFCD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("IND", header: "Final Ins. Date", format: @<text>@((item.IND == null ? "" : item.IND.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActIND == null ? "" : item.ActIND.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("EFD", header: "Ex. Factory Date", format: @<text>@((item.EFD == null ? "" : item.EFD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActEFD == null ? "" : item.ActEFD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("PSD", header: "PO Shipped Date", format: @<text>@((item.PSD == null ? "" : item.PSD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActPSD == null ? "" : item.ActPSD.ToString("dd-MM-yyyy")))</text>, canSort: false),
+                    grid.Column("despatchQty", header: "Shipped Qnt.", canSort: false),
+                    grid.Column("EXD", header: "Extn. Date", format: @<text>@((item.EXD == null ? "" : item.EXD.ToString("dd-MM-yyyy")) + "\n" + "-" + "\n" + (item.ActEXD == null ? "" : item.ActEXD.ToString("dd-MM-yyyy")))</text>, canSort: false)
+                                                                       ))
+            ;
+        }
+    </div>
+
+</section>
+
+
+
+
+
+
+@*@section scripts
+    {
+        @*<script type="text/javascript">
+
+            $('#StyleName').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "Tna")'
+            });
+            var data = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.tnaHorizon)));
+            var container = document.getElementById('example1');
+            var hot = new Handsontable(container, {
+                data: data,
+                rowHeaders: true,
+                fixedColumnsLeft: 3,
+                contextMenu: true,
+                manualColumnFreeze: true,
+                filters: true,
+                width: 1320,
+                height: 300,
+                columns: [
+                    { data: 'BuyerName' },
+                    { data: 'OrderNo' },
+                    { data: 'StyleName' },
+                    { data: 'Quantity' },
+                    { data: 'MerchandiserName' },
+                    { data: 'ItemName' },
+                    { data: 'LCSTID' },
+                    { data: 'NoOfColor' },
+                    {
+                        data: 'CCRD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'SAPD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'LDSD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'LDAD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'YBD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'ABD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'AID',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'TAD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'YRD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'FBD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, { data: 'FBDD' }, { data: 'FSource' },
+                    {
+                        data: 'KSD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'KCD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'DSD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'DCD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    },
+                    {
+                        data: 'PPSD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'PAD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'PPMD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'CSD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'CCD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'PSD',
+                        type: 'date',
+                        dateFormat: 'DD/MM/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'PRD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'ESD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }, {
+                        data: 'ERD',
+                        type: 'date',
+                        dateFormat: 'MM/DD/YYYY',
+                        correctFormat: true,
+                        defaultDate: '01/01/1900'
+                    }
+                ],
+                colHeaders:
+                [
+                    'BUYER',
+                    'ORDER',
+                    'STYLE',
+                    'QTY',
+                    'MERCHANDISER',
+                    'ITEM',
+                    'LC STATUS',
+                    'NO OF COLOR',
+                    'CCRD',
+                    'SAPD',
+                    'LDSD',
+                    'LDAD', 'YBD', 'ABD', 'AID', 'TAD', 'YRD', 'FBD', 'FBDD', 'FSource', 'KSD', 'KCD', 'DSD', 'DCD',
+                    'PPSD', 'PAD', 'PPMD', 'CSD', 'CCD', 'PSD', "PRD", "ESD", "ERD"
+                ],
+                dropdownMenu: true,
+
+            });
+
+            hot.updateSettings({
+                afterChange: function(changes) {
+                    var rowThatHasBeenChanged = changes[0][0];
+                    var sourceRow = hot.getSourceDataAtRow(rowThatHasBeenChanged);
+                    console.log('* the getSourceDataAtRow:');
+                    console.log(sourceRow);
+                    console.log(changes);
+                }
+            });
+
+        </script>
+    }*@

@@ -1,0 +1,167 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ThreadConsumptionViewModel
+@{
+    ViewBag.Title = Model.Consumption.ThreadConsumptionId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="text-align: center;">
+    <h2>Thread Consumption @ViewBag.Title</h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "ThreadConsumption", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Consumption.ThreadConsumptionId)
+        <fieldset>
+            <legend>Thread Consumption</legend>
+            <table class="tabefont" style="float: left; padding-right: 10px; border-right: 1px solid #000;">
+                <tr>
+                    <td>
+                        @Html.Label("Buyer:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Consumption.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { style = "width: 240px;", @class = "ThreadCons_buyerRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Order:")
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.Consumption.OrderNo, Model.OrderSelectListItem, "-Select-", new { style = "width: 240px;", @class = "ThreadCons_OrderNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Consumption.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new { style = "width: 240px;", @class = "ThreadCons_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Size")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Consumption.SizeRefId, Model.SizeSelectListItem, "-Select-", new { style = "width: 240px;", @class = "ThreadCons_SizeRefId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Entry Date:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Consumption.EntryDate, new { style = "width: 240px;", @class = "datepicker" })
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(x => x.Consumption.Remarks, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <table class="tabefont" style="padding-left: 10px;">
+                <tr>
+                    <td>
+                        <table id="threadConsumptionDetail">
+                            <tr>
+                                <td>
+                                    @Html.Label("Thread")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.ItemName, new { id = "threadItem", @data_val = "false" })
+                                </td>
+                                <td>@Html.Label("Color")</td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.Color, new { @data_val = "false" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Component")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.Component, new { @data_val = "false" })
+                                </td>
+                                <td>@Html.Label("Unit")</td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.UnitType, new { @data_val = "false" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Actual Qty")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.ConsQty,new{@data_val="false"})
+                                </td>
+                                <td>@Html.Label("Remarks")</td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.ConsumptionDetail.Remarks)
+                                    <input type="button" value="+" id="addThreadConsumptionDetailButton" />
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="tabefont webgrid-table" id="threadConsumptionDetailTable">
+                            <thead style="text-align: center" class="webgrid-header">
+                                <tr>
+                                    <th>Thread</th>
+                                    <th>Color</th>
+                                    <th>Component</th>
+                                    <th>Unit</th>
+                                    <th>ActualQty</th>
+                                    <th>Remarks</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Partial("~/Areas/Merchandising/Views/ThreadConsumption/_ThreadConsDetail.cshtml", Model)
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="float: left">
+                        <input onclick="search('/Merchandising/ThreadConsumption/Index')" value="Back" id="backButton" class="addButton" type="button" />
+                    </td>
+                    <td style="float: right">
+                        <input type="button" value="Save" id="threadConsumptionSaveButton" class="addButton" />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</section>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/threadConsumption.js"></script>
+}

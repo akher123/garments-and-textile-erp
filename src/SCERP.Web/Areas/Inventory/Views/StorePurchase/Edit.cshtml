@@ -1,0 +1,377 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.StorePurchaseRequisitionId > 0 ? "Edit" : "Add");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("Save", "StorePurchase", FormMethod.Post, new { @class = "StorePurchase ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.RequisitionNo)
+    @Html.HiddenFor(x => x.StorePurchaseRequisitionId)
+    @Html.HiddenFor(x => x.MaterialRequisitionId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>SPR</legend>
+
+        <table class="tabefont">
+        
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @id = "branch_Unit_DepartmentId", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Section :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                </td>
+                <td></td>
+                <td>
+
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Purchase Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PurchaseTypeId, Model.PurchaseTypeSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+
+                    @Html.Label("Req Type :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.RequisitionTypeId, Model.RequisitionTypeSelectListItem, "-Select-", new {  @style = "width: 106px;" })
+                    @Html.TextBoxFor(x => x.RequisitionNo, new { @placeholder = "SPRN", @style = "background-color: #b0c4de;width:90px;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("ReqNote :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.RequisitionNoteNo, new { @placeholder = "RN No", @style = "width:92px;" })
+                    @Html.TextBoxFor(x => x.RequisitionNoteDate,  new { @placeholder = " date", @style = "width:90px;" ,@class="datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction", })
+                </td>
+            </tr>
+
+
+        </table>
+        <hr />
+        <table class="tabefont">
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Item:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false" })
+                    @Html.HiddenFor(x => x.VStorePrDetail.ItemId, new { @class = "itemHiddenField" })
+                </td>
+                <td>
+                    @Html.DisplayName("Description:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.Description, new { @class = "description", @data_val = "false" })
+                </td>
+
+                <td>
+
+                    @Html.DisplayName("RQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.Quantity, "", new { @class = "requiredQuantity", @data_val = "false" })
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayName("Size:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VStorePrDetail.SizeId, Model.SizeSelectListItem, "-select-", new { @class = "sizeId", @data_val = "false", @onchange = "SizePresentStockInfo(this)", @style = "width:215px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("SUptoDate:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.VStorePrDetail.SuppliedUptoDate, new { htmlAttributes = new { @class = "suppliedUptoDate", @data_val = "false", @style = "background-color: #b0c4de;", @readonly = "readonly" } })
+                </td>
+
+                <td>
+                    @Html.DisplayName("AppQty:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.VStorePrDetail.ApprovedQuantity, new { htmlAttributes = new { @class = "approvedQuantity", @data_val = "false" } })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Brand:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VStorePrDetail.BrandId, Model.BrandSelectListItem, "-select-", new { @class = "brandId", @onchange = "BrandPresentStockInfo(this)", @data_val = "false", @style = "width:215px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("LUPrice:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.LastUnitPrice, new { @class = "lastUnitPrice", @data_val = "false", @style = "background-color: #b0c4de;" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("RDate:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.VStorePrDetail.DesiredDate, new { @class = "desiredDate datepicker", @data_val = "false" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.DisplayName("Origin:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.VStorePrDetail.OriginId, Model.OriginSelectListItem, "-select-", new { @class = "originId", @data_val = "false", @onchange = "OriginPresentStockInfo(this)", @style = "width:215px" })
+                    @Html.TextBoxFor(x => x.OriginSerarcKey, new { @class = "OriginSerarcKey", @data_val = "false", @style = "width:25px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("SInH:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.StockInHand, new { @class = "stockInHand", @data_val = "false", @style = "background-color: #b0c4de;" })
+
+                </td>
+                <td>
+
+                    @Html.DisplayName("FArea:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VStorePrDetail.FunctionalArea, new { @class = "functionalArea enterVent", @data_val = "false" })
+                </td>
+
+            </tr>
+
+        </table>
+        <hr />
+
+        <table id="GeneralIssueDetail" class="tabefont gridtable" style="width: 900px;">
+            <thead style="text-align: center">
+                <tr>
+                    <th>
+                        @Html.Label("Item")
+                    </th>
+                    <th>
+                        @Html.Label("Description")
+                    </th>
+                    <th>
+                        @Html.Label("Size")
+                    </th>
+                    <th>
+                        @Html.Label("Brand")
+                    </th>
+                    <th>
+                        @Html.Label("Origin")
+                    </th>
+                    <th>
+                        @Html.Label("SUptoDate")
+                    </th>
+                    <th>
+                        @Html.Label("SInH")
+                    </th>
+
+
+                    <th>
+                        @Html.Label("LUPrice")
+                    </th>
+                    <th>
+                        @Html.Label("RQty")
+                    </th>
+                    <th>
+                        @Html.Label("AppQty")
+                    </th>
+                    <th>
+                        @Html.Label("DesiredDate")
+                    </th>
+                    <th>
+                        @Html.Label("FArea")
+                    </th>
+
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.StorePurchaseRequisitionDetails)
+                {
+                    <tr id="newRow-@Model.StorePurchaseRequisitionDetails[m.Key].ItemId">
+
+                        <td>
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].StorePurchaseRequisitionDetailId, new { @class = "mIDetailId-" + @Model.StorePurchaseRequisitionDetails[m.Key].ItemId })
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].StorePurchaseRequisitionId)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].ItemId)
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].ItemName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].Description)
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].Description)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].SizeId)
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].SizeName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].BrandId)
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].BrandName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].OriginId)
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].Origin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].SuppliedUptoDate)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].SuppliedUptoDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].StockInHand)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].StockInHand)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].LastUnitPrice)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].LastUnitPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].Quantity)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].ApprovedQuantity)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].ApprovedQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.StorePurchaseRequisitionDetails[m.Key].DesiredDate)
+
+                            @{
+                    var desiredDate = Model.StorePurchaseRequisitionDetails[m.Key].DesiredDate;
+                    if (desiredDate != null)
+                    {
+                        @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].DesiredDate, new { @Value = desiredDate.Value.ToString("dd/MM/yyyy") })
+                    }
+                            }
+                        </td>
+                        <td>
+                            @Html.ValueFor(x => x.StorePurchaseRequisitionDetails[m.Key].FunctionalArea)
+                            @Html.HiddenFor(x => x.StorePurchaseRequisitionDetails[m.Key].FunctionalArea)
+                        </td>
+
+                        <td>
+                            <input type="button" value="-" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <hr />
+        <table class="tabefont">
+            <tr>
+                <td>@Html.Label("Requisitor")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.PreparedByEmployeeName, new { @class = "autocompliteEmployeeInfo", @placeholder = "Seaech by Card ID or Name" })
+                    @Html.HiddenFor(x => x.PreparedBy, new { @class = "RequsitionPerson" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Remarks")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Remarks)
+                </td>
+                <td>
+                    <input type="submit" value="Save" />
+                </td>
+            </tr>
+
+        </table>
+
+
+    </fieldset>
+}
+<script src="~/Scripts/SCERP/Inventory/storePurchaseRequsition.js"></script>
+
+
+
+
+

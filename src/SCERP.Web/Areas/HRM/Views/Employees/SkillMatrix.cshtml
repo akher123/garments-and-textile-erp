@@ -1,0 +1,279 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixNew
+
+@{
+    Layout = null;
+}
+
+<fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+
+    <legend> Skill Matrix </legend>
+
+    <table class="tabefont">
+        <tr>
+            <td class="fieldTitleCls"> Machine Type </td>
+            <td> @Html.DropDownListFor(x => x.MachineTypeId, Model.SkillMatrixMachineTypesSelectListItem, "--Select--", new { @action = "/HRM/Employees/SkillMatrix" }) </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+
+        <tr>
+            <td class="fieldTitleCls"> Performance: </td>
+            <td> @Html.EditorFor(m => m.Performance) </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+
+        <tr>
+            <td class="fieldTitleCls"> Attitude: </td>
+            <td> @Html.EditorFor(m => m.Attitude) </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    </table>
+
+</fieldset>
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.SkillMatrixDetails, rowCount: 10, autoSortAndPage: false);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("ProcessId", header: "Process Id", canSort: false),
+                    grid.Column("ProcessName", header: "Process Name", canSort: false),
+                    grid.Column(header: "Process SMV", format: @<text><input name="txtProcessSmv" type="text" class="ProcessSmv" value="@item.ProcessSmv" style="width: 50px; height: 13px;" /></text>),
+                    grid.Column(header: "Process Grade", format: @<text><input name="txtProcessGrade" type="text" class="ProcessGrade" value="@item.ProcessGrade" style="width: 50px; height: 13px" /></text>),
+                    grid.Column(header: "Average Cycle", format: @<text><input name="txtAverageCycle" type="text" class="AverageCycle" value="@item.AverageCycle" style="width: 50px; height: 13px;" /></text>),
+                    grid.Column(header: "Standard Process SMV", format: @<text><input name="txtStandardProcessSmv" type="text" class="StandardProcessSmv" value="@item.StandardProcessSmv" style="width: 50px; height: 13px" /></text>)
+                    ))
+        }
+    </div>
+    <div style="margin-top: 3px;">
+        <input type="submit" value="Save" id="save" name="save" onclick="save()" />
+    </div>
+</section>
+
+
+@using (Html.BeginForm("SaveSkillMatrixPoint", "Employees", FormMethod.Post, new { @ID = "EmployeeSkillMatrix", @class = "EmployeeSkillMatrixClass" }))
+{
+    <section class="">
+
+        <div class="panel">
+            <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+
+                <legend> Skill Matrix Points</legend>
+
+                <div class="col-wrapper">                    
+                    <table class="tabefont">
+                        <tr>
+                            <td class="fieldTitleCls"> Experience: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.ExperienceYear) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Experience Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.ExperiencePoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Experience W. Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.ExperienceWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-wrapper">
+                    <table class="tabefont">
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi MC Ttl: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiMCTtl) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi MC Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiMCPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi MC W.Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiMCWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-wrapper">
+                    <table class="tabefont">
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi Process Ttl: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiProcessTtl) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi Process Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiProcessPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Multi Process W. Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.MultiProcessWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-wrapper">
+                    <table class="tabefont">
+
+                        <tr>
+                            <td class="fieldTitleCls"> Process Grade Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.ProcessGradePoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Process Grade W.Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.ProcessGradeWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-wrapper">
+                    <table class="tabefont">
+
+                        <tr>
+                            <td class="fieldTitleCls"> Attitude Grade: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.AttitudeGrade) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Attitude Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.AttitudePoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Attitude W. Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.AttitudeWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-wrapper">
+                    <table class="tabefont">
+
+                        <tr>
+                            <td class="fieldTitleCls"> Performance %: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.PerformancePercentage) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Performance Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.PerformancePoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+
+                        <tr>
+                            <td class="fieldTitleCls"> Performance W. Point: </td>
+                            <td> @Html.EditorFor(m => m.SkillMatrixPointTable.PerformanceWPoint) </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="display: inline-block; margin-top: 0px; margin-left: 6px;">
+                    <input type="submit" class="SubmitButton addButton" value="Save"/>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+}
+
+<script type="text/javascript">
+
+    function save() {
+
+        var stringArray = new Array();
+        var concat;
+        var count = 0;
+
+        $('#grid tr').each(function () {
+
+            if (!this.rowIndex) return; // skip first row
+
+            var processId = this.cells[0].innerHTML;
+            var processSmv = this.cells[2].getElementsByClassName('ProcessSmv')[0].value;
+            var processGrade = this.cells[3].getElementsByClassName('ProcessGrade')[0].value;
+            var averageCycle = this.cells[4].getElementsByClassName('AverageCycle')[0].value;
+            var performance = document.getElementById('Performance').value;
+            var attitude = document.getElementById('Attitude').value;
+            var machineId = $('#MachineTypeId option:selected').val();
+
+            concat = processId + '-' + processSmv + '-' + processGrade + '-' + averageCycle + '-' + performance + '-' + attitude + '-' + machineId;
+
+            stringArray[count] = concat;
+            count++;
+        });
+
+        var postData = { values: stringArray };
+
+        $.ajax({
+            type: "POST",
+            url: "/Employees/SaveSkillMatrix",
+            data: postData,
+            success: function (data) {
+                alert(data.Result);
+            },
+            dataType: "json",
+            traditional: true
+        });
+    }
+
+</script>

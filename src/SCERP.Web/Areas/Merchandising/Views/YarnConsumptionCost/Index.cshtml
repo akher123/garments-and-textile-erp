@@ -1,0 +1,72 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionCostViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Yarn Supplier Assign</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "YarnConsumptionCost", FormMethod.Get, new { @class = "YarnConsumptionCostSearchForm" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table class="tabefont">
+            <tr>
+                <td class="custom-tag">ORDER STYLE LIST</td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                </td>
+                <td>@Html.Label("To")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @class = "datepicker" })
+                </td>
+
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+
+    @{
+    var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+    tableStyle: "webgrid-table webgrid gridSelect",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "buyerOrderStyle-row",
+    selectedRowStyle: "buyerOrderStyle-row",
+    rowStyle: "buyerOrderStyle-row",
+    firstText: "First",
+    lastText: "Last",
+    nextText: "Next",
+    mode: WebGridPagerModes.All,
+    previousText: "Previous",
+    columns:
+    grid.Columns(
+    grid.Column("FabricOrderRefId", canSort: false, header: "RefNo"),
+    grid.Column("Merchandiser", canSort: false, header: "Merchandiser"),
+    grid.Column("BuyerName", canSort: false, header: "Buyer"),
+    grid.Column("OrderName", canSort: false, header: "Order"),
+    grid.Column("StyleName", canSort: false, header: "Style"),
+    grid.Column("ItemName", canSort: false, header: String.Format("{0}", "Item")),
+    grid.Column("Styles", canSort: false, format: @<text><button class="btnDetail" targentclass="YcosumptionLsitContainer" action="/Merchandising/YarnConsumptionCost/YarnConsumptionList?OrderStyleRefId=@item.OrderStyleRefId"></button></text>)));
+    }
+
+    <div class="title-tag">YARN SUPPLIER RATE ASSIGN </div>
+    <div class="YcosumptionLsitContainer">
+
+    </div>
+
+</section>

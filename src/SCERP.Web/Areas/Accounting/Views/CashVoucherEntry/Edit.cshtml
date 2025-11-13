@@ -1,0 +1,291 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.CashVoucherEntryViewModel
+
+@{
+    ViewBag.Title = "Cash Voucher";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@*<style type="text/css">
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size: 12px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        width: 70%;
+        margin-left: 0px;
+    }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+</style>*@
+
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Cash Voucher </h2>
+</div>
+
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+<table style="margin-left: 70px;" class="tabefont">
+
+    <tr>
+        <td>@Html.DisplayName("Financial Year")</td>
+        <td>@Html.DisplayName("Voucher Type")</td>
+        <td>@Html.DisplayName("Date")</td>
+        <td>@Html.DisplayName("Sector Name")</td>
+        <td>@Html.DisplayName("Cost Centre")</td>
+        <td>@Html.DisplayName("Transaction Code")</td>
+    </tr>
+
+    <tr>
+        <td>@Html.TextBoxFor(model => model.FinancialPeriodId, new { style = "width:100px;" })</td>
+        <td>@Html.DropDownList("VoucherTypeId", null, new { @class = "VoucherType", @onchange = "ChangePaidTo(this.value)", style = "width:160px;" })</td>
+        <td>        
+            @Html.TextBoxFor(x => x.VoucherDate, new { @class = "datepicker", style = "width:100px;", @data_val = "false", @placeholder = "Voucher Date" })
+        </td>
+        <td>@Html.DropDownList("SectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "width:160px;" })</td>
+        <td>@Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px;" })</td>
+        <td><input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 100px;" class="TransactionCode" /></td>
+    </tr>
+    
+    <tr>
+        <td style="height: 30px;"></td>
+    </tr>
+
+    <tr>
+        <td colspan ="3">@Html.DisplayName("Cash Account Head")</td>
+        <td colspan="3"><label class="PaidLabel">Paid To:</label></td>
+    </tr>
+
+    <tr>
+        <td colspan="3"><input type="text" style=" width: 300px;" class="CashAccountHead" /> </td>
+        <td colspan="3"><input type="text" style=" width: 300px;" class="PaidTo" /></td>
+    </tr>
+    
+    <tr>
+        <td> <input type="button" style="width:100px;" value="Cash In Hand" class="cashbutton"> </td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td style="height: 10px;" colspan="6"></td>
+    </tr>
+
+    <tr>
+        <td align="center" colspan="6"><h3>Transaction Detail</h3></td>
+    </tr>
+
+    <tr>
+        <td colspan="6"> <hr /> </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <table>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Account Name")
+                    </td>
+                    <td>
+                        @Html.DisplayName("Particulars")
+                    </td>
+                    <td>
+                        @Html.DisplayName("AMOUNT (TAKA)")
+                    </td>
+                                       
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" style=" width: 300px;" class="AccountName" />
+                    </td>
+                    <td>
+                        <input type="text" style=" width: 150px;" class="Particulars" />
+                    </td>
+                    <td>
+                        <input type="text" style=" width: 100px;" class="Amount" />
+                    </td>
+                    
+                    <td>
+                        <input type="button" style="width:70px; height: 35px;" onclick="AppendTable()" value="Add" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6" style="height: 10px;"></td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <table width="500px" class="gridtable tabefont" id="VoucherDetail">
+                <tr>
+                    <th>SL</th>
+                    <th>Account Name</th>
+                    <th>Particulars</th>
+                    <th>DEBIT (TAKA)</th>
+                    <th>CREDIT (TAKA)</th>
+                    @*<th>Edit</th>*@
+                    <th>Delete</th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6" style="height: 10px;"></td>
+    </tr>
+
+    <tr>
+        <td align="right" colspan="6">
+            <table>
+                <tr>
+                    <td>
+                        Total:
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalAmount" />
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalDebitAmount" />
+                        <input type="text" style=" width: 100px;" readonly="readonly" class="TotalCreditAmount" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <hr />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayName("Total BDT In Words")
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width:500px;" colspan="6">
+            <input type="text" style="width:500px;" readonly="readonly" class="AmountInWords" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayName("Particulars")
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">        
+            @Html.TextBoxFor(model => model.Particulars, new { @class = "VoucherParticulars", style = "width: 500px;" })
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6">
+            <input type="button" value="Save" onclick="SaveCashVoucher()" />
+        </td>
+    </tr>
+
+</table>
+
+<script src="~/Scripts/SCERP/Acc_CashVoucherEntry.js"></script>
+
+<script type="text/javascript">
+ 
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "CashVoucherEntry")'
+            });
+
+        $('.CashAccountHead').autocomplete(
+            {
+                source: '@Url.Action("CashAccountNames", "CashVoucherEntry")'
+            });
+
+
+       
+    
+
+        var Id = @Model.Id;
+
+        if (Id > 0) {
+
+            jQuery.ajax({
+                url: "/CashVoucherEntry/GetCashVoucherDetail",
+                data: { "Id": Id },
+                type: "GET",
+                success: function(r) {
+                    if (!r.Success) {
+                        alert('Detail data did not found');
+                    } else if (r.Success) {
+
+                        var temp = r.data;
+
+                        $('.TotalDebitAmount').val(r.tDr.toFixed(2));
+                        $('.TotalCreditAmount').val(r.tCr.toFixed(2));
+                        $('.TotalAmount').val(r.tbc.toFixed(2));
+
+                        amountInWord(r.tDr);
+
+                        $(temp).each(function(index, t) {
+                            bindRow(t);
+                        });
+                    }
+                }
+            });
+        }   
+
+    function bindRow(t) {
+
+        var tr = '';
+        tr = $('<tr  id="' + t.Id + '" >');
+        tr.append('<td>' + t.Id + '</td>');
+        tr.append('<td>' + t.GlName + '</td>');
+        tr.append('<td>' + t.Particulars + '</td>');
+        tr.append('<td>' + t.Debit.toFixed(2) + '</td>');
+        tr.append('<td>' + t.Credit.toFixed(2) + '</td>');
+        // tr.append('<td><input type="button" class="edit" onClick="showReportjoining(' + '1' + ')"  value="Edit" /></td>');
+        tr.append('<td><input type="button" class="del"  value="Delete" /></td>');
+        tr.append('</tr>');
+
+        $('#VoucherDetail').append(tr);
+    }
+
+    function amountInWord(tDr) {
+        jQuery.ajax({
+            url: "/JournalVoucherEntry/GetInWords",
+            data: { "amount": tDr },
+            type: "POST",
+            success: function(r) {
+                if (!r.Success) {
+                    alert("Amount did not find !");
+                } else if (r.Success) {
+                    $('.AmountInWords').val(r.data);
+                }
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,77 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+}
+@if (Model.RType == "P" || Model.RType == "B")
+{
+    <td>
+        @Html.DisplayName(Model.RType == "P" ? "PI" : "Booking")
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.ReceiveAgainstPo.PoNo, Model.PiBookingSelectListItem, "-Selec-", new { onchange = "loadPiBooking(this)" })
+    </td>
+    <td>
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+}else if ( Model.RType ==RType.YARNDYED)
+{
+    <td>
+        @Html.DisplayName("Delivery Ref:")
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.ReceiveAgainstPo.PoNo, Model.PiBookingSelectListItem, "-Selec-", new { onchange = "loadPiBooking(this)" })
+    </td>
+    <td>
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+}
+else if (Model.RType == RType.KNITTING_PROGRAMWISEYARNRETURN || Model.RType == RType.COLLAR_CUTT_PROGRAMWISEYARNRETURN)
+{
+    <td>
+        @Html.DisplayName("Program No:")
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.ReceiveAgainstPo.PoNo, Model.PiBookingSelectListItem, "-Selec-", new { onchange = "loadPiBooking(this)" })
+    </td>
+    <td>
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+}
+else
+{
+    <td>
+
+        @Html.DisplayName("PO No :")
+    </td>
+    <td>
+
+        @Html.TextBoxFor(x => x.ReceiveAgainstPo.PoNo)
+    </td>
+    <td>
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>
+}
+<td>
+    @Html.Label("PO Date :")
+</td>
+<td>
+    @Html.TextBoxFor(x => x.ReceiveAgainstPo.PoDate, new { @class = "datepicker", id = "receiveBookingDate" })
+</td>
+<td>
+    @Html.Label("*", new { @class = "labelInstruction" })
+</td>
+
+<td>
+    @Html.Label("Supplier :")
+</td>
+<td>
+    @Html.DropDownListFor(x => x.ReceiveAgainstPo.SupplierId, Model.SupplierSelectListItem, "-Select-", new { id = "receiveSupplierId" })
+</td>
+<td>
+    @Html.Label("*", new { @class = "labelInstruction" })
+</td>
+

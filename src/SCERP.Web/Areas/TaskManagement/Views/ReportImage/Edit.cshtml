@@ -1,0 +1,152 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.ReportImageViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReportImageId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "ReportImage", FormMethod.Post, new { @class = "projectdocumentform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.ReportImage.ReportImageId)
+    @Html.HiddenFor(model => model.ReportImage.ReportImageUrl, new { @id = "PhotographPath" })
+
+    <fieldset>
+        <legend> Project Report </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Report Numfber:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReportImage.ReportNo, new { @readonly = "readonly", @style = "background-color: #6495ed" })
+                </td>
+                <td>
+                    
+                   
+                </td>
+                
+                <td></td>
+            </tr>
+
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Module Name :</td>
+                <td>
+                    @Html.DropDownListFor(x => x.ModuleId, Model.ModuleSelectListItems, "-Select-", new { @class = "ModuleId" })
+                </td>
+                <td> @Html.Label("*", new { @class = "labelInstruction" })</td>
+
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Subject Name :</td>
+                <td>
+                    @Html.DropDownListFor(x => x.ReportImage.SubjectId, Model.SubjectSelectListItems, "-Select-", new { @class = "SubjectId" })
+                </td>
+                <td> @Html.Label("*", new { @class = "labelInstruction" })</td>
+                
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">ReportName:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ReportImage.ReportName)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Project Report Url:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ReportImage.ProjectReportUrl)
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Remarks:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ReportImage.Remarks)
+                </td>
+                <td>
+
+                </td>
+
+                <td></td>
+            </tr>
+
+            
+
+
+            @if(Model.ReportImage.ReportImageUrl !=null)
+            {
+            <tr>
+                <td></td>
+                <td></td>
+                <td><img src="@Model.ReportImage.ReportImageUrl" height="200px" width="200px" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            }
+            
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <fieldset>
+                        <legend> Upload File </legend>
+                        <div id="uploadFile">Upload</div>
+                    </fieldset>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/TaskManagement/ReportImage.js"></script>
+    <script src="~/Scripts/SCERP/TaskManagement/ReportImageCascading.js"></script>
+}

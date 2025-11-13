@@ -1,0 +1,88 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseRequisitionViewModel
+@{
+    Layout = null;
+
+    var sprdetails = Model.InventoryStorePurchaseRequisitionDetails;
+}
+<tr class="webgrid-alternating-row">
+    <td>
+        @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ItemId, new { @class = "ItemHiddenField-" + Model.Key })
+        <input class="edit-mode" data-val="true" id="InventoryStorePurchaseRequisitionDetails'@Model.Key'__CreatedDate" name="InventoryStorePurchaseRequisitionDetails[@Model.Key].CreatedDate" type="hidden" value="@DateTime.Now" style="width:80px" />
+        <input class="edit-mode" data-val="true" id="InventoryStorePurchaseRequisitionDetails'@Model.Key'__CreatedBy" name="InventoryStorePurchaseRequisitionDetails[@Model.Key].CreatedBy" type="hidden" value="@PortalContext.CurrentUser.UserId" style="width:80px" />
+        <input class="edit-mode" data-val="true" id="InventoryStorePurchaseRequisitionDetails'@Model.Key'__IsActive" name="InventoryStorePurchaseRequisitionDetails[@Model.Key].IsActive" type="hidden" value="true" style="width:80px" />
+
+        @Html.TextBox("ItemName","", new { @onkeyup = "itemAutocomplite(this," + Model.Key + ")", style = "width:120px", @placeholder = "Item Name" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].Description, new { @placeholder = "Description" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", sprdetails[Model.Key].SizeId), "-Select-", new { @onchange = "SizePresentStockInfo(this)", @style = "width:150px", })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", sprdetails[Model.Key].BrandId), "-Select-", new { @onchange = "BrandPresentStockInfo(this)", @style = "width:150px" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].OriginId, new SelectList(Model.Countries, "Id", "CountryName", sprdetails[Model.Key].OriginId), "-Select-", new { @onchange = "OriginPresentStockInfo(this)", @style = "width:150px" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].Quantity, new { @placeholder = "Quantity", @style = "width:100px" })
+    </td>
+
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].DesiredDate, new { htmlAttributes = new { @placeholder = "Desired date", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].FunctionalArea, new { @placeholder = "Uses are", @style = "width:150px" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].SuppliedUptoDate, new { @placeholder = "SuppliedUptodate", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].StockInHand, new { htmlAttributes = new { @placeholder = "StockInHand", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].LastUnitPrice, new { htmlAttributes = new { @placeholder = "LastUnitPrice", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].EstimatedYearlyRequirement, new { htmlAttributes = new { @placeholder = "Est Yearly Req", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ModifiedRequiredQuantity, new { htmlAttributes = new { @placeholder = "Modified Req Qty", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ApprovedQuantity, new { htmlAttributes = new { @placeholder = "Approved Qty", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ApprovalDate, new { htmlAttributes = new { @placeholder = "Approved date", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ApprovalStatusId, new SelectList(Model.InventoryApprovalStatuses, "ApprovalStatusId", "StatusName", sprdetails[Model.Key].ApprovalStatusId), "--Select--", new { @class = "edit-mode", @style = "width:150px" })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].RemarksOfPurchaseApprovalPerson, new { htmlAttributes = new { @placeholder = "Remarks", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].Quotation, new { htmlAttributes = new { @placeholder = "Quotation", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].PresentRate, new { htmlAttributes = new { @placeholder = "PresentRate", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].ApprovedPurchase, new { htmlAttributes = new { @placeholder = "ApprovedPurchase", @style = "width:150px" } })
+    </td>
+    <td>
+        @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[Model.Key].RemarksOfPurchaseApprovalPerson, new { htmlAttributes = new { @placeholder = "Remarks", @style = "width:150px" } })
+    </td>
+    <td>
+        <input type="button" class="edit-button" value="Edit" />
+    </td>
+    <td>
+        <input type="button" onclick="deleteRow(this)" value="-" />
+    </td>
+</tr>
+
+
+
+

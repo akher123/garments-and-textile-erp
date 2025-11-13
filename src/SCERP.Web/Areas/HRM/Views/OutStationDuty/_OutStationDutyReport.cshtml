@@ -1,0 +1,119 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.OutStationDutyViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Plummy Fashions Ltd.</td>
+            </tr>
+            <tr class="reportTitle">
+                <td colspan="15" align="center">OutStation Duty</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        <b>SL. No</b>
+                    </td>
+                    <td align="center">
+                        <b>Employee Name</b>
+                    </td>
+                    <td align="center">
+                        <b>Employee ID</b>
+                    </td>
+                    <td align="center">
+                        <b>DutyDate</b>
+                    </td>
+                    <td align="center">
+                        <b>Location</b>
+                    </td>
+                    <td align="center">
+                        <b>Purpose</b>
+                    </td>
+                    <td align="center">
+                        <b>Company</b>
+                    </td>
+                    <td align="center">
+                        <b>Branch</b>
+                    </td>
+                    <td align="center">
+                        <b>Unit</b>
+                    </td>
+                    <td align="center">
+                        <b>Department</b>
+                    </td>
+                    <td align="center">
+                        <b>Section</b>
+                    </td>
+                    <td align="center">
+                        <b>Line</b>
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var outStationDuty in Model.VOutStationDutyDetails)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.EmployeeName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.EmployeeCardId ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.DutyDate)
+                        </td>
+
+                        <td class="reportTD">
+                            @(outStationDuty.Location)
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.Purpose)
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.CompanyName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.BranchName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.UnitName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.DepartmentName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.SectionName ?? "")
+                        </td>
+                        <td class="reportTD">
+                            @(outStationDuty.LineName ?? "- - -")
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+
+

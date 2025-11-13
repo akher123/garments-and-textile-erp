@@ -1,0 +1,65 @@
+﻿@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserPermissionForEmployeeLevelViewModel
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/treeView.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Save", "UserPermissionForEmployeeLevel", FormMethod.Post, new { @class = "UserPermissionForEmployeeLevelForm" }))
+{    <div style="width:500px; padding-left:340px;">
+        <h2>User Permission For Employee Level</h2>
+    </div>
+    <div>
+        <section class="search formCover" style="margin-bottom: 3px;">
+            <div style="margin-top: 5px; padding: 4px;">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("User")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.UserName, Model.UserSelectListItem, "-select-", new { @class = "UserForUserPermissionForEmployeeLevel", @action = "/UserManagement/UserPermissionForEmployeeLevel/UserPermissionForEmployeeLevelByUserName" })
+                        </td>
+                        <td>
+                            <input type="submit" class="SubmitButton addButton" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="search formCover">
+            <div class="tree additem">
+                <ul>
+                    <li>
+                        <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 20px; color: #006400"><input type="checkbox" class="check" /> Employee Type</span>
+                        <ul>
+                            @foreach (var employeeType in Model.EmployeeTypes)
+                            {
+                                <li>
+                                    <a></a><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <span style="font-size: 20px; color: #008b8b">
+                                        <input class="check" type="checkbox" value="@employeeType.Id" id="check-@employeeType.Id" name="SelectedEmployeeTypes" /> @employeeType.Title
+                                    </span>
+
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+    </div>
+
+}
+
+
+@section scripts
+{
+     <script src="~/Scripts/SCERP/treeView.js"></script>
+    <script src="~/Scripts/SCERP/UserManagement/UserPermissionForEmployeeLevel.js"></script>
+}
+

@@ -1,0 +1,71 @@
+﻿@model SCERP.Model.Acc_DepreciationChart
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit Depreciation Chart" : "Add Depreciation Chart";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "DepreciationChart", FormMethod.Post, new { @class = "depreciationChartform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CDT)
+    @Html.HiddenFor(model => model.EDT)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.HiddenFor(model => model.CreatedBy)
+
+    <table class="tableFont" style="width:550px; height: 200px;">
+
+        <tr>
+            <td>&nbsp;</td>
+            <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+        </tr>
+      
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width: 120px;"> Control Accounts </td>
+            <td style="width:200px;">
+                @Html.DropDownList("ControlCode", "- Select Control Accounts -")
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.ControlCode, "Required")
+            </td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width:120px;"> Depreciation Rate </td>
+            <td style="width:200px;">
+                @Html.EditorFor(model => model.DepreciationRate)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.DepreciationRate, "Required")
+            </td>
+        </tr>
+      
+        <tr>
+            <td style="width: 5px;">
+                &nbsp;
+            </td>
+            <td style="width: 120px;">
+                &nbsp;
+            </td>
+            <td style="width:200px;">
+                @Html.SaveButton()
+            </td>
+            <td style="width: 1px;">
+                &nbsp;
+            </td>
+            <td style="width: 100px;">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+}

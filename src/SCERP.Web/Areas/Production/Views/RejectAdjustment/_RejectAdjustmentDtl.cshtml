@@ -1,0 +1,79 @@
+﻿@model SCERP.Web.Areas.Production.Models.RejectAdjustmentViewModel
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend>
+        Reject Adjustment List
+    </legend>
+    <table class="webgrid-table tableFocusInputText">
+        <thead>
+            @foreach (var row in Model.RejectAdjustmentDictionary.Where(x => x.Key != "SizeRefId"))
+            {
+                <tr>
+                    <td>
+                        @row.Key
+                    </td>
+                    @foreach (var col in @row.Value)
+                    {
+                        <td>
+                            @col
+                        </td>
+                    }
+                </tr>
+            }
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    @Html.Label("Reject Quantity")
+                </td>
+                @foreach (var row in Model.RejectAdjustments)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.RejectAdjustments[row.Key].RejectQty, new { @style = "width:86%;", @class = "TextBoxStyle rejectQtyTextBox" })
+                        @Html.HiddenFor(x => Model.RejectAdjustments[row.Key].SizeRefId)
+                        @Html.HiddenFor(x => Model.RejectAdjustments[row.Key].CuttingBatchId)
+                        @Html.HiddenFor(x => Model.RejectAdjustments[row.Key].CompId)
+                    </td>
+
+                }
+                <td>
+                    <span id="totlaRejectQty">
+                        @Model.RejectAdjustments.Sum(x => x.Value.RejectQty)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="@(Model.RejectAdjustments.Count+2)">
+                    <div style="float: left">
+                        <button type="button" class="delete" action="/RejectAdjustment/Delete?CuttingBatch.CuttingBatchId=@Model.CuttingBatch.CuttingBatchId"></button>
+                    </div>
+                    <div style="float: right">
+                        <input type="button" class="FindPartial buttonStyle addButton" action="/RejectAdjustment/Save/" target="#rejectAdjustmentDtlContainner" value="Save" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<script type="text/javascript">
+    $('.tableFocusInputText').formNavigation();
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".rejectQtyTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totlaRejectQty").html(sum);
+    }
+    $(".rejectQtyTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+
+</script>

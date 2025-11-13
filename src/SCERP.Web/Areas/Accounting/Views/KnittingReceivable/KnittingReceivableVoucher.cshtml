@@ -1,0 +1,121 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    ViewBag.Title =  "Create Receivable Bill Voucher";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<fieldset>
+
+    <legend><strong> Voucher Entry </strong></legend>
+
+    @using (Html.BeginForm("Save", "KnittingReceivable", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IntRefId)
+        @Html.HiddenFor(model => model.IntType)
+        @Html.HiddenFor(model => model.IsPartial)
+        @Html.HiddenFor(model => model.CostCentreId)
+        @Html.HiddenFor(model => model.CurrencyRate)
+
+        <table class="tabefont ">
+
+            <tr>
+                <td>@Html.DisplayName("Voucher Type")</td>
+                <td>@Html.DisplayName("Date")</td>
+                <td>@Html.DisplayName("Sector Name")</td>
+                <td>@Html.DisplayName("Ref No")</td>
+                <td>@Html.DisplayName("Voucher No")</td>
+
+            </tr>
+            <tr>
+                <td>@Html.DropDownListFor(x => x.VoucherType, new SelectList(new object[] { new { VoucherTypeId = "IV", Value = "Integration Voucher" } }, "VoucherTypeId", "Value"), new { style = "width:160px;height: 35px;", @Class = "VoucherType",@readonly="readonly" })</td>
+                <td>@Html.TextBoxFor(x => x.VoucherDate, new { @class = "datepicker", style = "width:160px;", @readonly = "readonly" , @placeholder = "To" })</td>
+                <td>@Html.DropDownListFor(x => x.SectorId, Model.CompanySectorSelectListItem, new { @onchange = "getCostCentreBySector(this.value)", style = "width:180px;height: 35px;", @disabled = "disabled" })</td>
+                <td>@Html.TextBoxFor(model => model.VoucherNo, new { style = "width:100px;", @readonly = "readonly" })</td>
+                <td>@Html.TextBoxFor(model => model.VoucherRefNo, new { style = "width:160px;", @autofocus = "autofocus", @class = "voucherRefNo" , @readonly = "readonly" })</td>
+                <td>@Html.ValidationMessageFor(model => model.VoucherRefNo) </td>
+            </tr>
+
+            <tr>
+                <td colspan="6"> <hr /> </td>
+            </tr>
+            <tr>
+                <td width="800px" colspan="10">
+                    <table class="webgrid-table" id="VoucherDetailTable">
+                        <thead class="webgrid-header mis-header">
+                            <tr>
+                                <th width="200px">Account Name</th>
+                                <th> Particulars </th>
+                                <th> DEBIT (TAKA) </th>
+                                <th> CREDIT (TAKA) </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Partial("~/Areas/Accounting/Views/KnittingReceivable/_AddNewRow.cshtml", Model)
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6" style="height: 10px;"></td>
+            </tr>
+
+            <tr>
+                <td align="right" colspan="6">
+                    <table>
+                        <tr>
+                            <td>
+                                Total:
+                                @Html.TextBoxFor(x => x.TotalDebitAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalDebitAmount" })
+                                @Html.TextBoxFor(x => x.TotalCreditAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalCreditAmount" })
+                                @Html.TextBoxFor(x => x.TotalAmount, new { @style = "width: 100px;", @readonly = "readonly", @class = "TotalAmount" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr>
+                <td> @Html.DisplayName("Total BDT In Words") </td>
+            </tr>
+
+            <tr>
+                <td style="width: 500px;" colspan="6">
+                    @Html.TextBoxFor(x => x.TotalAmountInWord, new { @style = "width: 500px;", @readonly = "readonly", @class = "AmountInWords" })
+                </td>
+            </tr>
+
+            <tr>
+                <td> @Html.DisplayName("Narration") </td>
+            </tr>
+
+            <tr>
+                <td colspan="6">
+                    @Html.TextBoxFor(model => model.Particulars, new { @class = "VoucherParticulars", style = "width: 500px;" })
+                    <input type="submit" id="btnVoucherSave" value="Save" />
+                </td>
+            </tr>
+        </table>
+    }
+</fieldset>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Acc_VoucherEntry.js"></script>
+}

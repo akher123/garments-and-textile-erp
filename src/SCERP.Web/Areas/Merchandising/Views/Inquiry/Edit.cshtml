@@ -1,0 +1,133 @@
+﻿
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.InquiryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Inquiry.InquiryId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "Inquiry", FormMethod.Post, new { @class = "Inquiryform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Inquiry.InquiryId)
+    @Html.HiddenFor(model => model.Inquiry.Photo, new { @class = "documentPathHidden" })
+    <table>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend> Upload Image(.jpeg,.png) </legend>
+                    <div id="uploadFile" action="/Common/Document/DocumentFileUpload?RefId=@Model.Inquiry.InquiryRef">Upload</div>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <legend> Development Inquiry </legend>
+        <table class="tabefont">
+
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Ref : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.InquiryRef, new { @style = "background-color: #b0c4de;", @readonly = "readonly" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Merchandiser") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.Merchandiser, new { @placeholder = "Merchandiser" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Buyer") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.BuyerName, new { @placeholder = "Buyer" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Season: ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.Season, new { @placeholder = "Season" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Design Ref : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.DesignRef, new { @placeholder = "DesignRef" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Designer : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.Designer, new { @placeholder = "Designer" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Description : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.Description, new { @placeholder = "Description" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("GSM : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.FabricationGsm, new { @placeholder = "GSM" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("SampleType : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.SampleType, new { @placeholder = "SampleType" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Colour : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.Colour, new { @placeholder = "Color" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Sample Size : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.SampleSize, new { @placeholder = "Size" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Recved Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.RecvedDate, new { @class = "datepicker", @placeholder = "Recved date" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Submission Date : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.SubmissionDate, new { @class = "datepicker", @placeholder = "Submission date" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Price USD : ") </td>
+                <td> @Html.TextBoxFor(model => model.Inquiry.PriceUSD, new { @placeholder = "Price($)" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Remarks : ") </td>
+                <td> @Html.TextAreaFor(model => model.Inquiry.Remarks, new { @placeholder = "Remarks" }) </td>
+                <td> </td>
+            </tr>
+           
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> @Html.SaveButton() </td>
+                <td> </td>
+            </tr>
+        </table>
+      
+    </fieldset>
+}
+@section scripts
+{
+    <script src="~/Scripts/Common/documnet.js"></script>
+}

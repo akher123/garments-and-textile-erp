@@ -1,0 +1,41 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = null;
+}
+
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>Buyer </th>
+            <th>Order</th>
+            <th>Style</th>
+            <th>Color</th>
+            <th>OutQty</th>
+            <th>Line</th>
+        
+       
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.VwSewingOutputProcesses)
+        {
+            <tr>
+                <td>@item.BuyerName </td>
+                <td>@item.OrderName </td>
+                <td>@item.StyleName </td>
+                <td>@item.ColorName </td>
+                <td>@item.OutputQuantity </td>
+                <td>@item.MachineName </td>
+
+            </tr>
+        }
+    <tr>
+        <td colspan="4">
+            Total :
+        </td>
+        <td >@Model.VwSewingOutputProcesses.Sum(x => x.OutputQuantity)</td>
+    </tr>
+    </tbody>
+</table>

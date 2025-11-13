@@ -1,0 +1,149 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.FinishFabricIssueViewModel
+@{
+    ViewBag.Title = Model.FinishFabricIssue.FinishFabIssueId > 0 ? "Edit " : "Add ";
+      Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<div style="padding-left: 100px;">
+    <h2>Finish Fabric Received Challan Approval</h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("UpdateFabricIssue", "CuttFabricReceive", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.FinishFabricIssue.FinishFabIssueId)
+        <fieldset>
+            <legend>Finish Fabric Issue/Delivery Challan</legend>
+         
+            <table class="tabefont"  style="padding-left: 10px;">
+                <tr>
+                    <td>
+                        <table class="tabefont" >
+                            <tr>
+                                <td>
+                                    @Html.Label("Ref No :")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.FinishFabricIssue.FinishFabIssureRefId, new { @readonly = "readonly", id = "txtReturnableChallanRefId", style = "background-color: #F0ECE7;width: 240px;" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                                <td>
+                                    @Html.Label("Challan Date")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.FinishFabricIssue.ChallanDate, new { @class = "datepicker", @placeholder = "Challan Date", style = "width: 240px;" })
+                                </td>
+                                <td>
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("IsReceived:")
+                                </td>
+                                <td>
+                                    @Html.EditorFor(x => x.FinishFabricIssue.IsReceived)
+                                </td>
+                                <td></td>
+                          
+                                <td>
+                                    @Html.Label("Note :")
+                                </td>
+                                <td>
+                                    @Html.TextAreaFor(x => x.FinishFabricIssue.Commerns, new { style = "width: 240px;" })
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <table class="tabefont webgrid-table" id="finishFabricIssueDetailTable">
+                            <thead style="text-align: center" class="webgrid-header">
+                                <tr>
+                                    <th>Batch</th>
+                                    <th>Item</th>
+                                    <th>Grey Wt</th>
+                                    <th>Finish Wt</th>
+                                    <th>CcuffQty</th>
+                                    <th>NoOfRoll</th>
+                                    <th>Remarks</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var m in Model.FinishFabricIssueDetails)
+                                {
+                                    <tr >
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].BatchNo)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].BatchNo, new { id = "BatchNo_" + m.Key })
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].BatchId, new { id = "BatchId_" + m.Key })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].ItemName)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].ItemName, new { id = "ItemName_" + m.Key })
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].BatchDetailId, new { id = "BatchDetailId_" + m.Key })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].GreyWt)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].GreyWt, new { id = "GreyWt_" + m.Key })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].FabQty)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].FabQty, new { id = "FabQty_" + m.Key })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].CcuffQty)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].CcuffQty, new { id = "CcuffQty_" + m.Key })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].NoOfRoll)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].NoOfRoll, new { id = "NoOfRoll_" + m.Key })
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(x => x.FinishFabricIssueDetails[m.Key].Remarks)
+                                            @Html.HiddenFor(x => x.FinishFabricIssueDetails[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+                                        </td>
+                                      
+                                    </tr>
+                                }
+                            <tr>
+                                <td colspan="2">
+                                    Total :
+                                </td>
+                                <td>
+                                    @Model.FinishFabricIssueDetails.Values.Sum(x => x.GreyWt)
+                                </td>
+                                <td>
+                                    @Model.FinishFabricIssueDetails.Values.Sum(x => x.FabQty)
+                                </td>
+                                <td>
+                                    @Model.FinishFabricIssueDetails.Values.Sum(x => x.CcuffQty)
+                                </td>
+                                <td>
+                                    @Model.FinishFabricIssueDetails.Values.Sum(x => x.NoOfRoll)
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                  
+                    <td style="float: right">
+                        @Html.SaveButton()
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+</section>
+

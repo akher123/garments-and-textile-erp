@@ -1,0 +1,59 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    Layout = null;
+}
+<table class="webgrid-table webgrid" style="width: 100%;">
+    <tbody class="webgrid-header">
+        <tr>
+            <th>
+                ItemCode
+            </th>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Unit
+            </th>
+        </tr>
+    </tbody>
+    @for (int index = 0; index < Model.InPutProgramDetails.Count; index++)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(x => Model.InPutProgramDetails[index].MType)
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].ItemName)
+                @Html.HiddenFor(x => Model.InPutProgramDetails[index].ItemCode)
+            </td>
+
+            <td>
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].ColorName)
+                @Html.HiddenFor(x => Model.InPutProgramDetails[index].ColorRefId)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].SizeName)
+                @Html.HiddenFor(x => Model.InPutProgramDetails[index].SizeRefId)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].Quantity)
+                @Html.HiddenFor(x => Model.InPutProgramDetails[index].Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.InPutProgramDetails[index].UnitName)
+
+            </td>
+        </tr>
+    }
+
+</table>

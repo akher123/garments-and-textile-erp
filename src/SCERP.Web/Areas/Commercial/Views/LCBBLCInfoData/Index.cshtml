@@ -1,0 +1,301 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.TimeAndActionViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style type="text/css">
+    /* All headers */
+    .handsontable th {
+        background-color: #1e90ff;
+        color: #000000;
+    }
+
+    .hot-container {
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
+    }
+
+    /* Column headers */
+    .ht_clone_top th {
+        background-color: #1e90ff;
+        color: #000000;
+    }
+</style>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("Index", "LCBBLCInfoData", FormMethod.Get, new { @class = "TimeAndActionSearchForm" }))
+        {
+
+            <table>
+                <tr>
+
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "CostOrderStyle_BuyerId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "CostOrderStyle_OrderNo_ID", @class = "CostOrderStyle_Order" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "CostOrderStyle_StyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+
+                    <td>
+                        <input type="button" onclick=" tnAReport() " class="addButton" value="PDF" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="rowRemoveBtn" class="addButton" value="-" />
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.RowNumber)
+                    </td>
+
+                    <td>
+                        <input type="button" id="rowAddBtn" class="addButton" value="+" />
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Copy Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CopyOrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "Copy_CostOrderStyle_Order_ID", @class = "CostOrderStyle_Order" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("", "To Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CopyOrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "Copy_CostOrderStyle_StyleNo_ID" })
+                    </td>
+                    <td>
+                        <input type="button" value="C&P" class="addButton" id="copyAndPastBtn" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+<section class="search formCover">
+    <div id="example1" class="hot handsontable  hot-container"></div>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+
+    $('#StyleName').autocomplete(
+    {
+        source: '@Url.Action("TagSearch", "Tna")'
+    });
+    var isReadOnly = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.IsMerchandiser)));
+    var data = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Tnas)));
+    var container = document.getElementById('example1');
+    var hot = new Handsontable(container, {
+        data: data,
+        columnSorting: true,
+        rowHeaders: true,
+        fixedColumnsLeft:1,
+        contextMenu: true,
+        manualColumnFreeze: true,
+        filters: true,
+        columns: [
+            { data: 'TnaRowId' ,readOnly: true},
+            { data: 'BuyerName',readOnly: true },
+            { data: 'StyleName',readOnly: true },
+            { data: 'Quantity',readOnly: true },
+            { data: 'Merchandiser',readOnly: true },
+            { data: 'SerialId',readOnly:isReadOnly},
+            { data: 'ActivityName',readOnly:isReadOnly },
+            { data: 'PSDate'  ,type: 'date', dateFormat: 'DD/MM/YYYY', correctFormat: true ,readOnly:isReadOnly  },
+            { data: 'PEDate',type: 'date', dateFormat: 'DD/MM/YYYY' , correctFormat: true,readOnly:isReadOnly },
+            { data: 'Rmks' },
+            { data: 'XWho' },
+            { data: 'XWhen' },
+            { data: 'ASDate',  type: 'date', dateFormat: 'DD/MM/YYYY', correctFormat: true   },
+            { data: 'AEDate',  type: 'date',dateFormat: 'DD/MM/YYYY', correctFormat: true   },
+            { data: 'Responsible' },
+            {data:'UpdateRemarks'}
+        ],
+
+        colHeaders:
+        [
+            'TnaRowId',
+            'Buyer',
+            'Style',
+            'Qty(Pces)',
+            'Merchandiser',
+            'SL',
+            'Activity',
+            'Plan Start',
+            'Plan End',
+            'What',
+            'Who',
+            'When',
+            'Actual Start',
+            'Actual End',
+            'Responsible',
+            'Update Status'
+        ],
+        dropdownMenu: true,
+    });
+
+    hot.render();
+    hot.updateSettings({
+        afterChange: function(changes) {
+            var rowThatHasBeenChanged = changes[0][0];
+            var sourceRow = hot.getSourceDataAtRow(rowThatHasBeenChanged);
+            var key = changes[0][1];
+            var value = changes[0][3];
+            var option = {
+                url: '/Planning/TimeAndAction/UpdateTna?tnaRowId='+sourceRow.TnaRowId+"&key="+key+"&value="+value,
+                type:"POST"
+            };
+            $.Ajax(option);
+        },
+        contextMenu: {
+            callback: function(key, options) {
+                var sel = this.getSelected();
+
+            }
+        }
+    });
+
+
+    $('#rowAddBtn').unbind('click').bind('click', function() {
+        var form = $(this).parents('form:first');
+        var option= {
+            url: '/Planning/TimeAndAction/AddRow',
+            data:form.serialize(),
+
+        }
+        form.Post(option);
+    });
+    $('#rowRemoveBtn').unbind('click').bind('click', function() {
+        var form = $(this).parents('form:first');
+        var option= {
+            url: '/Planning/TimeAndAction/RemoveRow',
+            data:form.serialize(),
+
+        }
+        form.Post(option);
+    });
+
+    $('#copyAndPastBtn').unbind('click').bind('click', function() {
+
+        var form = $(this).parents('form:first');
+        var option= {
+            url: '/Planning/TimeAndAction/CopyAndPast',
+            data:form.serialize(),
+
+        }
+        form.Post(option);
+    });
+
+    $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+
+            removeDependentDropdown();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "-Select Order-" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+    function populateDropDown(obj) {
+        $('.CostOrderStyle_Order').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+    $('#CostOrderStyle_OrderNo_ID').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('#CostOrderStyle_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("-Select Style-")
+                );
+                $.each(styleList, function (style) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('#CostOrderStyle_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    $('#Copy_CostOrderStyle_Order_ID').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('#Copy_CostOrderStyle_StyleNo_ID').empty();
+            if (styleList.length > 0) {
+                $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                    $('<option/>').attr('value', '').text("-Select Style-")
+                );
+                $.each(styleList, function (style) {
+                    $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('#Copy_CostOrderStyle_StyleNo_ID').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+    function removeDependentDropdown() {
+
+        $('.CostOrderStyle_Order').empty();
+        $('#CostOrderStyle_StyleNo').empty();
+        $('#Copy_CostOrderStyle_StyleNo_ID').empty();
+
+    }
+
+    function tnAReport() {
+        var orderStyleRefId = $('#CostOrderStyle_StyleNo').val();
+        var searchurl = '/Planning/TimeAndAction/TnAReport?orderStyleRefId=' + orderStyleRefId;
+        window.open(searchurl);
+    }
+    </script>
+}

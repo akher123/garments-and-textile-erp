@@ -1,0 +1,76 @@
+﻿@model SCERP.Web.Areas.Payroll.Models.ViewModels.SalaryAdvanceViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SalaryAdvanceId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "SalaryAdvances", FormMethod.Post, new {@class = "SalaryAdvancesform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SalaryAdvanceId)
+
+    <fieldset>
+        <legend> Salary Advances </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Employee Id:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.EmployeeCardId)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.EmployeeCardId)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Date:</td>
+                <td>       
+                    @Html.TextBoxFor(x => x.ReceivedDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ReceivedDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Amount:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Amount)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Amount)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}

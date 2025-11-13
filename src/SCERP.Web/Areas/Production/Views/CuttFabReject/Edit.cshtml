@@ -1,0 +1,173 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttFabRejectViewModel
+@{
+    ViewBag.Title = Model.CuttFabReject.CuttFabRejectId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "CuttFabReject", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.CuttFabReject.CuttFabRejectId)
+    <fieldset>
+        <legend>Cutting Reject Fabric</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Batch No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @id = "BatchNoTextBox", @placeholder = "SearchBy Batch No", @data_target = "#BtRefNoHiddenText", @action = "/CuttFabReject/GetReceivedBatchAutocomplite" })
+                    @Html.HiddenFor(x => x.CuttFabReject.BatchId, new { @id = "BtRefNoHiddenText" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Fabric:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CuttFabReject.BatchDetailId, Model.ItemSelectListItem, "-Select-", new { @id = "ddlItem"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Wistage  Wt(Kg) :")
+                </td>
+                <td>
+
+                    @Html.EditorFor(x => x.CuttFabReject.CuttingWit)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Reject Wt(Kg) :")
+                </td>
+                <td>
+
+                    @Html.EditorFor(x => x.CuttFabReject.RejectWit)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+         
+            <tr>
+                <td>
+                    @Html.Label("Cutt Job No:")
+                </td>
+                <td>
+
+                    @Html.EditorFor(x => x.CuttFabReject.ChallanNo)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+
+                    @Html.TextAreaFor(x => x.CuttFabReject.Remarks)
+
+                </td>
+                <td>
+                  
+                </td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('#BatchNoTextBox').autocomplete({
+            source: function (request, response) {
+                var datatarget = this.element.attr('data-target');
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    datatype: "json",
+                    data: { searchString: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        $(datatarget).val('');
+                        response($.map(data, function (batch) {
+                            return { label: batch.Text, value: batch.Text, BatchId: batch.Value, datatarget: datatarget };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var batchId = ui.item.BatchId;
+                $(ui.item.datatarget).val(batchId);
+
+                showBatchDetailInfo(batchId);
+            },
+
+        });
+
+
+        function showBatchDetailInfo(batchId) {
+
+            $.Ajax({
+                url: '/CuttFabReject/GetReceivedBatchDetailByBatchId',
+                data: { batchId: batchId }
+            }).done(function (itemList) {
+
+                $('#ddlItem').empty();
+                if (itemList.length > 0) {
+                    $('#ddlItem').append(
+                        $('<option/>')
+                        .attr('value', '')
+                        .text('-Select-')
+                    );
+                    $.each(itemList, function (item) {
+                        $('#ddlItem').append(
+                            $('<option/>')
+                            .attr('value', this.BatchDetailId)
+                            .text(this.ItemName)
+                        );
+                    });
+                } else {
+                    $('#ddlItem').append(
+                        $('<option/>')
+                        .attr('value', "No Item Found")
+                        .text("Select")
+                    );
+                }
+            });
+        }
+
+      
+    </script>
+}

@@ -1,0 +1,209 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessTemplateViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "ProcessTemplate", FormMethod.Post, new {@class = "ProcessTemplateform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(x => x.StylerefId, new { @Class = "BuyerOrderStyleRefId" })
+
+    <fieldset>
+        <legend>Process Template</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Style:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @class = "BuyerStyleSearchByKey", @TClass = "BuyerOrderStyleRefId", @placeholder = "Search key" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Activities:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ProcessId, Model.ProcessSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ProcessId)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Lead Time:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LeadTime)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LeadTime)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Planned Start Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.PlannedStartDate)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedStartDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Planned End Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.PlannedEndDate)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedEndDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Actual Start Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.ActualStartDate)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActualStartDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Actrual End Date:</td>
+                <td>
+                    @Html.EditorFor(model => model.ActrualEndDate)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActrualEndDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Responsible Person:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ResponsiblePerson, Model.ResponsiblePersonSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ResponsiblePerson)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Notify Before Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NotifyBeforeDays)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NotifyBeforeDays)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Remarks:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+<script type="text/javascript">
+
+    $('.BuyerStyleSearchByKey').on('keyup', function () {
+        var tClass = $(this).attr('TClass');
+        $(this).autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: "/OmBuyOrdStyle/StyleAutocomplite",
+                    type: "POST",
+                    datatype: "html",
+                    data: { searchString: request.term },
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        $('.' + tClass).val('');
+                        response($.map(data, function (styleView) {
+                            return { label: styleView.StyleName + " " + styleView.OrderStyleRefId + " " + styleView.Quantity, value: styleView.StyleName, StyleRefId: styleView.StyleRefId, OrderStyleRefId: styleView.OrderStyleRefId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var styleRefId = ui.item.OrderStyleRefId;
+
+                $('.' + tClass).val(styleRefId);
+                $('.BuyerOrderStyleRefId').val(styleRefId);
+
+            },
+        });
+    });
+
+</script>

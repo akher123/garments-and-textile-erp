@@ -1,0 +1,241 @@
+﻿@model SCERP.Web.Areas.Production.Models.NonProductiveTimeViewModel
+@{
+
+    ViewBag.Title = Model.NonProductiveTime.NonProductiveTimeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "NonProductiveTime", FormMethod.Post, new { @class = "NonProductiveTimeForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.NonProductiveTime.NonProductiveTimeId)
+    <fieldset>
+        <legend>Non Productive Time </legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.NptRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.NonProductiveTime.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "npt_buyerRefId" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.NonProductiveTime.OrderNo, Model.OrderSelectListItem, "-Select-", new { @class = "npt_OrderNo" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Style :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.NonProductiveTime.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new { @class = "npt_StyleNo" })
+
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.EntryDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.NonProductiveTime.MachineId, Model.MachineSelectListItem, "-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+          
+            <tr>
+                <td>
+                    @Html.Label("M/P :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.Manpower)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label(" ", "Reason:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.NonProductiveTime.DownTimeCategoryId, Model.DownTimeCategorySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Start Time :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.StartTime, new {@class = "timePicker", @placeholder = "Start Time"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("End Time :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EndTime, new {@class = "timePicker", @placeholder = "End Time"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Supervisor:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.Supervisor)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label(" ", "Res.Dept:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.ResponsibleDepartment)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("How Solved :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.NonProductiveTime.Solution)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label(" ", "Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.NonProductiveTime.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('.npt_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.npt_OrderNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.npt_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.npt_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.npt_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.npt_StyleNo').append(
+                        $('<option/>').attr('value', '').text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.npt_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.npt_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+    </script>
+}

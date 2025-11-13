@@ -1,0 +1,38 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.AssigneeViewModel
+@{
+
+    ViewBag.Title = Model.AssigneeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Assignee", FormMethod.Post, new { @class = "ModuleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.AssigneeId)
+    <fieldset>
+        <legend>Assignee</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Assignee :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Assignee, new { @placeholder = "Assignee" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

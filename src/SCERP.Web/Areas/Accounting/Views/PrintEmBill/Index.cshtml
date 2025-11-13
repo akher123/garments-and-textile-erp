@@ -1,0 +1,71 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.PrintEmBillViewModel
+ @{
+        Layout = "~/Views/Shared/_Layout2.cshtml";
+
+ }
+
+    <div class="header-title">
+        <h2>Print and Embroidery  Bills</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+
+            @using (Html.BeginForm("Index", "PrintEmBill", FormMethod.Get, new { @class = "PrintEmBillSearchForm" }))
+            {
+        
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Process")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ProcessRefId,Model.ProcessTypeSelectListItem,"-Select-")
+                    </td>
+                    <td>
+                        @Html.Label("Invoice date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.InvoiceDate, new { @data_val = "false", @class = "datepicker", @placeholder = "Date" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+            }
+        </div>
+    </section>
+    <div style="overflow-x:auto">
+        <table class="webgrid-table" style="text-align: center;display: -moz-grid-group;">
+            <thead class="webgrid-header mis-header">
+                <tr>
+                    <th>Process</th>
+                    <th>Party</th>
+                    <th>Party Account</th>
+                    <th>InvoiceNo</th>
+                    <th>Rate</th>
+                    <th>Qty</th>
+                    <th>BillAmount</th>
+                    <th>Voucher</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kb in Model.PrintEmbBills)
+                {
+                <tr>
+                    <td>@kb.ProcessTitle</td>
+                    <td>@kb.Party</td>
+                    <td>@kb.AccountName</td>
+                    <td>@kb.InvoiceNo</td>
+                    <td>@kb.Rate</td>
+                    <td>@kb.Qty</td>
+                    <td>@kb.BillAmount</td>
+                    <td>
+                        <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/Accounting/PrintEmBill/PrintEmBillVoucher?Key=@kb.RefId">Post</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,244 @@
+﻿@model SCERP.Web.Areas.Production.Models.FinishingProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Iron Finishing</h3>
+</div>
+<section class="search formCover">
+    <div style="padding-left: 10px;padding-right: 10px;padding-top: 10px;padding-bottom: 10px;margin-left: 10px;width: 1000px; margin-bottom: 5px; background-color:white;">
+        @using (Html.BeginForm("Save", "IronFinishing", FormMethod.Post, new { @class = "IronFinishingProcessForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend>Iron Finishing</legend>
+                <div id="cuttingJobMaster">
+                    <table class="tabefont" style="margin-left: 10px;margin-bottom: 10px; margin-left: 100px;">
+                        <tr>
+                            <td>@Html.Label("Ref No")</td>
+                            <td>@Html.TextBoxFor(x => x.FinishingProcess.FinishingProcessRefId, new { @readonly = "readonly", id = "txtFinishingProcessRefId", style = "background-color: #F0ECE7;" })</td>
+                            <td>
+                                @Html.Label("", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Buyer")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FinishingProcess.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "FinishingProcess_buyerRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Order")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FinishingProcess.OrderNo, Model.OrderSelectListItem, new { @class = "FinishingProcess_OrderNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Style")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FinishingProcess.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "FinishingProcess_StyleNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Country :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FinishingProcess.OrderShipRefId, Model.OrderShipSelectListItem, "ALL", new { @class = "Iron_OrderShipRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Color")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.FinishingProcess.ColorRefId, Model.ColorSelectListItem, new {@class = "FinishingProcess_Color"})
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>
+                                <input type="button" class="FindPartial buttonStyle" action="/IronFinishing/Find/" target=".Finishingplate" value="Find"/>
+                            </td>
+                            <td></td>
+                            @*<td>
+                                <div style="margin-bottom: 3px;">
+                                    <div class="dropdown">
+                                        <button class="dropbtn">REPORT▼</button>
+                                        <div class="dropdown-content">
+                                            <a style="cursor: pointer" target="_blank" onclick="StyleAndColorWiseInput(1)">PDF</a>
+                                            <a style="cursor: pointer" target="_blank" onclick="StyleAndColorWiseInput(3)">Excel</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>*@
+                        </tr>
+                        
+                    </table>
+                </div>
+              
+                <div class="Finishingplate">
+                    @if (Model.PivotDictionary.Any())
+                    {
+                        @Html.Partial("~/Areas/Production/Views/IronFinishing/_Plate.cshtml", Model)
+                    }
+                </div>
+            </fieldset>
+        }
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.FinishingProcess_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/JobCard/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.FinishingProcess_OrderNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+        function populateDropDown(obj) {
+            $('.FinishingProcess_OrderNo').append(
+                $('<option/>')
+                    .attr('value', obj.OrderNo)
+                    .text(obj.RefNo)
+            );
+        }
+
+
+        $('.FinishingProcess_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/JobCard/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.FinishingProcess_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.FinishingProcess_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.FinishingProcess_StyleNo').append(
+                            $('<option/>')
+                                .attr('value', this.OrderStyleRefId)
+                                .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.FinishingProcess_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        $('.FinishingProcess_StyleNo').unbind('change').bind('change', function () {
+            var orderStyleRefId = $(this).val();
+            $.Ajax({
+                url: '/JobCard/GetColorsByOrderStyleRefId/',
+                data: { orderStyleRefId: orderStyleRefId }
+            }).done(function (colors) {
+                $('.FinishingProcess_Color').empty();
+                if (colors.length > 0) {
+                    $('.SewingInputProcess_Color').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(colors, function (color) {
+                        $('.FinishingProcess_Color').append(
+                            $('<option/>')
+                                .attr('value', this.ColorRefId)
+                                .text(this.ColorName)
+                        );
+                    });
+                } else {
+                    $('.FinishingProcess_Color').append(
+                        $('<option/>')
+                            .attr('value', "No Order Found")
+                            .text("Select")
+                    );
+                }
+            });
+            loadStyleWiseShipment(orderStyleRefId);
+        });
+
+        function removeDependentDropdown() {
+            $('.FinishingProcess_buyerRefId').empty();
+            $('.FinishingProcess_OrderNo').empty();
+            $('.FinishingProcess_StyleNo').empty();
+            $('.FinishingProcess_Color').empty();
+        }
+
+        function StyleAndColorWiseInput(reportTypeId) {
+            var form = $('.FinishingProcessForm');
+            var data = form.serialize();
+            var searchurl = '/Production/ProductionReport/StyleAndColorWiseInput?' + data + '&reportTypeId=' + reportTypeId;
+            window.open(searchurl);
+        }
+        function loadStyleWiseShipment(orderStyleRefId) {
+            $.Ajax({
+                url: '/JobCard/GetStyleWiseShipment/',
+                data: { orderStyleRefId: orderStyleRefId }
+            }).done(function (orderShips) {
+                $('.Iron_OrderShipRefId').empty();
+                if (orderShips.length > 0) {
+                    $('.Iron_OrderShipRefId').append(
+                        $('<option/>')
+                        .attr('value', '')
+                        .text("Select")
+                    );
+
+                    $.each(orderShips, function (orderShip) {
+                        $('.Iron_OrderShipRefId').append(
+                            $('<option/>')
+                            .attr('value', this.OrderShipRefId)
+                            .text(this.CountryName)
+                        );
+                    });
+                } else {
+                    $('.Iron_OrderShipRefId').append(
+                        $('<option/>')
+                        .attr('value', "No Country Found")
+                        .text("Select")
+                    );
+                }
+            });
+        }
+
+    </script>
+}

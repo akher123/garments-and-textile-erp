@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.WorkGroupViewModel
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+
+    <table class="pdfReportTable" style="border: 0;margin-bottom: 5px;">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Work Group List</td>
+            </tr>
+            <tr>
+                <td class="clsDate">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <table class="pdfReportTable" border="1">
+        <thead class="reportThead">
+            <tr class="reportTR">
+                <td class="reportTH">
+                    SL.No
+                </td>
+                <td class="reportTH">
+                    Work Group 
+                </td>
+                <td class="reportTH">
+                    Company 
+                </td>
+                <td class="reportTH">
+                    Branch 
+                </td>     
+                <td class="reportTH">
+                    Unit
+                </td>           
+            </tr>
+        </thead>
+        <tbody class="reportBody">
+            @foreach (var workGroup in Model.WorkGroups)
+            {
+                <tr class="reportTR">
+                    <td class="reportTD">
+                        @rowCount
+                    </td>
+                    <td class="reportTD">
+                        @workGroup.Name
+                    </td>
+                    <td class="reportTD">
+                        @(workGroup.BranchUnit.Branch.Company == null ? "" : workGroup.BranchUnit.Branch.Company.Name)
+                    </td>
+                    <td class="reportTD">
+                        @(workGroup.BranchUnit.Branch == null ? "" : workGroup.BranchUnit.Branch.Name)
+                    </td>
+                    <td class="reportTD">
+                        @(workGroup.BranchUnit.Unit == null ? "" : workGroup.BranchUnit.Unit.Name)
+                    </td>
+                </tr>
+                rowCount += 1;
+            }
+        </tbody>
+    </table>
+</div>

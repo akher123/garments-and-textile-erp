@@ -1,0 +1,57 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.DyeingSpChallanViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.DyeingSpChallanDetailDictionary)
+{
+    <tr id="NewRow_@Model.DyeingSpChallanDetailDictionary[m.Key].BatchId.ToString()_@Model.DyeingSpChallanDetailDictionary[m.Key].BatchDetailId.ToString()">
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].BatchNo)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].BatchNo, new { id = "BatchNo_" + m.Key })
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].BatchId, new { id = "BatchId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].ItemName)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].ItemName, new { id = "ItemName_" + m.Key })
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].BatchDetailId, new { id = "BatchDetailId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].GroupName)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].GroupName, new { id = "GroupName_" + m.Key })
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].SpGroupId, new { id = "SpGroupId_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].GreyWeight)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].GreyWeight, new { id = "GreyWeight_" + m.Key })
+        </td>
+
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].FinishWeight)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].FinishWeight, new { id = "FinishWeight_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].Rate)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].Rate, new {id = "Rate_" + m.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].CcuffQty)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].CcuffQty, new { id = "CcuffQty_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.DyeingSpChallanDetailDictionary[m.Key].Remarks)
+            @Html.HiddenFor(x => x.DyeingSpChallanDetailDictionary[m.Key].Remarks, new { id = "Remarks_" + m.Key }) 
+        </td>
+        <td>
+            <input type="button" value="Edit" onclick="editRow('@m.Key')" />
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}
+
+
+
+
+

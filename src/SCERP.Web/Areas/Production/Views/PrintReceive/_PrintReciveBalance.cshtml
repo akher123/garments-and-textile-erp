@@ -1,0 +1,156 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    Layout = null;
+}
+<div id="receiveDetailContainer">
+    @Html.HiddenFor(x => x.CuttingBatchRefId, new { id = "cuttingBatchId" })
+    @Html.HiddenFor(x => x.ReceiveDetail.CuttingBatchId)
+    @Html.HiddenFor(x => x.ReceiveDetail.CuttingTagId, new { id = "cuttingTagId" })
+    @Html.HiddenFor(x => x.ReceiveDetail.ColorRefId, new { id = "receivecolorRefId" })
+    <table class="webgrid-table  webgrid-alternating-row ">
+        <thead>
+            @foreach (var row in Model.Dictionary.Where(x => x.Key != "SizeRefId"))
+            {
+                <tr>
+                    <td>
+                        @row.Key
+                    </td>
+                    @foreach (var col in @row.Value.Select((x, i) => new { value = x, index = i }))
+                    {
+                        <td>
+                            @col.value
+                            @Html.HiddenFor(x => x.Dictionary["SIZE"][col.index])
+                        </td>
+                    }
+                </tr>
+            }
+        </thead>
+        <tbody>
+            <tr >
+                <td>
+                    @Html.Label("Challan Qty")
+                </td>
+                @foreach (var row in Model.ReceiveDictionary)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.ReceiveDictionary[row.Key].InvocieQty, new { @onclick = "CalculateTotal('InvocieQtyTextBox','InvocieQtyTotal')", @style = "width:90%;", @class = "InvocieQtyTextBox", @Value = " " })
+                    </td>
+                }
+                <td>
+                    <span id="InvocieQtyTotal">
+                        @Model.ReceiveDictionary.Sum(x => x.Value.InvocieQty)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Receive Qty")
+                </td>
+                @foreach (var row in Model.ReceiveDictionary)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.ReceiveDictionary[row.Key].ReceivedQty, new { @onclick = "CalculateTotal('ReceivedQtyTextBox','ReceivedQtyTotal')", @style = "width:90%;", @class = "ReceivedQtyTextBox"})
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].SizeRefId)
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].CuttingBatchId)
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].CuttingTagId)
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].ColorRefId)
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].ProcessReceiveId)
+                        @Html.HiddenFor(x => Model.ReceiveDictionary[row.Key].CompId)
+                    </td>
+                }
+                <td>
+                    <span id="ReceivedQtyTotal">
+                        @Model.ReceiveDictionary.Sum(x => x.Value.ReceivedQty)
+                    </span>
+                </td>
+            </tr>
+     
+
+            <tr>
+                <td>
+                    @Html.Label("Fabric Reject")
+                </td>
+                @foreach (var row in Model.ReceiveDictionary)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.ReceiveDictionary[row.Key].FabricReject, new { @onclick = "CalculateTotal('FabricRejectTextBox','FabricRejectTotal')", @style = "width:90%;", @class = "FabricRejectTextBox"})
+                    </td>
+                }
+                <td>
+                    <span id="FabricRejectTotal">
+                        @Model.ReceiveDictionary.Sum(x => x.Value.FabricReject)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Print Reject")
+                </td>
+                @foreach (var row in Model.ReceiveDictionary)
+                {
+                    <td>
+                        @Html.TextBoxFor(x => Model.ReceiveDictionary[row.Key].ProcessReject, new { @onclick = "CalculateTotal('ProcessRejectTextBox','ProcessRejectTotal')", @style = "width:90%;", @class = "ProcessRejectTextBox"})
+                    </td>
+                }
+                <td>
+                    <span id="ProcessRejectTotal">
+                        @Model.ReceiveDictionary.Sum(x => x.Value.ProcessReject)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="@(Model.ReceiveDictionary.Count + 2)">
+                    <div style="float: right">
+                       
+                        <input type="button" onclick='AddProcessReceiveDetail(this)'  class="buttonStyle" action="/PrintReceive/AddProcessReceiveDetail/" value="Add" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+        function removeProcessReceiveDetail(id) {
+            $('#newRRow_' + id).remove();
+        }
+        function AddProcessReceiveDetail(obj) {
+
+            var button = $(obj);
+            var url = button.attr('action');
+            var cuttingBatchId = $('#cuttingBatchId').val();
+            var cuttingTagId = $('#cuttingTagId').val();
+            var colorRefId = $('#receivecolorRefId').val();
+            $('#newRRow_' + cuttingBatchId + '-' + cuttingTagId + "C" + colorRefId).remove();
+            $.Ajax({
+                url: url,
+                type: "POST",
+                data: $('#receiveDetailContainer :input').serialize()
+            }).done(function (responsHtml) {
+                $('#processReceiveDetail').append(responsHtml);
+
+            });
+        }
+
+
+        function calculateTotalRatio(cl, targ) {
+            var sum = 0;
+            $("." + cl).each(function () {
+                if (!isNaN(this.value) && this.value.length != 0) {
+                    sum += parseInt(this.value);
+                }
+            });
+            $("#" + targ).html(sum);
+        }
+
+        function CalculateTotal(cl, targ) {
+            $('.' + cl).keyup(function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                calculateTotalRatio(cl, targ);
+            });
+        }
+
+
+
+</script>

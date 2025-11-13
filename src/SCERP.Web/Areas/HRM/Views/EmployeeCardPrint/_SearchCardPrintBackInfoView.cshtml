@@ -1,0 +1,23 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeCardPrintViewModel
+
+<tr>
+    <td> @Html.Label("Company :") </td>          
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>         
+    <td> @Html.Label("Language :") </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchLanguageId, Model.LanguageSelectListItem, "-Select-")
+        @Html.Label("*", new { @class = "labelInstruction" })
+    </td>     
+</tr>
+
+<tr>
+    <td>
+        @Html.Label("NO of Card :")
+    </td>
+    <td>@Html.DropDownList("NoOfCard") </td> 
+    <td> </td>      
+    <td> </td>
+</tr>

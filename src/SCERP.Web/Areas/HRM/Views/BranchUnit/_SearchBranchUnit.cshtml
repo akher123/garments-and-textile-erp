@@ -1,0 +1,32 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitViewModel
+
+
+    <table class="tabefont">
+        <tr>
+            <td>
+                @Html.Label("Company :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/BranchUnit/GetAllBranchesByCompanyId", @TargetClass = "Hrm_BranchId" })
+
+            </td>
+            <td>
+                @Html.Label("Branch :")
+            </td>
+
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "Hrm_BranchId" })
+            </td>
+
+            <td>
+                @Html.Label("Unit :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByUnitId, Model.UnitSelectListItem, "--Select--")
+            </td>
+            <td>
+                <input type="button" class="searchAction" />
+            </td>
+
+        </tr>
+    </table>

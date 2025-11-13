@@ -1,0 +1,104 @@
+﻿@model SCERP.Model.EmployeeDesignation
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "EmployeeDesignation", FormMethod.Post, new { @class = "employeedesignationform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Employee Designation</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Employee Type:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.EmployeeType.Id, ViewBag.EmployeeTypeItemList as SelectList, "-Select-", new { @class = "HrmEmployeeTypeId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeeType.Id)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Grade:</td>
+                <td>
+                    @Html.DropDownListFor(m => m.EmployeeGrade.Id, ViewBag.EmployeeGradeItemList as SelectList, "-Select-", new { @class = "Hrm_GradeId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.EmployeeGrade.Id)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Designation:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Title)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Designation (In Bengali):</td>
+                <td>
+                    @Html.TextBoxFor(model => model.TitleInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.TitleInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+}
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/employeeDesignation.js"></script>
+}

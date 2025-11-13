@@ -1,0 +1,38 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ThreadConsumptionViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.ConsumptionDetails)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].ItemName)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].ItemName, new { id = "ItemName_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].Color)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].Color, new { id = "Color_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].Component)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].Component, new { id = "Component_" + m.Key })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].UnitType)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].UnitType, new { id = "UnitType_" + m.Key })
+        </td>
+
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].ConsQty)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].ConsQty, new {id = "ConsQty_" + m.Key})
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.ConsumptionDetails[m.Key].Remarks)
+            @Html.HiddenFor(x => x.ConsumptionDetails[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+        </td>
+        <td>
+            <input type="button" value="X" onclick="deleteRow(this)" />
+        </td>
+    </tr>
+}

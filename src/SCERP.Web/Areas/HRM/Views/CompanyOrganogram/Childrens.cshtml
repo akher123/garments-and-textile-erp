@@ -1,0 +1,21 @@
+﻿@model SCERP.Model.CompanyOrganogram
+
+
+
+@foreach (var item in Model.CompanyOrganograms)
+{
+    <li>
+        @if (item != null)
+        {
+            @item.EmployeeDesignation.Title
+
+            <ul>
+                @if (item.CompanyOrganograms.Count > 0)
+                {
+                    @Html.Partial("Childrens", item)
+                }
+            </ul>
+        }
+    </li>
+}
+

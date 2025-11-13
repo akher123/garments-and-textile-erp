@@ -1,0 +1,60 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ItemStoreViewModel
+@{
+    Layout = null;
+}
+<tr>
+ 
+    <td>
+        @Html.HiddenFor(x => x.InventoryItemStoreDetails[Model.Key].ItemId, new { @class = "ItemHiddenField-" + Model.Key })
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].ItemName, new { @onkeyup = "itemAutocomplite(this," + Model.Key + ")", style = "width:150px", @placeholder = "Item Name" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryItemStoreDetails[Model.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", Model.InventoryItemStoreDetails[Model.Key].SizeId), "--Select--", new { @class = "comboxbox", @style = "width:130px" })
+
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryItemStoreDetails[Model.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", Model.InventoryItemStoreDetails[Model.Key].BrandId), "--Select--", new { @class = "comboxbox", @style = "width:100px" })
+
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryItemStoreDetails[Model.Key].OriginId, new SelectList(Model.InventoryOrigins, "Id", "CountryName", Model.InventoryItemStoreDetails[Model.Key].OriginId), "--Select--", new { @class = "comboxbox", @style = "width:100px" })
+
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].Specification, new { @style = "width:100px" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].SuppliedQuantity, new { @style = "width:100px" })
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].ReceivedQuantity, new { @style = "width:100px" })
+    </td>
+
+  
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].UnitPrice, new { @class = "edit-mode", @style = "width:100px" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.InventoryItemStoreDetails[Model.Key].CurrencyId, new SelectList(Model.Currencies, "CurrencyId", "Name", Model.InventoryItemStoreDetails[Model.Key].CurrencyId), new { @style = "width:100px" })
+
+    </td>
+
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].ManufacturingDate,  new { @style = "width:100px" ,@class="datepicker"})
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.InventoryItemStoreDetails[Model.Key].ExpirationDate, new { @style = "width:100px", @class = "datepicker" })
+    </td>
+    <td>
+        <input type="button" class="edit-button" value="Edit" />
+    </td>
+    <td>
+        <input type="button" data="" class="delete-button" onclick="deleteRow(this)" value="-" />
+    </td>
+</tr>
+
+
+
+<script type="text/javascript">
+    $('.comboxbox').combobox();
+</script>

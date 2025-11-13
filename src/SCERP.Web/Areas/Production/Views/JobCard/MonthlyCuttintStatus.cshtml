@@ -1,0 +1,70 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Monthly Cutting Status</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("MonthlyCuttngStatus", "ProductionReport", FormMethod.Get, new {@class = "MonthlyCuttngStatusFrom"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker"})
+                    </td>
+                    <td>@Html.Label("To Date")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker"})
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="MonthlyCuttingStatus(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="MonthlyCuttingStatus(3)">EXCEL</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function MonthlyCuttingStatus(reportTypeId) {
+            var form = $('.MonthlyCuttngStatusFrom');
+            var data = form.serialize();
+            var url = '/Production/ProductionReport/MonthlyCuttngStatus?' + data + '&ReportType=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+        
+    </script>
+
+}
+
+

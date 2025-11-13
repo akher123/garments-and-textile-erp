@@ -1,0 +1,44 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.DepreciationChartViewModel
+
+@{
+    ViewBag.Title = "Depreciation Chart";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Depreciation Chart </h2>
+</div>
+
+<div class="additem">
+    <div style="margin-bottom: 3px;">
+        <button class="AjaxPopup  btn btn-primary" action="/Accounting/DepreciationChart/Edit">Add new</button>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.DepreciationCharts, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                            firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                    columns: grid.Columns(
+                    
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+
+                    grid.Column("ControlCode", header: "Control Code"),
+                    grid.Column("ControlName", header: "Control Name"),
+                    grid.Column("DepreciationRate", header: "Depreciation Rate"),
+                    
+                    grid.Column(header: "Edit", format: @<text><button class="edit" action="/Accounting/DepreciationChart/Edit/@item.Id"></button></text>),
+                    grid.Column( header:"Delete", format:@<text><button class="delete" action="/Accounting/DepreciationChart/Delete/@item.Id"></button></text>)
+                    ));
+    }
+</div>

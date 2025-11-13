@@ -1,0 +1,94 @@
+﻿@model SCERP.Web.Areas.Payroll.Models.ViewModels.BonusRuleViewModel
+@{
+
+    ViewBag.Title = Model.BonusRule.BonusRuleId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "BonusRule", FormMethod.Post, new { @class = "BonusRuleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.BonusRule.BonusRuleId)
+    <fieldset>
+        <legend>Bonus Role</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BonusRule.BonusRoleRefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Title :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BonusRule.Title, new { @placeholder = "Title" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Effective Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BonusRule.EffectiveDate, new { @placeholder = "Effective Date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Experiance=>OneYear(%):")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BonusRule.MoreThanOneYear, new { @placeholder = "Experiance=>OneYear(%)", @value = "" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("SixMonth<=Experiance<OneYear(%) :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BonusRule.MoreThanSixLessOneYear, new { @placeholder = "SixMonth<=Experiance<OneYear(%)", @value = "" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.BonusRule.Remarks, new { @placeholder = "Remarks"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

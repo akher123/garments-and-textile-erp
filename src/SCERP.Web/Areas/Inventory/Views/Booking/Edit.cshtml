@@ -1,0 +1,257 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.BookingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Booking.BookingId > 0 ? "Edit Accessories Booking" : "Add Accessories Booking");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+
+    #batchInfo {
+        width: auto;
+        height: auto;
+        background: #add8e6;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "Booking", FormMethod.Post, new { @class = "BookingForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Booking.BookingId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Accessories Booking</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("BKRef:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Booking.BookingRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("OrderNo:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Booking.OrderNo, new { @class = "Accessories_OrderNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Booking.BookingDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+
+                    @Html.Label("StyleNo :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.Booking.StyleNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.Label("Merchandiser :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Booking.MarchandiserId, Model.MerchandisersSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("OrderQty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Booking.OrderQty)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Buyer :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.Booking.BuyerId, Model.BuyerSelectListItem, "-Select-", new { @class="Accessories_buyerId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("PiNo :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.Booking.PiNo)
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Supplier :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Booking.SupplierId, Model.SupplierSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Booking.Remarks, new { @class = "booKing_remarks" })
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <div id="batchInfo" style="font-size: 12px;"></div>
+        <hr />
+        <table class="tabefont" id="bookingTable">
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Item :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BookingDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false", @placeholder = "Serach Item" })
+                    @Html.HiddenFor(x => x.BookingDetail.ItemId, new { @class = "AdvanceitemHiddenField" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Rate :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BookingDetail.Rate, new { @class = "Booking_Rat", Value = "", @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Color :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.BookingDetail.ColorName, new { @class = "Color_SearchString", @placeholder = "Serach Color" })
+                    @Html.HiddenFor(x => x.BookingDetail.ColorRefId, new { @class = "Color_ColorRef" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Qty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BookingDetail.Quantity, new { @class = "Booking_QuantityEnterEvent", Value = "", @data_val = "false" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Size :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BookingDetail.SizeName, new { @class = "Size_SearchString", @placeholder = "Serach Size" })
+                    @Html.HiddenFor(x => x.BookingDetail.SizeRefId, new { @class = "Size_SizeRef" })
+
+                </td>
+
+            </tr>
+        </table>
+        <hr />
+        <div>
+
+            <table id="BookingDetail" class="tabefont gridtable" style="width:650px;">
+                <thead style="text-align: center">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+
+                        <th>
+                            @Html.Label("Color")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("Qty")
+                        </th>
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var m in Model.BookingDetailsDictionary)
+                    {
+                        <tr id="newRow-@Model.BookingDetailsDictionary[m.Key].ItemId">
+                            <td>
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].BookingId)
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].BookingDetailId)
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.BookingDetailsDictionary[m.Key].ItemName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.BookingDetailsDictionary[m.Key].ColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.BookingDetailsDictionary[m.Key].SizeName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].Rate)
+                                @Html.DisplayFor(x => x.BookingDetailsDictionary[m.Key].Rate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.BookingDetailsDictionary[m.Key].Quantity)
+                                @Html.DisplayFor(x => x.BookingDetailsDictionary[m.Key].Quantity)
+                            </td>
+                            <td>
+                                <input type="button" value="-" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="custom-modal-btn">
+                <input type="submit" class="addButton" value="Save" />
+            </div>
+        </div>
+
+    </fieldset>
+}
+@section scripts
+{
+<script src="~/Scripts/SCERP/Inventory/booking.js"></script>
+}

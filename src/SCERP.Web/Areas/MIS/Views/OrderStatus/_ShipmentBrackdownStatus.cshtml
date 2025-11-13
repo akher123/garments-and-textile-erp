@@ -1,0 +1,60 @@
+﻿
+@model  Dictionary<SCERP.Model.MerchandisingModel.VwBuyOrdShip, System.Data.DataTable>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <div>
+        <div style="margin:5px;"></div>
+        <fieldset>
+            <legend>Shipment To : @item.Key.CountryName</legend>
+            <table class="webgrid-table">
+                <tbody>
+                    <tr>
+                        <td>Country :</td>
+                        <td> @item.Key.CountryName</td>
+                        <td>Port :</td>
+                        <td> @item.Key.PortOfLoadingName</td>
+                    </tr>
+                    <tr>
+                        <td>Ship Qty :</td>
+                        <td> @item.Key.Quantity</td>
+                        <td>ETD Date :</td>
+                        <td> @item.Key.ShipDate.GetValueOrDefault().ToString("dd/M/yyyy")</td>
+                    </tr>
+                  
+                    <tr>
+                        <td>Despatch Qty :</td>
+                        <td> @item.Key.DespatchQty</td>
+                        <td>Ship Date :</td>
+                        <td> @item.Key.ETD.GetValueOrDefault().ToString("dd/M/yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="tableid" class="webgrid-table webgrid">
+                <thead class="webgrid-header">
+                    <tr>
+                        @foreach (System.Data.DataColumn col in item.Value.Columns)
+                        {
+                            <th>@col.ColumnName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in item.Value.Rows)
+                    {
+                        <tr>
+                            @foreach (System.Data.DataColumn col in item.Value.Columns)
+                            {
+
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+}
+

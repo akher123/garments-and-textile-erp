@@ -1,0 +1,165 @@
+﻿@model SCERP.Web.Areas.TaskManagement.Models.TaskViewModel
+
+@{
+    ViewBag.Title = Model.Task.TaskId > 0 ? "Edit " : "Add ";
+    bool isReadOnly = Model.Task.TaskId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Task", FormMethod.Post, new { @class = "TaskForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => Model.Task.TaskId)
+    <fieldset>
+        <legend>Task</legend>
+        <table class="tabefont">
+          
+            <tr>
+                <td>
+                    @Html.Label("Task Number :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Task.TaskNumber, new { @readonly = "readonly", @style = "background-color: #6495ed" })
+                </td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Module Name:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Task.ModuleId, Model.ModuleSelectListItems, "-Select-", new { @class = "TmModuleDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.Label("Subject Name : ")</td>
+                <td>
+                    @Html.DropDownListFor(x => x.Task.SubjectId, Model.SubjectSelectListItems, "-Select-", new { @class = "SubjectDropDownList" })
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Task Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Task.TaskName, new { @placeholder = "Task Name" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Task Status:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Task.TaskStatusId, Model.TaskStatusSelectListItems, "-Select-", new { @class = "TaskStatusDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Task Type:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Task.TaskTypeId, Model.TaskTypeSelectListItems, "-Select-", new { @class = "TaskTypeDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.Label("Assignee : ")</td>
+                <td>
+                    @Html.DropDownListFor(x => x.Task.AssigneeId, Model.AssigneeSelectListItems, "-Select-", new { @class = "AssigdedDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Assigned Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Task.AssignDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Assigned Date" })
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td>
+                    @Html.Label("End Date :", isReadOnly ? (object)new {} : new { @style = "display:none" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Task.EndDate, isReadOnly ? (object)new { @class = "datepicker", @placeholder = "End Date"} : new { @style = "display:none" })
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Task.Remarks, new { @placeholder ="Remarks"})
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('.TmModuleDropDownList').unbind('change').bind('change', function () {
+            var moduleId = $(this).val();
+            $.Ajax({
+                url: '/Task/GetSubjectsByModelId/',
+                data: { ModuleId: moduleId }
+            }).done(function (featureNames) {
+                $('.SubjectDropDownList').empty();
+                if (featureNames.length > 0) {
+                    populateDropDown({ Id: "", SubjectName: "-Select-" });
+                    $.each(featureNames, function (feature) {
+                        populateDropDown({ Id: this.SubjectId, SubjectName: this.SubjectName });
+                    });
+                }
+                else {
+                    populateDropDown({ Id: "", SubjectName: "No FeatureName Found" });
+                }
+            });
+        });
+        function populateDropDown(obj) {
+            $('.SubjectDropDownList').append(
+                      $('<option/>')
+                          .attr('value', obj.Id)
+                          .text(obj.SubjectName)
+                  );
+        };
+    
+        </script>
+}

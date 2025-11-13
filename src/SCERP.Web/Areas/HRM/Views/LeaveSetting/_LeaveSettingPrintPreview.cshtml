@@ -1,0 +1,90 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.LeaveSettingViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Leave Setup</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td class="reportTH">
+                        SL. No
+                    </td>
+
+                    <td class="reportTH">
+                        Company
+                    </td>
+                    <td class="reportTH">
+                        Unit 
+                    </td>
+
+                    <td class="reportTH">
+                       Employee Type
+                    </td>
+
+                    <td class="reportTH">
+                        Leave Type
+                    </td>
+
+                    <td class="reportTH">
+                        Number of Days
+                    </td>
+                    
+                    <td class="reportTH">
+                        Maximum at a time
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var leaveSetup in Model.LeaveSettings)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @(@leaveSetup.BranchUnit.Branch.Company == null ? "" : @leaveSetup.BranchUnit.Branch.Company.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@leaveSetup.BranchUnit.Unit == null ? "" : @leaveSetup.BranchUnit.Unit.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(@leaveSetup.EmployeeType == null ? "" : @leaveSetup.EmployeeType.Title)
+                        </td>
+                        <td class="reportTD">
+                            @(@leaveSetup.LeaveType == null ? "" : @leaveSetup.LeaveType.Title)
+                        </td>
+                        <td class="reportTD">
+                             @leaveSetup.NoOfDays
+                        </td>
+                        <td class="reportTD">
+                            @leaveSetup.MaximumAtATime
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+
+

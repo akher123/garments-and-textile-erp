@@ -1,0 +1,26 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ReceiveViewModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var t in Model.ReceiveDetails)
+{
+    <tr id="row-@Model.ReceiveDetails[t.Key].ReceiveId">
+
+        <td>
+            @Html.HiddenFor(x => x.ReceiveDetails[t.Key].ItemCode)
+            @Html.DisplayFor(x => x.ReceiveDetails[t.Key].ItemCode)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.ReceiveDetails[t.Key].Quantity)
+            @Html.DisplayFor(x => x.ReceiveDetails[t.Key].Quantity)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.ReceiveDetails[t.Key].Rate)
+            @Html.DisplayFor(x => x.ReceiveDetails[t.Key].Rate)
+        </td>
+       
+        <td> <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " /> </td>                   
+    </tr>
+}

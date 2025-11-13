@@ -1,0 +1,205 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TimeAndActionViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<style type="text/css">
+    /* All headers */
+    .handsontable .head {
+        /*transform: rotate(-37deg);*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+    }
+
+    .handsontable th {
+        background-color: #daa520;
+        color: #000000;
+        white-space: initial;
+    }
+
+    .hot-container {
+        width: 100%;
+        height: 800%;
+        min-height: 600px;
+        font-size: small
+    }
+
+    /* Column headers */
+    .ht_clone_top th {
+        background-color: #6495ed;
+        color: #000000;
+    }
+
+    .handsontable tbody tr td div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+    }
+</style>
+
+<div class="header-title">
+    <h2>TNA FOLLOW UP</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("HorizontalTna", "TimeAndAction", FormMethod.Get, new { @class = "TimeAndActionSearchForm" }))
+        {
+
+            <table>
+                <tr style="text-align: center">
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "CostOrderStyle_BuyerId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                   
+             
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "ALL", new { id = "CostOrderStyle_OrderNo_ID", @class = "CostOrderStyle_Order" })
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "ALL", new { id = "CostOrderStyle_StyleNo" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                   
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+
+
+<section class="search formCover">
+    <div id="example1" class="hot handsontable  hot-container">
+        <div class="indicator">
+            Missing <i class="fas fa-circle" style="color: green"></i>
+            Something <i class="fas fa-circle" style="color: blue"></i>
+            Another Something <i class="fas fa-circle" style="color: black"></i>
+        </div>
+    </div>
+</section>
+@section scripts
+{
+
+    <script type="text/javascript">
+        var data = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Tnas)));
+        var heads= @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Heads)));
+        var columns= @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Columns)));
+        var container = document.getElementById('example1');
+        var hot = new Handsontable(container, {
+            data: data,
+            columnSorting: true,
+            rowHeaders: true,
+            fixedColumnsLeft:4,
+            manualColumnResize: true,
+
+            manualColumnFreeze: true,
+            manualRowResize: true,
+            filters: true,
+            dropdownMenu: false,
+            columns:columns,
+            colHeaders:heads,
+            colWidths:50,
+            Widths:500,
+            height:500,
+            afterGetColHeader: function(i, TH) {
+                TH.innerHTML = '<div class="head">' + TH.innerHTML + '</div>';
+            }
+        });
+
+        hot.render();
+
+
+        var AddNewClick = function (obj) {
+            var action = $(obj).attr("action");
+            jQuery.Ajax({
+                url: action
+                , type: "GET"
+                , dialog: {}
+                , loader: { loader: "body" }
+                , success: SCERP.DialogOpened
+            });
+
+        };
+
+
+        $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function() {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function(orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "ALL" });
+                    $.each(orderList, function(order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+        function populateDropDown(obj) {
+            $('.CostOrderStyle_Order').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('#CostOrderStyle_OrderNo_ID').unbind('change').bind('change', function() {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function(styleList) {
+                $('#CostOrderStyle_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("ALL")
+                    );
+                    $.each(styleList, function(style) {
+                        $('#CostOrderStyle_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+        function removeDependentDropdown() {
+
+            $('.CostOrderStyle_Order').empty();
+            $('#CostOrderStyle_StyleNo').empty();
+
+
+        }
+
+        $(document).tooltip();
+
+
+    </script>
+}

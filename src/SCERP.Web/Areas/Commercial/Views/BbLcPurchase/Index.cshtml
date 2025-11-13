@@ -1,0 +1,88 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.BbLcPurchaseViewModel
+
+@{
+    ViewBag.Title = "BB LC to Booking Integration";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.CommBbLcPurchaseCommons.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "BbLcPurchase", FormMethod.Get, new {@class = "bbLcPurchaseSearchForm submit-allow ignore-validation"}))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width: 400px; padding-left: 270px;">
+        <h2> BB LC to Booking Integration </h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            <tr>
+                <td> @Html.Label("BB Lc No : ") </td>
+                <td> @Html.TextBoxFor(x => x.BbLcNo) </td>
+                <td> </td>
+                <td> @Html.Label("Purchase No : ")  </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrderNo)
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem" style="overflow-x: auto">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Commercial/BbLcPurchase/Edit/0">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwBbLcPurchaseCommon, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/BbLcPurchase/Edit/@item.BbLcPurchaseId"></button></text>, canSort: false),            
+                    grid.Column("BbLcNo", header: "BB LC No", canSort: false),
+                    grid.Column("PurchaseOrderNo", header: "Purchase OrderNo", canSort: false),             
+                    grid.Column("PurchaseDate", "Purchase Date", format: @<text>@(item.PurchaseDate == null ? "" : item.PurchaseDate.ToString("dd-MM-yyyy"))</text>, canSort: false),                                                     
+                    grid.Column("PurchaseType", header: "Purchase Type", canSort: false),
+                    grid.Column("ItemName", header: "Item Name", canSort: false),
+                    grid.Column("ColorName", header: "Color Name", canSort: false),      
+                    grid.Column("SizeName", header: "Size Name", canSort: false),                                                      
+                    grid.Column("xRate", header: "Rate", canSort: false),                                                                           
+                    grid.Column("Delete", format: @<text><button class="delete" action="/Commercial/BbLcPurchase/Delete/@item.BbLcPurchaseId"></button></text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#BbLcNo').autocomplete(
+            {
+                source: '@Url.Action("TagBbLcSearch", "BbLcPurchase")'
+            });
+
+        $('#PurchaseOrderNo').autocomplete(
+            {
+                source: '@Url.Action("TagPurchaseOrderSearch", "BbLcPurchase")'
+            });
+
+    </script>
+}

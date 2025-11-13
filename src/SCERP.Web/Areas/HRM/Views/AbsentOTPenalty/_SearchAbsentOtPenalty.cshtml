@@ -1,0 +1,48 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.AbsentOtPenaltyViewModel
+
+<tr>
+    <td>
+        @Html.Label("Company :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @action = "/HRM/AbsentOtPenalty/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+    </td>
+
+    <td>
+        @Html.Label("Branch :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @action = "/HRM/AbsentOtPenalty/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+    </td>
+
+    <td>
+        @Html.Label("Unit :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/AbsentOtPenalty/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+    </td>
+</tr>
+
+<tr>
+    <td>
+        @Html.Label("Department :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/AbsentOtPenalty/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+    </td>
+
+    <td>
+        @Html.Label("Section :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+    </td>
+
+    <td>
+        @Html.Label("Line :")
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+    </td>
+</tr>
+

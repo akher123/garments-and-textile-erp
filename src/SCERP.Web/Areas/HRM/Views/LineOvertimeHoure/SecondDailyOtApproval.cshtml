@@ -1,0 +1,113 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ApprovedOvertimeHoureViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("SecondDailyOtApproval", "LineOvertimeHoure", FormMethod.Post, new { @class = "LineOvertimeHoureForm" }))
+{
+
+    <div class="header-title">
+        <h2>DAILY LINE WISE OVERTIME HOURS APPROVAL</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <div class="common-search-leftbar">
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Date :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.OtDate, new {id = "textOutputDate", @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new {@class = "labelInstruction"})
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+}
+
+@using (Html.BeginForm("ApprovedOtHourSecond", "LineOvertimeHoure", FormMethod.Post))
+{
+    <section class="search formCover">
+        <table class="webgrid-table">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        LINE
+                    </th>
+                    <th>
+                        TOTAL MAN POWER
+                    </th>
+                    <th>
+                        OTH
+                    </th>
+                    <th>
+                        OT AMOUNT
+                    </th>
+                    <th>
+                        PRODUCTION
+                    </th>
+                    <th>
+                        ACCOUNTS & FINANCE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lineOtH in Model.LineOvertimeHours)
+                {
+                    <tr>
+                        <td>
+                            <a style="color: blueviolet; padding: 2px; cursor: pointer;" class="AjaxPopup" action="/HRM/LineOvertimeHoure/EmployeeOtHour?TransactionDate=@lineOtH.TransactionDate.ToString()&DepartmentLineId=@lineOtH.DepartmentLineId">@lineOtH.Line</a>
+                        </td>
+                        <td>@lineOtH.OvertimePerson</td>
+                        <td>@lineOtH.OvertimeHour</td>
+                        <td>@Math.Round(lineOtH.TTLOtAmount, 0)</td>
+                        <td>
+                            @(lineOtH.FirstSign == "Y" ? "YES" : "NO")
+                        </td>
+                        <th>
+                            <input type="checkbox" class="lineOvertimeHour" @(lineOtH.SecondSign == "Y" ? "checked" : "") name="LineOvertimeHourIds" value="@lineOtH.LineOvertimeHourId"/>
+                        </th>
+                    </tr>
+                }
+                <tr style="background-color: #ddd; font-weight: bold">
+                    <td>TOTAL</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.OvertimePerson)</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.OvertimeHour)</td>
+                    <td>@Model.LineOvertimeHours.Sum(x => x.TTLOtAmount)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+}
+
+
+@section scripts
+{
+   <script type="text/javascript">
+    $("#select_all").change(function () {
+        $(".lineOvertimeHour").prop("checked", $(this).prop("checked"));
+    });
+    $('.lineOvertimeHour').click(function () {
+        var lineOvertimeHourId = $(this).val();
+        var form = $(this).parents('form:first');
+        $.Ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: {
+                LineOvertimeHourIds: lineOvertimeHourId
+            }
+        });
+    });
+</script> 
+}

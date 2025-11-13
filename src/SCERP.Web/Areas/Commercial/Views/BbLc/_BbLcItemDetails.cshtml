@@ -1,0 +1,35 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.BbLcViewModel
+@{
+    Layout = null;
+}
+@foreach (var m in Model.CommBbLcItemDetailsDct)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(x => x.CommBbLcItemDetailsDct[m.Key].Item)
+        @Html.HiddenFor(x => x.CommBbLcItemDetailsDct[m.Key].Item, new { id = "Item_" + m.Key })
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.CommBbLcItemDetailsDct[m.Key].Specification)
+        @Html.HiddenFor(x => x.CommBbLcItemDetailsDct[m.Key].Specification, new { id = "Specification_" + m.Key })
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.CommBbLcItemDetailsDct[m.Key].Quantity)
+        @Html.HiddenFor(x => x.CommBbLcItemDetailsDct[m.Key].Quantity, new { id = "Quantity_" + m.Key })
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.CommBbLcItemDetailsDct[m.Key].Rate)
+        @Html.HiddenFor(x => x.CommBbLcItemDetailsDct[m.Key].Rate, new { id = "Rate_" + m.Key })
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.CommBbLcItemDetailsDct[m.Key].Remarks)
+        @Html.HiddenFor(x => x.CommBbLcItemDetailsDct[m.Key].Remarks, new { id = "Remarks_" + m.Key })
+    </td>
+
+
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+}

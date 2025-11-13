@@ -1,0 +1,813 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DA19129-9C56-48D4-A627-138BE0C9421C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SCERP.BLL</RootNamespace>
+    <AssemblyName>SCERP.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IManager\IAccountingManager\IAccCurrencManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IAccountIntegrationManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IBankReconcilationListManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IBankReconcilationManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IBankVoucherEntryManager.cs" />
+    <Compile Include="IManager\IAccountingManager\ICashVoucherEntryManager.cs" />
+    <Compile Include="IManager\IAccountingManager\ICompanySectorManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IContraVoucherEntryManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IControlAccountManager.cs" />
+    <Compile Include="IManager\IAccountingManager\ICostCentreManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IDepreciationChartManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IFinancialPeriodManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IGLAccountHiddenManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IGLAccountManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IJournalVoucherEntryManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IOpeningBalanceManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IReportAccountManger.cs" />
+    <Compile Include="IManager\IAccountingManager\IStylePaymentManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IVoucherListManager.cs" />
+    <Compile Include="IManager\IAccountingManager\IVoucherMasterManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IBankAdviceManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IBbLcManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IBbLcPurchaseManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ICashBbLcManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ICashLCDyesChemicalManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ICashLcManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ICommTNAManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IImportDetailsManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IImportManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ILcManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ILcOrderManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ILcStyleManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IProFormaInvoiceManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IPurchaseOrderManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IReceiveManager.cs" />
+    <Compile Include="IManager\ICommercialManager\IReportManager.cs" />
+    <Compile Include="IManager\ICommercialManager\ILCBBLCInfoDataManager.cs" />
+    <Compile Include="IManager\ICommonManager\ICityManager.cs" />
+    <Compile Include="IManager\ICommonManager\IColorManager.cs" />
+    <Compile Include="IManager\ICommonManager\ICurrencyManagerCommon.cs" />
+    <Compile Include="IManager\ICommonManager\ICustomSqlQuaryManager.cs" />
+    <Compile Include="IManager\ICommonManager\IDailyProcessManager.cs" />
+    <Compile Include="IManager\ICommonManager\IDocumentManager.cs" />
+    <Compile Include="IManager\ICommonManager\IEmailSendManager.cs" />
+    <Compile Include="IManager\ICommonManager\IEmailTemplateManager.cs" />
+    <Compile Include="IManager\ICommonManager\IEmailTemplateUserManager.cs" />
+    <Compile Include="IManager\ICommonManager\IEmailUserManager.cs" />
+    <Compile Include="IManager\ICommonManager\IExportManager.cs" />
+    <Compile Include="IManager\ICommonManager\IGatePassManager.cs" />
+    <Compile Include="IManager\ICommonManager\IMailSendManager.cs" />
+    <Compile Include="IManager\ICommonManager\IMeasurementUnitManager.cs" />
+    <Compile Include="IManager\ICommonManager\IMessagingManager.cs" />
+    <Compile Include="IManager\ICommonManager\IPackingCreditManager.cs" />
+    <Compile Include="IManager\ICommonManager\IPartyManager.cs" />
+    <Compile Include="IManager\ICommonManager\ISalesContactManager.cs" />
+    <Compile Include="IManager\ICommonManager\ISmsManager.cs" />
+    <Compile Include="IManager\ICommonManager\IStateManager.cs" />
+    <Compile Include="IManager\ICRMManager\ICRMReportManager.cs" />
+    <Compile Include="IManager\ICRMManager\IFeedbackManager.cs" />
+    <Compile Include="IManager\ICRMManager\IProjectDocumentInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IAttendanceBonusManager.cs" />
+    <Compile Include="IManager\IHRMManager\IAttendanceBonusSettingManager.cs" />
+    <Compile Include="IManager\IHRMManager\IAuthorizationTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IAuthorizedPersonManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBankAccountTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBonusRuleManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBranchUnitDepartmentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBranchUnitManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBranchUnitWorkShiftManager.cs" />
+    <Compile Include="IManager\IHRMManager\ICountryManager.cs" />
+    <Compile Include="IManager\IHRMManager\IDepartmentLineManager.cs" />
+    <Compile Include="IManager\IHRMManager\IDepartmentSectionManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEfficiencyRateManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeAddressInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeAppointmentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeCardPrintManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeCompanyInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeFamilyInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeInOutModelProcessManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeInOutProcessManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeJobCardManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeJobCardModelProcessManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeJobCardProcessManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeManualOverTimeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeShortLeaveManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeGradeSalaryPercentageManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeSkillManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeWorkGroupManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeWorkShiftManager.cs" />
+    <Compile Include="IManager\IHRMManager\IExceptionDayManager.cs" />
+    <Compile Include="IManager\IHRMManager\IGenderManager.cs" />
+    <Compile Include="IManager\IHRMManager\IGeneralDaySetupManager.cs" />
+    <Compile Include="IManager\IHRMManager\IHeadOfDepartmentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IHouseKeepingItemManager.cs" />
+    <Compile Include="IManager\IHRMManager\IHouseKeepingRegisterManager.cs" />
+    <Compile Include="IManager\IHRMManager\IHRMReportManager.cs" />
+    <Compile Include="IManager\IHRMManager\ILineManager.cs" />
+    <Compile Include="IManager\IHRMManager\ILineOvertimeHourManager.cs" />
+    <Compile Include="IManager\IHRMManager\IMaritalStatusManager.cs" />
+    <Compile Include="IManager\IHRMManager\IMaternityLeaveManager.cs" />
+    <Compile Include="IManager\IHRMManager\IOutStationDutyManager.cs" />
+    <Compile Include="IManager\IHRMManager\IOvertimeEligibleEmployeeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IPenaltyManager.cs" />
+    <Compile Include="IManager\IHRMManager\IPenaltyTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IProjectDocumentInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IQuitTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IReligionManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISalaryIncrementManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISectionManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillMatrixDetailManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillMatrixGradeManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillMatrixManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillMatrixProcessManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillOperationManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillSetCategoryManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillSetDifficultyManager.cs" />
+    <Compile Include="IManager\IHRMManager\IStampAmountManager.cs" />
+    <Compile Include="IManager\IHRMManager\IUnitDepartmentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IUnitManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IAdvanceMaterialIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IBookingManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IBrandManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IFabricReturnManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IFinishFabricIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IFinishFabStoreManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IGenericNameManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IGoodsReceivingNoteManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IGreyIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IGroupChallanManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IInventoryApprovalStatusManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IInventoryAuthorizedPersonManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IInventoryGroupManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IInventoryItemManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IInventorySubGroupManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IItemStoreManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMateraialReceivedDetailManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMaterialIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMaterialReceiveAgainstPoManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMaterialReceivedManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMaterialRequisitionManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IPurchaseTypeManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IQualityCertificateManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IRedyeingFabricIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IReDyeingFabricReceiveManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IRejectYarnIssueManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IRquisitiontypeManager.cs" />
+    <Compile Include="IManager\IInventoryManager\ISizeManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IStockRegisterManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IStoreLedgerManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IStorePurchaseRequisitionManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IMaterialIssueRequisitionManager.cs" />
+    <Compile Include="IManager\IInventoryManager\IStyleShipmentManager.cs" />
+    <Compile Include="IManager\IMaintenance\IReturnableChallanDetailManager.cs" />
+    <Compile Include="IManager\IMaintenance\IReturnableChallanManager.cs" />
+    <Compile Include="IManager\IMaintenance\IReturnableChallanReceiveManager.cs" />
+    <Compile Include="IManager\IMaintenance\IReturnableChallanReceiveMasterManager.cs" />
+    <Compile Include="IManager\IMarketingManager\IMarketingInquiryManager.cs" />
+    <Compile Include="IManager\IMarketingManager\IMarketingInstituteManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IAgentManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBulkBookingDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBulkBookingManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBulkBookingYarnDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyerOrderManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyerTnaTemplateManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyOrdShipDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyOrdShipManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyOrdStyleColorManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IBuyOrdStyleSizeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICompConsumptionDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICompConsumptionManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IComponentManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsumptionDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsumptionGroupManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsigneeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsumptionManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsumptionSupplierManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IConsumptionTypeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICostDefinationManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICostOrdStyleManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICostSheetDetailManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICostSheetMasterManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ICostSheetTemplateManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IEmbWorkOrderManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IFabConsumptionManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IFabricOrderManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IFabricTypeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IInquiryManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IItemModeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IItemTypeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IMerchandiserManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IMrcReportManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\INotificationTemplateManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmBrandManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmBuyerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IManager\IMerchandisingManager\IOmBuyOrdStyleManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmCategoryManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmColorManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmSizeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOmStyleManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IOrderTypeManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IPaymentTermManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IPortOfLoadingManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ISampleOrderManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ISampleStyleManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ISeasonManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ISupplierCompanyManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\ITempGroupManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IThreadConsumptionManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IYarnConsumptionManager.cs" />
+    <Compile Include="IManager\IMerchandisingManager\IMarchandisingReportManager.cs" />
+    <Compile Include="IManager\IMisManager\IMisDashboardManager.cs" />
+    <Compile Include="IManager\IMisManager\IMobileAppsManager.cs" />
+    <Compile Include="IManager\IMisManager\IUserActivityManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IAdvanceIncomeTaxManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IEmployeeBonusManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IExcludedEmployeeFromSalaryProcessManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IOvertimeSettingsManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IPayrollProcessManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IPayrollReportManager.cs" />
+    <Compile Include="IManager\IPayrollManager\ISalaryAdvanceManager.cs" />
+    <Compile Include="IManager\IPayrollManager\ISalaryMappingManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IDailyLineLayoutManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IPlanningReportManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IProcessManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IProcessSequenceManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IProcessTemplateManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IProductionLineManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IProgramManager.cs" />
+    <Compile Include="IManager\IPlanningManager\ITargetProductionManager.cs" />
+    <Compile Include="IManager\IPlanningManager\ITimeAndActionManager.cs" />
+    <Compile Include="IManager\IPlanningManager\ITNAHorizontalManager.cs" />
+    <Compile Include="IManager\IPlanningManager\ITNAManager.cs" />
+    <Compile Include="IManager\IPlanningManager\IWorkingDayManager.cs" />
+    <Compile Include="IManager\IProductionManager\IBatchDetailManager.cs" />
+    <Compile Include="IManager\IProductionManager\IBatchManager.cs" />
+    <Compile Include="IManager\IProductionManager\IBatchRollManager.cs" />
+    <Compile Include="IManager\IProductionManager\IBundleCuttingManager.cs" />
+    <Compile Include="IManager\IProductionManager\IBundleCuttingSeqCharManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICutBankManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttFabRejectManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttingBatchManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttingProcessStyleActiveManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttingSequenceManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttingTagManager.cs" />
+    <Compile Include="IManager\IProductionManager\ICuttingTagSupplierManager.cs" />
+    <Compile Include="IManager\IProductionManager\IDailyFabricReceiveManager.cs" />
+    <Compile Include="IManager\IProductionManager\IDownTimeCategoryManager.cs" />
+    <Compile Include="IManager\IProductionManager\IDyeingJobOrderManager.cs" />
+    <Compile Include="IManager\IProductionManager\IDyeingSpChallanDetailManager.cs" />
+    <Compile Include="IManager\IProductionManager\IDyeingSpChallanManager.cs" />
+    <Compile Include="IManager\IProductionManager\IFinishingProcessManager.cs" />
+    <Compile Include="IManager\IProductionManager\IGraddingManager.cs" />
+    <Compile Include="IManager\IProductionManager\IGroupSubProcessManager.cs" />
+    <Compile Include="IManager\IProductionManager\IHourManager.cs" />
+    <Compile Include="IManager\IProductionManager\IKnittingRollIssueManager.cs" />
+    <Compile Include="IManager\IProductionManager\IKnittingRollManager.cs" />
+    <Compile Include="IManager\IProductionManager\ILayCuttingManager.cs" />
+    <Compile Include="IManager\IProductionManager\IMachineManager.cs" />
+    <Compile Include="IManager\IProductionManager\IMachingInterruptionManager.cs" />
+    <Compile Include="IManager\IProductionManager\INonProductiveTimeManager.cs" />
+    <Compile Include="IManager\IProductionManager\IPartCuttingManager.cs" />
+    <Compile Include="IManager\IProductionManager\IProcessDeliveryManager.cs" />
+    <Compile Include="IManager\IProductionManager\IProcessorManager.cs" />
+    <Compile Include="IManager\IProductionManager\IProcessReceiveManager.cs" />
+    <Compile Include="IManager\IProductionManager\IProductionManager.cs" />
+    <Compile Include="IManager\IProductionManager\IProductionReportManager.cs" />
+    <Compile Include="IManager\IProductionManager\IRejectAdjustmentManager.cs" />
+    <Compile Include="IManager\IProductionManager\IRejectReplacementManager.cs" />
+    <Compile Include="IManager\IProductionManager\IRollCuttingManager.cs" />
+    <Compile Include="IManager\IProductionManager\ISewingInputProcessManager.cs" />
+    <Compile Include="IManager\IProductionManager\ISewingOutPutProcessManager.cs" />
+    <Compile Include="IManager\IProductionManager\IStanderdMinValDetailManager.cs" />
+    <Compile Include="IManager\IProductionManager\IStanderdMinValueManager.cs" />
+    <Compile Include="IManager\IProductionManager\ISubProcessManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\IAssigneeManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\IReportImageManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\ISubjectManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\ITaskManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\ITaskStatusManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\ITaskTypeManager.cs" />
+    <Compile Include="IManager\ITaskManagementManager\ITmModuleManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IConfirmationMediaManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IMachineActionManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IMachineLogManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IVehicleGateEntryManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IVehicleManager.cs" />
+    <Compile Include="IManager\ITrackingManager\IVisitorGateEntryManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IModuleFeatureManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IModuleManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBloodGroupManager.cs" />
+    <Compile Include="IManager\IHRMManager\IBranchManager.cs" />
+    <Compile Include="IManager\IHRMManager\ICompanyManager.cs" />
+    <Compile Include="IManager\IHRMManager\ICompanyOrganogramManager.cs" />
+    <Compile Include="IManager\IHRMManager\IDepartmentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IDistrictManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEducationLevelManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeBankInfoManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeDailyAttendanceManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeDesignationManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeDocumentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeEducationManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeEntitlementManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeGradeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeLeaveManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeManualAttendanceManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeSalaryManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmployeeTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEmploymentManager.cs" />
+    <Compile Include="IManager\IHRMManager\IEntitlementManager.cs" />
+    <Compile Include="IManager\IHRMManager\IHolidaySetupManager.cs" />
+    <Compile Include="IManager\IHRMManager\ILeaveSettingManager.cs" />
+    <Compile Include="IManager\IHRMManager\ILeaveTypeManager.cs" />
+    <Compile Include="IManager\IHRMManager\IPoliceStationManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISalarySetupManager.cs" />
+    <Compile Include="IManager\IHRMManager\ISkillSetManager.cs" />
+    <Compile Include="IManager\IHRMManager\IWeekendManager.cs" />
+    <Compile Include="IManager\IHRMManager\IWorkGroupManager.cs" />
+    <Compile Include="IManager\IHRMManager\IWorkShiftManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IEmployeeSalaryProcessConfirmManager.cs" />
+    <Compile Include="IManager\IPayrollManager\IEmployeeSalaryProcessManager.cs" />
+    <Compile Include="IManager\IPayrollManager\ISalaryManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserMerchandiserManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserPermissionForDepartmentLevelManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserPermissionForEmployeeLevelManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserRoleManager.cs" />
+    <Compile Include="IManager\IUserManagementManager\IUserTnaResponsibleManager.cs" />
+    <Compile Include="Manager\AccountingManager\AccCurrencManager.cs" />
+    <Compile Include="Manager\AccountingManager\AccountIntegrationManager.cs" />
+    <Compile Include="Manager\AccountingManager\BankReconcilationListManager.cs" />
+    <Compile Include="Manager\AccountingManager\BankReconcilationManager.cs" />
+    <Compile Include="Manager\AccountingManager\BankVoucherEntryManager.cs" />
+    <Compile Include="Manager\AccountingManager\CashVoucherEntryManager.cs" />
+    <Compile Include="Manager\AccountingManager\CompanySectorManager.cs" />
+    <Compile Include="Manager\AccountingManager\ContraVoucherEntryManager.cs" />
+    <Compile Include="Manager\AccountingManager\ControlAccountManager.cs" />
+    <Compile Include="Manager\AccountingManager\CostCentreManager.cs" />
+    <Compile Include="Manager\AccountingManager\DepreciationChartManager.cs" />
+    <Compile Include="Manager\AccountingManager\FinancialPeriodManager.cs" />
+    <Compile Include="Manager\AccountingManager\GLAccountHiddenManager.cs" />
+    <Compile Include="Manager\AccountingManager\GLAccountManager.cs" />
+    <Compile Include="Manager\AccountingManager\JournalVoucherEntryManager.cs" />
+    <Compile Include="Manager\AccountingManager\OpeningBalanceManager.cs" />
+    <Compile Include="Manager\AccountingManager\ReportAccountManger.cs" />
+    <Compile Include="Manager\AccountingManager\StylePaymentManager.cs" />
+    <Compile Include="Manager\AccountingManager\VoucherListManager.cs" />
+    <Compile Include="Manager\AccountingManager\VoucherMasterManager.cs" />
+    <Compile Include="Manager\CommercialManager\ProFormaInvoiceManager.cs" />
+    <Compile Include="Manager\CommonManager\DailyProcessManager.cs" />
+    <Compile Include="Manager\CommonManager\MessagingManager.cs" />
+    <Compile Include="Manager\CommonManager\SmsManager.cs" />
+    <Compile Include="Manager\HRMManager\BonusRuleManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyerTnaTemplateManager.cs" />
+    <Compile Include="Manager\CommercialManager\BankAdviceManager.cs" />
+    <Compile Include="Manager\CommercialManager\BbLcManager.cs" />
+    <Compile Include="Manager\CommercialManager\BbLcPurchaseManager.cs" />
+    <Compile Include="Manager\CommercialManager\CashBbLcManager.cs" />
+    <Compile Include="Manager\CommercialManager\CashLCDyesChemicalManager.cs" />
+    <Compile Include="Manager\CommercialManager\CashLcManager.cs" />
+    <Compile Include="Manager\CommercialManager\CommTNAManager.cs" />
+    <Compile Include="Manager\CommercialManager\ExportManager.cs" />
+    <Compile Include="Manager\CommercialManager\ImportDetailsManager.cs" />
+    <Compile Include="Manager\CommercialManager\ImportManager.cs" />
+    <Compile Include="Manager\CommercialManager\LCBBLCInfoDataManager.cs" />
+    <Compile Include="Manager\CommercialManager\LcManager.cs" />
+    <Compile Include="Manager\CommercialManager\LcOrderManager.cs" />
+    <Compile Include="Manager\CommercialManager\LcStyleManager.cs" />
+    <Compile Include="Manager\CommercialManager\PackingCreditManager.cs" />
+    <Compile Include="Manager\CommercialManager\PurchaseOrderManager.cs" />
+    <Compile Include="Manager\CommercialManager\ReceiveManager.cs" />
+    <Compile Include="Manager\CommercialManager\ReportManager.cs" />
+    <Compile Include="Manager\CommercialManager\SalesContactManager.cs" />
+    <Compile Include="Manager\CommonManager\CityManager.cs" />
+    <Compile Include="Manager\CommonManager\ColorManager.cs" />
+    <Compile Include="Manager\CommonManager\CurrencyManagerCommon.cs" />
+    <Compile Include="Manager\CommonManager\CustomSqlQuaryManager.cs" />
+    <Compile Include="Manager\CommonManager\DocumentManager.cs" />
+    <Compile Include="Manager\CommonManager\EmailSendManager.cs" />
+    <Compile Include="Manager\CommonManager\EmailTemplateManager.cs" />
+    <Compile Include="Manager\CommonManager\EmailTemplateUserManager.cs" />
+    <Compile Include="Manager\CommonManager\EmailUserManager.cs" />
+    <Compile Include="Manager\CommonManager\GatePassManager.cs" />
+    <Compile Include="Manager\CommonManager\MailSendManager.cs" />
+    <Compile Include="Manager\CommonManager\MeasurementUnitManager.cs" />
+    <Compile Include="Manager\CommonManager\PartyManager.cs" />
+    <Compile Include="Manager\CommonManager\StateManager.cs" />
+    <Compile Include="Manager\CRMManager\CRMReportManager.cs" />
+    <Compile Include="Manager\CRMManager\FeedbackManager.cs" />
+    <Compile Include="Manager\CRMManager\ProjectDocumentInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\AttendanceBonusManager.cs" />
+    <Compile Include="Manager\HRMManager\AttendanceBonusSettingManager.cs" />
+    <Compile Include="Manager\HRMManager\AuthorizationTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\AuthorizedPersonManager.cs" />
+    <Compile Include="Manager\HRMManager\BankAccountTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\BranchUnitDepartmentManager.cs" />
+    <Compile Include="Manager\HRMManager\BranchUnitManager.cs" />
+    <Compile Include="Manager\HRMManager\BranchUnitWorkShiftManager.cs" />
+    <Compile Include="Manager\HRMManager\CountryManager.cs" />
+    <Compile Include="Manager\HRMManager\DepartmentLineManager.cs" />
+    <Compile Include="Manager\HRMManager\DepartmentSectionManager.cs" />
+    <Compile Include="Manager\HRMManager\EfficiencyRateManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeAddressInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeAppointmentManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeCardPrintManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeCompanyInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeFamilyInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeInOutModelProcessManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeInOutProcessManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeJobCardManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeJobCardModelProcessManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeJobCardProcessManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeManualOverTimeManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeShortLeaveManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeGradeSalaryPercentageManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeSkillManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeWorkGroupManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeWorkShiftManager.cs" />
+    <Compile Include="Manager\HRMManager\ExceptionDayManager.cs" />
+    <Compile Include="Manager\HRMManager\GenderManager.cs" />
+    <Compile Include="Manager\HRMManager\GeneralDaySetupManager.cs" />
+    <Compile Include="Manager\HRMManager\HeadOfDepartmentManager.cs" />
+    <Compile Include="Manager\HRMManager\HouseKeepingItemManager.cs" />
+    <Compile Include="Manager\HRMManager\HouseKeepingRegisterManager.cs" />
+    <Compile Include="Manager\HRMManager\HRMReportManager.cs" />
+    <Compile Include="Manager\HRMManager\LineManager.cs" />
+    <Compile Include="Manager\HRMManager\LineOvertimeHourManager.cs" />
+    <Compile Include="Manager\HRMManager\MaritalStatusManager.cs" />
+    <Compile Include="Manager\HRMManager\MaternityLeaveManager.cs" />
+    <Compile Include="Manager\HRMManager\OutStationDutyManager.cs" />
+    <Compile Include="Manager\HRMManager\OvertimeEligibleEmployeeManager.cs" />
+    <Compile Include="Manager\HRMManager\PenaltyManager.cs" />
+    <Compile Include="Manager\HRMManager\PenaltyTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\ProjectDocumentInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\QuitTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\ReligionManager.cs" />
+    <Compile Include="Manager\HRMManager\SalaryIncrementManager.cs" />
+    <Compile Include="Manager\HRMManager\SectionManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillMatrixDetailManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillMatrixGradeManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillMatrixManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillMatrixProcessManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillOperationManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillSetCategoryManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillSetDifficultyManager.cs" />
+    <Compile Include="Manager\HRMManager\StampAmountManager.cs" />
+    <Compile Include="Manager\HRMManager\UnitDepartmentManager.cs" />
+    <Compile Include="Manager\HRMManager\UnitManager.cs" />
+    <Compile Include="Manager\InventoryManager\AdvanceMaterialIssueManager.cs" />
+    <Compile Include="Manager\InventoryManager\BookingManager.cs" />
+    <Compile Include="Manager\InventoryManager\BrandManager.cs" />
+    <Compile Include="Manager\InventoryManager\FabricReturnManager.cs" />
+    <Compile Include="Manager\InventoryManager\FinishFabricIssueManager.cs" />
+    <Compile Include="Manager\InventoryManager\FinishFabStoreManager.cs" />
+    <Compile Include="Manager\InventoryManager\GenericNameManager.cs" />
+    <Compile Include="Manager\InventoryManager\GoodsReceivingNoteManager.cs" />
+    <Compile Include="Manager\InventoryManager\GreyIssueManager.cs" />
+    <Compile Include="Manager\InventoryManager\GroupChallanManager.cs" />
+    <Compile Include="Manager\InventoryManager\InventoryApprovalStatusManager.cs" />
+    <Compile Include="Manager\InventoryManager\InventoryAuthorizedPersonManager.cs" />
+    <Compile Include="Manager\InventoryManager\InventoryGroupManager.cs" />
+    <Compile Include="Manager\InventoryManager\InventoryItemManager.cs" />
+    <Compile Include="Manager\InventoryManager\InventorySubGroupManager.cs" />
+    <Compile Include="Manager\InventoryManager\ItemStoreManager.cs" />
+    <Compile Include="Manager\InventoryManager\MateraialReceivedDetailManager.cs" />
+    <Compile Include="Manager\InventoryManager\MaterialIssueManager.cs" />
+    <Compile Include="Manager\InventoryManager\MaterialIssueRequisitionManager.cs" />
+    <Compile Include="Manager\InventoryManager\MaterialReceiveAgainstPoManager.cs" />
+    <Compile Include="Manager\InventoryManager\MaterialReceivedManager.cs" />
+    <Compile Include="Manager\InventoryManager\MaterialRequisitionManager.cs" />
+    <Compile Include="Manager\InventoryManager\PurchaseTypeManager.cs" />
+    <Compile Include="Manager\InventoryManager\QualityCertificateManager.cs" />
+    <Compile Include="Manager\InventoryManager\ReDyeingFabricReceiveManager.cs" />
+    <Compile Include="Manager\InventoryManager\RejectYarnIssueManager.cs" />
+    <Compile Include="Manager\InventoryManager\RquisitiontypeManager.cs" />
+    <Compile Include="Manager\InventoryManager\SizeManager.cs" />
+    <Compile Include="Manager\InventoryManager\StockRegisterManager.cs" />
+    <Compile Include="Manager\InventoryManager\StoreLedgerManager.cs" />
+    <Compile Include="Manager\InventoryManager\StorePurchaseRequisitionManager.cs" />
+    <Compile Include="Manager\InventoryManager\StyleShipmentManager.cs" />
+    <Compile Include="Manager\Maintenance\ReturnableChallanDetailManager.cs" />
+    <Compile Include="Manager\Maintenance\ReturnableChallanManager.cs" />
+    <Compile Include="Manager\Maintenance\ReturnableChallanReceiveManager.cs" />
+    <Compile Include="Manager\Maintenance\ReturnableChallanReceiveMasterManager.cs" />
+    <Compile Include="Manager\MarketingManager\MarketingInquiryManager.cs" />
+    <Compile Include="Manager\MarketingManager\MarketingInstituteManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\AgentManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BulkBookingDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BulkBookingManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BulkBookingYarnDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyerOrderManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyOrdShipDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyOrdShipManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyOrdStyleColorManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\BuyOrdStyleSizeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CompConsumptionDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CompConsumptionManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ComponentManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsumptionDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsumptionGroupManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsigneeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsumptionManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsumptionSupplierManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ConsumptionTypeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CostDefinationManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CostOrdStyleManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CostSheetDetailManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CostSheetMasterManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\CostSheetTemplateManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\EmbWorkOrderManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\FabricOrderManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\FabricTypeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\InquiryManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ItemModeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ItemTypeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\MarchandisingReportManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\MerchandiserManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\MrcReportManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\NotificationTemplateManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmBrandManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmBuyerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Manager\MerchandisingManager\OmBuyOrdStyleManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmColorManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmSizeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmStyleManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OrderTypeManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\PaymentTermManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\PortOfLoadingManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\SampleStyleManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\SeasonManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\SupplierCompanyManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\TempGroupManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\ThreadConsumptionManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\OmCategoryManager.cs" />
+    <Compile Include="Manager\MerchandisingManager\YarnConsumptionManager.cs" />
+    <Compile Include="Manager\MisManager\MisDashboardManager.cs" />
+    <Compile Include="Manager\MisManager\MobileAppsManager.cs" />
+    <Compile Include="Manager\MisManager\UserActivityManager.cs" />
+    <Compile Include="Manager\PayrollManager\AdvanceIncomeTaxManager.cs" />
+    <Compile Include="Manager\PayrollManager\EmployeeBonusManager.cs" />
+    <Compile Include="Manager\PayrollManager\ExcludedEmployeeFromSalaryProcessManager.cs" />
+    <Compile Include="Manager\PayrollManager\OvertimeSettingsManager.cs" />
+    <Compile Include="Manager\PayrollManager\PayrollProcessManager.cs" />
+    <Compile Include="Manager\PayrollManager\PayrollReportManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Manager\PayrollManager\SalaryAdvanceManager.cs" />
+    <Compile Include="Manager\PayrollManager\SalaryMappingManager.cs" />
+    <Compile Include="Manager\PlanningManager\DailyLineLayoutManager.cs" />
+    <Compile Include="Manager\PlanningManager\GraddingManager.cs" />
+    <Compile Include="Manager\PlanningManager\PlanningReportManager.cs" />
+    <Compile Include="Manager\PlanningManager\ProcessManager.cs" />
+    <Compile Include="Manager\PlanningManager\ProcessSequenceManager.cs" />
+    <Compile Include="Manager\PlanningManager\ProcessTemplateManager.cs" />
+    <Compile Include="Manager\PlanningManager\ProductionLineManager.cs" />
+    <Compile Include="Manager\PlanningManager\TargetProductionManager.cs" />
+    <Compile Include="Manager\PlanningManager\TimeAndActionManager.cs" />
+    <Compile Include="Manager\PlanningManager\WorkingDayManager.cs" />
+    <Compile Include="Manager\ProductionManager\BatchDetailManager.cs" />
+    <Compile Include="Manager\ProductionManager\BatchRollManager.cs" />
+    <Compile Include="Manager\ProductionManager\BundleCuttingManager.cs" />
+    <Compile Include="Manager\ProductionManager\BundleCuttingSeqCharManager.cs" />
+    <Compile Include="Manager\ProductionManager\CutBankManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttFabRejectManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttingBatchManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttingProcessStyleActiveManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttingSequenceManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttingTagManager.cs" />
+    <Compile Include="Manager\ProductionManager\CuttingTagSupplierManager.cs" />
+    <Compile Include="Manager\ProductionManager\DailyFabricReceiveManager.cs" />
+    <Compile Include="Manager\ProductionManager\DownTimeCategoryManager.cs" />
+    <Compile Include="Manager\ProductionManager\DyeingJobOrderManager.cs" />
+    <Compile Include="Manager\ProductionManager\DyeingSpChallanDetailManager.cs" />
+    <Compile Include="Manager\ProductionManager\DyeingSpChallanManager.cs" />
+    <Compile Include="Manager\ProductionManager\FinishingProcessManager.cs" />
+    <Compile Include="Manager\ProductionManager\GroupSubProcessManager.cs" />
+    <Compile Include="Manager\ProductionManager\HourManager.cs" />
+    <Compile Include="Manager\ProductionManager\KnittingRollIssueManager.cs" />
+    <Compile Include="Manager\ProductionManager\KnittingRollManager.cs" />
+    <Compile Include="Manager\ProductionManager\LayCuttingManager.cs" />
+    <Compile Include="Manager\ProductionManager\MachingInterruptionManager.cs" />
+    <Compile Include="Manager\ProductionManager\NonProductiveTimeManager.cs" />
+    <Compile Include="Manager\ProductionManager\PartCuttingManager.cs" />
+    <Compile Include="Manager\ProductionManager\ProcessDeliveryManager.cs" />
+    <Compile Include="Manager\ProductionManager\ProcessReceiveManager.cs" />
+    <Compile Include="Manager\ProductionManager\ProductionManager.cs" />
+    <Compile Include="Manager\PlanningManager\ProgramManager.cs" />
+    <Compile Include="Manager\PlanningManager\TNAHorizontalManager.cs" />
+    <Compile Include="Manager\PlanningManager\TNAManager.cs" />
+    <Compile Include="Manager\ProductionManager\BatchManager.cs" />
+    <Compile Include="Manager\ProductionManager\MachineManager.cs" />
+    <Compile Include="Manager\ProductionManager\ProcessorManager.cs" />
+    <Compile Include="Manager\ProductionManager\ProductionReportManager.cs" />
+    <Compile Include="Manager\ProductionManager\RedyeingFabricIssueManager.cs" />
+    <Compile Include="Manager\ProductionManager\RejectAdjustmentManager.cs" />
+    <Compile Include="Manager\ProductionManager\RejectReplacementManager.cs" />
+    <Compile Include="Manager\ProductionManager\RollCuttingManager.cs" />
+    <Compile Include="Manager\ProductionManager\SewingInputProcessManager.cs" />
+    <Compile Include="Manager\ProductionManager\SewingOutPutProcessManager.cs" />
+    <Compile Include="Manager\ProductionManager\StanderdMinValDetailManager.cs" />
+    <Compile Include="Manager\ProductionManager\StanderdMinValueManager.cs" />
+    <Compile Include="Manager\ProductionManager\SubProcessManager.cs" />
+    <Compile Include="Manager\SampleOrderManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\AssigneeManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\ReportImageManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\SubjectManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\TaskManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\TaskStatusManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\TaskTypeManager.cs" />
+    <Compile Include="Manager\TaskManagementManager\TmModuleManager.cs" />
+    <Compile Include="Manager\TrackingManager\ConfirmationMediaManager.cs" />
+    <Compile Include="Manager\TrackingManager\MachineActionManager.cs" />
+    <Compile Include="Manager\TrackingManager\MachineLogManager.cs" />
+    <Compile Include="Manager\TrackingManager\VehicleGateEntryManager.cs" />
+    <Compile Include="Manager\TrackingManager\VehicleManager.cs" />
+    <Compile Include="Manager\TrackingManager\VisitorGateEntryManager.cs" />
+    <Compile Include="Manager\UserManagementManager\ModuleFeatureManager.cs" />
+    <Compile Include="Manager\UserManagementManager\ModuleManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserManager.cs" />
+    <Compile Include="Manager\BaseManager.cs" />
+    <Compile Include="Manager\HRMManager\BloodGroupManager.cs" />
+    <Compile Include="Manager\HRMManager\BranchManager.cs" />
+    <Compile Include="Manager\HRMManager\CompanyManager.cs" />
+    <Compile Include="Manager\HRMManager\CompanyOrganogramManager.cs" />
+    <Compile Include="Manager\HRMManager\DepartmentManager.cs" />
+    <Compile Include="Manager\HRMManager\DistrictManager.cs" />
+    <Compile Include="Manager\HRMManager\EducationLevelManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeBankInfoManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeDailyAttendanceManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeDesignationManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeDocumentManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeEducationManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeEntitlementManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeGradeManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeLeaveManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeManualAttendanceManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeSalaryManager.cs" />
+    <Compile Include="Manager\HRMManager\EmployeeTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\EmploymentManager.cs" />
+    <Compile Include="Manager\HRMManager\EntitlementManager.cs" />
+    <Compile Include="Manager\HRMManager\HolidaySetupManager.cs" />
+    <Compile Include="Manager\HRMManager\LeaveSettingManager.cs" />
+    <Compile Include="Manager\HRMManager\LeaveTypeManager.cs" />
+    <Compile Include="Manager\HRMManager\PoliceStationManager.cs" />
+    <Compile Include="Manager\HRMManager\SalarySetupManager.cs" />
+    <Compile Include="Manager\HRMManager\SkillSetManager.cs" />
+    <Compile Include="Manager\HRMManager\WeekendManager.cs" />
+    <Compile Include="Manager\HRMManager\WorkGroupManager.cs" />
+    <Compile Include="Manager\HRMManager\WorkShiftManager.cs" />
+    <Compile Include="Manager\Manager.cs" />
+    <Compile Include="Manager\PayrollManager\EmployeeSalaryProcessConfirmManager.cs" />
+    <Compile Include="Manager\PayrollManager\EmployeeSalaryProcessManager.cs" />
+    <Compile Include="Manager\PayrollManager\SalaryManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserMerchandiserManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserPermissionForDepartmentLevelManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserPermissionForEmployeeLevelManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserRoleManager.cs" />
+    <Compile Include="Manager\UserManagementManager\UserTnaResponsibleManager.cs" />
+    <Compile Include="Process\AppointmentLetter.cs" />
+    <Compile Include="Process\EMail.cs" />
+    <Compile Include="Process\Salary\IncomeTax.cs" />
+    <Compile Include="Process\Salary\ISalary.cs" />
+    <Compile Include="Process\Salary\ISalaryProcess.cs" />
+    <Compile Include="Process\Salary\OtherIncome.cs" />
+    <Compile Include="Process\Salary\ProvedentFund.cs" />
+    <Compile Include="Process\Salary\SalaryPercentage.cs" />
+    <Compile Include="Process\Salary\SalaryProcess.cs" />
+    <Compile Include="Process\Serializer.cs" />
+    <Compile Include="Process\TimeAndAction\IActionSource.cs" />
+    <Compile Include="Process\TimeAndAction\TimeAndCalendarAction.cs" />
+    <Compile Include="Process\TreeView\UserPermissionTreeView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\MessagingService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\MessagingService\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagingService\SCERP.Message.Service.Model.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagingService\service.wsdl" />
+    <None Include="Service References\MessagingService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagingService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCERP.Common\SCERP.Common.csproj">
+      <Project>{f5a8770a-24bd-4253-b1cf-cf3a5d701b86}</Project>
+      <Name>SCERP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCERP.DAL\SCERP.DAL.csproj">
+      <Project>{d4d90b96-e62f-4e93-8c39-272156c9c1d7}</Project>
+      <Name>SCERP.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCERP.Model\SCERP.Model.csproj">
+      <Project>{1c395cb5-b1cb-4592-b357-2d4549135788}</Project>
+      <Name>SCERP.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\MessagingService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagingService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagingService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagingService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

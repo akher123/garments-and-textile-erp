@@ -1,0 +1,87 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Common.Models.ViewModel.CustomSqlQuaryViewModel
+@{
+    Layout = null;
+    var rowCount = 1;
+}
+
+<div style="font-size:12px;">
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="14" align="left">
+                    <img src="~/Content/images/Plummy_logo.png" width="80px" height="50px" />
+                </td>
+                <td colspan="15" align="center">
+                    <b>Plummy Fashions Limited</b><br />
+                    <span style="font-size: 12px;"> North Norshingpur, Fatullah, Narayongonj</span>
+                    <br />@Model.Name
+                </td>
+                <td colspan="15" align="right">
+                    <input type="button" onclick="printVoucherList()" class="noprint" value="Print" />
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR" align="center">
+                    <th> SL.No</th>
+                    @foreach (DataColumn col in Model.DataTable.Columns)
+                    {
+
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+                @foreach (DataRow row in Model.DataTable.Rows)
+                {
+
+                    <tr class="reportTR" align="center">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                        {
+
+                            if (col.DataType.Name == "DateTime")
+                            {
+                                <td>@(String.Format("{0:dd-MM-yyyy}", row[col.ColumnName]))</td>
+                            }
+                            else
+                            {
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+
+                        }
+                    </tr>
+                        rowCount += 1;
+                }
+            </tbody>
+
+        </table>
+        <div style="margin-top: 20px;">
+            <div style="width: 150px; float: left">
+                <hr />
+                <strong>
+                    Prepared By
+                </strong>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function printVoucherList() {
+        window.print();
+    }
+</script>
+

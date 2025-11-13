@@ -1,0 +1,276 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.TnaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "tna", FormMethod.Post, new {@class = "tnaform"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(x => x.OrderStyleRefId, new {@Class = "BuyerOrderStyleRefId"})
+
+    <fieldset>
+        <legend>Time and Action Calendar</legend>
+        <table class="tabefont">
+            
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+            </tr>
+                
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls" style="width: 150px;">Style:</td>
+                <td>
+              
+                    @Html.TextBoxFor(x => x.SearchString)                                      
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.SearchByStyleId)
+                </td>
+            </tr>
+                       
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Activities:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ActivityId, Model.ActivitySelectListItem, "-Select-", new { @onchange = "SetActivityData(this.value)" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActivityId)
+                </td>
+            </tr>
+                  
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Lead Time:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.LeadTime)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.LeadTime)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls plannedstartdate"> Planned Start Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.PlannedStartDate,new{@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedStartDate)
+                </td>
+            </tr>
+
+            <tr class="plannedenddate">
+                <td></td>
+                <td class="fieldTitleCls">Planned End Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.PlannedEndDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.PlannedEndDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls actualstartdate">Actual Start Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.ActualStartDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActualStartDate)
+                </td>
+            </tr>
+            
+            <tr class="actualenddate">
+                <td></td>
+                <td class="fieldTitleCls"> Actual End Date: </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ActrualEndDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ActrualEndDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Responsible Person:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.ResponsiblePerson, Model.ResponsiblePersonSelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ResponsiblePerson)
+                </td>
+            </tr>                                  
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Notify Before Days:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.NotifyBeforeDays)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.NotifyBeforeDays)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Remarks :</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Remarks)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </td>
+            </tr>
+                       
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#SearchString').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "Tna")'
+            });
+
+        var activityId = $('#ActivityId :selected').val();
+
+        if (activityId > 0) {
+            var url = "/TNA/GetActivityById";
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: { "activityId": activityId },
+                dataType: 'json',
+                success: function(data) {
+
+                    if (data.activityMode == 'S') {
+                        $('.plannedenddate').hide();
+                        $('.actualenddate').hide();
+                        $('.plannedstartdate').html('Planned Date');
+                        $('.actualstartdate').html('Actual Date');
+                    } else {
+                        $('.plannedenddate').show();
+                        $('.actualenddate').show();
+                        $('.plannedstartdate').html('Planned Start Date');
+                        $('.actualstartdate').html('Actual Start Date');
+                    }
+                }
+            });
+        }
+
+        function SetActivityData(Id) {
+
+            var orderRefId = @Html.Raw(Json.Encode(Model.OrderStyleRefId));
+
+            //if (activityId > 0) {
+            //    var url = "/TNA/GetActivityById";
+            //    $.ajax({
+            //        url: url,
+            //        type: "POST",
+            //        data: { "activityId": activityId },
+            //        dataType: 'json',
+            //        success: function(data) {
+
+            //            if (data.activityMode == 'S') {
+            //                $('.plannedenddate').hide();
+            //                $('.actualenddate').hide();
+            //                $('.plannedstartdate').html('Planned Date');
+            //                $('.actualstartdate').html('Actual Date');
+            //            } else {
+            //                $('.plannedenddate').show();
+            //                $('.actualenddate').show();
+            //                $('.plannedstartdate').html('Planned Start Date');
+            //                $('.actualstartdate').html('Actual Start Date');
+            //            }
+            //        }
+            //    });
+            //}            
+
+            if (Id > 0) {
+                var url = "/TNAHorizontal/GetActivityById";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: { "Id": Id, "RefId": orderRefId },
+                    dataType: 'json',
+                    success: function(data) {
+
+                        $('#LeadTime').val(data.leadTime);
+                        $('#PlannedStartDate').val(data.planStartDate);
+                        $('#PlannedEndDate').val(data.planEndDate);
+                        $('#ActualStartDate').val(data.actualStartDate);
+                        $('#ActrualEndDate').val(data.actualEndDate);
+                        $('#ResponsiblePerson').val(data.responsiblePerson);
+                        $('#NotifyBeforeDays').val(data.notifyBeforeDays);
+                        $('#Remarks').val(data.remarks);
+
+                        if (data.activityMode == 'S') {
+                            $('.plannedenddate').hide();
+                            $('.actualenddate').hide();
+                            $('.plannedstartdate').html('Planned Date');
+                            $('.actualstartdate').html('Actual Date');
+                        } else {
+                            $('.plannedenddate').show();
+                            $('.actualenddate').show();
+                            $('.plannedstartdate').html('Planned Start Date');
+                            $('.actualstartdate').html('Actual Start Date');
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,31 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+
+    ViewBag.Title = Model.ProductionId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<div class="additem">
+    @using (Html.BeginForm("Save", "Knitting", FormMethod.Post))
+    {
+        <div class="tableFont" style="background-color:paleturquoise;">
+            <fieldset>
+                <legend>Input Knitting </legend>
+                @Html.Partial("~/Areas/Production/Views/Production/_ProductionEdit.cshtml", Model)
+            </fieldset>
+        </div>
+        <hr />
+        <div class="tableFont" id="InputProductionList">
+            @Html.Partial("~/Areas/Production/Views/Production/_ProductionList.cshtml", Model)
+        </div>
+        <hr />
+        <div class="tableFont" style="float: right">
+         @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton" }, { "TargentClass", "KnittingInputList" } })
+        </div>
+    }
+</div>
+
+
+
+
+
+

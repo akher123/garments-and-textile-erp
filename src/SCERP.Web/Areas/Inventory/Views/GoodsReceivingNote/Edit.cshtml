@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GoodsReceivingNoteViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.GoodsReceivingNotesId > 0) ? "Edit" : "Add";
+}
+@using (Html.BeginForm("Save", "GoodsReceivingNote", FormMethod.Post, new { @class = "GoodsReceivingNote" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QualityCertificateId)
+    @Html.HiddenFor(model => model.GoodsReceivingNotesId)
+
+    <fieldset>
+        <legend>Goods Receiving Note</legend>
+        <table class="tabefont">
+            <tr>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">G.R.N NO:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.GRNNumber, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.GRNNumber)
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">G.R.N. Date:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.GRNDate,new{@class="datepicker"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.GRNDate)
+                </td>
+            </tr>
+            <tr>
+
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td colspan="1">
+                   
+                </td>
+              
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td colspan="1"></td>
+             
+            </tr>
+        </table>
+    </fieldset>
+
+}

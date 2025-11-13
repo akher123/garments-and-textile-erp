@@ -1,0 +1,111 @@
+﻿@using System.Activities.Expressions
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+
+@{
+    ViewBag.Title = "Ledger";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Ledger</h2>
+</div>
+
+@using (Html.BeginForm("GeneralLedger", "Report", FormMethod.Get, new { @class = "GeneralLedgerForm submit-allow ignore-validation" }))
+{
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        <table class="tabefont">
+            @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+
+            <tr>
+                <td> @Html.DisplayName("Print Format: ") </td>
+                <td> @Html.DropDownList("PrintFormatId", null, new { style = "" }) </td>
+
+                <td>@Html.DisplayName("Company Name:")</td>
+                <td>@Html.DropDownList("sectorId", null, "-Select-", new { @onchange = "getCostCentreBySector(this.value)", style = "", @disabled = "disabled" })</td>
+
+                <td>@Html.DisplayName("Account Head:")</td>
+                <td>@Html.TextBoxFor(p => p.GlId, new { @class = "AccountName", style = "" })</td>
+            </tr>
+
+            <tr>
+                <td>@Html.DisplayName("Currency Name:")</td>
+                <td>@Html.DropDownList("currencyId", null, new { @class = "Currency", style = "" })</td>
+
+                <td>
+                    <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintGL();" value="Print" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @*@Html.DisplayName("Cost Centre :")*@
+                </td>
+
+                <td>
+                    @Html.DropDownList("CostCentreId", null, new { @class = "CostCentre", style = "width:160px; visibility: hidden;" })
+                </td>
+
+                <td></td>
+            </tr>
+
+        </table>
+    </div>
+</section>
+
+}
+
+@section scripts
+{
+<script type="text/javascript">
+    function PrintGL() {
+        var FpId = $('#FpId').val();
+        var SectorId = $('#sectorId').val();
+        var GlId = $('#GlId').val().replace(/[_\W]+/g, "-");
+        var fromDate = $('#FromDate').val();
+        var toDate = $('#ToDate').val();
+        var CostCentreId = $("#CostCentreId option:selected").val();
+        var CurrencyId = $("#currencyId option:selected").val();
+        var FileType = $('#PrintFormatId option:selected').text();
+        window.open("/Accounting/Report/GeneralLedgerDetailPrint?FpId=" + FpId + "&SectorId=" + SectorId + "&CostCentreId=" + CostCentreId + "&fromDate=" + fromDate + "&toDate=" + toDate + "&GlId=" + GlId + "&CurrencyId=" + CurrencyId + "&ExportType=" + FileType);
+    }
+    function getCostCentreBySector(sectorId) {   // This is for cascade dropdown
+
+        var url = "/BankVoucherEntry/GetCostCentreBySector";
+        $.ajax({
+            url: url,
+            type: "get",
+            data: { "sectorId": sectorId },
+            dataType: 'json',
+            success: function (data) {
+                if (data.length != 0) {
+
+                    var items = "<option value='" + 0 + "'>" + " -Select - " + "</option>";
+
+                    $.each(data, function (i, costCentre) {
+
+                        items += "<option value='" + costCentre.Id + "'>" + costCentre.CostCentreName + "</option>";
+                    });
+                    $('.CostCentre').html(items);
+                } else {
+                    var items = '<option>Not found</option>';
+                    $('.CostCentre').html(items);
+                }
+            }
+        });
+    }
+
+    var temp = $('#GlId').val();
+    if (temp == 0)
+        $('#GlId').val('');
+
+    $('.AccountName').autocomplete(
+        {
+            source: '@Url.Action("TagSearch", "Report")'
+        });
+
+</script>
+}
+

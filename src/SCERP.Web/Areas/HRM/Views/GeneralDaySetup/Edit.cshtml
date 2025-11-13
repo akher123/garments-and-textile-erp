@@ -1,0 +1,116 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.GeneralDaySetupViewModel
+@{
+    ViewBag.Title = (Model.GeneralDaySetupId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "GeneralDaySetup", FormMethod.Post, new { @class = "GeneralDaySetupform" }))
+{   
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.EditedDate)
+    @Html.HiddenFor(model => model.GeneralDaySetupId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>General Day Setup</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/GeneralDaySetup/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/GeneralDaySetup/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/GeneralDaySetup/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Declared Date:")
+                </td>
+                <td>                    
+                    @Html.TextBoxFor(x => x.DeclaredDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.DeclaredDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Description)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.Description)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Internal Allowed? ")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.IsAllowedInternal, false)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.IsAllowedInternal)
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("External Allowed? ")
+                </td>
+                <td>
+                    @Html.CheckBoxFor(x => x.IsAllowedExternal, false)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.IsAllowedExternal)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+

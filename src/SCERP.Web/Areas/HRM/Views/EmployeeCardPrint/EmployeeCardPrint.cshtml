@@ -1,0 +1,145 @@
+﻿@using SCERP.Model.Custom
+@model List<SCERP.Model.Custom.EmployeeCardPrintModel>
+
+@{
+    ViewBag.Title = "Employee Card Print";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    .idCardSize {
+        width: 192px;
+        height: 306px;
+    }
+
+    #reportContainer {
+        margin-top: 0px;
+    }
+</style>
+
+<div id="reportContainer">
+    @*<table style="width:auto;">
+            @foreach (EmployeeCardPrintModel item in Model)
+            {
+                if (cellCount % 3 == 0)
+                {
+                    @:<tr>
+                }
+
+                <td style="padding:0px 20px;">
+                    @Html.Partial("_CardPrintView", item)
+                    <br />
+                </td>
+
+                cellCount++;
+
+                if (cellCount % 3 == 0)
+                {
+                    @:</tr>
+                }
+            }
+        </table>*@
+
+    <table style="width:auto;">
+        <tr>
+            <td style="margin: 0px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 0)
+                {
+                    @Html.Partial("_CardPrintView", Model[0])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 1)
+                {
+                    @Html.Partial("_CardPrintView", Model[1])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 2)
+                {
+                    @Html.Partial("_CardPrintView", Model[2])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td style="margin: 0px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 3)
+                {
+                    @Html.Partial("_CardPrintView", Model[3])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 4)
+                {
+                    @Html.Partial("_CardPrintView", Model[4])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 5)
+                {
+                    @Html.Partial("_CardPrintView", Model[5])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td style="margin: 0px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 6)
+                {
+                    @Html.Partial("_CardPrintView", Model[6])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 7)
+                {
+                    @Html.Partial("_CardPrintView", Model[7])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+            <td style="margin: 10px 0px 0px 0px;" class="idCardSize">
+                @if (Model.Count > 8)
+                {
+                    @Html.Partial("_CardPrintView", Model[8])
+                }
+                else
+                {
+                    @Html.Partial("_CardPrintBlankView")
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+<input style="margin-left: 25px;" type="button" action="reportContainer" class="printReport" value="print" />

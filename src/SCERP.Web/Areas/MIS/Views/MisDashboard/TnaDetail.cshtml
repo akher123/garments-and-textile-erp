@@ -1,0 +1,60 @@
+﻿@model dynamic
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "TIME & ACTION";
+}
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+
+        <tr>
+            <th>SL</th>
+            <th>ACTIVITY</th>
+            <th>PLAN START </th>
+            <th>PLAN END </th>
+            <th>NOTE</th>
+
+            <th>Who</th>
+            <th>When</th>
+            <th>ACTUAL START</th>
+            <th>ACTUAL END</th>
+            <th>REQUIRED</th>
+            <th>ACTUAL</th>
+            <th>RESPONSIBLE</th>
+            <th>STATUS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+        <tr>
+            <td>@row.SerialId</td>
+            <td style="text-align:left ;font-weight: bold">@row.ActivityName</td>
+            <td>@row.PSDate</td>
+            <td>@row.PEDate</td>
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=Rmks">@row.Rmks</a>
+            </td>
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=XWho">@row.XWho</a>
+            </td>
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=XWhen">@row.XWhen</a>
+            </td>
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=ASDate">@row.ASDate</a>
+            </td>
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=AEDate">@row.AEDate</a>
+            </td>
+            <td>@row.RequiredQty</td>
+            <td>@row.ActualQty</td>
+            <td>@row.Responsible</td>
+
+            <td>
+                <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActivityLog?id=@row.TnaRowId&keyName=UpdateRemarks">@row.UpdateRemarks</a>
+            </td>
+        </tr>
+        }
+      
+    </tbody>
+</table>

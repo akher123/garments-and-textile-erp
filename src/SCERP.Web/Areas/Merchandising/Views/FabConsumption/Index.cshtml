@@ -1,0 +1,25 @@
+﻿@using System.Data.Entity.Core
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabConsumptionViewModel
+@{
+    Layout = null;
+}
+<style type="text/css">
+    .FabcomponentContainer {
+        /*background-color: floralwhite;*/
+    }
+    .componentListContainer {
+        /*background-color: floralwhite;*/
+    }
+</style>
+<div class="FabcomponentContainer">
+    <div style="margin-bottom: 5px;" id="CompConsumtionContainerEntyForm">
+        @{
+            Html.RenderPartial("~/Areas/Merchandising/Views/FabConsumption/_Edit.cshtml", Model);
+        }
+    </div>
+    <div class="componentListContainer">
+        @{
+            Html.RenderPartial("~/Areas/Merchandising/Views/FabConsumption/_CompConsList.cshtml", Model);
+        }
+    </div>
+</div>

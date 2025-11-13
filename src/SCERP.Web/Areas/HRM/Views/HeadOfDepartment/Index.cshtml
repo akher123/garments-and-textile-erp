@@ -1,0 +1,56 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitDepartmentViewModel
+@{
+    ViewBag.Title = "Branch Unit";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.BranchUnitDepartments.Count > 0) ? "" : "none";
+}
+@using (Html.BeginForm("Index", "BranchUnitDepartment", FormMethod.Get, new { @class = "BranchUnitDepartmentSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Branch Unit and Department</h3>
+    </div>
+    { Html.RenderPartial("~/Areas/HRM/Views/BranchUnitDepartment/_SearchBranchUnitDepartment.cshtml", Model); }
+}
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/BranchUnitDepartment/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.BranchUnitDepartments, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                 grid.Column("BranchUnit.Branch.Company.Name", header: "Company ", format: @<text>@(item.BranchUnit.Branch.Company == null ? "" : item.BranchUnit.Branch.Company.Name)</text>),
+                   grid.Column("BranchUnit.Branch.Name", header: "Branch ", format: @<text>@(item.BranchUnit.Branch == null ? "" : item.BranchUnit.Branch.Name)</text>),
+                  grid.Column("UnitDepartment.Unit.Name", header: "Unit ", format: @<text>@(item.UnitDepartment.Unit == null ? "" : item.UnitDepartment.Unit.Name)</text>),
+                                 grid.Column("UnitDepartment.Department.Name", header: "Department ", format: @<text>@(item.UnitDepartment.Department == null ? "" : item.UnitDepartment.Department.Name)</text>),
+                    grid.Column("Detail/Edit",canSort:false,format:@<text><button class="edit" action="/HRM/BranchUnitDepartment/Edit?BranchUnitDepartmentId=@item.BranchUnitDepartmentId"></button></text>),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/BranchUnitDepartment/Delete?BranchUnitDepartmentId=@item.BranchUnitDepartmentId"></button></text>, canSort: false)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "BranchUnitDepartment", new { SerchCompanyId = Model.SearchFieldModel.SearchByCompanyId, SerchBranchId = Model.SearchFieldModel.SearchByBranchId, BranchUnitId = Model.SearchFieldModel.SearchByUnitId, UnitDepartmentId = Model.SearchFieldModel.SearchByUnitDepartmentId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "BranchUnitDepartment", new { SerchCompanyId = Model.SearchFieldModel.SearchByCompanyId, SerchBranchId = Model.SearchFieldModel.SearchByBranchId, BranchUnitId = Model.SearchFieldModel.SearchByUnitId, UnitDepartmentId = Model.SearchFieldModel.SearchByUnitDepartmentId })" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>
+
+

@@ -1,0 +1,49 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = null;
+}
+<div class="BulkBookingYarnDetailList">
+    <div style="margin-bottom: 3px;float: left;">
+        <button class="AjaxPopup addButton" action="/Merchandising/BulkBooking/EditYarnDetail?BulkBookingDetail.BulkBookingDetailId=@Model.BulkBookingDetail.BulkBookingDetailId">Create</button>
+    </div>
+    <div style="float: right;margin-bottom: 15px;background-color:#a6d9fb">
+
+        <table class="webgrid webgrid-table" style="width:500px;">
+            <tr>
+                <td>Order No:</td>
+                <td>@Model.BulkBookingDetail.OrderNo</td>
+                <td>Style :</td>
+                <td>@Model.BulkBookingDetail.StyleNo</td>
+                <td>Fabrication :</td>
+                <td>@Model.BulkBookingDetail.Fabrication</td>
+            </tr>
+        </table>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.BulkBookingYarnDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                grid.Column("ColorName", canSort: false, header: String.Format("{0}", "Color")),
+                grid.Column("CountName", canSort: false, header: String.Format("{0}", "Count")),
+                grid.Column("OrdQty", canSort: false, header: String.Format("{0}", "OrdQty")),
+                grid.Column("ConsQty", canSort: false, header: String.Format("{0}", "ConsQty")),
+                grid.Column("Remarks", canSort: false, header: "Remarks"),
+                grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/BulkBooking/EditYarnDetail?BulkBookingYarnDetail.BulkBookingYearnDetailId=@item.BulkBookingYearnDetailId"></button></text>),
+                grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="BulkBookingYarnDetailList" action="/Merchandising/BulkBooking/DeleteYarnDetail?BulkBookingYarnDetail.BulkBookingYearnDetailId=@item.BulkBookingYearnDetailId&BulkBookingYarnDetail.BulkBookingDetailId=@item.BulkBookingDetailId"></button></text>)));
+    }
+
+</div>

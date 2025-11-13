@@ -1,0 +1,44 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Hourly Sewing Output </h3>
+</div>
+<section class="search formCover" style="margin-top: 20px;">
+    <div style="margin-left:10px;margin-bottom:5px;">
+
+        @using (Html.BeginForm("HourlySewingOutput", "SewingOutputProcess", FormMethod.Post, new { @class = "SewingOutputProcessForm ignore-validation" }))
+        {
+            <table class="tabefont" style="margin-left: 60px">
+                <tr>
+                    <td>
+                        @Html.Label("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SewingOutPutProcess.OutputDate, new { id = "textOutputDate",@class="datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <input type="button" class="buttonStyle" id="btnHourlySewingOutput" value="PDF" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        $('#btnHourlySewingOutput').unbind('click').bind('click', function () {
+            var form = $(this).parents('form:first');
+            var outputDate= $('#textOutputDate').val();
+            var searchurl = '/Production/ProductionReport/HourlyProductionReprot?outputDate=' + outputDate;
+            window.open(searchurl);
+        });
+    </script>
+    
+}

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SCERP.Model.Inventory_MaterialIssueRequisitionDetail>
+
+ <table class="tabefont webgrid-table webgrid " style="width: 1024px;">
+        <thead class="webgrid-header">
+            <tr>
+                <th>
+                    @Html.Label("Item")
+                </th>
+
+                <th>
+                    @Html.Label("Description")
+                </th>
+                <th>
+                    @Html.Label("Machine")
+                </th>
+                <th>
+                    @Html.Label("Size")
+                </th>
+                <th>
+                    @Html.Label("Brand")
+                </th>
+                <th>
+                    @Html.Label("Origin")
+                </th>
+                <th>
+                    @Html.Label("Qantity")
+                </th>
+                <th>
+                    @Html.Label("Unit")
+                </th>
+
+                <th>
+                    @Html.Label("Uses Area")
+                </th>
+                <th>
+                    @Html.Label("Desired Date")
+                </th>
+
+                <th>
+                    @Html.Label("Remarks")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var issueReqDetail in Model.ToList())
+            {
+                   <tr class="webgrid-row-style webgrid-alternating-row">
+                    <td>
+
+                        @issueReqDetail.ItemName
+                    </td>
+                       <td>
+                           @issueReqDetail.ItemDescription
+                       </td>
+                       <td>
+                           @issueReqDetail.Machine
+                       </td>
+                    <td>
+                        @issueReqDetail.Size
+                    </td>
+                    <td>
+                        @issueReqDetail.Brand
+                    </td>
+                    <td>
+                 
+                        @issueReqDetail.Origin
+                    </td>
+                    <td>
+                        @issueReqDetail.RequiredQuantity
+                    </td>
+                    <td>
+                        @issueReqDetail.MeasurementUnit
+                    </td>
+                     
+                    <td>
+                        @issueReqDetail.FunctionalArea
+                    </td>
+                       <td>
+                           @(issueReqDetail.DesiredDate != null ? Html.ValueFor(x => issueReqDetail.DesiredDate, "{0:dd/MM/yyyy}") : Html.DisplayText("---"))
+                       </td>
+                       <td>
+                           @issueReqDetail.Remarks
+                       </td>
+                </tr>
+            }
+        </tbody>
+    </table>

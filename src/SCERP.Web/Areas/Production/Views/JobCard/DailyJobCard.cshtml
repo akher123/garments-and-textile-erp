@@ -1,0 +1,134 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{ ViewBag.Title = "DailyJobCard";
+ Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet"/>
+}
+<div class="header-title">
+    <h2>Daily Job Card</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("DailyJobCard", "JobCard", FormMethod.Get, new {@class = "DailyJobCardForm submit-allow"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Cutting Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CuttingBatch.CuttingDate, new {@class = "datepicker", @data_val = "false", id = "CuttingDateId"})
+                    </td>
+                    <td>
+                        @Html.Label("Table")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.CuttingBatch.MachineId, Model.MachineSelectListItem, "-ALL-", new {@data_val = "false", id = "cuttingTableId"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Ref No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key", id = "SearchString"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ply Qty")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TotalPly, new {@readonly = "readonly", @style = "background-color: #6495ed;"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Body Cutt")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TotalBody, new {@readonly = "readonly", @style = "background-color: #6495ed;"})
+                    </td>
+
+                    <td @*style="width:10px"*@>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <div class="dropdown">
+                <button class="dropbtn">REPORT▼</button>
+                <div class="dropdown-content">
+                    <a style="cursor: pointer" target="_blank" onclick="dailyJobCard(1)">PDF</a>
+                    <a style="cursor: pointer" target="_blank" onclick="dailyJobCard(3)">Excel</a>
+                </div>
+            </div>
+        </div>
+        <div style="overflow-y: scroll; height: 400px;">
+            @{
+                var grid = new WebGrid(canPage: false, rowsPerPage: 20, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.CuttingBatchList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                int rowNo = (int) Model.RowNo;
+                @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                            grid.Column("SL", format: item => rowNo = rowNo + 1, canSort: false),
+                            grid.Column("CuttingBatchRefId", canSort: false, header: "RefId"),
+                            grid.Column("BuyerName", header: "Buyer", canSort: false),
+                            grid.Column("OrderName", header: "Order", canSort: false),
+                            grid.Column("StyleName", header: "Style", canSort: false),
+                            grid.Column("ColorName", header: "Color", canSort: false),
+                            grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.CuttingDate ?? ""), header: "Cut Date", canSort: false),
+                            grid.Column("TableName", canSort: false, header: "Table"),
+                            grid.Column("Rmks", canSort: false, header: "BatchNo"),
+                            grid.Column("JobNo", canSort: false, header: "Job No"),
+                            grid.Column("ComponentName", canSort: false, header: "Sequence"),
+                            grid.Column("MarkerPcs", canSort: false, header: "Mar Pcs"),
+                            grid.Column("PLY", canSort: false, header: "PLY"),
+                            grid.Column("BundleQuantity", canSort: false, header: "Bundle Qty"),
+                            grid.Column("Total", canSort: false, header: "Total Cut"),
+                            grid.Column("RejectQty", canSort: false, header: "Reject Qty"),
+                            grid.Column("FinalQty", canSort: false, header: "Final Qty"),
+                            grid.Column("Total", canSort: false, header: "Bun Chart", format: @<text><a href="/Production/ProductionReport/BundleChartReport?CuttingBatchRefId=@item.CuttingBatchRefId" target="_blank">PDF</a></text>),
+                            grid.Column("Total", canSort: false, header: "Bun Slip", format: @<text><a href="/Production/ProductionReport/BundleSlip?CuttingBatchRefId=@item.CuttingBatchRefId" target="_blank">PDF</a></text>)))
+                ;
+            }
+        </div>
+    </div>
+</section>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        function dailyJobCard(reportType) {
+            var data = $('.DailyJobCardForm').serialize();
+            var searchurl = '/Production/ProductionReport/DailyJobCard?' + data + '&reportTypeId=' + reportType;
+            window.open(searchurl);
+        }
+      
+    </script>
+
+}
+

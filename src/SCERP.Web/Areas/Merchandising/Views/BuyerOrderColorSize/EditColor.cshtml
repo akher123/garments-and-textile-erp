@@ -1,0 +1,32 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+@{
+
+    Layout = null;
+    
+}
+
+<table class="webgrid-table webgrid">
+    <thead class="webgrid-header">
+        <tr>
+            <th>SL #</th>
+            <th>COLOR ID</th>
+            <th>COLOR</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ostyleColor in Model.BuyOrdStyleColors)
+        {
+        <tr class="buyerOrderStyle-row" id="@ostyleColor.ColorRefId">
+            <td>@ostyleColor.ColorRow</td>
+            <td>@ostyleColor.ColorRefId</td>
+            <td>@ostyleColor.ColorName</td>
+            <td><button class="btnDetail" targentclass="UpdateStyleColorContainer" action="/BuyerOrderColorSize/UpdateStyleColor?Id=@ostyleColor.OrderStyleColorId"></button></td>
+            <td><input type="button" id="@ostyleColor.OrderStyleColorId" onclick='deleteOrderStyleColor(this)' value="-" /></td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+

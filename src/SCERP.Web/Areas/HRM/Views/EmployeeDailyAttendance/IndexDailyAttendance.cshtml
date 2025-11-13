@@ -1,0 +1,63 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+
+@{
+    ViewBag.Title = "Process Daily Attendance ";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "EmployeeDailyAttendance", FormMethod.Get, new { @class = "EmployeeDailyAttendanceSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <div style="width: 500px; padding-left: 340px;">
+        <h3> Process Daily Attendance </h3>
+    </div>
+    
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont"> 
+            <tr>
+                <td> @Html.Label("Date : ") </td>                                    
+                <td>         
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                </td>                                    
+                <td> </td>                                                                          
+            </tr>
+            <tr>
+                <td> </td>
+                <td> <input type="button" value="In Out" onclick=" javascript: ProcessInOut(); " /> <input type="button" value="OT" onclick=" javascript: ProcessOT(); " /> </td>
+                <td>  </td>               
+            </tr>
+        </table>
+    </section>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function ProcessInOut() {
+
+            var fromDate = $('#FromDate').val();
+            var processType = 'InOut';
+
+            window.open("/HRM/EmployeeDailyAttendance/ProcessDailyAttendance?&FromDate=" + fromDate + "&ProcessType=" + processType);
+        }
+
+        function ProcessOT() {
+
+            var fromDate = $('#FromDate').val();
+            var processType = 'OT';
+
+            window.open("/HRM/EmployeeDailyAttendance/ProcessDailyAttendance?&FromDate=" + fromDate + "&ProcessType=" + processType);
+        }
+        
+    </script>
+}
+
+
+

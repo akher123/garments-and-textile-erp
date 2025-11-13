@@ -1,0 +1,155 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.InventoryReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Yarn Stock Position</h2>
+</div>
+
+@using (Html.BeginForm("", "", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("From Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate,  new { @placeholder = "From date" ,@class="datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @placeholder = "To date" ,@class="datepicker"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Group")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.GroupId, Model.GroupSelectListItem, "All", new { id = "groupDropdown" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Sub Group")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SubGroupId, Model.SubGroupSelectListItem, new { id = "subGroupDropdown" })
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">GREY ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="StockReportDetail(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="StockReportDetail(3)">Excel</a>
+                                <a style="cursor: pointer" target="_blank" onclick="StockReport(this)">Summary</a>
+                            </div>
+                        </div>
+                     
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">DYED ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick=" DyedYarnStockReportDetail(1) ">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick=" DyedYarnStockReportDetail(3) ">Excel</a>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">Yarn Stock ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="BuyerWiseYarnStockReportDetail(1)">Buyer Wise Detail(PDF)</a>
+                                <a style="cursor: pointer" target="_blank" onclick="BuyerWiseYarnStockReportDetail(3)">Buyer Wise Detail(EXCEL)</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        function StockReport(obj) {
+            var form = $(obj).parents('form:first');
+                    var data = form.serialize();
+                    var searchurl = '/Inventory/Report/StockReport?' + data;
+                    window.open(searchurl);
+                
+            
+        }
+        
+
+        function DyedYarnStockReportDetail(reprotType) {
+            var form = $('.ReportSearchForm');
+            var data = form.serialize();
+            var searchurl = '/Inventory/Report/DyedYarnStockReportDetail?ReportType=' + reprotType + "&" + data;
+            window.open(searchurl);
+
+
+        }
+
+        function StockReportDetail(reprotType) {
+            var form = $('.ReportSearchForm');
+                    var data = form.serialize();
+                    var searchurl = '/Inventory/Report/StockReportDetail?ReportType=' + reprotType+"&"+data;
+                    window.open(searchurl);
+                
+            
+        }
+
+        function BuyerWiseYarnStockReportDetail(reprotType) {
+            var form = $('.ReportSearchForm');
+            var data = form.serialize();
+            var searchurl = '/Inventory/Report/BuyerWiseStockReportDetail?ReportType=' + reprotType + "&" + data;
+            window.open(searchurl);
+        }
+
+
+        $('#groupDropdown').unbind('change').bind('change', function () {
+            var groupId = $(this).val();
+            $.Ajax({
+                url: '/InventoryItem/GetSubGroupByGroupId/',
+                data: { groupId: groupId }
+            }).done(function (subgroupList) {
+                $('#subGroupDropdown').empty();
+                if (subgroupList.length > 0) {
+                    $('#subGroupDropdown').append(
+                     $('<option/>')
+                         .attr('value', '-1')
+                         .text("ALL")
+                 );
+                    $.each(subgroupList, function (subgroup) {
+                        $('#subGroupDropdown').append(
+                            $('<option/>')
+                                .attr('value', this.SubGroupId)
+                                .text(this.SubGroupName)
+                        );
+                    });
+                } else {
+                    $('.subGroupDropdown').append(
+                        $('<option/>')
+                            .attr('value', "No Subgroup Found")
+                            .text("Select")
+                    );
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,124 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{ ViewBag.Title = "Order Closing";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>ORDER CLOSING STATUS</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("OrderClosingStatus", "MisReport", FormMethod.Get, new { @class = "OrderClosingStatusReportForm submit-allow" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "timeAndAction_buyerRefId", style = "width: 150px;" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("Order No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-ALL-", new { @class = "timeAndAction_OrderNo", style = "width: 150px;" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("Style No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new { id = "shipStyleRefId", @class = "timeAndAction_StyleNo", style = "width: 150px;" })
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <a class="dropbtn custom-table-dropbtn">Order Closing Report</a>
+                        <div class="dropdown-content custom-table-dropdown-content">
+                            <input type="button" value="PDF" target="_blank" onclick="showOrderClosingStatus(1)" />
+                            <input type="button" value="EXEL" target="_blank" onclick="showOrderClosingStatus(3)" />
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+          
+        </table>
+        }
+
+    </div>
+</section>
+@section scripts
+{
+
+    <script type="text/javascript">
+        function showOrderClosingStatus(reportType) {
+            var data = $('.OrderClosingStatusReportForm').serialize();
+            var searchurl = '/MIS/MisReport/OrderClosingStatus?' + data + '&ReportType=' + reportType;
+            window.open(searchurl);
+        }
+     $('.timeAndAction_buyerRefId').unbind('change').bind('change', function () {
+        var buyerRefId = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+            data: { buyerRefId: buyerRefId }
+        }).done(function (orderList) {
+            $('.timeAndAction_OrderNo').empty();
+            $('.timeAndAction_StyleNo').empty();
+            if (orderList.length > 0) {
+                populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                $.each(orderList, function (order) {
+                    populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                });
+            } else {
+                populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+            }
+        });
+    });
+
+
+    function populateDropDown(obj) {
+        $('.timeAndAction_OrderNo').append(
+            $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+        );
+    }
+
+    $('.timeAndAction_OrderNo').unbind('change').bind('change', function () {
+        var orderNo = $(this).val();
+        $.Ajax({
+            url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+            data: { orderNo: orderNo }
+        }).done(function (styleList) {
+            $('.timeAndAction_StyleNo').empty();
+            if (styleList.length > 0) {
+                $('.timeAndAction_StyleNo').append(
+                    $('<option/>').attr('value', '').text("-ALL-")
+                );
+                $.each(styleList, function (style) {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                    );
+                });
+            } else {
+                $('.timeAndAction_StyleNo').append(
+                    $('<option/>').attr('value', '').text("No Order Found")
+                );
+            }
+        });
+    });
+
+    function removeDependentDropdown() {
+
+        $('.timeAndAction_OrderNo').empty();
+        $('.timeAndAction_StyleNo').empty();
+    }
+    </script>
+
+}

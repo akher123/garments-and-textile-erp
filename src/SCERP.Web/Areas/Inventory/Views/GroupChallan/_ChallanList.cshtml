@@ -1,0 +1,50 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.GroupChallanViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>
+               Ref ID
+            </th>
+            <th>
+                VehicleNo
+            </th>
+         
+            <th>
+                DriverName
+            </th>
+            <th>
+                Select
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.GroupChallan.MaterialIssues.Any())
+        {
+            for (int index = 0; index < Model.GroupChallan.MaterialIssues.Count; index++)
+            {
+                <tr>
+                    <td>
+                        @Model.GroupChallan.MaterialIssues[index].IRefId
+                    </td>
+                    <td>
+                        @Model.GroupChallan.MaterialIssues[index].VehicleNo
+                    </td>
+                    <td>
+                        @Model.GroupChallan.MaterialIssues[index].DriverName
+                    </td>
+                   
+                    <td>
+                        <input type="checkbox" name="GroupChallan.MaterialIssues[@index].AdvanceMaterialIssueId" value="@Model.GroupChallan.MaterialIssues[index].AdvanceMaterialIssueId" @(Model.GroupChallan.GroupChallanId > 0 ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+

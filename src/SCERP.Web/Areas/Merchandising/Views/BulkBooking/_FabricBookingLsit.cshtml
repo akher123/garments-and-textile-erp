@@ -1,0 +1,66 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = null;
+}
+<div class="BulkBookingDetailList">
+    <div style="margin-bottom: 3px;float: left">
+        <button class="AjaxPopup addButton" action="/Merchandising/BulkBooking/EditDetail?BulkBooking.BulkBookingId=@Model.BulkBooking.BulkBookingId">Create</button>
+    </div>
+    <div style="float: right; margin-bottom: 15px; background-color: #a6d9fb">
+        
+        <table class="webgrid webgrid-table" style="width:500px;">
+            <tr>
+                <td>BK NO :</td>
+                <td>@Model.BulkBooking.BulkBookingRefId</td>
+                <td>Attention :</td>
+                <td>@Model.BulkBooking.Attention</td>
+              
+            </tr>
+        </table>
+    </div>
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.BulkBookingDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("SequenceNo", canSort: false, header: "SL NO."),
+                    grid.Column("OrderNo", canSort: false, header: String.Format("{0}", "OrderNo")),
+                    grid.Column("StyleNo", canSort: false, header: String.Format("{0}", "StyleNo")),
+                    grid.Column("Fabrication", canSort: false, header: String.Format("{0}", "Fabrication")),
+                    grid.Column("GSM", canSort: false, header: String.Format("{0}", "GSM")),
+                    grid.Column("ItemName", canSort: false, header: "ItemName"),
+                    grid.Column("ShipDate", canSort: false, header: "Ship Date", format: @<text>@(item.ShipDate == null ? "" : item.ShipDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.BulkBookingDetailId" onclick="selectBulkBookingDetailRow('@item.BulkBookingDetailId',this)" value="✅" /></text>),
+                    grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/BulkBooking/EditDetail?BulkBookingDetail.BulkBookingDetailId=@item.BulkBookingDetailId"></button></text>),
+                    grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="BulkBookingDetailList" action="/Merchandising/BulkBooking/DeleteDetail?BulkBookingDetail.BulkBookingDetailId=@item.BulkBookingDetailId&BulkBookingDetail.BulkBookingId=@item.BulkBookingId"></button></text>)));
+    }
+
+</div>
+<script type="text/javascript">
+    function selectBulkBookingDetailRow(bulkBookingDetailId, obj) {
+        var button = $(obj);
+        var value = bulkBookingDetailId;
+        var $tr = button.closest('tr');
+        $tr.addClass("selected").siblings().removeClass("selected");
+        var $tab = $("#bulkBookingTab");
+        var tabAction = $('#bulkBookingYarnDetailHref').attr("href").split('=')[0];
+        tabAction += "=" + value;
+        $('#bulkBookingYarnDetailHref').attr('href', tabAction);
+        $tab.tabs('enable', 2);
+       // $('#bulkBookingDetailHref').attr('href', '#temp');
+    }
+</script>

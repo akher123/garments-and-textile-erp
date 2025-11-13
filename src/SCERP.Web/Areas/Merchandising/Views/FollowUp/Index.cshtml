@@ -1,0 +1,133 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FollowUpViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+
+<style>
+    .itemAssort {
+        padding: 3px 13px;
+        background: #4CAF50;
+        color: #ffffff;
+        border: 1px solid #2CC831;
+        cursor: pointer;
+        -webkit-transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -o-transition: all 0.2s ease-out;
+        -ms-transition: all 0.2s ease-out;
+        transition: all 0.2s ease-out;
+    }
+    .itemAssort:hover {
+        background: #33B138;
+        border: 1px solid #008d4c;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+    .itemNotAssort {
+        padding: 3px 13px;
+        background: #dd4b39;
+        color: #060606;
+        border: 1px solid #d73925;
+        cursor: pointer;
+        -webkit-transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -o-transition: all 0.2s ease-out;
+        -ms-transition: all 0.2s ease-out;
+        transition: all 0.2s ease-out;
+    }
+    .itemNotAssort:hover {
+        background: #d73925;
+        border: 1px solid #ac2925;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+</style>
+
+<div class="header-title">
+    <h2>Consumption(Accessories,Fabric and Yarn) And Workorder</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "FollowUp", FormMethod.Get, new { @class = "FollowUpSearchForm" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+
+                    <td>
+                        @Html.DisplayName("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "ALL")
+                    </td>
+                    <td>
+                        @Html.DisplayName("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                    @*<td><a href="/Merchandising/Report/RunningOrderStatusSummary" target="_blank">Running Order</a></td>*@
+
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+
+<section class="search formCover">
+    <div class="addButton-wrapper">
+        <input type="button" class="AjaxPopup addButton" action="/Merchandising/BuyerOrder/BuyerOrderDetail" value="ORDER MANAGEMENT" />
+        <input type="button" class="AjaxPopup addButton" action="/Merchandising/FabricOrder/Index" value="FABRIC WORK ORDER" />
+    </div>
+    <div class="additem" style="min-height:150px; overflow: initial;">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VwStyleFollowupStatuses, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ShipDate", canSort: false, header: "REPORT", format: @<text>
+
+                        <div class="dropdown">
+                            <a class="dropbtn custom-table-dropbtn">BOM</a>
+                            <div class="dropdown-content custom-table-dropdown-content">
+                                @Html.ActionLink("ACCESORIES", "StyleWiseConsumtionDetail", "Consumption", new { OrderStyleRefId = item.OrderStyleRefId, IsShowReport = true, ReportType = 1 }, new { @target = "_blank" })
+                                @Html.ActionLink("FABRIC", "StyleWiseFabrConsumtionDetail", "Consumption", new { OrderStyleRefId = item.OrderStyleRefId, IsShowReport = true, ReportType = 1 }, new { @target = "_blank" })
+                            </div>
+                        </div>
+                        </text>),
+                        grid.Column("BuyerName", canSort: false, header: "Buyer"),
+                        grid.Column("RefNo", canSort: false, header: "Order"),
+                        grid.Column("StyleName", canSort: false, header: "Style"),
+                        grid.Column("OrdQty", canSort: false, header: String.Format("{0}", "Order Qty.")),
+                        grid.Column("IsAssort", canSort: false, header: String.Format("{0}", "Assortment"), format: @<text>  <input type="button" class="AjaxPopup isSelected @(item.IsAssort == true ? "itemAssort" : "itemNotAssort")" action="/Merchandising/BuyerOrder/BuyerOrderDetail?OrderNo=@item.OrderNo&OrderStyleRefId=@item.OrderStyleRefId" value="Size/Color" /> </text>),
+                        grid.Column("IsAccsCons", canSort: false, header: String.Format("{0}", "AccCons."), format: @<text> <input type="button" class="AjaxPopup isSelected @(item.IsAccsCons == true ? "itemAssort" : "itemNotAssort")" action="/Merchandising/Consumption/ConsumptionProcess?OrderStyleRefId=@item.OrderStyleRefId" value="Trims&Acc" /> </text>),
+                        grid.Column("IsProdProg", canSort: false, header: String.Format("{0}", "Update"), format: @<text> <input type="button" class="AjaxPopup isSelected" style="cursor: pointer;background: #0f467a;border: 1px solid #072f56;padding: 3px 12px;color: #ffffff;" action="/Merchandising/CosumptionCost/CosumptionLsit?OrderStyleRefId=@item.OrderStyleRefId" value="Rate" /> </text>),
+                        grid.Column("IsDIn", canSort: false, header: String.Format("{0}", "Trins/Acc"), format: @<text><input type="button" class="AjaxPopup isSelected @(item.IsDIn == true ? "itemAssort" : "itemNotAssort")" action="/Commercial/AccessoriesBooking/AccessoriesBookingList?OrderNo=@item.OrderNo&OrderStyleRefId=@item.OrderStyleRefId" value="Booking" />  </text>),
+                        grid.Column("IsFabCons", canSort: false, header: String.Format("{0}", "Fabric"), format: @<text> <input type="button" class="AjaxPopup isSelected @(item.IsFabCons == true ? "itemAssort" : "itemNotAssort")" action="/Merchandising/FabConsumption/FabConsumptionProcess?OrderStyleRefId=@item.OrderStyleRefId" value="Fab.Cons." /> </text>),
+                        grid.Column("IsYarnCons", canSort: false, header: String.Format("{0}", "Yarn"), format: @<text><input type="button" class="AjaxPopup isSelected @(item.IsYarnCons == true ? "itemAssort" : "itemNotAssort")" action="/Merchandising/YarnConsumption/YarnConsumptionProcess?OrderStyleRefId=@item.OrderStyleRefId" value="Cons&Booking"> </text>),
+                        grid.Column("ShipDate", canSort: false, header: "Shipment Date", format: @<text>@(item.ShipDate == null ? "" : item.ShipDate.ToString("dd-MM-yyyy"))</text>)))
+        }
+    </div>
+</section>
+
+

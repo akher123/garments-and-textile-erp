@@ -1,0 +1,59 @@
+﻿@using iTextSharp.text.pdf
+@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    ViewBag.Title = "LC";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.LcInfos.Count > 0) ? "" : "none";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Index", "Lc", FormMethod.Get, new { @class = "lcSearchForm submit-allow ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Import Export Performance Report</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Buyer Name :") </td>
+                    <td> @Html.DropDownListFor(model => model.BuyerId, Model.BuyerSelectListItem, "-ALL-", new {id = "buyerIddrd"}) </td>
+                    <td>
+                        @Html.Label("Import Export Report")
+                    </td>
+                    <td>
+                        <div style="margin-bottom: 3px;">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="ImportExport(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="ImportExport(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function ImportExport(reportTypeId) {
+            var buyerId = $('#buyerIddrd').val();
+            var searchurl = '/Commercial/Report/ImportExportPerformance?buyerId=' + buyerId + '&reportTypeId=' + reportTypeId;
+            window.open(searchurl);
+        }
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.UnitViewModel
+@{
+    ViewBag.Title = Model.UnitId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Unit", FormMethod.Post, new { @class = "Unitform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.UnitId)
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.CreatedBy)
+    <fieldset>
+        <legend>Unit</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+
+            <tr>
+                <td class="fieldTitleCls">Unit Name:</td>
+                <td>
+                    @Html.EditorFor(x => x.Name)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Name)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Unit Name (In Bengali):</td>
+                <td>
+                    @Html.EditorFor(x => x.NameInBengali)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.NameInBengali)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description)
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+

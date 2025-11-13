@@ -1,0 +1,32 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostOrdStyleViewModel
+@{
+    ViewBag.Title = "CostOrdStyle";
+    Layout = null;
+}
+<div style=" margin-top: 5px; margin-bottom: 10px;font-size:12px;  background-color:#d2691e;" class="editCostOrdStyle">
+    @{
+        Html.RenderPartial("~/Areas/Merchandising/Views/CostOrdStyle/_Edit.cshtml", Model);
+    }
+</div>
+@{
+    var grid = new WebGrid(canPage: false, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model.VCostOrderStyles, autoSortAndPage: false);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                columns:
+               grid.Columns(
+               grid.Column("StyleName", header: "STYLE"),
+               grid.Column("CostName", header: "COST NAME"),
+               grid.Column("Unit", header: "UNIT"),
+               grid.Column("Qty", header: "Qty"),
+               grid.Column("CostRate", header: "COST RATE"),
+               grid.Column("Detail/Edit", canSort: false, format: @<text><button class="btnAction" targentclass="editCostOrdStyle" action="/Merchandising/CostOrdStyle/Edit?CostOrderStyleId=@item.CostOrderStyleId"></button></text>),
+               grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="CostOrdStyleLsit" action="/Merchandising/CostOrdStyle/Delete?CostOrderStyleId=@item.CostOrderStyleId&OrderStyleRefId=@item.OrderStyleRefId"></button></text>)));
+}
+

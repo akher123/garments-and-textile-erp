@@ -1,0 +1,9 @@
+﻿@{
+    Layout = null;
+    var url = ViewBag.proxUrl;
+}
+
+<section class="search formCover">
+    @Html.ReportViewer((String) url)
+
+</section>

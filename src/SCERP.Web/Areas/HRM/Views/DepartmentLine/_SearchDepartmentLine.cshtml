@@ -1,0 +1,68 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.DepartmentLineViewModel
+
+
+    <table class="tabefont">
+
+        <tr>
+            <td>
+                @Html.Label("Company :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/DepartmentLine/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.Label("Branch :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/DepartmentLine/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+
+            <td>
+                @Html.Label("Unit :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/DepartmentLine/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Department :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.DepartmentSelectListItem, "--Select--", new { @class = "SearchByBranchUnitDepartmentId" })
+
+            </td>
+            <td>
+                &nbsp;
+            </td>
+
+            <td>
+                @Html.Label("Line :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SearchFieldModel.SearchByLineId, Model.LineSelectListItem, "--Select--", new Dictionary<string, object> { { "data-val", false } })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <input type="button" class="searchAction" />
+            </td>
+
+        </tr>
+    </table>
+
+
+
+

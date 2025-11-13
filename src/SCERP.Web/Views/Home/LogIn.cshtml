@@ -1,0 +1,91 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_LayoutStart.cshtml";
+}
+
+@*@Styles.Render("~/Content/css")*@
+
+@using (Html.BeginForm("LogIn", "Home", FormMethod.Post, new { @class = "loginform form-signin" }))
+{
+    <div class="login-section">
+
+        <div class="col-xs-12 col-sm-7 col-md-9 hidden-xs" style="padding-right: 0; padding-left: 0;">
+            <!-- slider-section -->
+            <div class="slider-wrapper">
+                <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="5000" id="bs-carousel">
+                    <!-- Overlay -->
+                    <div class="overlay"></div>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item slides active">
+                            <div class="slide-1"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-2"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-3"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-4"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-5"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-6"></div>
+                        </div>
+                        <div class="item slides">
+                            <div class="slide-7"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /slider-section -->
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-3" style="background: #ffffff;">
+            <div class="login-sec">
+                <h2 class="text-center">
+                    <a href="https://www.facebook.com/dhakasoftlimited/about/" target="_blank"><img src="~/Content/images/dsl-logo.png" class="img-responsive" style="width:100px; display: inline-block;" alt="" /></a>
+                </h2>
+                
+                <form class="login-form">
+                    <div class="input-container">
+                        @Html.TextBox("userName", (string)ViewBag.UserName, new { @class = "form-control", @placeholder = "", @required = "required", @autofocus = "autofocus" })
+                        <label for="exampleInputEmail1">Username</label>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="input-container">
+                        @Html.Password("password", (string)ViewBag.Passwordnew, new { autocomplete = "off", @class = "form-control", @placeholder = "", @required = "required" })
+                        <label for="exampleInputPassword1">Password</label>
+                        <div class="bar"></div>
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="checkboxid" class="form-check-input">
+                            <small>Remember Me</small><br/>
+                        </label><br/>
+                        <label class="form-check-label">
+                            <small><i class="fa fa-key" style="color: #428bca;" aria-hidden="true"></i> @Html.ActionLink("Forgot password", "ForgotPassword")</small>
+                        </label>
+                        <button type="submit" class="btn btn-login pull-right">Log In</button>
+
+                    </div>
+                    <div class="help-block">
+                        <span>@ViewBag.Message</span>
+                    </div>
+
+                </form>
+            </div>
+            <div class="copy-text">
+                Copyright &copy; @(DateTime.Now.Year) <a href="#" target="blank">Dhaka Soft Ltd.</a> All Rights Reserved.
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+

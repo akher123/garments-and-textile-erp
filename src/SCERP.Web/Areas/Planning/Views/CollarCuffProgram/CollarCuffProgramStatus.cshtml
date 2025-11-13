@@ -1,0 +1,135 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "KnittingProgramStatus";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Collar Cuff Program List</h2>
+</div>
+
+<section class="search formCover">
+    <fieldset>
+        <legend>Collor Cuff Program</legend>
+        <div style="background-color: white;margin-bottom: 20px; ">
+            <div style="margin-left: 10px;">
+                @using (Html.BeginForm("CollarCuffProgramStatus", "CollarCuffProgram", FormMethod.Get, new { @class = "CollarCuffProgramForm ignore-validation" }))
+                {
+                    @Html.HiddenFor(x => x.IsSearch)
+                    @Html.HiddenFor(x => x.ProcessRefId)
+
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.DisplayName("From Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker" })
+                            </td>
+                            <td>
+                                @Html.Label("To Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker" })
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("PartyId :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.Program.PartyId, Model.PartySelectListItem, "-Select-")
+                            </td>
+                            <td>
+                                @Html.DisplayName("Program No :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.SearchString)
+                            </td>
+                            <td>
+                                <input type="button" class="searchAction" />
+                            </td>
+                        </tr>
+                    </table>
+                }
+                <hr />
+            </div>
+        </div>
+        <div class="additem">
+            <table id="KnittingProgramListTable" class="tabefont webgrid-table webgrid webgrid-alternating-row">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Program No</th>
+                        <th>Party</th>
+                        <th>Program Date</th>
+                        <th>Expected Date</th>
+                        <th>Processor</th>
+                        <th>Buyer</th>
+                        <th>Buyer Order</th>
+                        <th>REPORT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vProgram in Model.VPrograms)
+                    {
+                        <tr>
+                            <td>
+                                @vProgram.ProgramRefId
+                            </td>
+                            <td>
+                                @vProgram.PartyName
+                            </td>
+                            <td>
+                                @vProgram.PrgDate.GetValueOrDefault().ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @vProgram.ExpDate.GetValueOrDefault().ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @vProgram.ProcessorName
+                            </td>
+                            <td>
+                                @vProgram.Buyer
+                            </td>
+                            <td>
+                                @vProgram.RefNo
+                            </td>
+                            <td>
+                                <a href="/Planning/CollarCuffProgram/CollarCuffProgramReport?ProgramId=@vProgram.ProgramId&report=0" target="_blank">PDF</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </fieldset>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

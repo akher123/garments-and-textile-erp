@@ -1,0 +1,223 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = "Packing Detail";
+}
+
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("SavePackingDetail", "Export", FormMethod.Post, new {@class = "ExportDetailSearchForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CommExport.ExportId)
+
+        <fieldset>
+            <legend> Packing Detail </legend>
+            <table>
+                <tr>
+                    <td style="height: 20px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;"> @Html.Label("Order No") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Style No") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Block") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Country") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Color") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Size") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Carton Quantity") </td> 
+                    <td style="font-weight: bold;"> @Html.Label("Carton Capacity") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Carton No From") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Carton No To") </td>
+                    <td style="font-weight: bold;"> @Html.Label("Container No") </td>                    
+                    
+                    <td style="font-weight: bold;"> </td>
+                    <td style="font-weight: bold;"> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.DropDownListFor(x => x.BuyerOrders, Model.BuyerOrderSelectListItem, "-Select-", new {@onchange = "getStyleNoByOrder(this.value)", style = "width:160px;height: 35px;"}) </td>
+                    <td> @Html.DropDownListFor(x => x.ExportDetail.OrderStyleRefId, Model.BuyerOrderStyleSelectListItem, "-Select-", new {style = "width:160px;height: 35px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.Block, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.CountryName, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.ColorName, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.SizeName, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.CartonQuantity, new {style = "width:100px;"}) </td>                    
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.CartonCapacity, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.CartonFrom, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.CartonTo, new { style = "width:100px;" }) </td>
+                    <td> @Html.TextBoxFor(model => model.PackingListDetail.ContainerNo, new {style = "width:100px;"}) </td>
+                    <td> @Html.TextBoxFor(model => model.ExportId, new {style = "width:100px;"}) </td>
+                    <td> <input type="button" style="width: 70px; height: 35px;" id="addNewRowButton" value="Add" /> </td>
+                </tr>
+
+                <tr>
+                    <td style="height: 20px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td colspan="9">
+                        <table class="gridtable tabefont" id="PackingTable">
+                            <thead>
+                                <tr>
+                                    <th width="150px"> Style No </th>
+                                    <th width="150px"> Block </th>
+                                    <th width="150px"> Country </th>
+                                    <th width="150px"> Color </th>
+                                    <th width="150px"> Size </th>
+                                    <th width="150px"> Carton Quantity </th>
+                                    <th width="150px"> Carton Capacity </th>
+                                    <th width="150px"> Carton No From </th>
+                                    <th width="150px"> Carton No To </th>
+                                    <th width="150px"> Container No </th>
+                                    <th> Delete </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var vd in Model.CommPackingListDetail)
+                                {
+                                    <tr id="row-@Model.CommPackingListDetail[vd.Key].OrderStyleRefId">
+                                        
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].OrderStyleRefId)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].OrderStyleRefId)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].Block)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].Block)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].CountryName)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].CountryName)
+                                        </td>
+                                              
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].ColorName)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].ColorName)
+                                        </td>
+                                        
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].SizeName)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].SizeName)
+                                        </td>
+                                             
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].CartonQuantity)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].CartonQuantity)
+                                        </td>
+                                              
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].CartonCapacity)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].CartonCapacity)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].CartonFrom)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].CartonFrom)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].CartonTo)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].CartonTo)
+                                        </td>
+                                              
+                                        <td>
+                                            @Html.HiddenFor(x => x.CommPackingListDetail[vd.Key].ContainerNo)
+                                            @Html.DisplayFor(x => x.CommPackingListDetail[vd.Key].ContainerNo)
+                                        </td>
+                                                                                       
+                                        <td>
+                                            <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> <input type="submit" style="width: 70px; height: 35px;" value="Save" /> </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#PackingListDetail_CountryName').autocomplete(
+            {
+                source: '@Url.Action("TagCountrySearch", "Export")'
+            });
+
+        $('#PackingListDetail_ColorName').autocomplete(
+            {
+                source: '@Url.Action("TagColorSearch", "Export")'
+            });
+
+        $('#PackingListDetail_SizeName').autocomplete(
+            {
+                source: '@Url.Action("TagSizeSearch", "Export")'
+            });
+
+
+        $('#PackingListDetail_CartonFrom, #PackingListDetail_CartonQuantity').keyup(function () {
+
+            var cartonQuantity = $('#PackingListDetail_CartonQuantity').val();
+            var cartonNoFrom = $('#PackingListDetail_CartonFrom').val();
+
+            if (!isNaN(cartonQuantity) && !isNaN(cartonNoFrom)) {
+
+                var cartonNoTo = parseInt(cartonNoFrom) + parseInt(cartonQuantity) - 1;
+
+                $('#PackingListDetail_CartonTo').val(cartonNoTo);
+            }
+        });
+
+    </script>
+
+    <script src="~/Scripts/SCERP/Commercial/PackingList.js"></script>      
+}

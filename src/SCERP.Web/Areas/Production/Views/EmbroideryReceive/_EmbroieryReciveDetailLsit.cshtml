@@ -1,0 +1,96 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessReceiveViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var cb in Model.DoDictionary)
+{
+    var cuttingBatchRefId = cb.Key.Split('-')[0];
+
+    <div id="newRRow_@cuttingBatchRefId " style="margin-bottom: 10px;">
+        <div style="font-size: 12px; background-color: seashell">
+            <input type="button" onclick="removeProcessReceiveDetail('@cuttingBatchRefId')" value="x" />
+            <em style="color: #00008b"> CUTT REF NO :@cuttingBatchRefId</em>
+        </div>
+
+        <table class="webgrid-table  webgrid-alternating-row ">
+
+            <thead class="webgrid-header">
+                @foreach (var row in Model.Dictionary.Where(x => x.Key == cb.Key))
+                {
+                    <tr>
+
+                        @foreach (var col in @row.Value)
+                        {
+                            <td>
+                                @col
+                            </td>
+                        }
+                        <td>
+                            TOTAL CHALLN QTY
+                        </td>
+                        <td>
+                            TOTAL FABRIC REJECT
+                        </td>
+                        <td>
+                            TOTAL PRINT REJECT
+                        </td>
+                    </tr>
+                }
+            </thead>
+            <tbody>
+
+                <tr>
+                    @foreach (var row in cb.Value)
+                    {
+                        <td>
+                            @Html.DisplayFor(x => x.DoDictionary[cb.Key][row.Key].ReceivedQty)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ReceivedQty)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].InvocieQty)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].FabricReject)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ProcessReject)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].SizeRefId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CuttingBatchId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ColorRefId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CuttingTagId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ProcessReceiveId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].ProcessReceiveDetailId)
+                            @Html.HiddenFor(x => x.DoDictionary[cb.Key][row.Key].CompId)
+                        </td>
+
+                    }
+
+                    <td>
+                        @cb.Value.Sum(x => x.Value.ReceivedQty)
+                    </td>
+                    <td>
+                        @cb.Value.Sum(x => x.Value.InvocieQty)
+                    </td>
+                    <td>
+                        @cb.Value.Sum(x => x.Value.FabricReject)
+                    </td>
+                    <td>
+                        @cb.Value.Sum(x => x.Value.ProcessReject)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+<script type="text/javascript">
+    function removeProcessReceiveDetail(id) {
+        $('#newRRow_'+ id).remove();
+    }
+</script>
+
+
+
+
+
+
+
+
+

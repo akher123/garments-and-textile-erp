@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Email>
+  <Subject>
+    <![CDATA[
+      {ACTIVITY_NAME} of Style : {STYLE_NO}
+    ]]>
+  </Subject>
+  <Body>
+    <![CDATA[
+    Dear {EMP_NAME},<br /><br />
+    
+    <b>{ACTIVITY_NAME}</b> of Style : <b>{STYLE_NO}</b> has Planned {STATUS} date : <b>{PLANNED_DATE}</b>.<br /><br />
+    Please take necessary steps to {STATUS} : <b>{ACTIVITY_NAME}</b><br /><br />
+        
+    Thank you<br />
+    SCERP
+    ]]>
+  </Body> 
+</Email>

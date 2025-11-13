@@ -1,0 +1,165 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    ViewBag.Title = "CASH INCENTIVE ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "LcCashIncentive", FormMethod.Get, new { @class = "lcSearchForm  ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>CASH INCENTIVE STATUS</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("From Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker"}) </td>
+
+                    <td> @Html.Label("To Date : ") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker"})
+                    </td>
+
+                    <td> @Html.Label("Buyer Name : ") </td>
+                    <td> @Html.DropDownListFor(model => model.BuyerId, Model.BuyerSelectListItem, "-ALL-", new { id = "buyerIddrd" }) </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("LC No : ") </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.SearchString)
+                    </td>
+
+                    <td> @Html.Label("Complete Status : ") </td>
+                    <td> @Html.DropDownListFor(model => model.CompleteStatus, Model.CashIntensiveCompletedStatusSelectedItem, "- Select -", new {id = "completeStatus"}) </td>
+
+                    <td></td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input type="button" target="_blank" class="addButton" onclick="CashIncentiveReport(this)" value="PDF" />
+                        <input type="button" target="_blank" class="addButton" onclick="CashIncentiveByDateReport(this)" value="Cash Incentive Report" />
+                    </td>
+                </tr>
+            </table>
+
+
+            @*<table class="tabefont">
+                <tr>
+                    <td> @Html.Label("From Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker" }) </td>
+
+                    <td> @Html.Label("To Date : ") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker" })
+                    </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Buyer Name : ") </td>
+                    <td> @Html.DropDownListFor(model => model.BuyerId, Model.BuyerSelectListItem, "-ALL-", new { id = "buyerIddrd" }) </td>
+
+                    <td> @Html.Label("LC No : ") </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.SearchString)
+
+                    </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Complete Status") </td>
+                    <td> @Html.DropDownListFor(model => model.CompleteStatus, Model.CashIntensiveCompletedStatusSelectedItem, "- Select -", new { id = "completeStatus" }) </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input type="button" target="_blank" class="addButton" onclick="CashIncentiveReport(this)" value="PDF" />
+                    </td>
+                    <td> </td>
+                </tr>
+            </table>*@
+
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem" style="overflow-x: auto">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.LcInfos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                     grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "CashIncentiveReport", "Report", new { item.LcId }, new { @target = "_blank" })   </text>),
+                     grid.Column("LcNo", header: "LC No", canSort: false),
+                     grid.Column("LcDate", "Date", format: @<text>@(item.LcDate == null ? "" : item.LcDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("LcAmount", header: "Amount", canSort: false),
+                     grid.Column("AppliedDate", "Applied Date", format: @<text>@(item.AppliedDate == null ? "" : item.AppliedDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("IncentiveClaimValue", header: "Incentive Claim Value", canSort: false),
+                     grid.Column("NewMarketCliam", header: "New Market Claim", canSort: false),
+                     grid.Column("BTMACertificate", header: "BTMA CIRT", canSort: false),
+                     grid.Column("BkmeaCertificat", header: "BKMEA CIRT", canSort: false),
+                     grid.Column("FirstAuditStatus", header: "First Audit", canSort: false),
+                     grid.Column("CertificateOvservation", header: "Certificate Ovservation", canSort: false),
+                     grid.Column("FinalClaimAmount", header: "Final Claim Amount", canSort: false),
+                     grid.Column("ReceiveAmount", header: "Receive Amount", canSort: false),
+                     grid.Column("ReceiveDate", "Receive Date", format: @<text>@(item.ReceiveDate == null ? "" : item.ReceiveDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/LcCashIncentive/Edit?CommLcInfo.LcId=@item.LcId"></button></text>, canSort: false)))
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function CashIncentiveReport(obj) {
+            var form = $(obj).parents('form:first');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/Commercial/LcCashIncentive/CashIncentiveReport?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+
+        function CashIncentiveByDateReport(obj) {
+            var form = $(obj).parents('form:first');
+            /*if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/Commercial/LcCashIncentive/CashIncentiveReport?' + data;
+                    window.open(searchurl);
+                } 
+                
+                }*/
+
+               var data = form.serialize();
+               var searchurl = '/Commercial/LcCashIncentive/CashIncentiveByDateReport?' + data;
+               window.open(searchurl);
+           
+        }
+    </script>
+}

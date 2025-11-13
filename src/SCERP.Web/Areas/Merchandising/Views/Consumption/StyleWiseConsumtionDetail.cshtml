@@ -1,0 +1,92 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionViewModel
+@{
+    Layout = null;
+    var ici = "";
+    var icj = "";
+}
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<div class="dropdown" style="float: right;overflow: inherit;">
+    <button class="dropbtn">BOM FOR ACC▼</button>
+    <div class="dropdown-content">
+        @Html.ActionLink("PDF", "StyleWiseConsumtionDetail", "Consumption", new {OrderStyleRefId = Model.OrderStyleRefId, IsShowReport = true, ReportType = 1}, new {@target = "_blank"})
+        @Html.ActionLink("EXCEL", "StyleWiseConsumtionDetail", "Consumption", new {OrderStyleRefId = Model.OrderStyleRefId, IsShowReport = true, ReportType = 3}, new {@target = "_blank"})
+    </div>
+</div>
+<div class="dropdown" style="float: right;margin-left: 10px;overflow: inherit;margin-right: 10px;">
+    <button class="dropbtn">BOM FOR FAB▼</button>
+    <div class="dropdown-content">
+        @Html.ActionLink("PDF", "StyleWiseFabrConsumtionDetail", "Consumption", new { OrderStyleRefId = Model.OrderStyleRefId, IsShowReport = true, ReportType = 1 }, new { @target = "_blank" })
+        @Html.ActionLink("EXCEL", "StyleWiseFabrConsumtionDetail", "Consumption", new { OrderStyleRefId = Model.OrderStyleRefId, IsShowReport = true, ReportType = 3 }, new { @target = "_blank" })
+    </div>
+</div>
+<div style="overflow: hidden;float: inherit;margin-bottom: 20px;">
+
+    <table class="webgrid-table">
+        <thead class="webgrid-header">
+            <tr>
+
+                <th class="reportTD">Item Code</th>
+                <th class="reportTD">Item Name</th>
+                <th class="reportTD">Color</th>
+                <th class="reportTD">Size</th>
+                <th class="reportTD">Color</th>
+                <th class="reportTD">Spec/Art No</th>
+                <th class="reportTD">Unit</th>
+                <th class="reportTD">Quantity</th>
+                <th class="reportTD">Cons/DZ</th>
+                <th class="reportTD">Allowance</th>
+                <th class="reportTD">Total</th>
+                <th class="reportTD">Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.ConsumptionDetailDataTable.Rows)
+            {
+
+                <tr>
+
+                    @{ icj = row["ItemCode"].ToString(); }
+                    @if (ici == icj)
+                    {
+
+                        foreach (DataColumn col in Model.ConsumptionDetailDataTable.Columns)
+                        {
+                            if (col.ColumnName == "ItemCode" || col.ColumnName == "ItemName")
+                            {
+                                <td style=" border-bottom: none;border-top:none;"></td>
+                            }
+                            else
+                            {
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        foreach (DataColumn col in Model.ConsumptionDetailDataTable.Columns)
+                        {
+
+                            if (col.ColumnName == "ItemCode" || col.ColumnName == "ItemName")
+                            {
+                                <td style=" border-bottom: none;">@(row[col.ColumnName] ?? "")</td>
+                            }
+                            else
+                            {
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+                        }
+                        ici = icj;
+                    }
+
+                </tr>
+
+            }
+            <tr>
+                <td style="border-bottom: none;border-left:none;border-right:none;" colspan="@Model.ConsumptionDetailDataTable.Columns.Count"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

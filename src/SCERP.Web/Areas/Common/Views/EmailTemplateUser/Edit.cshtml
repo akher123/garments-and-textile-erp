@@ -1,0 +1,73 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.EmailTemplateUserViewModel
+@{
+    ViewBag.Title = Model.TemplateUser.EmailTamplateUserId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "EmailTemplateUser", FormMethod.Post, new { @class = "EmailTemplateUserform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.TemplateUser.EmailTamplateUserId)
+    <fieldset>
+        <legend>Email Tempalte User</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Template:")
+                </td>
+                <td>
+                   @Html.DropDownListFor(x => x.TemplateUser.EailTamplateId, Model.EmailTempalteSelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TemplateUser.EailTamplateId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Email User:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.TemplateUser.EmailUserId, Model.EmailUserSelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TemplateUser.EmailUserId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("SendingType:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.TemplateUser.SendingType, Model.STypeSelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.TemplateUser.SendingType)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+

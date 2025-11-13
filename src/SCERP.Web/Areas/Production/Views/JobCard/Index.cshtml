@@ -1,0 +1,151 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    ViewBag.Title = Model.CuttingBatch.CuttingBatchId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+    <div class="header-title">
+        <h2>Cutting Job Card</h2>
+       
+    </div>
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<section class="common-search-section">
+    <div class="search formCover">
+
+        @using (Html.BeginForm("Save", "JobCard", FormMethod.Post, new { @class = "JobCardForm ignore-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.CuttingBatch.CuttingBatchId)
+            <fieldset>
+                <div class="dropdown" style="float: right; margin-bottom: 10px;">
+                    @Html.TextBox("CuttingBatchRefId", "", new { id = "CuttingBacthrefId", @placeholder = "Job Ref No" })
+                    <button class="dropbtn">REPORT▼</button>
+                    <div class="dropdown-content" style="right: 0;top: 100%;">
+                        <a style="cursor: pointer" target="_blank" onclick="jobWiseCuttingReport(this)">Cutting Report</a>
+                        <a style="cursor: pointer" target="_blank" onclick="bundleCharReport()">Bundle Chart</a>
+                        <a style="cursor: pointer" target="_blank" onclick="bundleSlipReport()">Bundle Slip</a>
+                    </div>
+                </div>
+                <legend>Cutting Batch</legend>
+                <div id="cuttingJobMaster">
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Ref No :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CuttingBatch.CuttingBatchRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>@Html.Label("Date :")</td>
+                            <td>@Html.TextBoxFor(x => x.CuttingBatch.CuttingDate, new { @class = "datepicker", @data_val = "false" })</td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Buyer :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayName("Order No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Style No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Country :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.CuttingBatch.StyleRefId, Model.OrderShipSelectListItem, "-Select-", new { @class = "CuttingBatch_OrderShipRefId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Color :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.RollCutting.ColorRefId, Model.ColorSelectListItem, new { @class = "CuttingBatch_Color" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>
+                                @Html.Label("Sequence :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.PartCutting.ComponentRefId, Model.ComponentSelectListItem, "-Select-", new { @class = "CuttingBatch_sequence" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                            <td>
+                                @Html.Label("Remarks :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CuttingBatch.Rmks)
+                            </td>
+
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <input type="button" class="FindPartial buttonStyle addButton" action="/JobCard/GetCuttingJobDtl/" target="#cuttingJobCardDtlContainner" value="Find" />
+                                <input type="button" class="addButton" onclick="search('@Url.Action("Index", "JobCard", new { Area = "Production" })')" value="Refresh" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend> Fabric </legend>
+                <div id="cuttingJobCardDtlContainner">
+                    @if (Model.CuttingBatchList.Count > 0)
+                    {
+                        @Html.Partial("~/Areas/Production/Views/JobCard/_CuttingJobDtl.cshtml", Model)
+                    }
+                </div>
+            </fieldset>
+        }
+    
+    </div>
+
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/cuttingJobCard.js"></script>
+
+}
+
+

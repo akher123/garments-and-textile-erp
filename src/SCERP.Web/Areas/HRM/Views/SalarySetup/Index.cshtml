@@ -1,0 +1,94 @@
+﻿@using SCERP.Common
+@using SCERP.Model
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.SalarySetupViewModel
+@{
+    ViewBag.Title = "Salary Setup";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.SalarySetup.Count > 0) ? "" : "none";
+}
+@using (Html.BeginForm("Index", "SalarySetup", FormMethod.Get, new { @class = "SalarySetupSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div style="width:500px; padding-left:340px;">
+        <h2> Salary Setup</h2>
+    </div>
+    <section class="search formCover" style="margin-bottom: 8px;">
+
+        <table class="tabefont">
+            <tr>
+                <td> @Html.Label("Employee Type: ") </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchEmployeeTypeId, Model.EmployeeTypeSelectListItem, "-Select-", new { @class = "EmployeeType", @action = "/HRM/SalarySetup/GetAllGradeByTypeId", @TargetClass = "EmployeeGrade" })
+                </td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td> @Html.Label("Employee Grade: ") </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchEmployeeGradeId, Model.EmployeeGradeSelectListItem, "-Select-", new { @class = "EmployeeGrade" })
+                </td>
+
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="addButton AjaxPopup  btn btn-primary" action="/HRM/SalarySetup/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.SalarySetup, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid", Model.sort, Model.sortdir },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+                grid.Column("EmployeeGrade.EmployeeType.Title", header: "Type", format: @<text>@(item.EmployeeGrade.EmployeeType == null ? "" : item.EmployeeGrade.EmployeeType.Title)</text>),
+                grid.Column("EmployeeGrade.Name", header: "Grade", format: @<text>@(item.EmployeeGrade == null ? "" : item.EmployeeGrade.Name)</text>),
+                grid.Column("GrossSalary", header: "Gross Salary", canSort: false),
+                grid.Column("BasicSalary", header: "Basic Salary", canSort: false),
+                grid.Column("HouseRent", header: "House Rent", canSort: false),
+                grid.Column("MedicalAllowance", header: "Medical", canSort: false),
+                grid.Column("Conveyance", header: "Conveyance", canSort: false),
+                grid.Column("FoodAllowance", header: "Food", canSort: false,format: @<text>@(item.FoodAllowance ?? "N/A")</text>),
+                grid.Column("EntertainmentAllowance", header: "Entertainment", canSort: false,format: @<text>@(item.EntertainmentAllowance ?? "N/A")</text>),
+                grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                grid.Column("ToDate", header: "To Date", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                grid.Column(header: "Edit", format: @<text><button class="AjaxPopup edit" action="/HRM/SalarySetup/Edit/@item.Id"></button></text>, canSort: false),
+                grid.Column(header: "Delete", format: @<text><button class="delete" action="/HRM/SalarySetup/Delete/@item.Id"></button></text>, canSort: false)
+     ))
+        }
+    </div>
+
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "SalarySetup", new { SearchEmployeeTypeId = Model.SearchEmployeeTypeId, SearchEmployeeGradeId = Model.SearchEmployeeGradeId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "SalarySetup", new { SearchEmployeeTypeId = Model.SearchEmployeeTypeId, SearchEmployeeGradeId = Model.SearchEmployeeGradeId })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>
+
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/EmployeeSalarySetup.js"></script>
+}

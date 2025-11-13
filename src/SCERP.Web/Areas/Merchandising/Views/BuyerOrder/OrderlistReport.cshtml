@@ -1,0 +1,44 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var fromDate = Model.FromDate.ToString();
+    var toDate = Model.ToDate.ToString();
+}
+<div class="header-title">
+    <h2>Order List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("", "", FormMethod.Get, new { @class = "BuyerOrderSearchForm submit-allow" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                    </td>
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                    </td>
+                    <td>
+                        <input type="button" class="searchActionD addButton" value="Show"/>
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+    <div class="custom-iframe-wrapper">
+        <iframe id="reportIfram" width="98%" height="400"></iframe>
+    </div>
+</section>
+
+<script>
+    $('.searchActionD').unbind('click').bind('click', function () {
+        var fromDate = $('#FromDate').val();
+        var toDate = $('#ToDate').val();
+        $('#reportIfram').attr('src', '');
+        $('#reportIfram').attr('src', '/BuyerOrder/ReportPrint?FromDate=' + fromDate + "&ToDate=" + toDate);
+    });
+</script>

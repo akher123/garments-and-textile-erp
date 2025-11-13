@@ -1,0 +1,65 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.TrialBalanceViewModel
+
+@{
+    ViewBag.Title = "Balance Sheet Note";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2> Balance Sheet Note </h2>
+</div>
+
+@using (Html.BeginForm("BalanceSheetNote", "Report", FormMethod.Get, new { @class = "IncomeStatementForm submit-allow ignore-validation" }))
+{
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @Html.Partial("~/Areas/Accounting/Views/Shared/_FinancialPeriod.cshtml")
+
+                <tr>
+                    <td> @Html.DisplayName("Print Format: ") </td>
+                    <td> @Html.DropDownList("PrintFormatId", null, new { style = "" }) </td>
+                    <td> @Html.DisplayName("Company Name: ") </td>
+                    <td> @Html.DropDownList("sectorId", null, "- Select -", new { style = "", @disabled = "disabled" }) </td>
+                    <td>@Html.DisplayName("Control Head:")</td>
+                    <td>@Html.TextBoxFor(p => p.ControlHead, new { @class = "AccountName", style = "" })</td>
+                    <td>
+                        <input id="btnPrint" class="addButton" type="button" onclick="javascript: PrintBalanceSheetNote();" value="Print" />
+                    </td>
+                </tr>
+                <tr>
+                    <td> @Html.DisplayName("Note : ") </td>
+                    <td> @Html.TextBoxFor(p => p.Note, new { style = "" }) </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+            function PrintBalanceSheetNote() {
+                var SectorId = $('#sectorId').val();
+                var fromDate = $('#FromDate').val();
+                var toDate = $('#ToDate').val();
+                var FpId = $('#FpId').val();
+                var ControlHead = $('#ControlHead').val();
+                var Note = $('#Note').val();
+                var FileType = $('#PrintFormatId option:selected').text();
+
+                window.open("/Accounting/Report/BalanceSheetNote?SectorId=" + SectorId + "&fromDate=" + fromDate + "&toDate=" + toDate + "&FpId=" + FpId + "&ControlHead=" + ControlHead + "&Note=" + Note + "&ExportType=" + FileType);
+            }
+
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("ControlSummarySearch", "Report")'
+            });
+    </script>
+}

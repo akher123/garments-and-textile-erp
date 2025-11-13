@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SCERP.Model.AccountingModel.Acc_CostCentreMultiLayer>
+
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles
+{       
+    <link href="~/Content/Common/treeView.css" rel="stylesheet" />
+    <link href="~/Content/themes/CostCentreMultiLayer.css" rel="stylesheet" />
+}
+
+@using (Html.BeginForm())
+{
+    <div class="header-title">
+        <h2>Cost Centre</h2>
+    </div>
+
+    <div id="wrapper" class="search formCover">
+        <div class="tree">
+
+            <ul>
+
+                @foreach (var ch1 in Model)
+                {
+                    <li>
+                        <a>  </a>
+                        <span id="@(ch1.Id + "_" + ch1.ParentId + "_" + ch1.ItemId + "_" + ch1.ItemLevel + "_" + ch1.SortOrder)" class="costCentre" style="margin-left: 30px;">@ch1.ItemId- @ch1.ItemName</span>
+                        <ul>
+                            @foreach (var ch2 in ch1.Chailds)
+                            {
+                                <li>
+                                    <a> </a>
+                                    <span id="@(ch2.Id + "_" + ch2.ParentId + "_" + ch2.ItemId + "_" + ch2.ItemLevel + "_" + ch2.SortOrder)" class="costCentre">@ch2.ItemId- @ch2.ItemName</span>
+                                    <ul>
+                                        @foreach (var ch3 in ch2.Chailds)
+                                        {
+                                            <li>
+                                                <a>  </a>
+                                                <span id="@(ch3.Id + "_" + ch3.ParentId + "_" + ch3.ItemId + "_" + ch3.ItemLevel + "_" + ch3.SortOrder)" class="costCentre">@ch3.ItemId- @ch3.ItemName</span>
+
+                                                <ul>
+                                                    @foreach (var ch4 in ch3.Chailds)
+                                                    {
+                                                        <li>
+                                                            <a>   </a>
+                                                            @ch4.ItemId-<span id="@(ch4.Id + "_" + ch4.ParentId + "_" + ch4.ItemId + "_" + ch4.ItemLevel + "_" + ch4.SortOrder)" class="costCentre"> @ch4.ItemName</span>
+
+                                                            <ul>
+                                                                @foreach (var ch5 in ch4.Chailds)
+                                                                {
+                                                                    <li>
+                                                                        @ch5.ItemId-<span id="@(ch5.Id + "_" + ch5.ParentId + "_" + ch5.ItemId + "_" + ch5.ItemLevel + "_" + ch4.SortOrder)" class="costCentre"> @ch5.ItemName</span>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div id="event_result"></div>
+        <div id="dialog_result"></div>
+    </div>
+}
+ 
+@section scripts
+{   
+    <script src="~/Scripts/SCERP/Accounting/CostCentreMultiLayer.js"></script>
+}

@@ -1,0 +1,177 @@
+﻿@model SCERP.Model.Acc_BankReconcilationListViewModel
+@{
+    ViewBag.Title = "Bank Reconcilation List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size: 12px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        width: 70%;
+        margin-left: 0px;
+    }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+</style>
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Bank Reconcilation List </h2>
+</div>
+
+@using (Html.BeginForm("Index", "BankReconcilationList", FormMethod.Get, new { @class = "IndexForm submit-allow ignore-validation" }))
+{
+    <div>
+        <section style=" border: 1px solid #afafaf; border-radius: 5px; padding: 10px 0 10px 10px;">
+            <table class="tabefont">
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Sector Name :")
+                        @Html.Hidden("voucherId")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("SectorId", null, "-Select-")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Financial Period :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("FpId", null, "- Select Financial Period -", new { @onchange = "SetCalenderFixed(this.value)", style = "width:320px;" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Account Name :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("AccountName")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("From Date :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("FromDate")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("To Date :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("ToDate")
+                    </td>
+
+                    <td>
+                        @*@Html.SearchButton()*@
+                        <button class="search" type="button" onclick="search('/Accounting/BankReconcilationList/Index', 'IndexForm')" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </section>
+    </div>
+}
+
+<div style="height: 20px;">
+</div>
+
+<div class="additem">
+    <div style="margin-bottom: 3px; margin-top: 20px;">
+        <button class="AjaxPopup  btn btn-primary" action="/Accounting/BankReconcilation/Index">Add new</button>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.BankReconcilationLists, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                            firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                    columns: grid.Columns(
+                    
+                             grid.Column(header: "SL", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                             grid.Column("Sector", header: "Sector"),
+                             grid.Column("FinancialPeriod", header: "Financial Period"),
+                             grid.Column("AccountName", header: "Account Name"),
+                             grid.Column("FromDate", header: "From Date", format: (item) => string.Format("{0:dd/MM/yyyy}", item.FromDate)),
+                             grid.Column("ToDate", header: "To Date", format: (item) => string.Format("{0:dd/MM/yyyy}", item.ToDate)),
+                             grid.Column("NoOfReconciled", header: "Reconciled"),
+                             grid.Column("NoOfPending", header: "Pending"),   
+                             grid.Column(header: "Edit", format: @<text><button class="edit" action="/Accounting/BankReconcilationList/Edit/@item.Id"></button></text>),
+                             grid.Column( header:"Delete", format:@<text><button class="delete" action="/Accounting/BankReconcilationList/Delete/@item.Id"></button></text>),
+                             grid.Column("Id")
+                                 ));
+    }
+   
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Acc_BankReconcilationList.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            $('#AccountName').autocomplete(
+                {
+                    source: '@Url.Action("TagSearch", "BankReconcilationList")'
+                });
+        });
+    </script>
+}
+

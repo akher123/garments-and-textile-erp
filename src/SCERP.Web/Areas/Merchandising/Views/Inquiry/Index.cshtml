@@ -1,0 +1,167 @@
+﻿@using System.Security.Cryptography.X509Certificates
+@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.InquiryViewModel
+@{
+    ViewBag.Title = "Batch";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+ 
+}
+<style type="text/css">
+    #user .avatar {
+        width: 28%;
+    }
+
+        #user .avatar > img {
+            width: 100%;
+            height: 100%;
+            border-radius: 3px;
+        }
+    /*Card*/
+    #user .panel-thumb {
+        margin: 5px auto;
+        text-align: center;
+    }
+
+        #user .panel-thumb .avatar-card {
+            text-align: center;
+            height: 200px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+            #user .panel-thumb .avatar-card > img {
+                max-width: 200px;
+                max-height: 200px;
+            }
+</style>
+
+
+<div class="header-title">
+    <h2>Inquiry Development</h2>
+</div>
+<section class="search formCover">
+    <div class="additem" style="min-height: 800px;">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Merchandising/Inquiry/Edit">Add New</button>
+
+            <div style="float: right">
+
+                @using (Html.BeginForm("Index", "Inquiry", FormMethod.Get, new { @class = "InquiryForm ignore-validation" }))
+                {
+
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                            </td>
+
+                            <td>
+                                <input type="button" class="searchAction" />
+
+                            </td>
+                        </tr>
+                    </table>
+                }
+
+            </div>
+
+        </div>
+      
+        <div class="additem" style="min-height:150px; overflow: initial;">
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.Inquiries, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                            grid.Column("Update", canSort: false, format: @<text><button class="edit" action="/Merchandising/Inquiry/Edit?Inquiry.InquiryId=@item.InquiryId"></button></text>),
+                            grid.Column("InquiryRef", canSort: false, header: "SL.NO"),
+                            grid.Column("Sketch", canSort: false, format: @<text>
+                                                                              <div class="avatar">
+                                                                                  <a href="@(item.Photo == null ? "" : Url.Content(item.Photo))" data-spzoom>
+                                                                                      <img src="@(item.Photo == null ? " " : Url.Content(item.Photo))"  class="img-responsive" width="100" alt="thumb" />
+                                                                                  </a>
+                                                                              </div>
+                                                                           </text>),
+                            grid.Column("Merchandiser", canSort: false, header: "Merchandiser"),
+                            grid.Column("BuyerName", canSort: false, header: "Buyer"),
+                            grid.Column("Season", canSort: false, header: String.Format("{0}", "Season.")),
+                            //grid.Column("Designer", canSort: false, header: String.Format("{0}", "Order Qty.")),
+                            grid.Column("FabricationGsm", canSort: false, header: String.Format("{0}", "Fabrication.")),
+                            grid.Column("SampleSize", canSort: false, header: String.Format("{0}", "Size")),
+                            grid.Column("Designer", canSort: false, header: String.Format("{0}", "Designer")),
+
+                            grid.Column("RecvedDate", canSort: false, header: "Receive Date", format: @<text>@(item.RecvedDate == null ? "" : item.RecvedDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("SubmissionDate", canSort: false, header: "Submission Date", format: @<text>@(item.SubmissionDate == null ? "" : item.SubmissionDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("PriceUSD", canSort: false, header: String.Format("{0}", "Price($)")),
+                            grid.Column("Remarks", canSort: false, header: String.Format("{0}", "Remarks")),
+                            grid.Column("Delete", canSort: false, format: @<text><button class="delete" action="/Merchandising/Inquiry/Delete?InquiryId=@item.InquiryId"></button></text>)
+                            ))
+            }
+        </div>
+        
+
+        @*<div class="additem" style="min-height: 150px; overflow: initial;">
+            <table class="webgrid webgrid-table tableFocusInputText">
+                <thead class="webgrid-header">
+                <tr>
+                    <th>Ref</th>
+                    <th>SL</th>
+                    <th>Particular</th>
+
+                    <th>Lead Time</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                 
+                </tr>
+                </thead>
+                <tbody>
+                @for (int index = 0; index < Model.OmTnas.Count; index++)
+                {
+                    <tr>
+                      
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].Sl, new { @style = "width:95%;border:none;" })</td>
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].Sl, new { @style = "width:95%;border:none;" })</td>
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].Particular, new { @style = "width:95%;border:none;" })</td>
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].StartDate, new { @class = "datepicker", @style = "width:95%;border:none;" })</td>
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].EndDate, new { @class = "datepicker", @style = "width:95%;border:none;" })</td>
+                        <td>@Html.TextBoxFor(x => Model.OmTnas[index].Remarks, new { @style = "width:100%;border:none;" })</td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>*@
+    </div>
+</section>
+<script src="~/Scripts/SCERP/Merchandising/spzoom.js"></script>
+
+    <script type="text/javascript">
+        $('[data-spzoom]').spzoom();
+    </script>
+
+@*<script type="text/javascript">
+    $('.tableFocusInputText').formNavigation();
+    refreshValidation();
+    function refreshValidation() {
+        var form = $('.StyleShipmentForm');
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+    }
+
+</script>*@
+
+

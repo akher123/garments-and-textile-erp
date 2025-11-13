@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SCERP.Model.Mrc_SpecificationSheetDocument>
+    @{
+    var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+    grid.Bind(Model, rowCount: Model.Count(), autoSortAndPage: false);
+    grid.Pager(WebGridPagerModes.All);
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                                     firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                         columns: grid.Columns(
+                         grid.Column("Title"),
+                              grid.Column("Download", format:
+                            @<text><a href="/Merchandising/SpecificationSheet/DownLoad?fileNamePath=@item.Path"><img src="~/Content/icons/16x16/download.jpg" name="" /> </a></text>),
+                             grid.Column("Delete",format:
+                            @<text><button class="deleteCallBack" action="/Merchandising/SpecificationSheet/DeleteSpecificationSheetDocument?documentId=@item.DocumentId"></button></text>
+                                                      )));
+}

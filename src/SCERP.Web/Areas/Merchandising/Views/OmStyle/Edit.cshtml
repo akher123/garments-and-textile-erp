@@ -1,0 +1,169 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.OmStyleViewModel
+@{
+    ViewBag.Title = Model.StyleId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@section styles
+{
+   <style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 5;
+    }
+
+        ul.ui-autocomplete.ui-menu {
+            font-size: 14px;
+        }
+
+            ul.ui-autocomplete.ui-menu li:first-child a {
+                color: blue;
+            }
+</style>
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+ 
+}
+<div style="font-size: 12px;">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Inventory/InventoryItem/CreatePartialItem">Item</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Save", "OmStyle", FormMethod.Post, new { @class = "OmStyleform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.StyleId)
+        @Html.HiddenFor(model => model.IsSearch)
+        <fieldset style="height: 400px;">
+            <legend>Style</legend>
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Ref ID:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.StylerefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Item Name :")
+                    </td>
+                    <td>
+                        @Html.HiddenFor(x => x.ItemId, new { @class = "Style_itemId" })
+                        @Html.TextBoxFor(x => x.ItemName, new { @placeholder = "Search Item Name", @onkeyup = "itemAutocomplite(this)" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.ItemName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Style Name :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.StyleName)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.StyleName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        @if (!Model.IsSearch)
+                        {
+                            @Html.SaveButton()
+                        }
+                        else
+                        {
+                            <input type="button" value="Save" id="syleSaveButton" />
+                        }
+
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+        </fieldset>
+    }
+</div>
+
+    @section scripts
+{
+        <script type="text/javascript">
+            function itemAutocomplite(obj) {
+                $('.Style_itemId').val('');
+                $(obj).autocomplete({
+                    source: function (request, response) {
+                        var option = {
+                            url: "/OmStyle/AutocompliteItemForStyle",
+                            type: "GET",
+                            data: { searchKey: request.term },
+                        };
+                        $.Ajax(option)
+                            .done(function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.ItemName, value: item.ItemName, ItemId: item.ItemId };
+                                }));
+                            });
+                    },
+                    select: function (event, ui) {
+                        $('.Style_itemId').val(ui.item.ItemId);
+                    },
+                });
+            }
+            $('#syleSaveButton').unbind('click').bind('click', function () {
+                var $form = $(this).parents('form:first');
+                var data = $form.serialize();
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    $form.validate();
+                    if (!$form.valid()) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        $.Ajax({
+                            url: $form.attr('action'),
+                            dataType: 'json',
+                            type: 'post',
+                            data: data,
+                        }).done(function (styleList) {
+                            $('#styleDropdownId').empty();
+                            if (styleList.length > 0) {
+                                $('#styleDropdownId').append(
+
+                              $('<option/>')
+                                  .attr('value', '')
+                                  .text("-Select-")
+                          );
+                                $.each(styleList, function (style) {
+                                    $('#styleDropdownId').append(
+                                        $('<option/>')
+                                            .attr('value', this.StylerefId)
+                                            .text(this.StyleName)
+                                    );
+                                });
+                                $form.DialogClose();
+                            }
+
+
+                        });
+                    }
+                }
+            });
+        </script>
+    }

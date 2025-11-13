@@ -1,0 +1,65 @@
+﻿@using SCERP.Common
+@model SCERP.Model.Custom.EmployeeCompanyInfoCustomModel
+
+@{
+    Layout = null;
+}
+
+<div class="EmployeeCompanyInfoCustomDetailContainner">
+
+    @using (Html.BeginForm("Index", "EmployeeCompanyInfo", FormMethod.Get, new { @class = "EmployeeCompanyInfoSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+            <legend>Departmental Information</legend>
+
+            <div class="additem">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/HRM/EmployeeCompanyInfo/Add">Add New</button>
+                </div>
+                <div style="width: 945px;">
+                    <div style="overflow: auto;">
+                        @{
+        var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.EmployeeCompanyInfos, autoSortAndPage: false);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                tableStyle: "webgrid-table webgrid",
+                                headerStyle: "webgrid-header",
+                                footerStyle: "webgrid-footer",
+                                alternatingRowStyle: "webgrid-alternating-row",
+                                selectedRowStyle: "webgrid-selected-row",
+                                rowStyle: "webgrid-row-style",
+                                firstText: "First",
+                                lastText: "Last",
+                                nextText: "Next",
+                                mode: WebGridPagerModes.All,
+                                previousText: "Previous",
+                                columns: grid.Columns(
+                                    grid.Column("Company", header: "Company ", format: @<text>@(item.Company == null ? "---" : item.Company.Name)</text>),
+                                    grid.Column("Branch", header: "Branch ", format: @<text>@(item.Branch == null ? "---" : item.Branch.Name)</text>),
+                                    grid.Column("Unit", header: "Unit ", format: @<text>@(item.Unit == null ? "---" : item.Unit.Name)</text>),
+                                    grid.Column("Department", header: "Department ", format: @<text>@(item.Department == null ? "---" : item.Department.Name)</text>),
+                                    grid.Column("Section", header: "Section ", format: @<text>@(item.DepartmentSection == null ? "---" : item.DepartmentSection.Section.Name)</text>),
+                                    grid.Column("Line", header: "Line ", format: @<text>@(item.DepartmentLine == null ? "---" : item.DepartmentLine.Line.Name)</text>),
+                                    grid.Column("EmployeeType", header: "Employee Type", format: @<text>@(item.EmployeeType == null ? "---" : item.EmployeeType.Title)</text>),
+                                    grid.Column("EmployeeGrade", header: "Employee Grade", format: @<text>@(item.EmployeeGrade == null ? "---" : item.EmployeeGrade.Name)</text>),
+                                    grid.Column("EmployeeDesignation", header: "Employee Designation", format: @<text>@(item.EmployeeDesignation == null ? "---" : item.EmployeeDesignation.Title)</text>),
+                                    grid.Column("JobType", header: "Job Type", format: @<text>@(item.SkillSet == null ? "---" : item.SkillSet.Title)</text>),
+                                    grid.Column("IsEligibleForOvertime", header: "Eligible For Overtime?", format: @<text>@(item.IsEligibleForOvertime == true ? "YES" : "NO")</text>),
+                                    grid.Column("PunchCardNo", header: "Punch Card No", format: @<text>@(item.PunchCardNo ?? "---")</text>),
+                                    grid.Column("FromDate", header: "From ", format: @<text>@(item.FromDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.FromDate)))</text>),
+                                    grid.Column("ToDate", header: "To ", format: @<text>@(item.ToDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ToDate)))</text>),
+                                    grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeCompanyInfo/Edit?EmployeeCompanyInfoId=@item.EmployeeCompanyInfoId"></button></text>),
+                                    grid.Column("Delete", format:@<text><button class="delete" action="/HRM/EmployeeCompanyInfo/Delete?EmployeeCompanyInfoId=@item.EmployeeCompanyInfoId"></button></text>, canSort: false)))
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    }
+
+</div>
+

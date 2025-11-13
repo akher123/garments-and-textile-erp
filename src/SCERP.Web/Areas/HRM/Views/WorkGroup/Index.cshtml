@@ -1,0 +1,110 @@
+﻿@using SCERP.Common
+@using SCERP.Model.Custom
+@model SCERP.Web.Areas.HRM.Models.ViewModels.WorkGroupViewModel
+
+@{
+    ViewBag.Title = "Work Group";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.WorkGroups.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "WorkGroup", FormMethod.Get, new { @class = "WorkGroupSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width:500px; padding-left:340px;">
+        <h2>Work Group</h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Company Name: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/WorkGroup/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch Name: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/WorkGroup/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit Name: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId"})
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Work Group Name: ")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchFieldModel.SearchByWorkGroupName)
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                    
+                </td>
+            </tr>
+
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/HRM/WorkGroup/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.WorkGroups, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("Name", header: "Work Group", format: @<text>@(item == null ? "" : item.Name)</text>),
+                        grid.Column("BranchUnit.Branch.Company.Name", header: "Company", format: @<text>@(item.BranchUnit.Branch.Company == null ? "" : item.BranchUnit.Branch.Company.Name)</text>),
+                        grid.Column("BranchUnit.Branch.Name", header: "Branch", format: @<text>@(item.BranchUnit.Branch == null ? "" : item.BranchUnit.Branch.Name)</text>),
+                        grid.Column("BranchUnit.Unit.Name", header: "Unit", format: @<text>@(item.BranchUnit.Unit == null ? "" : item.BranchUnit.Unit.Name)</text>),
+                        grid.Column("Edit", format: @<text><button class="edit" action="/HRM/WorkGroup/Edit?WorkGroupId=@item.WorkGroupId"></button></text>, canSort: false),
+                        grid.Column("Delete", format: @<text><button class="delete" action="/HRM/WorkGroup/Delete?WorkGroupId=@item.WorkGroupId"></button></text>, canSort: false)));
+        }
+    </div>
+
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "WorkGroup", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByUnitId = Model.SearchFieldModel.SearchByUnitId, SearchByWorkGroupName = Model.SearchFieldModel.SearchByWorkGroupName })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "WorkGroup", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByUnitId = Model.SearchFieldModel.SearchByUnitId, SearchByWorkGroupName = Model.SearchFieldModel.SearchByWorkGroupName })" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>
+
+
+

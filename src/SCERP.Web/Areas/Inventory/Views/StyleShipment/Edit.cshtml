@@ -1,0 +1,188 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.StyleShipmentViewModel
+@{
+
+    ViewBag.Title = Model.StyleShipment.StyleShipmentId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+@section styles
+{
+    @*<style type="text/css">
+        .sizeColorText {
+            border: 1px solid rgb(255, 255, 255) !important;
+            border-radius: 0px !important;
+            height: 15px;
+            margin: 0px;
+            padding: 6px;
+            width: 96% !important;
+        }
+    </style>*@
+}
+<div class="header-title">
+    <h2>@(Model.StyleShipment.StyleShipmentId > 0 ? "Edit " : "Add ") Style Shipment</h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "StyleShipment", FormMethod.Post, new {@class = "StyleShipmentForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.StyleShipment.StyleShipmentId)
+        <div id="findAssignedFactoryCuttingJob" style="overflow: auto">
+            <fieldset>
+                <legend>Style Shipment</legend>
+
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Ref No")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.StyleShipment.StyleShipmentRefId, new {@readonly = "readonly", id = "txtSewingInputProcessRefId", style = "width:200px;background-color: #F0ECE7;"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>@Html.Label("Challan Date")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.ShipDate, new {@class = "datepicker"})</td>
+                            <td></td>
+                            <td>@Html.Label("Depo Name")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.DepoName)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("M/S ")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.Messrs)</td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>@Html.Label("Address")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.Address)</td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>@Html.Label("Ship Mode")</td>
+                            <td>@Html.DropDownListFor(x => x.StyleShipment.ShipmentMode, Model.StyleModeSelectListItem, new {@class = "form-control"})</td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Through")</td>
+                            <td>
+                                @Html.TextBoxFor(x => x.StyleShipment.Through)
+
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>@Html.Label("Phone")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.ThroughCellNo)</td>
+                            <td></td>
+                            <td>@Html.Label("Licence No")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.DriverLicenceNo)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Driver Name")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.DriverName)</td>
+                            <td></td>
+                            <td>@Html.Label("Phone")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.DriverCellNo)</td>
+                            <td></td>
+                            <td>@Html.Label("Lock No")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.LockNo)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Driver Nid")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.DriverNid)</td>
+                            <td></td>
+                            <td>@Html.Label("Vehicle No")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.VehicleNo)</td>
+                            <td></td>
+                            <td> @Html.Label("Remarks")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.Remarks)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Invoice No")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.InvoiceNo)</td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>@Html.Label("Invoice Date")</td>
+                            <td>@Html.TextBoxFor(x => x.StyleShipment.InvoiceDate, new {@class = "datepicker"})</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    </table>
+                    <hr/>
+                    <table style="margin-left: 20px;">
+                        <tr>
+
+                            <td>
+                                @Html.Label("Buyer :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.StyleShipment.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "StyleShipment_buyerRefId", style = "width: 150px;"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+
+                            <td>
+                                @Html.DisplayName("Order No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.StyleShipment.OrderNo, Model.OrderSelectListItem, "-Select-", new {@class = "StyleShipment_OrderNo", style = "width: 150px;"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>
+                                @Html.DisplayName("Style No:")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.StyleShipment.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new {id = "shipStyleRefId", @class = "StyleShipment_StyleNo", style = "width: 150px;"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                            <td>
+                                <input type="button" id="findButtion" action="/StyleShipment/GetStyleShipment/" class="addButton" value="Find"/>
+                            </td>
+                            <td>
+                                <input onclick="search('/Inventory/StyleShipment/Index')" value="Back" class="addButton" type="button"/>
+                            </td>
+
+                        </tr>
+                    </table>
+                    <hr/>
+                    <div>
+                        <input type="button" id="addStyleShipment" class="addButton" action="/StyleShipment/AddNewStyleShipment/" value="+"/>
+                    </div>
+                </div>
+                <div id="shipmentMatrix">
+                </div>
+                <div id="matrixContainer">
+                    @if (Model.DictionaryList.Count > 0)
+                    {
+                        @Html.Partial("~/Areas/Inventory/Views/StyleShipment/_ShipmentMatrix.cshtml", Model)
+                    }
+                </div>
+                <div class="custom-modal-btn">
+                    <input type="submit" class="SubmitButton addButton" value="Save"/>
+                </div>
+
+            </fieldset>
+        </div>
+    }
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Inventory/StyleShipment.js"></script>
+}

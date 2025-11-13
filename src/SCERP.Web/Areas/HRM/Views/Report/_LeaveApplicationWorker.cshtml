@@ -1,0 +1,27 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeAppointmentViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<div style="margin-left: 20px; margin-top: 20px; width: 1039px;">
+
+    <div id="pdfReportContainer">
+        <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+        <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+            <thead class="reportHeader">
+                <tr class="reportTitle">
+                    <td colspan="15" align="center"></td>
+                </tr>
+                <tr class="reportTitle">
+                    <td colspan="15" style="font-family:SolaimanLipi; font-size: 14px;" align="left"><br />@Html.Raw(@Model.AppointmentLetterInfo)</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div id="btnReportPrintCover" style="margin-top: 30px; margin-bottom: 20px;">
+        <div id="btnReportPrint" onclick="search('/HRM/Report/LeaveApplicationIndex?SearchByEmployeeCardId=@Model.Name', 'EmployeeAppointmentSearchForm')" style="margin-right: 10px;">Back</div>
+        <div id="btnReportPrint" class="printReport" action="pdfReportContainer">Print</div>
+    </div>
+</div>

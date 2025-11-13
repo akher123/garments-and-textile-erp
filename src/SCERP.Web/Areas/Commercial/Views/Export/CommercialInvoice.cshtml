@@ -1,0 +1,57 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+@{
+    ViewBag.Title = "CommercialInvoice";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Commercial Invoice Report</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("CommercialInvoice", "Export", FormMethod.Get, new { @class = "CommercialInvoiceForm ignore-validation" }))
+            {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Commercial Invoice ")
+                    </td>
+                    <td>
+                        <div style="margin-left: 10px;margin-bottom: 3px;">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT▼</button>
+                                <div class="dropdown-content">
+                                    <a style="cursor: pointer" target="_blank" onclick="PrintCommercialInvoiceReport(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="PrintCommercialInvoiceReport(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+        function PrintCommercialInvoiceReport(reportTypeId) {
+            var searchurl = '/Commercial/Report/CommercialInvoice?reportTypeId=' + reportTypeId;
+            window.open(searchurl);
+        }
+
+    </script>
+}
+

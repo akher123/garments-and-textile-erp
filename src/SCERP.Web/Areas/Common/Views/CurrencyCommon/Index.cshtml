@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SCERP.Model.Currency>
+@{
+    ViewBag.Title = "Currency";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Currency Information</h2>
+</div>
+<section class="search formCover">
+    <div class="additem">
+   
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Common/CurrencyCommon/Edit">Add new</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model, rowCount: Model.Count(), autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(grid.Column("Name", header: "Name"),
+                grid.Column("NameInBengali", header: "Name In Bengali"),
+                grid.Column("CurrencyCode", header: "CurrencyCode"),
+                grid.Column("Edit", format:
+                @<text><button class="edit" action="/Common/CurrencyCommon/Edit?CurrencyId=@item.CurrencyId"></button></text>),
+                grid.Column("Delete",format:
+                @<text><button class="delete" action="/Common/CurrencyCommon/Delete/@item.CurrencyId"></button></text>
+                     )));
+        }
+
+    </div>
+</section>

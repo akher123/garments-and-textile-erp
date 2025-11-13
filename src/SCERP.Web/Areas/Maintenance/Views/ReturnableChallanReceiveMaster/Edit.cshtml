@@ -1,0 +1,46 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ChallanReceiveMasterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReturnableChallan.ReturnableChallanId > 0 ? "Edit" : "Add");
+}
+@using (Html.BeginForm("Save", "ReturnableChallanReceiveMaster", FormMethod.Get, new { @class = "ReturnableChallanReceiveMasterForm submit-allow" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ChallanReceiveMaster.ReturnableChallanReceiveMasterId)
+    <fieldset>
+        <legend>Returnable Challan Receive</legend>
+        <div style="margin-bottom: 20px; ">
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Ref No")
+                    </td>
+                    <td>:</td>
+                    <td class="tabefont">
+                        @Html.HiddenFor(x => x.ReturnableChallan.ReturnableChallanId, new { @class = "txtReturnableChallanId" })
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key", @class = "txtSearchString" })
+                    </td>
+                    <td class="tabefont">
+                        <input class="addButton" action="/Maintenance/ReturnableChallanReceiveMaster/FindReturnableChallan" type="button" id="filterbyReturnableChallanId" value="Find" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="background-color: papayawhip;">
+            @if (Model.VwReturnableChallanReceives != null)
+            {
+                <div id="ChallanReceiveMaster_containner" style="background-color: white">
+                    @Html.Partial("~/Areas/Maintenance/Views/ReturnableChallanReceiveMaster/_EditReturnableChallanReceive.cshtml", Model)
+                </div>
+            }
+        </div>
+    </fieldset>
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Maintenance/ReturnableChallanReceiveMaster.js"></script>
+}

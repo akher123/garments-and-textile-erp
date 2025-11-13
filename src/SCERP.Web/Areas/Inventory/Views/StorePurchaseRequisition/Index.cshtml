@@ -1,0 +1,82 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseRequisitionViewModel
+@{
+    ViewBag.Title = "StorePurchaseRequisition";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@using (Html.BeginForm("Index", "StorePurchaseRequisition", FormMethod.Get, new { @class = "StorePurchaseRequisitionSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div style="width:500px; padding-left:340px;">
+    @switch (Model.AuthonticatedProcessId)
+    {
+        case (int)StorePurchaseRequisition.Purchases:
+            <h2>Purchase Requisition  </h2>
+            break;
+        case (int)StorePurchaseRequisition.Approval:
+        <h2> Purchase Requisition Approval</h2>
+            break;
+        default:
+        <h2>Store Purchase Requisition </h2>
+            break;
+    }
+</div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            @{Html.RenderPartial("~/Areas/Inventory/Views/StorePurchaseRequisition/_SearchStorePurchaseRequisition.cshtml", Model); }
+        </table>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        
+ 
+        <div style="width: 1024px; overflow: auto">
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.VStorePurchaseRequisitions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                 
+                        grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                        grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                        grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "--")</text>),
+                        grid.Column("Line", header: "Line ", format: @<text>@(item.LineName ?? "--")</text>),
+                        grid.Column("RequisitionNoteNo", header: "Req.NoteNo", format: @<text>@(item.RequisitionNoteNo ?? "--")</text>),
+                        grid.Column("RequisitionNoteDate", header: "Req.Note date", format: @<text>@(item.RequisitionNoteDate == null ? "" : item.RequisitionNoteDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                        grid.Column("RequisitionNo", header: "Req.No ", format: @<text>@(item.RequisitionNo ?? "--")</text>),
+                        grid.Column("RequisitionDate", header: "Req. date", format: @<text>@(item.RequisitionDate == null ? "" : item.RequisitionDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                        grid.Column("SubmittedToEmployeeName", header: "SubmittedTo", format: @<text>@(item.SubmittedToEmployeeName ?? "--")</text>),
+                        grid.Column("PreparedByEmployeeName", header: "PreparedBy", format: @<text>@(item.PreparedByEmployeeName ?? "--")</text>),
+                        grid.Column("ModifiedByEmployeeName", header: "ModifiedBy", format: @<text>@(item.ModifiedByEmployeeName ?? "--")</text>),
+                        grid.Column("RequsitionTypeTitle", header: "Req. Type", format: @<text>@(item.RequsitionTypeTitle ?? "--")</text>),
+                        grid.Column("PurchaseTypeTitle", header: "Purchase Type ", format: @<text>@(item.PurchaseTypeTitle ?? "--")</text>),
+                        grid.Column("ApprovalDate", header: "Approved date ", format: @<text>@(item.ApprovalDate == null ? "" : item.ApprovalDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                        grid.Column("ApprovalStausName", header: "Approval Status ", format: @<text>@(item.ApprovalStausName ?? "--")</text>),
+                        grid.Column("Detail/Edit", format:@<text>
+                                                               <input type="button" onclick="search('@Url.Action("Edit", "StorePurchaseRequisition", new { StorePurchaseRequisitionId = item.StorePurchaseRequisitionId })')" value="Edit" />
+                                                           </text>, canSort: false),
+                        grid.Column("Delete",format:@<text><button class="delete" action="/Inventory/StorePurchaseRequisition/Delete?StorePurchaseRequisitionId=@item.StorePurchaseRequisitionId"></button></text>, canSort: false)
+                        ));
+            }
+        </div>
+    </div>
+</section>
+
+
+
+

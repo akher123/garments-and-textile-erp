@@ -1,0 +1,104 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.MailSendViewModel
+@{
+
+    ViewBag.Title = Model.MailSend.MailSendId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "MailSend", FormMethod.Post, new { @class = "MailSendForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MailSend.MailSendId)
+    <fieldset>
+        <legend>Mail Send</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Module Name :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MailSend.ModuleId, Model.ModuleSelectListItems, "-Select-", new { @class = "ddlMailSend" })
+                </td>
+                <td>
+                    @Html.Label("Report Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailSend.ReportName, new { @placeholder = "Report Name" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Mail Subject :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailSend.MailSubject, new { @placeholder = "Mail Subject" })
+                </td>
+                <td>
+                    @Html.Label("Mail Body :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.MailSend.MailBody, new { @placeholder = "Mail Body" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Mail Address :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailSend.MailAddress, new { @placeholder = "Mail Address" })
+                </td>
+                <td>
+                    @Html.Label("Person Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailSend.PersonName, new { @placeholder = "Person Name" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Mail Address :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailAddress2, new { @placeholder = "Mail Address" })
+                </td>
+                <td>
+                    @Html.Label("Person Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PersonName2, new { @placeholder = "Person Name" })
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("Mail Address :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MailAddress3, new { @placeholder = "Mail Address" })
+                </td>
+                <td>
+                    @Html.Label("Person Name :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PersonName3, new { @placeholder = "Person Name" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+

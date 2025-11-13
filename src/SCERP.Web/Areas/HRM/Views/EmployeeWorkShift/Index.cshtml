@@ -1,0 +1,143 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeWorkShiftViewModel
+@{
+    ViewBag.Title = "Employee WorkShift";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeWorkShiftDetails.Count > 0) ? "" : "none";
+    string StartDate = null;
+    string EndDate = null;
+    if (Model.SearchFieldModel.StartDate.HasValue && Model.SearchFieldModel.EndDate.HasValue)
+    {
+        StartDate = Model.SearchFieldModel.StartDate.GetValueOrDefault().ToString("dd/M/yyyy");
+        EndDate = Model.SearchFieldModel.EndDate.GetValueOrDefault().ToString("dd/M/yyyy");
+    }
+}
+@using (Html.BeginForm("Index", "EmployeeWorkShift", FormMethod.Get, new { @class = "EmployeeWorkShiftSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Employee WorkShift</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    @Html.Partial("~/Areas/HRM/Views/EmployeeWorkShift/_SearchEmployeeWorkShift.cshtml", Model)
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitIdForWorkShift", @action = "/HRM/EmployeeWorkShift/GetWorkShiftAndDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitWorkShiftId", @OtherTargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/HRM/EmployeeWorkShift/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_DepartmentSection"}})
+                    </td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("WorkShift :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitWorkShiftId, Model.WorkShiftSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_BranchUnitWorkShiftId"}})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                    </td>
+
+                    <td>
+                        @Html.Label("From :")
+                    </td>
+                    <td>                       
+                        @Html.TextBoxFor(x => x.SearchFieldModel.StartDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Start Date" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("To :")
+                    </td>
+                    <td>                  
+                        @Html.TextBoxFor(x => x.SearchFieldModel.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "EndDate" })
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        @*<div style="margin-bottom: 3px;">
+            <input type="button" class="addButton" onclick="search('@Url.Action("Create", "EmployeeWorkShift", new { IsSearch = true })','EmployeeWorkShiftSearchForm')" value="Assign" />
+        </div>*@
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeWorkShiftDetails, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.EmployeeName ?? "")</text>),
+                    grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                    grid.Column("WorkShiftName", header: "WorkShift ", format: @<text>@(item.WorkShiftName ?? "")</text>),
+                    grid.Column("ShiftDate", header: "Shift Date ", format: @<text>@(item.ShiftDate == null ? "" : item.ShiftDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                    grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                    grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                    grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                    grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                    grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>),
+                    grid.Column("Detail/Edit", format:
+                    @<text><button class="edit" action="/HRM/EmployeeWorkShift/Edit?EmployeeWorkShiftId=@item.EmployeeWorkShiftId"></button></text>, canSort: false),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/EmployeeWorkShift/Delete?EmployeeWorkShiftId=@item.EmployeeWorkShiftId"></button></text>, canSort: false)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "EmployeeWorkShift", new { SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, StartDate = StartDate, EndDate =EndDate, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId, SearchByBranchUnitWorkShiftId=Model.SearchFieldModel.SearchByBranchUnitWorkShiftId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "EmployeeWorkShift", new { SearchByDepartmentSectionId = Model.SearchFieldModel.SearchByDepartmentSectionId, SearchByDepartmentLineId = Model.SearchFieldModel.SearchByDepartmentLineId, StartDate =StartDate, EndDate = EndDate, SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByBranchUnitDepartmentId = Model.SearchFieldModel.SearchByBranchUnitDepartmentId, SearchByEmployeeCardId = Model.SearchFieldModel.SearchByEmployeeCardId, SearchByBranchUnitWorkShiftId = Model.SearchFieldModel.SearchByBranchUnitWorkShiftId })" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+</section>
+

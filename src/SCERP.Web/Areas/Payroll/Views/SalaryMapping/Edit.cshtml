@@ -1,0 +1,85 @@
+﻿
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.SalaryMappingViewModel
+
+@{
+    ViewBag.Title = " Salary Mapping";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var count = 2;
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Salary Mapping </h2>
+</div>
+
+@using (Html.BeginForm("Edit", "SalaryMapping", FormMethod.Get, new {@class = "submit-allow ignore-validation"}))
+{
+    <div>
+        <section style="border: 1px solid #afafaf; border-radius: 5px; padding: 10px 0 10px 10px;">
+            
+            <table class="tabefont">
+                                
+                <tr>
+                    <td>
+                        @Html.DisplayName("Sector Name :")             
+                    </td>    
+                                 
+                    <td>
+                        @Html.DropDownList("SectorId", null, "-Select-", new {@onchange = "getCostCentreBySector(this.value)", style = "width:320px;"})
+                    </td>
+                   
+                    <td>                        
+                    </td>
+                </tr>
+                            
+                <tr>
+                    <td>
+                        @Html.DisplayName("Cost Centre :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("CostCentreId", null, new {@onchange = "getSalaryMappingInfo(this.value)", @class = "CostCentre", style = "width:320px;"})
+                    </td>
+
+                    <td></td>
+                </tr>
+                     
+                <tr>
+                    <td height="20px"></td>                                   
+                    <td></td>
+                    <td></td>
+                </tr>       
+                                                                 
+                @foreach (var item in Model.SalaryHeads)
+                {
+                    <tr>                       
+                        <td>@Html.DisplayName(item.SalaryHeadName)</td>
+                        <td> @Html.TextBoxFor(modelItem => item.SalaryHeadName, new {id = "SalHead-" + count, @class = "AccountName", @Value = string.Empty})</td>                       
+                        <td></td>
+                    </tr>
+                    count++;
+                }                                     
+                           
+                <tr>
+                    <td></td>
+                    <td><input type="button" value="Save" onclick=" SaveSalaryValues() " /></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </section>
+    </div>
+}
+
+@section scripts
+{    
+    <script src="~/Scripts/SCERP/Acc_SalaryMapping.js"></script>    
+    
+    <script type="text/javascript">
+        
+        $('.AccountName').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "SalaryMapping")'
+            });
+        
+    </script>
+}

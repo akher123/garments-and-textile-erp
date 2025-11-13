@@ -1,0 +1,390 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaterialIssue.AdvanceMaterialIssueId > 0 ? "Edit" : "Add");
+}
+@section styles
+{
+    <style type="text/css">
+        ul.ui-autocomplete {
+            position: relative;
+            z-index: 100;
+        }
+    </style>
+
+}
+
+@using (Html.BeginForm("Save", "YarnDelivery", FormMethod.Post, new { @class = "YarnDeliveryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.MaterialIssue.AdvanceMaterialIssueId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Yarn(Delivery/Issue)</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("IRef#:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Delivery No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteNo)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Party :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.PartyName, new { id = "delivery_PartyName", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssue.PartyId, new { id = "KnittingPartyId"})
+                </td>
+
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Delivery Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNoteDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Buyer :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.BuyerName, new { @id = "delivery_BuyerName", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssue.BuyerRefId, new { @id = "delivery_BuyerRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+                <td>
+                    @Html.Label("Process")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssue.ProcessRefId, Model.ProcessSelectListItem, "-Select-", new { id = "processRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("OrderNo :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.OrderNo, new { @id = "delivery_orderName", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+              
+
+
+                <td>
+                    @Html.Label("Program")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { id = "programSearchString", @class = "knittingProgrmAutocomplite", @data_target = "#programRefId", @action = "/YarnDelivery/GetProgramAutocomplite", @style = "background-color: #b0c4de", @placeholder = "Search program" })
+                    @Html.HiddenFor(x => x.MaterialIssue.ProgramRefId, new { id = "programRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Style No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.StyleNo, new { @id = "delivery_styleName", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssue.OrderStyleRefId, new { id = "delivery_OrderStyleRefId" })
+                </td>
+                <td >
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Employee:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.RefEmployee, new { @class = "autocompliteEmployeeInfo", @placeholder = "Card ID" })
+                    @Html.HiddenFor(x => x.MaterialIssue.RefPerson, new { @class = "issued_EmployeeId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <div id="divProgramYarnWithdrow">
+            @Html.Partial("~/Areas/Inventory/Views/YarnDelivery/_ProgramYarnWithdrow.cshtml",Model.ProgramYarnWithdrows)
+        </div>
+        <table class="tabefont" id="yarnDeliveryTable">
+            <tr>
+                <td>
+                    @Html.Label("Lot No")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ColorName, new { @id = "Color_SearchString", @placeholder = "Serach Key" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ColorRefId, new { @id = "Color_ColorRef" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.Brand, new { @id = "lotBrand" })
+                </td>
+                <td>
+                    @Html.Label("SinH")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SinH, new { id = "yarnSinH", @style = "background-color: #b0c4de;", @readonly = "readonly", @data_val = "false" })
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.DisplayName("Item :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ItemName, new { @id = "itemName", @data_val = "false", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ItemId, new { @id = "AdvanceYarnDeliveryitemHiddenField" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("Rate :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueRate, new { id = "issue_Rat", Value = "", @data_val = "false", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Count")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.SizeName, new { @id = "Size_SearchString", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.SizeRefId, new { @id = "Size_SizeRef" })
+                </td>
+                <td>
+                    @Html.DisplayName("Qty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueQty, new { @id = "issue_QuantityEnterEvent", Value = "", @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+
+
+                <td>
+                    @Html.Label("", "Color")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.FColorName, new { @id = "FColorName", @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.FColorRefId, new { @id = "Color_FColorRef" })
+                </td>
+
+                <td>
+                    @Html.Label("Wrapper")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssueDetail.Wrapper, Model.WrapperSelectListItem, new { @data_val = "false", @id = "Wrapper_dr" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "F.Color")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.GColorName, new { @class = "autocompliteColorSerach", id = "GColorName", @data_target = "#Color_GColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01", @placeholder = "Finish Color" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.GColorRefId, new { @id = "Color_GColorRefId" })
+                </td>
+                <td>
+                    @Html.Label("Wrapping Qty")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.QtyInBag, new { @id = "issue_QtyInBag", Value = "", @data_val = "false" })
+                    <input type="button"  value="+" id="btnadd_item"/>
+                </td>
+
+            </tr>
+        </table>
+        <hr />
+        <div>
+
+            <table id="yarnIssueDetail" class="webgrid-table" style="width:650px;">
+                <thead style="text-align: center" class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("Color")
+                        </th>
+                        <th>
+                            @Html.Label("Brand")
+                        </th>
+                        <th>
+                            @Html.Label("Count")
+                        </th>
+                        <th>
+                            @Html.Label("Lot No")
+                        </th>
+                        <th>
+                            @Html.Label("", "F.Color")
+                        </th>
+
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("Qty")
+                        </th>
+
+                        <th>
+                            @Html.Label("Wrapping Qty")
+                        </th>
+                        <th>
+                            @Html.Label("Wrapping")
+                        </th>
+                        <th>
+                            @Html.Label("Edit")
+                        </th>
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var m in Model.MaterialIssueDetails)
+                    {
+                        <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId-@Model.MaterialIssueDetails[m.Key].ColorRefId-@Model.MaterialIssueDetails[m.Key].FColorRefId">
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueDetailId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+                            </td>
+
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].FColorRefId, new { id = "FColorRefId_" + m.Key })
+                                @*@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].FColorName)
+                                    @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].FColorName)*@
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].FColorName)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].FColorName, new { @class = "edit-mode autocompliteColorSerach", @style = "width:80px", @data_target = "#FColorRefId_" + m.Key, @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                            </td>
+                            <td>
+
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].Brand)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)
+                            </td>
+
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+                            </td>
+
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].GColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].GColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                            </td>
+
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].QtyInBag)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].QtyInBag)
+                            </td>
+
+
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].Wrapper)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].Wrapper)
+                            </td>
+                            <td>
+                                <input type="button" class="edit-button" value="Edit" />
+                            </td>
+                            <td>
+                                <input type="button" value="-" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="float: right">
+                <table class="tabefont">
+                    <tr>
+
+                        <td>
+                            @Html.Label("Vehicle No :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.MaterialIssue.VehicleNo)
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Driver Name:")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.MaterialIssue.DriverName)
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            @Html.Label("Remarks :")
+                        </td>
+                        <td colspan="7">
+                            @Html.TextBoxFor(x => x.MaterialIssue.Remarks, new { @class = "Issue_remarks", @style = "width:95%" })
+                        </td>
+                        <td>
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('.edit-mode').hide();
+        $('.edit-button').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+    </script>
+    <script src="~/Scripts/SCERP/Inventory/yarnDelivery.js"></script>
+}

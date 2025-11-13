@@ -1,0 +1,86 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TNATemplateViewModel
+
+@{
+    ViewBag.Title = "TNA Template";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.Activities.Count > 0) ? "" : "none";
+}
+
+<div class="header-title">
+    <h2>TNA Template</h2>
+</div>
+
+<section class="search formCover">
+    <div class="additem">     
+        @{
+            var grid = new WebGrid(canPage: false, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Activities, rowCount: Model.TotalRecords, autoSortAndPage: false);   
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                    grid.Column("Id", header: "Id", canSort: false),
+                    grid.Column("ActivityName", header: "Activity Name", canSort: false),
+                    grid.Column(header: "Start Lead Time", format: @<text><input name="txtStart" type="text" class="start" value="@item.StartField" style="width: 50px; height:13px;" /></text>),
+                    grid.Column(header: "End Lead Time", format: @<text><input name="txtEnd" type="text" class="end" value="@item.EndField" style="width: 50px; height:13px" /></text>)
+                 ))
+            ;
+        }
+    </div>
+    <div style="margin-top: 3px;">
+        <input type="submit" value="Save" id="save" class="addButton" name="save" onclick="save()" />
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function save() {
+            var stringArray = new Array();
+            var concat;
+            var count = 0;
+
+            $('#grid tr').each(function() {
+
+                if (!this.rowIndex) return; // skip first row
+
+                var activityId = this.cells[0].innerHTML;
+                var from = this.cells[2].getElementsByClassName('start')[0].value;
+                var to = this.cells[3].getElementsByClassName('end')[0].value;
+
+                concat = activityId + '-' + from + '-' + to;
+
+                stringArray[count] = concat;
+                count++;
+            });
+
+            var postData = { values: stringArray };
+
+            $.ajax({
+                type: "POST",
+                url: "/TNATemplate/Save",
+                data: postData,
+                success: function(data) {
+                    alert(data.Result);
+                },
+                dataType: "json",
+                traditional: true
+            });
+        }
+
+    </script>
+}
+

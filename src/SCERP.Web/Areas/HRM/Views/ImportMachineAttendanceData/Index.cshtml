@@ -1,0 +1,43 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+
+@{
+    ViewBag.Title = "Import Machine Attendance Data";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("ImportMachineData", "ImportMachineAttendanceData", FormMethod.Get, new { @class = "ImportMachineAttendanceDataSearchForm " }))
+{    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <div style="width: 500px; padding-left: 240px;">
+        <h3>Import Machine Attendance Data</h3>
+    </div>
+    
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            
+            <tr>
+                <td height="20px"> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+
+            @{ Html.RenderPartial("~/Areas/HRM/Views/ImportMachineAttendanceData/_SearchImportMachineData.cshtml", Model); }
+
+            <tr>
+                <td> </td>                                  
+                <td> </td>   
+                <td> </td>                          
+                <td> <input type="button" class="searchAction" /> </td>                               
+            </tr>
+        </table>
+    </section>
+}
+
+
+
+
+

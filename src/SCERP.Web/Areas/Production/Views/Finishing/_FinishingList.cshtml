@@ -1,0 +1,24 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = null;
+}
+  <div class="additem">
+
+    <fieldset >
+        <legend>Input</legend>
+        <div class="FinishingInputList">
+            @Html.Partial("~/Areas/Production/Views/Finishing/_FInList.cshtml")
+        </div>
+    </fieldset>
+
+</div>
+<div class="additem">
+    <fieldset >
+        <legend>Output</legend>
+        <div class="FinishingOutputList">
+            @Html.Partial("~/Areas/Production/Views/Finishing/_FOutList.cshtml")
+        </div>
+    </fieldset>
+</div>
+

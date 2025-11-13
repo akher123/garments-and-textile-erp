@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SCERP.Model.CommonModel.MessagingNotification>
+@{
+    Layout = null;
+    List<SCERP.Common.Dropdown> loginusers = ViewBag.LoginUsers as List<SCERP.Common.Dropdown>;
+}
+<link href="~/Content/chatBoxNotification.css" rel="stylesheet" />
+<div>
+    <div class="icons">
+        <div class="notification">
+            <div class="notBtn">
+                <div class="number">(@loginusers.Count())</div>
+                <i class="fas fa-bell"></i>
+                <div class="box" >
+                    <div class="cont">
+                        @foreach (var item in loginusers)
+                        {
+                            <div class="sec">
+                                <div class="profCont">
+                                    <img width="100" height="100" src="@item.Value">
+                                    <div class="txt" style="width:100px;">@item.Id</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="icons">
+        <div class="notification">
+            <div class="notBtn">
+                <div class="number" id="chat_notification_number">@Model.Count()</div>
+                <i class="fas fa-bell"></i>
+                <div class="box">
+                    <div class="display">
+                        <div class="cont">
+                            @foreach (var item in Model)
+                            {
+
+                                <div class="sec new">
+                                    <div class="profCont">
+                                        <img class="profile" width="40" height="40" src="@item.PhotographPath">
+                                    </div>
+                                    <div class="txt">Sender :@item.Sender</div>
+                                    <div class="txt">Message :@item.MessageText</div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

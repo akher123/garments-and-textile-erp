@@ -1,0 +1,82 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CosumptionCostViewModel
+@{
+
+    ViewBag.Title = "Supplier Assign";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("SaveConsSupplier", "CosumptionCost", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    @Html.HiddenFor(x=>x.ConsumptionSupplier.Rate)
+    @Html.HiddenFor(x=>x.ConsumptionSupplier.ConsumptionId)
+    @Html.HiddenFor(x=>x.ConsumptionSupplier.Percentage)
+    <fieldset>
+        <legend>Supplyer Wise Accessories Quantity Assign </legend>
+
+        <table>
+            <tr>
+                <td>
+                    <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Assigned Qty")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.AssignedQty, new { @style = "background-color:#b0c4de", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Balance Qty")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.BalanceQty, new { @style = "background-color:#b0c4de", @readonly = "readonly" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Supplier")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.ConsumptionSupplier.SupplierId, new SelectList(Model.SupplierCompanies, "SupplierCompanyId", "CompanyName", Model.ConsumptionSupplier.SupplierId), "-Select-")
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Qty")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ConsumptionSupplier.Quantity)
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Remarks")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.ConsumptionSupplier.Remarks)
+                            </td>
+                            <td>
+                                <input type="button" id="btnConsSupplier" value="Save" />
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+
+        <div id="consSupplierDetail">
+            @{Html.RenderPartial("~/Areas/Merchandising/Views/CosumptionCost/_ConsSupplierList.cshtml", Model.ConsumptionSuppliers);}
+        </div>
+    </fieldset>
+}

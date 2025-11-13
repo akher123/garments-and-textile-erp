@@ -1,0 +1,99 @@
+﻿@model SCERP.Model.Acc_CostCentre
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit Cost Sector" : "Add Cost Sector";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "CostCentre", FormMethod.Post, new { @class = "CostCentreform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CDT)
+    @Html.HiddenFor(model => model.EDT)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.HiddenFor(model => model.CreatedBy)
+
+    <table class="tableFont" style="width:550px; height: 200px;">
+        
+        <tr>
+            <td>&nbsp;</td>
+            <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+        </tr>
+                                               
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width: 120px;">Company Sector</td>
+            <td style="width:200px;">
+                @Html.DropDownList("SectorId", "- Select Sector -")
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.SectorId,"Required")
+            </td>
+        </tr>
+                           
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width:120px;">Cost Centre Code</td>
+            <td style="width:200px;">
+                @Html.EditorFor(model => model.CostCentreCode)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.CostCentreCode, "Required")
+            </td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width:120px;">Cost Centre Name</td>
+            <td style="width:200px;">
+                @Html.EditorFor(model => model.CostCentreName)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.CostCentreName, "Required")
+            </td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td class="fieldTitleCls" style="width: 120px;">Sort Order</td>
+            <td style="width:200px;">
+                @Html.EditorFor(model => model.SortOrder)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.SortOrder, "Required")
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 5px;">
+                &nbsp;
+            </td>
+            <td style="width: 120px;">
+                &nbsp;
+            </td>
+            <td style="width:200px;">
+                @Html.SaveButton()
+            </td>
+            <td style="width: 1px;">
+                &nbsp;
+            </td>
+            <td style="width: 100px;">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+}

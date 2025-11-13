@@ -1,0 +1,36 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.BookingViewModel
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.BookingDetailsDictionary[Model.Key].ItemId">
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].BookingDetailId, new {@class = "mIDetailId-" + @Model.BookingDetailsDictionary[Model.Key].ItemId})
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].BookingId)
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].ItemId)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].ItemName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].FColorRefId)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].FColorName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].ColorRefId)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].ColorName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].SizeRefId)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].SizeName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].Rate)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].Rate)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.BookingDetailsDictionary[Model.Key].Quantity)
+        @Html.DisplayFor(x => x.BookingDetailsDictionary[Model.Key].Quantity)
+    </td>
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+

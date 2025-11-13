@@ -1,0 +1,71 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostDefinationViewModel
+@{
+    ViewBag.Title = Model.CostDefinationId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "CostDefination", FormMethod.Post, new { @class = "CostDefinationForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CostDefinationId)
+    <fieldset>
+        <legend>Cost Definition</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CostRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Cost Name:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.CostName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.CostName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Cost Group:")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.CostGroup, Model.CostGroupsSelectListItem,"-Select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.CostGroup)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

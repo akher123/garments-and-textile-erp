@@ -1,0 +1,161 @@
+﻿@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Knitting Production Report</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("KnittingReceiveBalance", "KnittingRoll", FormMethod.Get, new {@class = "KnittingRollForm"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Buyer Name")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new {@class = "Knitting_buyerRefId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>@Html.Label("Order ", new {@style = "width: 71px;display: inline-block"})</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select-", new {@class = "Knitting_OrderNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>@Html.Label("Style Name")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new {@class = "Knitting_StyleNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="button" class="showRdlcReport addButton" value="Show"/>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">Detail Report ▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="KnittingProductionDetail(1)">PDF</a>
+                                <a style="cursor: pointer" target="_blank" onclick="KnittingProductionDetail(3)">Excel</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            
+
+        }
+    </div>
+</section>
+<section class="search formCover">
+    <div style="margin-left: -2px;">
+        <iframe id="reportIfram" width="100%" height="400"></iframe>
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function KnittingProductionDetail(reportType) {
+                    var orderStyleRefId=  $('.Knitting_StyleNo').val();
+                    var searchurl = '/ProductionReport/KnittingProductionDetail?reportType=' + reportType + '&OrderStyleRefId=' + orderStyleRefId;
+                    window.open(searchurl);
+                
+            
+        }
+
+        $('.showRdlcReport').unbind('click').bind('click', function () {
+            var form = $(this).parents('form:first');
+            var data = form.serialize();
+            $('#reportIfram').attr('src', '');
+            $('#reportIfram').attr('src', '/Production/KnittingRoll/KnittingReceiveBalance?' + data);
+        });
+
+        $('.Knitting_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.Knitting_OrderNo').append(
+                $('<option/>')
+                .attr('value', obj.OrderNo)
+                .text(obj.RefNo)
+            );
+        }
+
+        $('.Knitting_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.Knitting_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.batch_StyleNo').append(
+                        $('<option/>')
+                        .attr('value', '')
+                        .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.Knitting_StyleNo').append(
+                            $('<option/>')
+                            .attr('value', this.OrderStyleRefId)
+                            .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.Knitting_StyleNo').append(
+                        $('<option/>')
+                        .attr('value', '')
+                        .text("No Order Found")
+                    );
+                }
+            });
+        });
+
+
+        function removeDependentDropdown() {
+            $('.Knitting_OrderNo').empty();
+            $('.Knitting_StyleNo').empty();
+
+
+        }
+    </script>
+}

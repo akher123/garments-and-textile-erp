@@ -1,0 +1,101 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SampleOrderViewModel
+@{
+    ViewBag.Title = "Sample Order";
+    Layout = null;
+}
+
+<div class="embworkorderlist">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+            @using (Html.BeginForm("Index", "SampleOrder", FormMethod.Get, new { @class = "SampleOrderForm" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Criteria")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+
+            }
+        </div>
+    </div>
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/merchandising/SampleOrder/Edit">Add New</button>
+            </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.SampleOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+              tableStyle: "webgrid-table webgrid",
+              headerStyle: "webgrid-header",
+              footerStyle: "webgrid-footer",
+              alternatingRowStyle: "webgrid-alternating-row",
+              selectedRowStyle: "webgrid-selected-row",
+              rowStyle: "webgrid-row-style",
+              firstText: "First",
+              lastText: "Last",
+              nextText: "Next",
+              mode: WebGridPagerModes.All,
+              previousText: "Previous",
+              columns:
+              grid.Columns(
+              grid.Column("RefId", header: "RefId"),
+              grid.Column("OM_Merchandiser.EmpName", header: "Merchandiser"),
+              grid.Column("OM_Buyer.BuyerName", header: "Buyer Name"),
+              grid.Column("OrderNo", header: "OrderNo"),
+              grid.Column("OrderDate", canSort: false, header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>),
+grid.Column("OrderQty", header: "OrderQty"),
+grid.Column("Agent", header: "Agent"),
+grid.Column("Season", header: "Season"),
+grid.Column("Remarks", header: "Remarks"),
+grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.SampleOrderId" onclick="selectSampleOrderRow('@item.SampleOrderId','@item.RefId', this) " value="✅" /></text>),
+grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/merchandising/SampleOrder/Edit?SampleOrder.SampleOrderId=@item.SampleOrderId"></button></text>),
+grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/merchandising/SampleOrder/Delete?sampleOrderId=@item.SampleOrderId"></button></text>),
+grid.Column(columnName: "Export", format: @<text><a href="@Url.Action("SampleOrderReport", "SampleOrder", new { sampleOrderId = item.SampleOrderId })" target="_blank">PDF</a></text>)))
+            }
+        </div>
+    </section>
+
+
+
+
+</div>
+<script type="text/javascript">
+    function selectSampleOrderRow(sampleOrderId,RefId, obj) {
+        var button = $(obj);
+        var value = sampleOrderId;
+        var $tr = button.closest('tr');
+        $tr.addClass("selected").siblings().removeClass("selected");
+        var $tab = $("#sampleOrderTab");
+        var tabAction = $('#sampleStyleHref').attr("href").split('=')[0];
+        tabAction += "=" + value;
+        $('#sampleStyleHref').attr('href', tabAction);
+        $tab.tabs('enable', 1);
+        tabAction = $('#sampleGatePassHref').attr("href").split('=')[0];
+        tabAction += "=" + RefId;
+        $('#sampleGatePassHref').attr('href', tabAction);
+        $tab.tabs('enable', 2);
+    }
+</script>
+
+
+
+
+
+
+
+
+

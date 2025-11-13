@@ -1,0 +1,51 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Dyeing Shift Count";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("DyeingShiftCount", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2> Dyeing Shift Count </h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("From Date: ") </td>                                            
+                    <td> @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false" }) </td>                                           
+                    <td> @Html.Label("To Date: ") </td>                                            
+                    <td> @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false" }) </td>                                                             
+                    <td> @Html.Label("Print Format: ") </td>                                            
+                    <td> @Html.DropDownListFor(x => x.SearchFieldModel.PrintFormatId, Model.PrintFormatStatusSelectListItems) </td>                                            
+                    <td> <input type="button" id="showReport" class="addButton" value="Show Report" /> </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+<script type="text/javascript">
+
+    $('#showReport').click(function (e) {
+        var $form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            $form.validate();
+            if (!$form.valid()) {
+                return false;
+            } else {
+                window.open($form.attr('action') + '?' + $form.serialize());
+                e.preventDefault();
+            }
+        }
+      }
+    );
+</script>

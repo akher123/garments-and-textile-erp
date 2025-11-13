@@ -1,0 +1,119 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.UserManagement.Models.ViewModels.NewModuleFeatureViewModel
+
+@{
+    ViewBag.Title = "Module";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.ModuleFeatures.Count > 0) ? "" : "none";
+}
+<div class="header-title">
+    <h2>Module Feature Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "ModuleFeature", FormMethod.Get, new { @class = "ModuleFeatureSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Module: ")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ModuleId, Model.ModuleSelectListItem, "-Select-", new { @class = "Search_ModuleDropDownList" })
+                    </td>
+                    
+
+                    <td>@Html.Label("Parent Feature: ")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ParentFeatureId, Model.ModuleFeatureSelectListItem, "-Select-", new { @class = "Search_ModuleFeatureDropDownList" })
+                    </td>
+                   
+               
+                    <td>
+                        @Html.Label("Feature : ")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchString)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+
+            </table>
+
+        }
+    </div>
+</section>
+
+
+<section class="search formCover">
+    <div class="additem">
+
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/UserManagement/ModuleFeature/Edit">Add New</button>
+        </div>
+
+        @if (Model.Features.Any())
+        {
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Features, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            rowStyle: "webgrid-row-style",
+            columns: grid.Columns(
+                grid.Column("ModuleName", header: "Module Name", format: @<text>@(item.ModuleName ?? "")</text>),
+                grid.Column("ParentFeatureName", header: "Parent Feature Name", format: @<text>@(item.ParentFeatureName ?? "")</text>),
+                grid.Column("FeatureName", header: "Feature Name", format: @<text>@(item.FeatureName ?? "")</text>),
+                grid.Column("OrderId", header: "Order Id", canSort: false, format: @<text>@(item.OrderId ?? "")</text>),
+                grid.Column("NavigationURL", header: "Navigation URL", format: @<text>@(item.NavURL ?? "")</text>, canSort: false),
+                grid.Column("Edit",format:@<text><button class="edit" action="/UserManagement/ModuleFeature/Edit/@item.Id"></button></text>, canSort: false),
+                grid.Column("Delete",format:@<text><button class="delete" action="/UserManagement/ModuleFeature/Delete/@item.Id"></button></text>, canSort: false)));
+        }
+        else
+        {
+            @Html.Partial("_NoDataMessage")
+        }
+    </div>
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+        $('.Search_ModuleDropDownList').unbind('change').bind('change', function () {
+            var moduleId = $(this).val();
+            $.Ajax({
+                url: '/ModuleFeature/GetFeaturesByModule/',
+                data: { ModuleId: moduleId }
+            }).done(function (featureNames) {
+                $('.Search_ModuleFeatureDropDownList').empty();
+                if (featureNames.length > 0) {
+                    populateDropDown({ Id: "", FeatureName: "-Select-" });
+                    $.each(featureNames, function (feature) {
+                        populateDropDown({ Id: this.Id, FeatureName: this.FeatureName });
+                    });
+                }
+                else {
+                    populateDropDown({ Id: "", FeatureName: "No FeatureName Found" });
+                }
+            });
+        });
+        function populateDropDown(obj) {
+            $('.Search_ModuleFeatureDropDownList').append(
+                      $('<option/>')
+                          .attr('value', obj.Id)
+                          .text(obj.FeatureName)
+                  );
+        }
+    </script>
+}

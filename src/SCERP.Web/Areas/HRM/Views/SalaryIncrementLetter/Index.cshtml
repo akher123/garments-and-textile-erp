@@ -1,0 +1,91 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Salary Increment Letter";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Search", "SalaryIncrementLetter", FormMethod.Get, new { @class = "SalaryIncrementSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2>Salary Increment Letter</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("From Date :")
+                    </td>
+                    <td>                    
+                        @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date :")
+                    </td>
+                    <td>                
+                        @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchByEmployeeCardId, new {htmlAttributes = new {@class = "CardId"}})
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="button" class="addButton" id="ShowLetter" value="Generate Increment Letter"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+
+@section scripts
+{<script type="text/javascript">
+
+    $('#ShowLetter').click(function () {
+        //  $(this).searchAction();
+        var form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                return false;
+            } else {
+                var url = form.attr('action');
+                var data = form.serialize();
+                var searchurl = url + '?' + data;
+                window.open(searchurl);
+            }
+        }
+    });
+</script>
+    
+}
+
+
+
+

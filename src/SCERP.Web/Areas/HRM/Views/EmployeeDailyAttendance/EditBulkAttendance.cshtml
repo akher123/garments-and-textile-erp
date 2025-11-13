@@ -1,0 +1,246 @@
+﻿@using System.Diagnostics
+@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeDailyAttendanceViewModel
+@{
+    ViewBag.Title = "EmployeeDailyAttendance";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("EditBulkAttendance", "EmployeeDailyAttendance", FormMethod.Get, new { @class = "EmployeeDailyAttendanceSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsBulkAttendanceSearch)
+
+    <div class="header-title">
+        <h2>Employee Daily Attendance (Multiple)</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new {@class = "labelInstruction"})</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Company :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new {@class = "SearchByCompanyId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByCompanyId)
+                    </td>
+
+                    <td>
+                        @Html.Label("Branch :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new {@class = "SearchByBranchId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByBranchId)
+                    </td>
+
+                    <td>
+                        @Html.Label("Unit :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/HRM/EmployeeDailyAttendance/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.SearchFieldModel.SearchByBranchUnitId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Department :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new {@class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @data_val = false, @action = "/HRM/EmployeeDailyAttendance/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine"})
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Section :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> {{"data-val", false}, {"class", "Hrm_DepartmentSection"}})
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Line :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                    </td>
+                    <td></td>
+                    <td></td>
+
+                    <td colspan="1">
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+@if (Model.Employees != null)
+{
+    if (Model.Employees.Count > 0)
+    {
+        <section class="search formCover">
+            <div class=" additem">
+                @using (Html.BeginForm("SaveBulkAttendance", "EmployeeDailyAttendance", FormMethod.Post))
+                {
+                    <fieldset>
+                        <legend>Employees</legend>
+
+                        <div style="overflow: auto;">
+                            <div style="height: 200px;">
+                                @{
+                    var grid = new WebGrid(canPage: false, canSort: true, ajaxUpdateContainerId: "grid");
+                    grid.Bind(Model.Employees, autoSortAndPage: false);
+                    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                  tableStyle: "webgrid-table webgrid",
+                                  headerStyle: "webgrid-header",
+                                  footerStyle: "webgrid-footer",
+                                  alternatingRowStyle: "webgrid-alternating-row",
+                                  selectedRowStyle: "webgrid-selected-row",
+                                  rowStyle: "webgrid-row-style",
+                                  firstText: "First",
+                                  lastText: "Last",
+                                  nextText: "Next",
+                                  mode: WebGridPagerModes.All,
+                                  previousText: "Previous",
+                                  columns: grid.Columns(
+                                            grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox" /></text>),
+                                            grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.EmployeeName ?? "")</text>),
+                                            grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                                            grid.Column("CompanyName", header: "Company ", format: @<text>@(item.CompanyName ?? "")</text>),
+                                            grid.Column("BranchName", header: "Branch ", format: @<text>@(item.BranchName ?? "")</text>),
+                                            grid.Column("UnitName", header: "Unit ", format: @<text>@(item.UnitName ?? "")</text>),
+                                            grid.Column("DepartmentName", header: "Department ", format: @<text>@(item.DepartmentName ?? "")</text>),
+                                            grid.Column("SectionName", header: "Section ", format: @<text>@(item.SectionName ?? "- - -")</text>),
+                                            grid.Column("LineName", header: "Line ", format: @<text>@(item.LineName ?? "- - -")</text>)));
+                                }
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Attendance Information</legend>
+                        <table class="tabefont">
+                            <tr>
+                                <td></td>
+                                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("From :")
+                                </td>
+                                <td>                                    
+                                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @style = "width:387px;", @placeholder = "From date" })
+
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    @Html.ValidationMessageFor(x => x.FromDate)
+                                </td>
+                                <td>
+                                    @Html.Label("To :")
+                                </td>
+                                <td>                   
+                                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    @Html.ValidationMessageFor(x => x.ToDate)
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    @Html.Label("Time:")
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.HourKey, Model.HourSelectListItem, "Hour", new { style = "width:120px;" })
+                                    &nbsp;
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    @Html.DropDownListFor(x => x.MinuteKey, Model.IsMinuteSelectListItem, "Minute", new { style = "width:120px;" })
+                                    &nbsp;
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    &nbsp;
+                                    @Html.DropDownListFor(x => x.PeriodKey, Model.PeriodSelectListItem, "Period", new { style = "width:120px;" })
+                                    &nbsp;
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    &nbsp;
+                                    @Html.ValidationMessageFor(x => x.PeriodKey)
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Limit:")
+                                </td>
+                                <td>
+                                    @Html.EditorFor(x => x.Limit, new { htmlAttributes = new { @style = "width:387px;" }, @data_val = true })
+                                    @Html.Label("*", new { @class = "labelInstruction" })
+                                    @Html.ValidationMessageFor(x => x.Limit)
+                                </td>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Remarks :")
+                                </td>
+                                <td>
+                                    @Html.TextAreaFor(x => x.Remarks, new { style = "width:387px;" })
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <input @Model.SubmitButtonDisplayStyle type="submit" class="SubmitButton addButton" value="Save" />
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                }
+            </div>
+        </section>
+    }
+}
+
+@section scripts{
+    <script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>
+}

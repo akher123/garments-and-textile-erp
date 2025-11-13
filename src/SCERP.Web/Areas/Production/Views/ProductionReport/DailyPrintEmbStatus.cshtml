@@ -1,0 +1,64 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.ProductionReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Daily Print Embroidery Send/Receive  Status </h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("DailyPrintEmbStatus", "ProductionReport", FormMethod.Get, new { @class = "DailyPrintEmbSendForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FilterDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="dropbtn">REPORT▼</button>
+                            <div class="dropdown-content">
+                                <a style="cursor: pointer" target="_blank" onclick="DailyPrintEmbSendRcvStatus()">PDF</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        function DailyPrintEmbSendRcvStatus() {
+            var form = $('.DailyPrintEmbSendForm');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+
+                    return false;
+                } else {
+                    var data = form.serialize();
+                    var searchurl = '/ProductionReport/DailyPrintEmbStatus?' + data;
+                    window.open(searchurl);
+                }
+            }
+        }
+    </script>
+}

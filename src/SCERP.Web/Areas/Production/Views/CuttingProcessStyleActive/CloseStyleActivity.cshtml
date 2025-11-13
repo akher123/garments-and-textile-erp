@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.Production.Models.CuttingProcessStyleActiveViewModel
+@{
+
+    ViewBag.Title = "CLOSE STYLE FROM CUTTING";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("CloseStyleActivity", "CuttingProcessStyleActive", FormMethod.Post, new { @class = "CuttingProcessStyleActiveForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.VwCuttingProcessStyleActive.CuttingProcessStyleActiveId)
+    <fieldset>
+        <legend>Stype Close</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                  @Html.DisplayFor(x => x.VwCuttingProcessStyleActive.BuyerName)
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Order No:")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.VwCuttingProcessStyleActive.OrderNo)
+                </td>
+             
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Style No:")
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.VwCuttingProcessStyleActive.StyleName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Start Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.VwCuttingProcessStyleActive.StartDate, "{0:dd/MM/yyyy}")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("End Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.VwCuttingProcessStyleActive.EndDate, new { @class = "datepicker", id = "endDate" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}

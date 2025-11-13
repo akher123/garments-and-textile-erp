@@ -1,0 +1,78 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetMasterViewModel
+@{
+    Layout = null;
+}
+<div>
+    <table style="font-size: 12px;">
+        <tr>
+            <td style="float: left">
+                <table>
+                    <tr style="background-color: gainsboro">
+                        <td colspan="3" style="font-size: 16px; text-align: center">
+                            @Html.Label("Knitting & Dying Cost")
+                        </td>
+                    </tr>
+                    @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 1))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                            <td>@Html.HiddenFor(x => Model.CsTemDictionary[csd.Key].TemplateId)</td>
+                            <td>@Html.TextBoxFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ", "") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td style="width: 30px; float: left;"></td>
+            <td style="float: left">
+                <table>
+                    <tr style="background-color: gainsboro">
+                        <td colspan="3" style="font-size: 16px; text-align: center">
+                            @Html.Label("Consumption")
+                        </td>
+                    </tr>
+                    @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 2))
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                            <td>
+                                @Html.HiddenFor(x => Model.CsTemDictionary[csd.Key].TemplateId, new { id = "ConsKey" })
+                            </td>
+                            <td>@Html.TextBoxFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ", "") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td style="width: 30px; float: left;"></td>
+            <td style="float: left">
+                <table>
+                    <tr style="background-color: gainsboro">
+                        <td colspan="3" style="font-size: 16px; text-align: center">
+                            @Html.Label("Traiming Cost")
+                        </td>
+                        @foreach (var csd in Model.CsTemDictionary.Where(x => x.Value.TempGroupId == 3))
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(x => Model.CsTemDictionary[csd.Key].Particular)</td>
+                            <td>@Html.HiddenFor(x => Model.CsTemDictionary[csd.Key].TemplateId)</td>
+                            <td>@Html.TextBoxFor(x => Model.CsTemDictionary[csd.Key].ParticularRate, new { @class = "TextBoxStyleMarc", id = Model.CsTemDictionary[csd.Key].OM_TempGroup.TempGroupName.Replace(" ","") + "_" + Model.CsTemDictionary[csd.Key].SerialNo, @placeholder = Model.CsTemDictionary[csd.Key].UnitName })</td>
+                        </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+   <script type="text/javascript">
+
+        
+       $(".TextBoxStyleMarc").keyup(function (e) {
+           var key = e.which;
+           if (key==13) {
+                    var textId = $(this).attr('id');
+                    var idPrefix = textId.split('_')[0];
+                    var idSufix = textId.split('_')[1];
+                    $(this).closest('td').next().find('input').focus().css("background-color", "salmon");
+                    alert(textId);
+            }
+            });
+    </script>

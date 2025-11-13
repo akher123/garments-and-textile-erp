@@ -1,0 +1,54 @@
+﻿@using System.Text.RegularExpressions
+@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanViewModel
+@{
+    Layout = null;
+}
+<tr id="newRow-@Regex.Replace(Model.ReturnableChallanDictionary[Model.Key].ItemName.ToLower(), @"\s+", "")">
+
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].Buyer)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].Buyer)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].OrderNo)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].OrderNo)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].StyleNo)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].StyleNo)
+    </td><td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].Color)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].Color)
+    </td>
+
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].ItemName)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].ItemName)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].Unit)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].Unit)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].BatchNo)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].BatchNo)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].RollQty)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].RollQty)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].Remarks)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].Remarks)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.ReturnableChallanDictionary[Model.Key].DeliveryQty)
+        @Html.HiddenFor(x => x.ReturnableChallanDictionary[Model.Key].DeliveryQty)
+    </td>
+
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+
+

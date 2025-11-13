@@ -1,0 +1,327 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.EmbWorkOrderViewModel
+@{
+
+    ViewBag.Title = Model.EmbWorkOrder.EmbWorkOrderId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("SaveDetails", "EmbWorkOrder", FormMethod.Post, new { @class = "EmbWorkOrderDetailForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+      @Html.HiddenFor(model => model.EmbWorkOrderDetail.EmbWorkOrderId)
+    @Html.HiddenFor(model => model.EmbWorkOrderDetail.EmbWorkOrderDetailId)
+    <fieldset>
+        <legend>Embellishment Work order Detail Item Entry Form</legend>
+        <table class="tabefont">
+            
+            <tr>
+                <td>
+                    @Html.Label("Buyer:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new { id = "CostOrderStyle_BuyerId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Order:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.OrderNo, Model.OrderSelectListItem, "-Select Order-", new { id = "CostOrderStyle_OrderNo" })
+                   
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Style")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new { id = "CostOrderStyle_StyleNo" })
+               
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Color:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.GColorRefId, Model.ColorSelectListItem, "-Select-", new {@class = "Emb_Color", @data_val = "false"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Size:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.GSizeRefId, Model.SizeSelectListItem, "-Select-", new { @class = "Emb_Size", @data_val = "false" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("FabricType:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.FabricType)
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("PEM Type:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.EmbellishmentType)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Item Name:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.ItemName,new{@placeholder="Print or Embroidery Name "})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.Label("Item Color:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.FinishColor, new { @placeholder = "Print or Embroidery Color" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Measurement:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.FinishSize, new {@placeholder = "Measurement"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Part:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmbWorkOrderDetail.ComponentRefId, Model.ComponentSelectListItem, "-Select Part-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Qty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.Qty, new { @placeholder = "Qty" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Rate:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmbWorkOrderDetail.Rate, new { @placeholder = "Rate" })
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks:")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.EmbWorkOrderDetail.Remarks, new { @placeholder = "Remarks" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "embWorkOrderDetailList" } })
+                </td>
+          
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        function GetCostDefinationByCostGroup(obj) {
+            var costGroupId = $(obj).val();
+            $.Ajax({
+                url: '/Merchandising/CostOrdStyle/GetCostDefinationByCostGroup/',
+                data: { costGroupId: costGroupId }
+            }).done(function (costDefinations) {
+                $('#CostDefinationId').empty();
+                if (costDefinations.length > 0) {
+                    $('#CostDefinationId').append($('<option/>').attr('value', "").text("-Select-"));
+                    $.each(costDefinations, function (costDef) {
+                        $('#CostDefinationId').append($('<option/>').attr('value', this.CostRefId).text(this.CostName));
+                    });
+                } else {
+                    $('#CostDefinationId').append($('<option/>').attr('value', "").text("No Item Found"));
+
+                }
+            });
+        }
+
+
+        $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-Select Order-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+        function populateDropDown(obj) {
+            $('#CostOrderStyle_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+        $('#CostOrderStyle_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('#CostOrderStyle_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-Select Style-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('#CostOrderStyle_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        $('#CostOrderStyle_StyleNo').unbind('change').bind('change', function () {
+            var orderStyleRefId = $(this).val();
+            $.Ajax({
+                url: '/Merchandising/EmbWorkOrder/GetColorSizeByOrderStyleRefId/',
+                data: { orderStyleRefId: orderStyleRefId }
+            }).done(function (data) {
+                populateColors(data.colors);
+                populateSizes(data.sizes);
+            });
+        });
+
+        function populateColors(data) {
+            $('.Emb_Color').empty();
+            if (data.length > 0) {
+                $('.Emb_Color').append(
+                 $('<option/>')
+                     .attr('value', '')
+                     .text("Select")
+             );
+                $.each(data, function (color) {
+                    $('.Emb_Color').append(
+                        $('<option/>')
+                            .attr('value', this.ColorRefId)
+                            .text(this.ColorName)
+                    );
+                });
+            } else {
+                $('.Emb_Color').append(
+                    $('<option/>')
+                        .attr('value', "No Color Found")
+                        .text("Select")
+                );
+            }
+      
+        }
+        function populateSizes(data) {
+            $('.Emb_Size').empty();
+            if (data.length > 0) {
+                $('.Emb_Size').append(
+                 $('<option/>')
+                     .attr('value', '')
+                     .text("-Select-")
+             );
+                $.each(data, function (size) {
+                    $('.Emb_Size').append(
+                        $('<option/>')
+                            .attr('value', this.SizeRefId)
+                            .text(this.SizeName)
+                    );
+                });
+            } else {
+                $('.Emb_Size').append(
+                    $('<option/>')
+                        .attr('value', "No Sise Found")
+                        .text("Select")
+                );
+            }
+
+        }
+
+        function removeDependentDropdown() {
+
+            $('#CostOrderStyle_OrderNo').empty();
+            $('#CostOrderStyle_StyleNo').empty();
+            $('.Emb_Color').empty();
+        }
+    </script>
+}
+

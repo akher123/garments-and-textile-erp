@@ -1,0 +1,333 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaterialIssueId > 0 ? "Edit" : "Add");
+}
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "GeneralIssue", FormMethod.Post, new { @class = "MaterialIssue ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.IssueReceiveNo)
+    @Html.HiddenFor(x => x.MaterialIssueId)
+    @Html.HiddenFor(x => x.MaterialIssueRequisitionId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>General Issue</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Inventory/MaterialIssueRequisition/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Inventory/StorePurchaseRequisition/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td >
+                    &nbsp;  &nbsp;   &nbsp;
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @id = "Branch_Unit_DepartmentId", @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Inventory/StorePurchaseRequisition/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Section :")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.DepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                </td>
+                <td></td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.DepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("IRN No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteNo, new { @placeholder = "IRN No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction", })
+                </td>
+                <td>
+                    &nbsp;   &nbsp;  &nbsp;
+                    @Html.Label("IRN Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteDate, new { @placeholder = "IRN date", @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>
+                    @Html.Label("Machine:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MachineId, new SelectList(Model.Machines, "MachineId", "Name"), "-Select-", new { @class = "edit-mode" })
+                </td>
+            </tr>
+            
+        </table>
+        <hr />
+        <table class="tabefont">
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Item:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false" })
+                    @Html.HiddenFor(x => x.IssueDetail.ItemId, new { @class = "itemHiddenField" })
+                </td>
+                <td>
+                    @Html.DisplayName("Machine:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.IssueDetail.MachineId, Model.MachineSectionSelectListItem, "-select-", new { @class = "machineId", @data_val = "false", @style = "width:215px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("RQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.RequiredQuantity, "", new { @class = "requiredQuantity", @data_val = "false" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.DisplayName("Size:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.IssueDetail.SizeId, Model.SizeSelectListItem, "-select-", new { @class = "sizeId", @data_val = "false", @onchange = "SizeWizeStockInHand(this)", @style = "width:215px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("SInH:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.StockInHand, new { @class = "stockInHand", @data_val = "false", @style = "background-color: #b0c4de;" })
+
+                </td>
+
+                <td>
+
+                    @Html.DisplayName("IQty:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.IssuedQuantity, new { @class = "issuedQuantity", @data_val = "false" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Brand:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.IssueDetail.BrandId, Model.BrandSelectListItem, "-select-", new { @class = "brandId", @onchange = "BrandWizeStockInHand(this)", @data_val = "false", @style = "width:215px" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("IRate:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.IssuedItemRate, new { @class = "issuedItemRate  ", @data_val = "false", @style = "background-color: #b0c4de;" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Remarks:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueDetail.Remarks, new { @class = "remarks enterVent", @data_val = "false" })
+                </td>
+
+            </tr>
+            <tr>
+              
+                <td>
+                    @Html.DisplayName("Origin:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.IssueDetail.OriginId, Model.OriginSelectListItem, "-select-", new { @class = "originId", @data_val = "false", @onchange = "OriginWizeStockInHand(this)", @style = "width:215px" })
+                    @Html.TextBoxFor(x => x.OriginSerarcKey, new { @class = "OriginSerarcKey", @data_val = "false", @style = "width: 25px" })
+                </td>
+                <td colspan="4"></td>
+            </tr>
+
+        </table>
+        <hr />
+
+        <table id="GeneralIssueDetail" class="tabefont gridtable" style="width: 820px;">
+            <thead style="text-align: center">
+                <tr>
+                    <th>
+                        @Html.Label("Item")
+                    </th>
+                    <th>
+                        @Html.Label("Size")
+                    </th>
+                    <th>
+                        @Html.Label("Brand")
+                    </th>
+                    <th>
+                        @Html.Label("Origin")
+                    </th>
+                    <th>
+                        @Html.Label("Machine")
+                    </th>
+                    <th>
+                        @Html.Label("SInH")
+                    </th>
+                    <th>
+                        @Html.Label("RQty")
+                    </th>
+                    <th>
+                        @Html.Label("IQty")
+                    </th>
+                    <th>
+                        @Html.Label("IRate")
+                    </th>
+
+                    <th>
+                        @Html.Label("Remarks")
+                    </th>
+
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.MaterialIssueDetails)
+                {
+                    <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId">
+
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueDetailId, new { @class = "mIDetailId-"+ @Model.MaterialIssueDetails[m.Key].ItemId })
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueId)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].SizeId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].BrandId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].BrandName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].OriginId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].OriginName)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MachineId)
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].MachineName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].StockInHand)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].StockInHand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate)
+                        </td>
+                        <td>
+                            @Html.ValueFor(x => x.MaterialIssueDetails[m.Key].Remarks)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].Remarks)
+                        </td>
+
+                        <td>
+                            <input type="button" value="-" onclick="deleteRow(this)" />
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <hr />
+        <table class="tabefont">
+            <tr>
+                <td>@Html.Label("IR Person")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.PreparedByEmployeeName, new { @class = "autocompliteEmployeeInfo", @placeholder = "Seaech by Card ID or Name" })
+                    @Html.HiddenFor(x => x.PreparedBy, new { @class = "PreparedByIssueRequsition" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>@Html.Label("Note")</td>
+                <td>
+                    @Html.TextBoxFor(x => x.Note)
+                </td>
+                <td>
+                    <input type="submit" value="Save" />
+                </td>
+            </tr>
+
+        </table>
+
+
+    </fieldset>
+}
+@section scripts
+{
+ <script src="~/Scripts/SCERP/Inventory/GeneralIssue.js"></script>
+}
+

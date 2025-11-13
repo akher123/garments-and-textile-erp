@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Mrc_TrimsAndAccessoriesSubmissionDetail] (
+    [TrimsAndAccessoriesSubmissionDetailId] INT              IDENTITY (1, 1) NOT NULL,
+    [TrimsAndAccessoriesSubmissionId]       INT              NOT NULL,
+    [TrimsAndAccessoriesId]                 INT              NOT NULL,
+    [SendingStatusId]                       INT              NOT NULL,
+    [CurrencyId]                            INT              NULL,
+    [Quantity]                              NUMERIC (18, 3)  NOT NULL,
+    [UnitOfMeasure]                         NVARCHAR (50)    NULL,
+    [Price]                                 NUMERIC (18, 3)  NULL,
+    [SendingDate]                           DATETIME         NOT NULL,
+    [PlannedStartDate]                      DATETIME         NULL,
+    [PlannedEndDate]                        DATETIME         NULL,
+    [ActualStartDate]                       DATETIME         NULL,
+    [ActualEndDate]                         DATETIME         NULL,
+    [IsReceived]                            BIT              NOT NULL,
+    [CreatedDate]                           DATETIME         NULL,
+    [CreatedBy]                             UNIQUEIDENTIFIER NULL,
+    [EditedDate]                            DATETIME         NULL,
+    [EditedBy]                              UNIQUEIDENTIFIER NULL,
+    [IsActive]                              BIT              NOT NULL,
+    CONSTRAINT [PK_Mrc_TrimAndAccessoriesSubmissionDetail] PRIMARY KEY CLUSTERED ([TrimsAndAccessoriesSubmissionDetailId] ASC),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesSubmissionDetail_Currency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([CurrencyId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesSubmissionDetail_Mrc_SendingStatus] FOREIGN KEY ([SendingStatusId]) REFERENCES [dbo].[Mrc_SendingStatus] ([SendingStatusId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesSubmissionDetail_Mrc_TrimsAndAccessories] FOREIGN KEY ([TrimsAndAccessoriesId]) REFERENCES [dbo].[Mrc_TrimsAndAccessories] ([TrimsAndAccessoriesId]),
+    CONSTRAINT [FK_Mrc_TrimsAndAccessoriesSubmissionDetail_Mrc_TrimsAndAccessoriesSubmission] FOREIGN KEY ([TrimsAndAccessoriesSubmissionId]) REFERENCES [dbo].[Mrc_TrimsAndAccessoriesSubmission] ([TrimsAndAccessoriesSubmissionId])
+);
+

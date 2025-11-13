@@ -1,0 +1,257 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.MaterialIssue.AdvanceMaterialIssueId > 0 ? "Edit" : "Add");
+}
+
+@using (Html.BeginForm("Save", "AdvanceMaterialIssue", FormMethod.Post, new { @class = "BookingForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.MaterialIssue.AdvanceMaterialIssueId)
+    @Html.HiddenFor(x => x.IsSearch)
+    <fieldset>
+        <legend>Material Issue</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("IRef#:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Party :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssue.PartyId, Model.PartySelectListItem, "-Select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("IRN No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNotNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("IRN Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.IRNotDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td>
+
+                    @Html.Label("OrderNo :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.MaterialIssue.OrderNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+
+                    @Html.Label("Style No:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.MaterialIssue.StyleNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+          
+            <tr>
+                <td>
+                    @Html.Label("Process :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssue.ProcessRefId, Model.ProcessSelectListItem, "-Select-")
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("Store :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MaterialIssue.StoreId, Model.StoreTypeSelectListItem, "-Select-", new { @class = "StoreType" })
+                </td>
+                <td></td>
+             
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.Label("Slip# :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.MaterialIssue.SlipNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("Employee:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssue.RefEmployee, new { @class = "autocompliteEmployeeInfo" })
+                    @Html.HiddenFor(x => x.MaterialIssue.RefPerson, new { @class = "issued_EmployeeId" })
+                </td>
+                <td></td>
+            </tr>
+        
+        </table>
+        <hr />
+        <table class="tabefont" id="issueTable">
+            <tr>
+                <td>
+
+                    @Html.DisplayName("Item :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false", @placeholder = "Serach Item" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ItemId, new { @class = "AdvanceIssueitemHiddenField" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Rate :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueRate, new { @class = "issue_Rat", Value = "", @data_val = "false" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label(Model.MaterialIssueDetail.StoreId == 1 ? "Brand" : "Color", new { @class = "ColorLabelId" })
+
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.ColorName, new { @class = "Color_SearchString", @placeholder = "Serach Key" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.ColorRefId, new { @class = "Color_ColorRef" })
+                </td>
+                <td>
+
+                    @Html.DisplayName("Qty :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.IssueQty, new { @class = "issue_QuantityEnterEvent", Value = "", @data_val = "false" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label(Model.MaterialIssueDetail.StoreId == 1 ? "Count" : "Size", new { @class = "SizeLabelId" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MaterialIssueDetail.SizeName, new { @class = "Size_SearchString", @placeholder = "Serach Key" })
+                    @Html.HiddenFor(x => x.MaterialIssueDetail.SizeRefId, new { @class = "Size_SizeRef" })
+                </td>
+
+            </tr>
+        </table>
+        <hr />
+        <div>
+
+            <table id="issueDetail" class="webgrid-table" style="width:650px;">
+                <thead class="webgrid-header" style="text-align: center">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+
+                        <th>
+                            @Html.Label("Color")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("Qty")
+                        </th>
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var m in Model.MaterialIssueDetails)
+                    {
+                        <tr id="newRow-@Model.MaterialIssueDetails[m.Key].ItemId">
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].AdvanceMaterialIssueDetailId)
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueRate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                                @Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssueQty)
+                            </td>
+                            <td>
+                                <input type="button" value="-" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div style="float: right">
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Remarks :")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.MaterialIssue.Remarks, new { @class = "Issue_remarks" })
+                        </td>
+                        <td>
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+}
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Inventory/advanceMaterialIssue.js"></script>
+}

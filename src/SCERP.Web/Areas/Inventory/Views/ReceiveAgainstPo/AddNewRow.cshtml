@@ -1,0 +1,33 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.Dictionary[Model.Key].ItemId">
+    <td>
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].MaterialReceiveAgstPoId)
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].MaterialReceiveAgstPoDetailId)
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].ItemId)
+        @Html.DisplayFor(x => x.Dictionary[Model.Key].ItemName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].ColorRefId)
+        @Html.DisplayFor(x => x.Dictionary[Model.Key].ColorName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].SizeRefId)
+        @Html.DisplayFor(x => x.Dictionary[Model.Key].SizeName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].ReceivedRate)
+        @Html.DisplayFor(x => x.Dictionary[Model.Key].ReceivedRate)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.Dictionary[Model.Key].ReceivedQty)
+        @Html.DisplayFor(x => x.Dictionary[Model.Key].ReceivedQty)
+    </td>
+    <td>
+        <input type="button" value="-" onclick="deleteRow(this)" />
+    </td>
+</tr>
+

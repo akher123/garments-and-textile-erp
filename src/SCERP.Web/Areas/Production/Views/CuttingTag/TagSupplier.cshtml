@@ -1,0 +1,41 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.CuttingTagViewModel
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend>Party</legend>
+    <div class="additem">
+        <div class="addButton-wrapper">
+            @Html.HiddenFor(x => x.CuttingTagSupplier.CuttingTagId)
+            <input type="button" value="AddNew" class="AjaxPopup addButton" action="/Production/CuttingTag/EditTagSupplier?CuttingTagSupplier.CuttingTagId=@Model.CuttingTagSupplier.CuttingTagId" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CuttingTags, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("ComponentName", header: "Tag", canSort: false),
+                  grid.Column(format: (item) => item.EmblishmentStatus == 1 ? "Print" : "Emboidery", header: "Task"),
+                  grid.Column("PartyName", header: "Party", canSort: false),
+                  grid.Column("Rate", header: "Rate", canSort: false),
+                  grid.Column("DeductionAllowance", header: "DeductionAllowance(%)", canSort: false),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Production/CuttingTag/EditTagSupplier?CuttingTagSupplier.CuttingTagSupplierId=@item.CuttingTagSupplierId&CuttingTagSupplier.CuttingTagId=@item.CuttingTagId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="tagSupplierContainer" action="/Production/CuttingTag/DeleteTagSupplier?CuttingTagSupplier.CuttingTagSupplierId=@item.CuttingTagSupplierId&CuttingTagSupplier.CuttingTagId=@item.CuttingTagId"></button></text>)));
+        }
+    </div>
+
+</fieldset>

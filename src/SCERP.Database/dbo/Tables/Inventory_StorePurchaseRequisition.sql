@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Inventory_StorePurchaseRequisition] (
+    [StorePurchaseRequisitionId] INT              IDENTITY (1, 1) NOT NULL,
+    [MaterialRequisitionId]      INT              NOT NULL,
+    [RequisitionNo]              NVARCHAR (100)   NOT NULL,
+    [RequisitionDate]            DATETIME         NOT NULL,
+    [PurchaseTypeId]             INT              NOT NULL,
+    [RequisitionTypeId]          INT              NOT NULL,
+    [SubmittedTo]                UNIQUEIDENTIFIER NULL,
+    [ModifiedBy]                 UNIQUEIDENTIFIER NULL,
+    [PreparedBy]                 UNIQUEIDENTIFIER NOT NULL,
+    [ProcessId]                  INT              NOT NULL,
+    [ApprovalStatusId]           INT              NOT NULL,
+    [ApprovalDate]               DATETIME         NULL,
+    [Remarks]                    NVARCHAR (MAX)   NULL,
+    [CreatedDate]                DATETIME         NULL,
+    [CreatedBy]                  UNIQUEIDENTIFIER NULL,
+    [EditedBy]                   UNIQUEIDENTIFIER NULL,
+    [EditedDate]                 DATETIME         NULL,
+    [IsActive]                   BIT              CONSTRAINT [DF_Inventory_StorePurchaseRequisition_IsActive] DEFAULT ((1)) NOT NULL,
+    CONSTRAINT [PK_Inventory_StorePurchaseRequisition] PRIMARY KEY CLUSTERED ([StorePurchaseRequisitionId] ASC),
+    CONSTRAINT [FK_Inventory_StorePurchaseRequisition_Inventory_ApprovalStatus] FOREIGN KEY ([ApprovalStatusId]) REFERENCES [dbo].[Inventory_ApprovalStatus] ([ApprovalStatusId]),
+    CONSTRAINT [FK_Inventory_StorePurchaseRequisition_Inventory_MaterialRequisition] FOREIGN KEY ([MaterialRequisitionId]) REFERENCES [dbo].[Inventory_MaterialRequisition] ([MaterialRequisitionId]),
+    CONSTRAINT [FK_Inventory_StorePurchaseRequisition_Inventory_PurchaseType] FOREIGN KEY ([PurchaseTypeId]) REFERENCES [dbo].[Inventory_PurchaseType] ([PurchaseTypeId]),
+    CONSTRAINT [FK_Inventory_StorePurchaseRequisition_Inventory_RequsitionType] FOREIGN KEY ([RequisitionTypeId]) REFERENCES [dbo].[Inventory_RequsitionType] ([RequisitionTypeId])
+);
+

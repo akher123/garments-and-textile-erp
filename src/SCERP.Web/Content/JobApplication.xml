@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<AppointmentLetter>
+
+  <EmployeeSpecificInfo>
+    <![CDATA[
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px; border-bottom:3px solid black;">
+     
+	  <tr>
+	     <td align="right" valign="bottom" style="margin-top:10px;">
+          <img src="/Content/images/Plummy_logo.png" width="140px" height="53px" />
+        </td>
+	    
+        <td  style="font-family:SolaimanLipi;font-weight:normal;font-size: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;প্লামি ফ্যাশনস্ লিমিটেড
+        </td>
+		 <td align="right" valign="bottom">
+          <img src="{EMPLOYEE_PHOTOGRAPH_PATH}" width="55px" height="55px" />
+        </td>
+      </tr>
+      <tr>
+	    <td align="right">
+         
+        </td>
+        <td >
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;উত্তর নরসিংপুর, কাশিপুর, ফতুল্লা, নারায়ণগঞ্জ।
+        </td>
+		 <td align="right">
+          
+        </td>
+      </tr>
+	  
+    </table>
+    
+    <br/> 
+    
+    <table width="900px" style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+        <td width="15px"></td>
+        <td width="715px"></td>
+        <td></td>
+        <td>তারিখ : {PREPARE_DATE}</td>
+      </tr>
+        
+    </table>   
+    
+    <table width="850px">
+      <tr>
+          <td align="center" style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">চাকুরীর আবেদনপত্র</td>
+      </tr>
+    </table> 
+	                                                            
+    <table style="font-family:SolaimanLipi;font-weight:normal;font-size: 18px;">
+      <tr>
+            <td></td>
+            <td style="font-family:SolaimanLipi;font-weight:bold;font-size:18px;">বিষয়ঃ {EMP_DESIGNATION} পদের জন্য আবেদন। </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>  
+        <tr>
+            <td></td>
+            <td>০১) প্রার্থীর নাম </td>
+            <td> : {EMP_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>০২) পিতার নাম</td>
+            <td> : {EMP_FATHER_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+         <tr>
+            <td></td>
+            <td>০৩) মাতার নাম </td>
+            <td> : {EMP_MOTHER_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>         
+        <tr>
+            <td></td>
+            <td>০৪) স্বামী/স্ত্রীর নাম(প্রযোজ্য ক্ষেত্রে) </td>
+            <td> : {EMP_SPOUSE_NAME}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>    
+          <tr>
+            <td></td>
+            <td>০৫) স্বামী/স্ত্রীর জন্ম তারিখ </td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr> 
+        
+        <tr>
+            <td></td>
+            <td>০৬) বর্তমান ঠিকানাঃ গ্রাম/মহল্লাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_ADDRESS}</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> ডাকঘরঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_POST_OFFICE}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          &nbsp;&nbsp;থানাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_POLICE_STATION}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>&nbsp;&nbsp;জেলাঃ&nbsp;&nbsp;&nbsp;{EMP_PRE_DISTRICT}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+        
+        <tr>     
+            <td></td>
+            <td>০৭) স্থায়ী ঠিকানাঃ &nbsp;&nbsp;গ্রাম/মহল্লাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_ADDRESS}</td>
+            <td></td>
+            <td></td>
+            <td></td>            
+            <td> </td>            
+            <td></td>
+            <td> ডাকঘরঃ&nbsp;&nbsp;&nbsp;{EMP_PER_POST_OFFICE}</td>
+            <td></td>
+            <td></td>                        
+            <td> </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;থানাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_POLICE_STATION}</td>
+            <td> </td>
+            <td></td>
+            <td></td>
+            <td> </td>
+            <td></td>
+            <td>&nbsp;&nbsp;জেলাঃ&nbsp;&nbsp;&nbsp;{EMP_PER_DISTRICT}</td>
+            <td></td>
+            <td></td>
+            <td> </td>
+        </tr>
+        
+        <tr>
+            <td></td>
+            <td>০৮) জন্ম তারিখ </td>
+            <td> : {BIRTH_DATE}</td>
+            <td></td>
+            <td></td>            
+            <td></td>            
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                        
+            <td></td>
+        </tr>                               
+        <tr>
+            <td></td>
+            <td>০৯) জাতীয়তা </td>
+            <td> : {NATIONALITY} </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>   
+        <tr>
+            <td></td>
+            <td>১০) ধর্ম </td>
+            <td> : {RELIGION}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>১১) বৈবাহিক অবস্থা </td>
+            <td> : {MARITAL_STATE}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>১২) বিবাহের তারিখ (প্রযোজ্য ক্ষেত্রে) </td>
+            <td> : {MARRIAGE_ANNIVERSARY}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>         
+        <tr>
+            <td></td>
+            <td>১৩) সন্তানের সংখ্যা (যদি থাকে) </td>
+            <td colspan="08"> : .........................ছেলে ...........................মেয়ে </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>১৪) সন্তানের জন্ম তারিখ </td>
+            <td colspan="08"> : ক) ........................খ) ........................গ) ..................... </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>১৫) ভোটার আই.ডি নং </td>
+            <td> : {NATIONALID}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr> 
+        <tr>
+            <td></td>
+            <td>১৬) শিক্ষাগত যোগ্যতা </td>
+            <td> : {EDUCATION_LEVEL}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>১৭) মোবাইল নম্বর </td>
+            <td colspan="08"> : ১) {MOBILEPHONE}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ২) {HOMEPHONE}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>১৮) অভিজ্ঞতা </td>
+            <td> :</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>১৯) জরুরী অবস্থায় যোগাযোগ </td>
+            <td> :</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ব্যক্তির নাম	 </td>
+            <td> : {EMERGENCY_PERSON}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ঠিকানা </td>
+            <td> :</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; সম্পর্ক </td>
+            <td colspan="08"> : {EMERGENCY_PERSON_RELATION} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; মোবাইল নম্বর </td>
+            <td>: {EMERGENCY_PERSON_PHONE}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="10"> আমি এই মর্মে প্রত্যয়ন করিতেছি যে, বিস্তারিত বিবরণ যাহা দেওয়া হইয়াছে তাহা সত্য। যদি আমি নিযুক্ত হই, তাহা হইলে আমি কোম্পানীর নিয়ম-কানুন মানিয়া চলিতে বাধ্য থাকিব। </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td height="30px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> .................................... </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>আবেদনকারীর স্বাক্ষর</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+                                                                                                               
+    ]]>
+  </EmployeeSpecificInfo>
+</AppointmentLetter>

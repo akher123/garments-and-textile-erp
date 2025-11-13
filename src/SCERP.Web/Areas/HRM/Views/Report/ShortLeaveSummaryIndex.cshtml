@@ -1,0 +1,75 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ShortLeaveReportViewModel
+
+@{
+    ViewBag.Title = "Short Leave Summary";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  
+}
+
+@using (Html.BeginForm("ShortLeaveSummaryIndex", "Report", FormMethod.Get, new { @class = "ReportSearchForm ",@target="_blank" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <div class="header-title">
+        <h2>Gate Pass Summary</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+
+                @{ Html.RenderPartial("~/Areas/HRM/Views/Report/_SearchShortLeaveSummary.cshtml", Model); }
+
+                <tr>
+                    <td>
+                        @Html.Label("Employee ID:")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"})
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type="button" id="showReport" class="addButton" value="Show Report"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<script type="text/javascript">
+    
+    $('#showReport').click(function () {
+        var form = $(this).parents("form:first");
+        var ignoreValidation = form.hasClass("ignore-validation");        
+        if (!ignoreValidation) {
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    // e.preventDefault();
+                    return false;
+                }             
+                ShowReport();
+            }
+        }
+    });
+
+    function ShowReport() {
+        //var companyId = $('#SearchFieldModel_SearchByCompanyId').val(); 
+        //var branchId = $('#SearchFieldModel_SearchByBranchId').val(); 
+        //var branchUnitId = $('#SearchFieldModel_SearchByBranchUnitId').val();
+        var branchUnitDepartmentId = $('#SearchFieldModel_SearchByBranchUnitDepartmentId').val();
+        var departmentSectionId = $('#SearchFieldModel_SearchByDepartmentSectionId').val();
+        var departmentLineId = $('#SearchFieldModel_SearchByDepartmentLineId').val();
+
+        var startDate = $('#StartDate').val();
+        var endDate = $('#EndDate').val();
+        var employeeCardId = $('#SearchFieldModel_SearchByEmployeeCardId').val();
+
+        window.open('@Url.Action("ShortLeaveSummary", "Report")?branchUnitDepartmentId=' + branchUnitDepartmentId + '&departmentSectionId=' + departmentSectionId + '&departmentLineId=' + departmentLineId + '&employeeCardId=' + employeeCardId + '&startDate=' + startDate + '&endDate=' + endDate, '_blank');               
+    }
+</script>
+

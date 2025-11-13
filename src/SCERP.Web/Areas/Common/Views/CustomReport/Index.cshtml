@@ -1,0 +1,192 @@
+﻿@using System.Data
+@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Common.Models.ViewModel.CustomSqlQuaryViewModel
+@{
+    ViewBag.Title = (Model.CustomSqlQuaryId > 0 ? "Create" : "Edit");
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    textarea {
+        width: 600px;
+        height: 30px;
+    }
+</style>
+
+@using (Html.BeginForm("ShowReport", "CustomReport", FormMethod.Post, new { @class = "CustomReportSearchForm" }))
+{
+    @Html.HiddenFor(x => x.CustomSqlQuaryId, new { @class = "Custom_SqlQuaryId" })
+    @Html.HiddenFor(x => x.SqlQuary, new { @class = "Custom_SqlQuary" })
+
+    <div style="float: right;margin-right: 200px;">
+
+        <div style="float: left;">
+            @Html.Partial("~/Areas/Common/Views/CustomReport/_CustomReportMenu.cshtml", Model.VUserReports)
+        </div>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    <div>
+
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                            <input type="button" value="Print Priview" id="printPriviewButton" />
+                        </div>
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                            <img id="exportExcel" src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" />
+                        </div>
+                        @*@if (Model.ReportParameterViewModels.Any())
+                        {
+
+                            <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                                <input type="button" class="searchAction" />
+                            </div>
+
+                        }*@
+                        <div style="float: left;margin-left:10px;margin-top: 4px; ">
+                            <input type="button" class="searchAction" />
+                        </div>
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+        <table>
+            @foreach (var rp in Model.ReportParameterViewModels)
+            {
+                if (rp.Value.ControlType.Equals("dropdown"))
+                {
+                    <tr>
+                        <td>
+                            @Html.Label(Model.ReportParameterViewModels[rp.Key].LabelFor)
+                        </td>
+
+                        <td class="col-md-10">
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].Querystring)
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].LabelFor)
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].Pname)
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].ControlType)
+                            @Html.DropDownListFor(x => x.ReportParameterViewModels[rp.Key].Pvalue, new SelectList(rp.Value.Dropdowns, "Id", "Value", Model.ReportParameterViewModels[rp.Key].Pvalue), "-Select-")
+                            @Html.ValidationMessageFor(x => x.ReportParameterViewModels[rp.Key].Pvalue)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.Label(Model.ReportParameterViewModels[rp.Key].LabelFor)
+                        </td>
+
+                        <td>
+                 
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].LabelFor)
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].Pname)
+                            @Html.HiddenFor(x => Model.ReportParameterViewModels[rp.Key].ControlType)
+                            @Html.TextBoxFor(x => x.ReportParameterViewModels[rp.Key].Pvalue, new { @type = rp.Value.ControlType, @value = Model.ReportParameterViewModels[rp.Key].Pvalue })
+                            @Html.ValidationMessageFor(x => x.ReportParameterViewModels[rp.Key].Pvalue)
+                        </td>
+                    </tr>
+                }
+            }
+
+
+
+        </table>
+
+
+    </section>
+
+
+
+}
+
+<section class="search formCover" style="margin-bottom: 8px;">
+
+    <div style="overflow: auto; height: 800px; ">
+        <table id="tableid" class="webgrid-table" style="width: 300px;">
+            <thead class="webgrid-header">
+                <tr>
+                    @foreach (DataColumn col in Model.DataTable.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow row in Model.DataTable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                        {
+                            if (col.DataType.Name == "DateTime")
+                            {
+                                <td>@(String.Format("{0:dd-MM-yyyy}", row[col.ColumnName]))</td>
+                            }
+                            else
+                            {
+                                <td>@(row[col.ColumnName] ?? "")</td>
+                            }
+
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#printPriviewButton').on('click', function () {
+            var $this = $(this);
+            var form = $this.parents('form:first');
+            var url = "/CustomReport/PrintPreview/";
+            jQuery.ajax({
+                url: url,
+                dataType: 'html',
+                data: form.serialize(),
+                type: "GET",
+                success: function (response) {
+                    var data = response;
+                    var popupWindow = window.open('', '', 'width=810,height=520,left=0,top=0,toolbar=0,status=0');
+                    popupWindow.document.open();
+                    popupWindow.document.write('<HTML>\n<HEAD>\n');
+                    popupWindow.document.write('<link rel="stylesheet" type="text/css" href="~/Content/Common/PdfReport.css"/>');
+                    popupWindow.document.write('</HEAD>\n');
+                    popupWindow.document.write('<BODY >\n');
+                    popupWindow.document.write(data);
+                    popupWindow.document.write('</BODY>\n');
+                    popupWindow.document.write('</HTML>\n');
+                    popupWindow.document.close();
+                    popupWindow.focus();
+
+                }
+            });
+        });
+        $('#exportExcel').on('click', function () {
+            var $this = $(this);
+            var $form = $this.parents('form:first');
+            var url = "/CustomReport/GetExcel";
+            if ($('.Custom_SqlQuaryId').val() != 0) {
+                window.location = url + '?' + $form.serialize();
+            } else {
+                alert("Pleas Find Report fist");
+            }
+
+
+        });
+        
+    </script>
+}
+
+
+

@@ -1,0 +1,67 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+
+@{
+    ViewBag.Title = "Bank Advice";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "BankAdvice", FormMethod.Get, new { @class = "bankAdviceSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 400px; padding-left: 340px;">
+        <h2> Bank Advice </h2>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 8px;">
+        <table class="tabefont">
+
+            <tr>
+                <td> @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @style = "width:100px;", @class = "datepicker" }) </td>                                    
+                <td> @Html.Label("To") </td>
+                <td> @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date", @style = "width:100px;", @class = "datepicker" }) </td>                                    
+                <td> @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key", @autofocus = "autofocus" }) </td>                                    
+                <td> <input type="button" class="searchAction" /> </td>                                    
+            </tr>
+
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem" style="overflow-x: auto">
+       
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CommExports, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                                    grid.Column("COMMLcInfo.LcNo", header: "Lc No", canSort: false),
+                                    grid.Column("ExportNo", header: "Export No", canSort: false),
+                                    grid.Column("InvoiceNo", header: "Invoice No", canSort: false),
+                                    grid.Column("InvoiceValue", header: "Invoice Value", canSort: false),
+                                    grid.Column("BankRefNo", header: "BankRef No", canSort: false),
+                                    grid.Column("RealizedValue", header: "Realized Value", canSort: false),
+                                    grid.Column("BillOfLadingNo", header: "B/L No", canSort: false),
+                                    grid.Column("Bank Advice", format: @<text> <button class="edit" action="/Commercial/BankAdvice/Edit?id=@item.ExportId"></button></text>, canSort: false),
+                                    grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "BankAdvicePrint", "Report", new { item.ExportId }, new { @target = "_blank" })   </text>)
+
+              ))
+        }                  
+    </div>
+</section>

@@ -1,0 +1,295 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashBbLcViewModel
+
+@{
+    Layout = "~/Views/Shared/_CashBbLcLayout.cshtml";
+    ViewBag.Title = (Model.CashBbLcInfo.BbLcId > 0) ? "Edit" : "Add";
+}
+
+@{
+    var selectList = new SelectList(
+        new List<SelectListItem>
+        {
+            new SelectListItem {Text = "Dyes", Value = "Dyes"},
+            new SelectListItem {Text = "Chemical", Value = "Chemical"},
+            new SelectListItem {Text = "Machineries", Value = "Machineries"},
+        }, "Value", "Text");
+}
+
+
+
+
+@using (Html.BeginForm("Save", "CashBbLc", FormMethod.Post, new { @class = "bbLcform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(p => p.CashBbLcInfo.BbLcId)
+
+    <fieldset>
+        <legend>Cash Back to Back LC</legend>
+        <table class="tabefont" style="float: left; padding-right: 10px; border-right: 1px solid #000;">
+            <tr>
+                <td> </td>
+                <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+            </tr>
+            @*<tr>
+                <td> </td>
+                <td> @Html.Label("Master LC : ") </td>
+                <td> @Html.DropDownListFor(model => model.LcRefId, Model.LcSelectListItem, "-Select-") </td>
+                <td> </td>
+            </tr>*@
+
+
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Supplier Name: ") </td>
+                <td> @Html.DropDownListFor(model => model.CashBbLcInfo.SupplierCompanyRefId, Model.SupplierSelectListItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+           
+            <tr>
+                <td> </td>
+                <td> @Html.Label("PI No : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.PI) </td>
+                <td> </td>
+            </tr>
+
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Payment Mode : ") </td>
+                <td> @Html.DropDownListFor(model => model.PaymentModeRefId, Model.PayTermSelectListItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BB LC No : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BbLcNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BB LC Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BbLcDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BB LC Amount : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BbLcAmount) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BB LC Quantity : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BbLcQuantity) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Maturity Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.MatureDate, new { @class = "datepicker"}) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Expiry Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.ExpiryDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Extention Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.ExtensionDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("IFDBC No : ") </td>
+                <td> @Html.EditorFor(p => p.CashBbLcInfo.IfdbcNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("IFDBC Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.IfdbcDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("IFDBC Value : ") </td>
+                <td> @Html.EditorFor(p => p.CashBbLcInfo.IfdbcValue) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("PC Sanction Amount : ") </td>
+                <td> @Html.EditorFor(p => p.CashBbLcInfo.PcsSanctionAmount) </td>
+                <td> </td>
+            </tr>
+            @*<tr>
+                    <td> </td>
+                    <td> @Html.Label("Issuing Bank : ") </td>
+                    <td> @Html.TextBoxFor(p => p.BbLcIssuingBank) </td>
+                    <td> </td>
+                </tr>*@
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Issuing Bank : ") </td>
+                <td> @Html.DropDownListFor(model => model.CashBbLcInfo.IssuingBankId, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Issuing Bank Address : ") </td>
+                <td> @Html.TextAreaFor(p => p.CashBbLcInfo.BbLcIssuingBankAddress) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Received Bank : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.ReceivingBank) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Received Bank Address : ") </td>
+                <td> @Html.TextAreaFor(p => p.CashBbLcInfo.ReceivingBankAddress) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Beneficiary : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.Beneficiary) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Partial Shipment : ") </td>
+                <td> @Html.DropDownListFor(model => model.CashBbLcInfo.PartialShipment, Model.PartialShipmentSelectListItem, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("LcType : ") </td>
+                <td> @Html.DropDownListFor(model => model.CashBbLcInfo.LCType, selectList, "-Select-") </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Payment Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.PaymentDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BTMEA No : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BtmeaNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("BTMEA Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BtmeaDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("B/E No : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BeNo) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("B/E Date : ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.BeDate, new { @class = "datepicker" }) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("VAT: ") </td>
+                <td> @Html.TextBoxFor(p => p.CashBbLcInfo.Vat) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> @Html.Label("Description : ") </td>
+                <td> @Html.TextAreaFor(p => p.CashBbLcInfo.Description) </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                @*<td> <input type="submit" value="Save" /> </td>*@
+                <td> </td>
+            </tr>
+        </table>
+        <table class="tabefont" style="padding-left: 10px;">
+            <tr>
+                <td>
+                    <table id="cashBbLcDetail">
+                        <tr>
+                            <td>
+                                @Html.Label("Item")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CashBbLcDetail.Item, new { id = "threadItem", @data_val = "false" })
+                            </td>
+                            <td>@Html.Label("Quantity")</td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CashBbLcDetail.Quantity, new { @data_val = "false" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Rate")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CashBbLcDetail.Rate, new { @data_val = "false" })
+                            </td>
+                            <td>@Html.Label("Remarks")</td>
+                            <td>
+                                @Html.TextBoxFor(x => x.CashBbLcDetail.Remarks, new { @data_val = "false" })
+                                <input type="button" value="+" id="addCashBbLcDetailButton" />
+                            </td>
+                            
+                        </tr>
+                       
+
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table class="tabefont webgrid-table" id="cashBbLcDetailTable">
+                        <thead style="text-align: center" class="webgrid-header">
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Rate</th>
+                                <th>Remarks</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Partial("~/Areas/Commercial/Views/CashBbLc/_CashBbLcDetails.cshtml", Model)
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="float: left">
+                        <input onclick="search('/Commercial/CashBbLc/Index')" value="Back" id="backButton" class="addButton" type="button" />
+                    </td>
+                    <td style="float: right">
+                        <input type="button" value="Save" id="cashBbLcSaveButton" class="addButton" />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Commercial/cashBbLc.js"></script>
+}

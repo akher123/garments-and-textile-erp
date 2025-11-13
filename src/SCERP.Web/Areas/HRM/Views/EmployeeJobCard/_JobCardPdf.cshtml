@@ -1,0 +1,77 @@
+﻿
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeJobCardViewModel
+
+@{
+    Layout = null;
+}
+
+<div style="margin-left: 20px;" class="reportCover">
+
+    <div id="pdfReportContainer">
+        <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+        <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+            <thead class="reportHeader">
+                <tr class="reportTitle">
+                    <td colspan="15" align="center"></td>
+                </tr>
+                <tr class="reportTitle">
+                    <td colspan="15" style="font-size: 22px;" align="left"><br /></td>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    <table style="font-size: 12px;">
+                        <tr>
+                            <td width="10px"></td>
+                            <td width="100px">Date</td>
+                            <td width="30px"> : </td>
+                            <td>@Model.TodayDate</td>
+                            <td width="100px"></td>
+                            <td width="100px">Department</td>
+                            <td width="30px"> : </td>
+                            <td>@Model.Department</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Employee Id </td>
+                            <td> : </td>
+                            <td>@Model.EmployeeCardId</td>
+                            <td></td>
+                            <td>Section </td>
+                            <td> : </td>
+                            <td>@Model.Section</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Name </td>
+                            <td> : </td>
+                            <td>@Model.Name</td>
+                            <td></td>
+                            <td>Line </td>
+                            <td> : </td>
+                            <td>@Model.Line</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Designation </td>
+                            <td> : </td>
+                            <td>@Model.Designation</td>
+                            <td></td>
+                            <td>Joining Date </td>
+                            <td> : </td>
+                            <td>@Model.EmployeeJoinDate</td>
+                        </tr>
+                        
+
+                    </table>
+                </td>
+            </tr>                  
+        </table>
+    </div>
+    <div id="btnReportPrintCover" style="">
+        <div id="btnReportPrint" onclick="search('/HRM/EmployeeJobCard/Index?EmployeeCardId=@Model.EmployeeCardId', 'EmployeeJobCardForm')" style="margin-right: 10px;">Back</div>
+        <div id="btnReportPrint" class="printReport" action="pdfReportContainer">PDF</div>
+    </div>
+</div>
+
+

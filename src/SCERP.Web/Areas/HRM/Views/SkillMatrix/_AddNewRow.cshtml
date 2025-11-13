@@ -1,0 +1,27 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SkillMatrixViewModel
+@{
+    Layout = null;
+}
+<tr id="newRow-@Model.SkillMatrixDictionary[Model.Key].SkillMatrixProcessId">
+
+    <td>
+        @Html.DisplayFor(x => x.SkillMatrixDictionary[Model.Key].ProcessName)
+        @Html.HiddenFor(x => x.SkillMatrixDictionary[Model.Key].ProcessName)
+        @Html.HiddenFor(x => x.SkillMatrixDictionary[Model.Key].SkillMatrixProcessId, new { @class = "txtskillMatrixProcessId-" + @Model.SkillMatrixDictionary[Model.Key].SkillMatrixProcessId })
+        @Html.HiddenFor(x=>x.SkillMatrixDictionary[Model.Key].SkillMatrixGradeId)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.SkillMatrixDictionary[Model.Key].ProcessPercentage)
+        @Html.HiddenFor(x => x.SkillMatrixDictionary[Model.Key].ProcessPercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.SkillMatrixDictionary[Model.Key].GradeName)
+        @Html.HiddenFor(x => x.SkillMatrixDictionary[Model.Key].GradeName)
+    </td>
+
+    <td>
+        <input type="button" value="X" onclick="deleteRow(this)" />
+    </td>
+</tr>
+
+

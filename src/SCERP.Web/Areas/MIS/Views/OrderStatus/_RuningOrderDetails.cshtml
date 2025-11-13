@@ -1,0 +1,61 @@
+﻿@using System.Data 
+@model DataTable
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <section class="formCover">
+            <div class="mis-title">BUYER WISE MONTHLY ORDER STATUS</div>
+            <table class="webgrid-table" style="text-align: center">
+                <thead class="webgrid-header mis-header">
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            <th>@col.ColumnName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.Rows)
+                    {
+                        <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                if (row[col.ColumnName].ToString() == "0")
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    if ((string)col.ColumnName == "Buyer")
+                                    {
+                                        <td style="text-align: left; width: 16%">
+                                            @row[col.ColumnName]
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/RunningOrderSummary?month=@col.ColumnName&&buyer=@row[0]">@row[col.ColumnName]</a>
+                                        </td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

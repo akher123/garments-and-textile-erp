@@ -1,0 +1,74 @@
+﻿@using SCERP.Common
+@model SCERP.Model.HRMModel.WorkShiftRoster
+
+@{
+    ViewBag.Title = "Work Shift Roster";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "WorkShiftRoster", FormMethod.Post, new { @class = "WorkShiftRosterForm ignore-validation" }))
+{
+    <div class="header-title">
+        <h2> Work Shift Roster </h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Unit Name: ") </td>
+                    <td> @Html.DropDownList("UnitName") </td>
+                    <td> @Html.Label("Group Name: ") </td>
+                    <td> @Html.DropDownList("GroupName") </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Employee Card Id: ") </td>
+                    <td> @Html.TextBoxFor(x => x.EmployeeCardId) </td>
+                    <td> @Html.Label("EmployeeName: ") </td>
+                    <td> @Html.TextBoxFor(x => x.EmployeeName) </td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <button class="AjaxPopup addButton" action="/HRM/WorkShiftRoster/Edit">Change Shift</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.shiftDetail, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         firstText: "First",
+                         lastText: "Last",
+                         nextText: "Next",
+                         mode: WebGridPagerModes.All,
+                         previousText: "Previous",
+                         columns:
+                             grid.Columns(
+                                 grid.Column(header: "SL", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                                 grid.Column("UnitName", header: "Unit Name", canSort: false),
+                                 grid.Column("GroupName", header: "Group Name", canSort: false),
+                                 grid.Column("ShiftName",header: "Shift Name", canSort: false),
+                                 grid.Column("EmployeeCardId",header: "Card Id", canSort: false),
+                                 grid.Column("EmployeeName",header: "Employee Name", canSort: false),
+                                 grid.Column("Designation", canSort: false),
+                                 grid.Column("Section", canSort: false)
+                              ));
+        }
+    </div>
+</section>

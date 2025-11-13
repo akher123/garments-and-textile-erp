@@ -1,0 +1,113 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Sewing WIP Detail</h2>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 200px;margin-bottom:15px">
+            @using (Html.BeginForm("SewingWIPDetail", "SewingOutputProcess", FormMethod.Get, new { @class = "SewingWIPDetailFrom" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Output Date")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SewingOutPutProcess.OutputDate, new { @class = "datepicker", @data_val = "false", id = "txtOutputDate", style = "width:100px;" })
+                        </td>
+                        <td style="width: 328px">
+                            <input type="button" class="searchAction" />
+                        </td>
+                        <td>
+                            @Html.Label("Total WIP :")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => x.TotalQty, new { @readonly = "readonly", @style = "background-color: #6495ed; width: 50px" })
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="additem">
+        <div style="margin-bottom: 3px; margin-right: 100px;">
+            <div class="dropdown">
+                <button class="dropbtn">REPORT▼</button>
+                <div class="dropdown-content">
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIPDetail(1)">SewingWIPDetail(pdf)</a>
+                    <a style="cursor: pointer" target="_blank" onclick="SewingWIPDetail(3)">SewingWIPDetail(xlsx)</a>
+                </div>
+            </div>
+        </div>
+        <div style="overflow-y: scroll;height: 400px;">
+            <table class="tabefont webgrid-table webgrid webgrid-alternating-row" id="wipTable">
+                <thead class="webgrid-header">
+                    <tr>
+                        @foreach (DataColumn col in Model.DataTable.Columns)
+                        {
+                            <td>@col.ColumnName</td>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (DataRow row in Model.DataTable.Rows)
+                    {
+                        <tr>
+                            @foreach (DataColumn col in Model.DataTable.Columns)
+                            {
+                                <td>@row[col.ColumnName]</td>
+                            }
+                        </tr>
+                    }
+                    <tr>
+                        <td>TOTAL</td>
+                        <td>@Model.TotalQty</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#wipTable tr:odd').css('background-Color', 'honeydew');
+        });
+
+        function SewingWIPDetail(reportTypeId) {
+            var form = $('.SewingWIPDetailFrom');
+            var data = form.serialize();
+            var url = '/Production/ProductionReport/SewingWIPDetail?' + data + '&reportTypeId=' + reportTypeId;
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    window.open(url);
+                }
+            }
+        }
+
+    </script>
+
+}
+
+
+
+
+

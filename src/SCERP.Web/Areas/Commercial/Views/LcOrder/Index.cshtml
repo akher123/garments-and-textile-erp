@@ -1,0 +1,149 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderViewModel
+
+@{
+    ViewBag.Title = "LC Order Mapping";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.BuyerOrders.Any()) ? "" : "none";
+}
+
+<div id="lcOrderIndex">
+    
+    @using (Html.BeginForm("Index", "LcOrder", FormMethod.Get, new { @class = "lcOrderSearchForm submit-allow ignore-validation" }))
+    {
+        @Html.HiddenFor(x => x.IsSearch)
+
+        <div class="header-title">
+            <h2>LC to Order Mapping</h2>
+        </div>
+
+        <section class="common-search-section">
+            <div class="search formCover common-search-wrapper">
+                <table class="tabefont">
+                    <tr>
+                        <td> @Html.TextBoxFor(x => x.FromDate,new {@class="datepicker", @data_val = "false", @placeholder = "From date", @style = ""}) </td>
+                        <td> @Html.Label("To")</td>
+                        <td> @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date", @style = "" }) </td>
+                        <td> @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus"}) </td>
+                        <td> <input type="button" id="LcOrderSearch" class="addButton" value="Find"/> </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+    }
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                Pending Orders
+            </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.BuyerOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                             //grid.Column("St", canSort: false, format: @<text> <input type="button" onclick="selectRow('@item.OrderNo',this)" value="✅" /></text>),
+                             grid.Column("Styl", format: @<text><a class="AjaxPopup" action="/Commercial/LcOrder/OrderDetailsByOrderNo?OrderNo=@item.OrderNo">@item.OrderNo</a></text>, canSort: false),
+
+                    //grid.Column("OrderNo", canSort: false, header: "Order Ref."),
+                    grid.Column("OrderDate", canSort: false, header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>),
+              grid.Column("RefNo", canSort: false, header: String.Format("{0}", "Order No")),
+              grid.Column("BuyerName", canSort: false, header: String.Format("{0}", "Buyer Name")),
+              grid.Column("SeasonName", canSort: false, header: "Season"),
+              grid.Column("SMode", canSort: false, header: "Ship Mode"),
+              grid.Column("TotalStyleInOrder", canSort: false, header: "Style Qty"),
+              grid.Column("Quantity", canSort: false, header: "Quantity"),
+              grid.Column("ShipQty", canSort: false, header: "Ship Qty."),
+              grid.Column("MeasurementUnit", canSort: false, header: "Unit"),
+              grid.Column("EmpName", canSort: false, header: "Merchandiser"),
+              grid.Column("LcNo", header: "Lc No", format: @<text><input name="LcName" type="text" style="width: 100px;height: 12px;" class="LcNo" value="@item.LcNo" /></text>, canSort: false)
+))
+                ;
+            }
+        </div>
+        <div class="addButton-wrapper" style="margin-top: 10px;">
+            <input type="submit" value="Save" id="save" class="addButton" name="save" onclick="save()" />
+        </div>
+        <div class="additem">
+            <div class="addButton-wrapper">
+                Completed Orders
+            </div>
+
+            @{
+                var grid2 = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid2");
+                grid2.Bind(Model.BuyerOrdersLc, rowCount: Model.TotalLcRecords, autoSortAndPage: false);
+                grid2.Pager(WebGridPagerModes.All);
+                @grid2.GetHtml(htmlAttributes: new { id = "grid2" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid2.Columns(
+                           
+                         grid2.Column("OrderNo", canSort: false, header: "Order Ref."),
+                         grid2.Column("LcNo", canSort: false, header: "Lc No"),
+                         grid2.Column("OrderDate", canSort: false, header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>),
+                     grid2.Column("RefNo", canSort: false, header: String.Format("{0}", "Order No")),
+                     grid2.Column("BuyerName", canSort: false, header: String.Format("{0}", "Buyer Name")),
+                     grid2.Column("SeasonName", canSort: false, header: "Season"),
+                     grid2.Column("SMode", canSort: false, header: "Ship Mode"),
+                     grid2.Column("TotalStyleInOrder", canSort: false, header: "Style Qty"),
+                     grid2.Column("Quantity", canSort: false, header: "Quantity"),
+                     grid2.Column("ShipQty", canSort: false, header: "Ship Qty."),
+                     grid2.Column("MeasurementUnit", canSort: false, header: "Unit"),
+                     grid2.Column("EmpName", canSort: false, header: "Merchandiser"),
+                     grid2.Column("LC No", format: @<text><button class="delete" action="/Commercial/LcOrder/Delete?OrderNo=@item.OrderNo"></button></text>, canSort: false)
+          ))
+                ;
+            }
+        </div>
+    </section>
+</div>
+
+<script src="~/Scripts/SCERP/Commercial/LcOrder.js"></script>
+
+    @section scripts
+    {
+        <script type="text/javascript">
+
+            $('.LcNo').autocomplete(
+                {
+                    source: '@Url.Action("TagLcSearch", "Lc")'
+                });
+
+            function selectRow(lcId, obj) {
+                //$('#pcscwrapperId').hide("slow");
+                //$('#pcscwrapperId').show('slow');
+                //var button = $(obj);
+                //var $tr = button.closest('tr');
+                //$tr.addClass("selected").siblings().removeClass("selected");
+                //var scUrl = "/Commercial/SalesContact/Index";
+                //$('#btnScDtl').attr('action', scUrl + "?LcId=" + lcId);
+
+                //var pcUrl = "/Commercial/PackingCredit/Index";
+                //$('#btnPcAmt').attr('action', pcUrl + "?LcId=" + lcId);
+                alert(lcId);
+            }
+
+        </script>
+    }

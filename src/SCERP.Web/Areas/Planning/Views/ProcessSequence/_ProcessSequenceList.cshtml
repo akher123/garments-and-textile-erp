@@ -1,0 +1,40 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessSequenceViewModel
+@{
+    Layout = null;
+}
+<div class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @Html.Partial("~/Areas/Planning/Views/ProcessSequence/_Edit.cshtml", Model)
+    </div>
+</div>
+<div>
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Process Row</th>
+                <th>Style Ref.</th>
+                <th>Process Ref.</th>
+                <th>Process</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var style in Model.ProcessSequences)
+            {
+                <tr>
+                    <td>@style.ProcessRow</td>
+                    <td>@style.OrderStyleRefId</td>
+                    <td>@style.ProcessRefId</td>
+                    <td>@style.ProcessName</td>
+                    <td><button class="btnAction" targentclass="editProcessSeq" action="/Planning/ProcessSequence/Edit?ProcessSequenceId=@style.ProcessSequenceId&OrderStyleRefId=@style.OrderStyleRefId"></button></td>
+                    <td><button class="deleteAction" targentclass="StyleProcessSequence" action="/Planning/ProcessSequence/Delete?ProcessSequenceId=@style.ProcessSequenceId&OrderStyleRefId=@style.OrderStyleRefId"></button></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+

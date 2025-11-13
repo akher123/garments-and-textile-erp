@@ -1,0 +1,281 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsigneeViewModel
+@{
+    ViewBag.Title = Model.ConsigneeId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Consignee", FormMethod.Post, new { @class = "OmBuyerform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ConsigneeId)
+    @Html.HiddenFor(model => model.IsSearch)
+    <fieldset>
+        <legend>Consignee</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ConsigneeRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+        
+            <tr>
+                <td>
+                    @Html.Label("Consignee Name :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ConsigneeName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.ConsigneeName)
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    @Html.Label("Address :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address1)
+
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Address1)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address2)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Address3)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Buyer")
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.BuyerRefId, Model.BuyerSelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Phone)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Country:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CountryId, Model.CountrySelectListItem, "-Select-", new { @class = "Country_forCity" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("City:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CItyId, Model.CitySelectListItem, "-Select-", new { @class = "City_byCountry" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Phone :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Phone)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Phone)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Email :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.EMail)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.EMail)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Fax :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Fax)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.Fax)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.Remarks)
+
+                </td>
+                <td>
+                 
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (!Model.IsSearch)
+                    {
+                        @Html.SaveButton()
+                    }
+                    else
+                    {
+                        <input type="button" value="Save" id="consineeSaveButton" />
+                    }
+                </td>
+
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.Country_forCity').unbind('change').bind('change', function () {
+            var countryId = $(this).val();
+            $.Ajax({
+                url: '/City/GetCityByCountry/',
+                data: { CountryId: countryId }
+            }).done(function (states) {
+                $('.City_byCountry').empty();
+                if (states.length > 0) {
+                    $('.City_byCountry').append(
+
+                            $('<option/>')
+                                .attr('value', '')
+                                .text("-Select-")
+                        );
+                    $.each(states, function (state) {
+                        $('.City_byCountry').append(
+
+                            $('<option/>')
+                                .attr('value', this.CityId)
+                                .text(this.CityName)
+                        );
+                    });
+                } else {
+                    $('.City_byCountry').append(
+                        $('<option/>')
+                            .attr('value', "")
+                            .text("No City Found")
+                    );
+                }
+
+            });
+
+
+        });
+        $('#consineeSaveButton').unbind('click').bind('click', function () {
+            var $form = $(this).parents('form:first');
+            var data = $form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                $form.validate();
+                if (!$form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    $.Ajax({
+                        url: $form.attr('action'),
+                        dataType: 'json',
+                        type: 'post',
+                        data: data,
+                    }).done(function (consineeList) {
+                        $('#consigneeDropDown').empty();
+                        if (consineeList.length > 0) {
+                            $('#consigneeDropDown').append(
+                          $('<option/>')
+                              .attr('value', '')
+                              .text("N/A")
+                      );
+                            $.each(consineeList, function (consinee) {
+                                $('#consigneeDropDown').append(
+                                    $('<option/>')
+                                        .attr('value', this.ConsigneeRefId)
+                                        .text(this.ConsigneeName)
+                                );
+                            });
+                            $form.DialogClose();
+                        } else {
+                            alert("Not saved");
+                        }
+
+                    });
+                }
+            }
+        });
+    </script>
+}
+

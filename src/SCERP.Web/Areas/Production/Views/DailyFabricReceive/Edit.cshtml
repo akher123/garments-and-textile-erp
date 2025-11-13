@@ -1,0 +1,119 @@
+﻿@model SCERP.Web.Areas.Production.Models.DailyFabricReceiveViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.DailyFabricReceive.FabricReceiveId > 0) ? "Edit" : "Add";
+}
+
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "DailyFabricReceive", FormMethod.Post, new { @class = "DailyFabricReceiveSearchForm" }))
+    {   @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.DailyFabricReceive.FabricReceiveId)
+        @Html.HiddenFor(model => model.DailyFabricReceive.ComponentRefId)
+        @Html.HiddenFor(model => model.DailyFabricReceive.OrderStyleRefId)
+        @Html.HiddenFor(model => model.DailyFabricReceive.ColorRefId)
+        @Html.HiddenFor(model => model.DailyFabricReceive.ConsRefId)
+        <fieldset>
+            <legend>Daily Fabric Receive</legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Buyer."))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.BuyerName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Style"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.StyleName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "OrderNo."))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.OrderNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Fabrication"))
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.FabricProductionSummary.ItemName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Color"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.ColorName, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Req.Fabric"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.ReqFabric, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Balance"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.FabricProductionSummary.BalanceQty, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Received Date"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DailyFabricReceive.ReceivedDate, new {  @class="datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+             
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "Fabric Qty"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.DailyFabricReceive.FabricQty)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save" />
+                    </td>
+                    <td></td>
+                </tr>
+
+
+            </table>
+        </fieldset>
+
+    }
+</div>

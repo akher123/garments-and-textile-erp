@@ -1,0 +1,128 @@
+﻿@model SCERP.Model.VoucherListViewModel
+@{
+    ViewBag.Title = "Voucher List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2> Voucher List </h2>
+</div>
+
+@using (Html.BeginForm("Index", "VoucherList", FormMethod.Get, new { @class = "VoucherListSearchForm submit-allow ignore-validation" }))
+{
+    <div>
+        <section style=" border: 1px solid #afafaf; border-radius: 5px; padding: 10px 0 10px 10px;">
+            <table class="tabefont">
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Financial Period :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("FpId", null, "- Select -", new { @onchange = "SetCalenderFixed(this.value)", style = "width:320px;" })
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("From Date :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("FromDate")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("To Date :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("ToDate")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Voucher Type :")
+                    </td>
+
+                    <td>
+                        @Html.DropDownList("VoucherTypeId", "- Select -")
+                    </td>
+
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayName("Voucher No :")
+                    </td>
+
+                    <td>
+                        @Html.TextBox("VoucherNo")
+                    </td>
+
+                    <td class="margin-top" colspan="5" align="left">
+                        <button class="search" type="button" onclick="search('/Accounting/VoucherList/Index', 'IndexForm')" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+            </table>
+        </section>
+    </div>
+}
+
+<div style="height: 20px;">
+</div>
+
+<div class="additem">
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: SCERP.Common.AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VoucherLists, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                         tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                            firstText: "First",
+                                     lastText: "Last",
+                                      nextText: "Next",
+                                      mode: WebGridPagerModes.All,
+                                          previousText: "Previous",
+                    columns: grid.Columns(
+
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    grid.Column("Date", header: "Date"),
+                    grid.Column("VoucherType", header: "VoucherType"),
+                    grid.Column("VoucherNo", header: "VoucherNo"),
+                    grid.Column("Particulars", header: "Particulars"),
+                    grid.Column("Amount", header: "Amount"),
+
+                    grid.Column(header: "Edit", format: @<text><button class="edit" action="/Accounting/VoucherList/Edit/@item.Id"></button></text>),
+                    grid.Column( header:"Print", format:@<text>@Html.ActionLink("Print", "Voucher", "Report", new { item.Id }, new {@target="_blank"})   </text>)
+
+
+                        ));
+}
+</div>
+
+<script src="~/Scripts/SCERP/Acc_VoucherList.js"></script>

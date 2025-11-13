@@ -1,0 +1,109 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BulkBooking.BulkBookingId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("SaveDetail", "BulkBooking", FormMethod.Post, new { @class = "BulkBookingDetailSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BulkBookingDetail.BulkBookingId)
+        @Html.HiddenFor(model => model.BulkBookingDetail.BulkBookingDetailId)
+        <fieldset>
+            <legend>Fabrication </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "SL NO."))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingDetail.SequenceNo, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.BulkBookingDetail.BuyerRefId, Model.BuyerSelectListItem,"Select")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Order")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingDetail.OrderNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Style")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BulkBookingDetail.StyleNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Item")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BulkBookingDetail.ItemName)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Fabrication")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BulkBookingDetail.Fabrication)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("GSM")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BulkBookingDetail.GSM)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Ship Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBookingDetail.ShipDate, new { @class = "datepicker", @placeholder = "Shipment Date" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "BulkBookingDetailList" } })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>

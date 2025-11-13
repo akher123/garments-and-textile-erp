@@ -1,0 +1,174 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.RedyeingFabricIssueViewModel
+@{
+    ViewBag.Title = Model.RedyeingFabricIssue.RedyeingFabricIssueId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "RedyeingFabricIssue", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.RedyeingFabricIssue.RedyeingFabricIssueId)
+        <fieldset>
+            <legend>Redyeing Fabric Issue</legend>
+            <table class="tabefont" style="float: left; padding-right: 10px; border-right: 1px solid #000;">
+                <tr>
+                    <td>
+                        @Html.Label("Ref No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.RefNo, new { @readonly = "readonly", style = "background-color: #F0ECE7;width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Party")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.RedyeingFabricIssue.PartyId, Model.PartySelectListItem, "-Select-", new { id = "ddlParyId", style = "width: 254px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan No :")
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.ChallanNo, new { style = "width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Challan Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.ChallanDate, new { @class = "datepicker", @placeholder = "Challan Date", style = "width: 240px;" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Vehicle Type :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.VehicleType, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Driver:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.DriverName, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Driver Phone:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RedyeingFabricIssue.DriverPhone, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(x => x.RedyeingFabricIssue.Remarks, new { style = "width: 240px;" })
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <table class="tabefont" style="padding-left: 10px;">
+                <tr>
+                    <td>
+                        <table id="RedyeingFabricIssueDetail">
+                            <tr>
+                                <td>
+                                    @Html.Label("Batch")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.RedyeingFabricIssueDetail.BatchNo, new { @id = "BatchNoTextBox", @placeholder = "SearchBy Batch No", @data_target = "#BtRefNoHiddenText", @action = "/RedyeingFabricIssue/GetRedyeingReceivedBatchAutocomplite" })
+                                    @Html.HiddenFor(x => x.RedyeingFabricIssueDetail.BatchId, new { @id = "BtRefNoHiddenText" })
+                                </td>
+                                <td>@Html.Label("Fabric Type")</td>
+                                <td>
+                                    @Html.DropDownListFor(x => x.RedyeingFabricIssueDetail.BatchDetailId, Model.ItemSelectListItem, "-Select-", new { @id = "ddlBatchDetailItem", @data_val = "false" })
+                                    @Html.HiddenFor(x => x.RedyeingFabricIssueDetail.ItemName, new { @id = "txtItemName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Balance")</td>
+                                <td>@Html.TextBox("BalanceQty", "", new { id = "BalanceQty", @readonly = "readonly" ,style="background:grey"})</td>
+                                <td>@Html.Label("Grey Wt")</td>
+                                <td>@Html.TextBoxFor(x => x.RedyeingFabricIssueDetail.ReprocessQty, new {id = "ReprocessQty", @data_val = false})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Finish Wt")</td>
+                                <td>@Html.TextBoxFor(x => x.RedyeingFabricIssueDetail.FinishQty, new { id = "FinishQty", @data_val = false })</td>
+                                <td>@Html.Label("No Role")</td>
+                                <td>@Html.TextBoxFor(x => x.RedyeingFabricIssueDetail.NoRole, new {id = "NoRole", @data_val = false})</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.Label("Remarks")</td>
+                                <td>@Html.TextBoxFor(x => x.RedyeingFabricIssueDetail.Remarks, new { id = "Remarks", @data_val = false })</td>
+                                <td>
+                                    <input type="button" value="+" id="addRedyeingFabricIssueDetailButton" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <table class="tabefont webgrid-table" id="redyeingFabricReceiveDetailTable">
+                            <thead style="text-align: center" class="webgrid-header">
+                            <tr>
+                                <th>Batch</th>
+                                <th>Fabric</th>
+                                <th>ReprocessQty</th>
+                                <th>Finish Qty</th>
+                                <th>No Role</th>
+                                <th>Remarks</th>
+                               
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @Html.Partial("~/Areas/Inventory/Views/RedyeingFabricIssue/_RedyeingFabricIssueDetail.cshtml", Model)
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td style="float: right">
+                        <input type="submit" value="Save" class="addButton" />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</section>
+
+@section scripts
+{
+  <script src="~/Scripts/SCERP/Inventory/redyeingFabricIssue.js"></script>
+}

@@ -1,0 +1,14 @@
+﻿   .padding-top {
+            padding-top: 10px;
+        }
+
+
+        .gridSelect .buyerOrderStyle-row td {
+            padding: 5px;
+            width: auto;
+            cursor: pointer;
+        }
+
+        .gridSelect .buyerOrderStyle-row tr:hover, tr.selected {
+            background-color: #20b2aa;
+        }

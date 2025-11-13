@@ -1,0 +1,87 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.CuttingStatusViewModel
+@using System.Data
+@{
+    Layout = null;
+}
+
+
+<section class="formCover">
+    <div class="mis-title">Cutting Production</div>
+    <div class="tbl-content">
+        <table>
+            <tbody>
+                @foreach (var porcess in Model.PivotDictionary)
+                {
+                    <tr>
+                        <td style="width:10%">@porcess.Key</td>
+                        <td>
+                            <table class="webgrid-table">
+                                <tbody>
+                                    @foreach (var dt in @porcess.Value)
+                                    {
+                                        <tr>
+                                            <td>@dt.Key</td>
+                                            @foreach (var col in dt.Value)
+                                            {
+                                                <td>
+                                                    @Html.Encode(col)
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="mis-title">Fabric Received From Store</div>
+        <table id="ReceivedAgstPoDetail" class="webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label("Fabric")
+                    </th>
+                    <th>
+                        @Html.Label("Color")
+                    </th>
+                    <th>
+                        @Html.Label("M/C Dia")
+                    </th>
+                    <th>
+                        @Html.Label("Finish Dia")
+                    </th>
+                    <th>
+                        @Html.Label("GSM")
+                    </th>
+                    <th>@Html.Label("GreyWt(Kg)")</th>
+                    <th>@Html.Label("FinishWt(Kg)")</th>
+                    <th>@Html.Label("PL(%)")</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (DataRow row in Model.FabRcvDtl.Rows)
+                {
+                    <tr>
+                        <td>@row["Fabric"]</td>
+                        <td>@row["Color"]</td>
+                        <td>@row["McDia"]</td>
+                        <td>@row["FDia"]</td>
+                        <td>@row["GSM"]</td>
+                        <td>@row["GQuantity"]</td>
+                        <td>@row["FQuantity"]</td>
+                        <td>@row["PLQuantity"]</td>
+                    </tr>
+                }
+            </tbody>
+
+
+
+
+        </table>
+    </div>
+</section>
+

@@ -1,0 +1,73 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.ReligionViewModel
+@{
+    ViewBag.Title = "Religion";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.Religions.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "Religion", FormMethod.Get, new { @class = "ReligionSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Religion</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Religion: ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchKey)
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/Religion/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Religions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column("Name", "Name"),
+                    grid.Column("Detail/Edit", format:
+                    @<text><button class="edit" action="/HRM/Religion/Edit?ReligionId= @item.ReligionId"></button></text>, canSort: false),
+                    grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/Religion/Delete?ReligionId= @item.ReligionId"></button></text>
+            , canSort: false)));
+        }
+    </div>
+
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "Religion", new { SearchKey = Model.SearchKey })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "Religion", new { SearchKey = Model.SearchKey })" alt="Print" title="Print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>
+

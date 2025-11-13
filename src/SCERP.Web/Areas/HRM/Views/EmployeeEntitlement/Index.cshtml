@@ -1,0 +1,48 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeEntitlementInfoViewModel 
+
+@{
+    Layout = null;
+}
+<div class="EmployeeEntitlementDetailContainner">
+
+    @using (Html.BeginForm("Index", "EmployeeEntitlement", FormMethod.Get, new { @class = "EmployeeEntitlementSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset style="margin-top: 10px; margin-right: 10px; margin-bottom: 20px;">
+            <legend>Benefit Information</legend>
+
+            <div class="additem">
+                <div style="margin-bottom: 3px;">
+                    <button class="AjaxPopup addButton" action="/HRM/EmployeeEntitlement/Edit">Add New</button>
+                </div>
+                @{
+        var grid = new WebGrid(canPage: false, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.EmployeeEntitlements, autoSortAndPage: false);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                        tableStyle: "webgrid-table webgrid",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        firstText: "First",
+                        lastText: "Last",
+                        nextText: "Next",
+                        mode: WebGridPagerModes.All,
+                        previousText: "Previous",
+                        columns: grid.Columns(
+                            grid.Column("Entitlement.Title", header: "Benefit", format: @<text>@(item.Entitlement == null ? "---" : item.Entitlement.Title)</text>),
+                            grid.Column("FromDate", header: "From ", format: @<text>@(item.FromDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.FromDate)))</text>),
+                            grid.Column("ToDate", header: "To ", format: @<text>@(item.ToDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ToDate)))</text>),
+                            grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/HRM/EmployeeEntitlement/Edit/@item.Id"></button></text>),
+                            grid.Column("Delete", format:@<text><button class="delete" action="/HRM/EmployeeEntitlement/Delete/@item.Id"></button></text>, canSort: false)))
+                }
+            </div>
+        </fieldset>
+    }
+
+
+</div>

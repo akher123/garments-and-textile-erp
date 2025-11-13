@@ -1,0 +1,37 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = null;
+}
+<div class="additem">
+    <div style="margin-bottom: 3px;">
+        <button class="AjaxPopup" action="/Production/Dyeing/DOutEdit?ProrgramRefId=@Model.ProrgramRefId">+</button>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OutProdProductions, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("ProductionRefId", header: "Ref No"),
+                        grid.Column("SlipNo", header: "SlipNo"),
+                        grid.Column("Qty", header: "Qty", canSort: false),
+                        grid.Column("ProdDate", header: "Date", format: @<text>@(item.ProdDate == null ? "" : item.ProdDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ProcessorName", header: "Processor", canSort: false),
+                        grid.Column("MachineName", header: "Machine", canSort: false),
+                        grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Production/Dyeing/DOutEdit?ProductionId=@item.ProductionId"></button></text>),
+                        grid.Column("Delete",canSort:false,format:@<text><button class="deleteAction" targentclass="DeyingOutputList" action="/Production/Dyeing/Delete?ProductionId=@item.ProductionId&ProrgramRefId=@item.ProrgramRefId&PType=@item.PType"></button></text>)));
+    }
+</div>
+

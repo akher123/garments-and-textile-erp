@@ -1,0 +1,157 @@
+﻿@using System.Web.UI.HtmlControls
+@model SCERP.Web.Areas.UserManagement.Models.ViewModels.UserViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    bool isReadOnly = Model.Id > 0;
+    var message = ViewBag.Message;
+}
+
+<style>
+    input[type="Password"] {
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        height: 10px;
+        margin: 0;
+        padding: 6px;
+        width: 125px;
+    }
+</style>
+
+@using (Html.BeginForm("Save", "User", FormMethod.Post, new { @class = "userform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div>
+        <fieldset>
+            <legend>User Creation</legend>
+            <table class="tableFont" style="width:600px;">
+                <tr>
+                    <td class="fieldTitleCls" style="width:125px;">Card Id</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Employee.EmployeeCardId, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { @class = "txtCardId" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Contact Name</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Contact.ContactName)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Email</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Contact.Email)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Phone</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Contact.Phone)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldTitleCls">Company</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.Contact.CompId, Model.CompanySelectListItem, "-Select-", new { @onchange = "getDomainByCompany(this)" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="fieldTitleCls" style="width: 125px;">User Name</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.UserName, isReadOnly ? (object)new { @readonly = "readonly", @style = "background-color: #F0ECE7" } : new { autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.DomainName, new { @readonly = "readonly", @style = " background-color: coral;width:50px;", id = "domain_name_id" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+
+                    </td>
+                </tr>
+                @if (isReadOnly)
+                {
+
+                    <tr>
+                        <td class="fieldTitleCls" style="width: 125px;">TNA Responsible</td>
+                        <td>
+                            @Html.DropDownListFor(model => model.TnaResponsible, ViewBag.TnaResponsibles as IEnumerable<SelectListItem>, "-Select-")
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                            @Html.ValidationMessageFor(model => model.EmailAddress)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="fieldTitleCls" style="width: 125px;">Password</td>
+                        <td>
+                            @Html.EditorFor(model => model.Password, isReadOnly ? (object)new { htmlAttributes = new { @readonly = "readonly", @style = "background-color: #F0ECE7" } } : new { htmlAttributes = new { @class = "txtpassword" } })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                            @Html.ValidationMessageFor(model => model.Password, "Required")
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="fieldTitleCls" style="width: 125px;">Confirm Password</td>
+                        <td>
+                            @Html.EditorFor(model => model.ConfirmPassword, isReadOnly ? (object)new { htmlAttributes = new { @readonly = "readonly", @style = "background-color: #F0ECE7" } } : new { htmlAttributes = new { @class = "txtConfirmpassword" } })
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td class="fieldTitleCls" style="width: 125px;">Email Address</td>
+                    <td>
+                        @Html.EditorFor(model => model.EmailAddress)
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="font-size: small; color: green;">
+                        @message
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="5" align="left">
+                        @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        function getDomainByCompany(obj) {
+            var ddr = $(obj);
+            var compId = ddr.val();
+            $.Ajax({
+                url: '/UserManagement/User/GetDomainByCompany',
+                type: "GET",
+                dataType: 'JSON',
+                data: { compId: compId }
+            }).done(function (domainName) {
+                $('#domain_name_id').val(domainName)
+            })
+        }
+
+    </script>
+}

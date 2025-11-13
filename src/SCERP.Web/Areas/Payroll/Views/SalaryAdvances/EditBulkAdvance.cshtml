@@ -1,0 +1,303 @@
+﻿@using System.Diagnostics
+@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.SalaryAdvanceViewModel
+@{
+    ViewBag.Title = "Employee Salary Advance";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SalaryAdvanceId > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("EditBulkAdvance", "SalaryAdvances", FormMethod.Get, new { @class = "BulkSalaryAdvanceSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsBulkSalaryAdvanceSearch)
+    
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Employee Salary Advance (Multiple)</h3>
+    </div>
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "SearchByCompanyId", @action = "/Payroll/SalaryAdvances/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/Payroll/SalaryAdvances/GetAllBranchUnitByBranchId", @TargetClass = "SearchByBranchUnitId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitId, Model.BranchUnitSelectListItem, "--Select--", new { @class = "SearchByBranchUnitId", @action = "/Payroll/SalaryAdvances/GetAllBranchUnitDepartmentByBranchUnitId", @TargetClass = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.Label("Department :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByBranchUnitDepartmentId, Model.BranchUnitDepartmentSelectListItem, "--Select--", new { @class = "Hrm_BranchUnitDepartmentForDepartmentSectionAndLine", @action = "/Payroll/SalaryAdvances/GetDepartmentSectionAndLineByBranchUnitDepartmentId", @TargetClass = "Hrm_DepartmentSection", @OtherTargetClass = "Hrm_DepartmentLine" })
+                </td>
+                <td>
+                   @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Section :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.Label("Line :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Employee Type:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItems, "-Select-")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>          
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchFieldModel.SearchByEmployeeCardId)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.Label("(%) of Salary:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Percentage)
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp; 
+                </td>
+                <td>
+                    @Html.Label("Received Date:")
+                </td>
+                <td>    
+                   @Html.TextBoxFor(x => x.ReceivedDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                   @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>               
+        </table>
+    </section>
+}
+
+@if (Model.EmployeesForAdvanceSalary != null)
+{
+    if (Model.EmployeesForAdvanceSalary.Count > 0)
+    {
+        <section class="search formCover">
+            <div class=" additem">
+                @using (Html.BeginForm("SaveBulkAdvance", "SalaryAdvances", FormMethod.Post))
+                {
+                    <fieldset>
+                        <legend>Employees</legend>
+
+                        <div style="overflow: auto;">
+                            <div style="height: 200px;">
+                                @{
+                    var grid = new WebGrid(canPage: false, canSort: true, ajaxUpdateContainerId: "grid");
+                    grid.Bind(Model.EmployeesForAdvanceSalary, autoSortAndPage: false);
+                    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                  tableStyle: "webgrid-table webgrid",
+                                  headerStyle: "webgrid-header",
+                                  footerStyle: "webgrid-footer",
+                                  alternatingRowStyle: "webgrid-alternating-row",
+                                  selectedRowStyle: "webgrid-selected-row",
+                                  rowStyle: "webgrid-row-style",
+                                  firstText: "First",
+                                  lastText: "Last",
+                                  nextText: "Next",
+                                  mode: WebGridPagerModes.All,
+                                  previousText: "Previous",
+                                  columns: grid.Columns(
+                                            grid.Column(header: "", format: @<text><input name="EmployeeGuidIdList" value="@item.EmployeeId" type="checkbox" /></text>),
+                                            grid.Column("EmployeeCardId", header: "Employee ID ", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+                                            grid.Column("EmployeeName", header: "Employee Name ", format: @<text>@(item.Name ?? "")</text>),
+                                            grid.Column("Designation", header: "Designation ", format: @<text>@(item.Designation ?? "")</text>),
+                                            grid.Column("Grade", header: "Grade ", format: @<text>@(item.Grade ?? "")</text>),
+                                            grid.Column("JoiningDate", header: "Joining Date ", format: @<text>@(item.JoiningDate ?? "")</text>),
+                                            grid.Column("Section", header: "Section ", format: @<text>@(item.Section ?? "- - -")</text>),
+                                            grid.Column("Line", header: "Line ", format: @<text>@(item.Line ?? "- - -")</text>),
+                                            grid.Column("BasicSalary", header: "Basic Salary ", format: @<text>@(item.BasicSalary ?? "- - -")</text>),
+                                            grid.Column("Gross Salary", header: "Gross Salary ", format: @<text>@(item.GrossSalary ?? "- - -")</text>),
+                                            grid.Column(header: "Amount", format: @<text><input name="AdvanceAmountList" value="@item.Amount" type="text" style="width: 100px;"/></text>)));
+                                }
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Other Information</legend>
+                        <table class="tabefont">
+                            <tr>
+                                <td></td>
+                                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                            </tr>                         
+                            <tr>
+                                <td>
+                                    @Html.Label("Remarks :")
+                                </td>
+                                <td>
+                                    @Html.TextAreaFor(x => x.Remarks, new { htmlAttributes = new { @class = "Remarks"}, @data_val = false })
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="submit" class="SaveBulkAdvanceButton addButton" value="Save" />
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                }
+            </div>
+        </section>
+    }
+}
+
+@section scripts{
+
+    @*<script src="~/Scripts/SCERP/webGridAllCheckBoxSelect.js"></script>*@
+    
+    <script>
+        $('.SaveBulkAdvanceButton').click(function () {
+
+            var listSalaryAdvance = [];
+         
+            $('#grid tbody tr').filter(':has(:checkbox:checked)').each(function () {
+                    // this = tr
+                    $tr = $(this);
+                   
+                    var $checkBoxEmployeeId = $tr.find('td:eq(0)').find("input[type=checkbox]");
+                    var $textboxSalaryAmount = $tr.find('td:eq(10)').find("input[type=text]");
+
+                    var employeeInfo = {
+                        "EmployeeId": $checkBoxEmployeeId.val(),
+                        "Amount": $textboxSalaryAmount.val(),
+                        "ReceivedDate": $('#ReceivedDate').val(), 
+                        "Remarks":$('.Remarks').val(),
+                        "IsActive":"true"
+                    };
+
+                    listSalaryAdvance.push(employeeInfo);
+
+                });
+            
+                var form = $(this).parents("form:first");
+                var url = form.attr('action');
+                if (jQuery.validator && jQuery.validator.unobtrusive) {
+                    form.validate();
+                    if (!form.valid()) {
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        var option = {
+                            url: url,
+                            type: "POST",
+                            dataType: "json",
+                            contentType:  "application/json",
+                            data: JSON.stringify(listSalaryAdvance)
+                        };
+                        $.ajax(option).done(function (response) {
+                            alert(response);
+                        });
+                    }
+                }
+        });
+        
+      
+       
+    </script>
+}

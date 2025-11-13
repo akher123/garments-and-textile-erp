@@ -1,0 +1,61 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    Layout = null;
+}
+
+
+<tr id="newRow-@Model.MaterialIssueDetails[Model.Key].ItemId-@Model.MaterialIssueDetails[Model.Key].ColorRefId-@Model.MaterialIssueDetails[Model.Key].FColorRefId">
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].AdvanceMaterialIssueId)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].AdvanceMaterialIssueDetailId)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].ItemId)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].ItemName)
+    </td>
+  
+    <td>
+        <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].FColorName)</span>
+        @Html.TextBoxFor(x => x.MaterialIssueDetails[Model.Key].FColorName, new { @class = "edit-mode autocompliteColorSerach", @style = "width:80px", @data_target = "#FColorRefId_" + Model.Key, @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].FColorRefId, new { id = "FColorRefId_" + Model.Key })
+
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].Brand)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].SizeRefId)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].SizeName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].ColorRefId)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].ColorName)
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].ColorName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].GColorRefId)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].GColorName)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].IssueRate)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].IssueRate)
+    </td>
+
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].IssueQty)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].IssueQty)
+    </td>
+
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].QtyInBag)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].QtyInBag)
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.MaterialIssueDetails[Model.Key].Wrapper)
+        @Html.DisplayFor(x => x.MaterialIssueDetails[Model.Key].Wrapper)
+    </td>
+    <td>
+        <input type="button" class="edit-button" value="Edit" />
+    </td>
+    <td>
+        <input type="button" value="-" onclick="deleteRow(this)" />
+    </td>
+</tr>

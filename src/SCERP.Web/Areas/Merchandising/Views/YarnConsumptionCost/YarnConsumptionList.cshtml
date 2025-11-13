@@ -1,0 +1,134 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionCostViewModel
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Update", "YarnConsumptionCost", FormMethod.Post))
+{
+    <div class="additem">
+        <div class="addButton-wrapper">
+            @Html.Button("Update", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "YcosumptionLsitContainer" } })
+        </div>
+    </div>
+    <div>
+        @Html.HiddenFor(x => x.OrderStyleRefId)
+        <table class="webgrid-table" style="width: auto">
+            <thead style="text-align: center" class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(String.Format("{0}", "SL"))
+                    </th>
+                    <th>
+                        @Html.Label(String.Format("{0}", "Yarn"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Count"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Color"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Total"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Net"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Unit"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Rate"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Supplier"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "PI No"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (var index = 0; index < Model.YarnConsumptions.Count; index++)
+                {
+                <tr class="buyerOrderStyle-row">
+                    <td>
+                        @Convert.ToString((index + 1))
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].ItemName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].KSizeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].KColorName)
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].KQty)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].WMtr)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.YarnConsumptions[index].UnitName)
+                    </td>
+
+                    <td>
+                        @Html.HiddenFor(x => x.YarnConsumptions[index].OrderStyleRefId)
+                        @Html.TextBoxFor(x => x.YarnConsumptions[index].Rate, new { @placeholder = "Yarn Rate", @style = "width:100px;" })
+                    </td>
+                    <td>
+                        @Html.HiddenFor(x => x.YarnConsumptions[index].YarnConsumptionId)
+                        @Html.HiddenFor(x => x.YarnConsumptions[index].ConsRefId)
+                        @Html.DropDownListFor(x => x.YarnConsumptions[index].SupplierId, new SelectList(Model.SupplierCompanies, "SupplierCompanyId", "CompanyName", Model.YarnConsumptions[index].SupplierId), "-Select-",new {id="id_supplier_"+index, onchange = @"getPiRefBySupplierId('"+index+"',this);" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.YarnConsumptions[index].PiRefId, new SelectList(Model.PiInvoices, "PiRefId", "PiNo", Model.YarnConsumptions[index].PiRefId), "-Select-",new {id="id_PiRefId_"+index })
+                    </td>
+                </tr>
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+}
+
+<script type="text/javascript">
+   function getPiRefBySupplierId(rowId,obj){
+       var supdrdn = $(obj);
+       var supplierId = supdrdn.val();
+        jQuery.ajax({
+                url: '/Commercial/ProFormaInvoice/GetPiBySupplier/',
+                type: "GET",
+                data: { supplierId: supplierId }
+        }).done(function (respons) {
+            var $drdn = $('#id_PiRefId_' + rowId);
+                $drdn.empty();
+                    $drdn.append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text('Select')
+                    );
+                $.each(respons, function (pi) {
+                   $drdn.append(
+                        $('<option/>')
+                            .attr('value', this.PiRefId)
+                            .text(this.PiNo)
+                    );
+                });
+            });
+    }
+    
+
+</script>

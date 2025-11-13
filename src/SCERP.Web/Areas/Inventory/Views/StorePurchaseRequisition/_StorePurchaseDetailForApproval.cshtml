@@ -1,0 +1,197 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseRequisitionViewModel
+@{
+    Layout = null;
+    var sprdetails = Model.InventoryStorePurchaseRequisitionDetails;
+}
+<table id="StorePurchaseRequisitionDetail" class="tabefont webgrid-table webgrid " style="width: auto">
+    <thead class="webgrid-header">
+        <tr>
+            <th colspan="14">This Section for Store </th>
+            <th colspan="3">This Section for Approval </th>
+            <th colspan="4">This Section for Purchase </th>
+            <th colspan="1">Operation</th>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("Item")
+            </th>
+
+            <th>
+                @Html.Label("Description")
+            </th>
+            <th>
+                @Html.Label("Size")
+            </th>
+            <th>
+                @Html.Label("Brand")
+            </th>
+            <th>
+                @Html.Label("Origin")
+            </th>
+            <th>
+                @Html.Label("Qantity")
+            </th>
+          
+            <th>
+                @Html.Label("Desired Date")
+            </th>
+            <th>
+                @Html.Label("Uses Area")
+            </th>
+            <th>
+                @Html.Label("Supplied UptoDate")
+            </th>
+
+            <th>
+                @Html.Label("StockInHand")
+            </th>
+            <th>
+                @Html.Label("LastUnitPrice")
+            </th>
+            <th>
+                @Html.Label("Estimated YearlyRequirement")
+            </th>
+            <th>
+                @Html.Label("Modified Qty")
+            </th>
+            <th>
+                @Html.Label("Approved Qty")
+            </th>
+            <th>
+                @Html.Label("Approval Date")
+            </th>
+            <th>
+                @Html.Label("Approval Status")
+            </th>
+            <th>
+                @Html.Label("Remarks")
+            </th>
+            <th>
+                @Html.Label("Quotation")
+            </th>
+            <th>
+                @Html.Label("Present Rate")
+            </th>
+            <th>
+                @Html.Label("Approved Purchase")
+            </th>
+            <th>
+                @Html.Label("Remarks")
+            </th>
+            <th>
+                @Html.Label("Edit")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.InventoryStorePurchaseRequisitionDetails)
+        {
+            <tr class="webgrid-row-style webgrid-alternating-row">
+                <td>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StorePurchaseRequisitionDetailId)
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StorePurchaseRequisitionId)
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ItemId)
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Item.ItemName)</span>
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Description)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Description)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Size.Title)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SizeId)
+
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Brand.Name)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].BrandId)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Country.CountryName)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].OriginId)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quantity)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quantity)
+                </td>
+
+             
+                <td>
+                    <span> @Html.ValueFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].DesiredDate, "{0:dd/MM/yyyy}") </span>
+
+                    @{
+            var desiredDate = Model.InventoryStorePurchaseRequisitionDetails[item.Key].DesiredDate;
+                    }
+                    @if (desiredDate != null)
+                    {
+                        @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].DesiredDate, new { @Value = desiredDate.Value.ToString("dd/MM/yyyy") })
+                    }
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].FunctionalArea)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].FunctionalArea)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SuppliedUptoDate)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SuppliedUptoDate)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StockInHand)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StockInHand)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].LastUnitPrice)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].LastUnitPrice)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].EstimatedYearlyRequirement)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].EstimatedYearlyRequirement)
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ModifiedRequiredQuantity)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ModifiedRequiredQuantity, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedQuantity)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedQuantity, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span class="display-mode">
+
+                        @Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalDate)
+
+                    </span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalDate, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_ApprovalStatus.StatusName)</span>
+                    @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalStatusId, new SelectList(Model.InventoryApprovalStatuses, "ApprovalStatusId", "StatusName", sprdetails[item.Key].ApprovalStatusId), "--Select--", new { @class = "edit-mode", @style = "width:150px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfRequisitionApprovalPerson)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfRequisitionApprovalPerson, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quotation)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quotation)
+                </td>
+                <td>
+                    <span >@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].PresentRate)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].PresentRate)
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedPurchase)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedPurchase, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span>@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfPurchaseApprovalPerson)</span>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfPurchaseApprovalPerson)
+                </td>
+
+                <td>
+                    <input type="button" class="edit-button " value="Edit" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

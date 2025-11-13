@@ -1,0 +1,101 @@
+﻿@using System.Activities.Statements
+@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = null;
+}
+<style type="text/css">
+    div.ui-datepicker {
+        font-size: 14px;
+    }
+</style>
+
+@Html.HiddenFor(x => x.Production.ProcessRefId)
+@Html.HiddenFor(x => x.Production.ProductionId)
+@Html.HiddenFor(x => x.Production.PType)
+<table>
+    <tr>
+        <td>
+            @Html.Label("Reference #")
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Production.ProductionRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.Label("Program")
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Production.ProrgramRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Label("Slip #")
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Production.SlipNo)
+        </td>
+        <td>
+            @Html.Label("PrDate")
+        </td>
+        <td>
+            @Html.EditorFor(x => x.Production.ProdDate)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Label("Processor")
+        </td>
+        <td>
+            @Html.DropDownListFor(x => x.Production.ProcessorRefId, Model.ProcessorsSelectListItem, "-Select-", new { @class = "ProcessorsDropDown" })
+        </td>
+
+        <td>
+            @Html.Label("Machine")
+        </td>
+        <td>
+            @Html.DropDownListFor(x => x.Production.MachineRefId, Model.MachinesSelectListItem, "-Select-", new { @class = "MachineDropDown" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Label("Description")
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Production.Rmks)
+        </td>
+        <td> </td>
+        <td></td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+   
+   
+    $('.ProcessorsDropDown').unbind('change').bind('change', function () {
+        var processorRefId = $(this).val();
+        $.Ajax({
+            url: '/Knitting/AutocompliteMechineByProcessor/',
+            data: { ProcessorRefId: processorRefId }
+        }).done(function (machineList) {
+            $('.MachineDropDown').empty();
+            if (machineList.length > 0) {
+                populateDropDown({ MachineRefId: "", Name: "-Select-" });
+                $.each(machineList, function (machine) {
+                    populateDropDown({ MachineRefId: this.MachineRefId, Name: this.Name });
+                });
+            } else {
+                populateDropDown({ MachineRefId: "", Name: "No State Found" });
+            }
+
+        });
+    });
+    function populateDropDown(obj) {
+        $('.MachineDropDown').append(
+                  $('<option/>')
+                      .attr('value', obj.MachineRefId)
+                      .text(obj.Name)
+              );
+    }
+
+   
+</script>

@@ -1,0 +1,78 @@
+﻿@model SCERP.Model.Mrc_SendingStatus
+@{
+
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.SendingStatusId > 0) ? "Edit" : "Add";
+}
+
+<div style="font-size: 12px;">
+    @using (Html.BeginForm("Save", "SendingStatus", FormMethod.Post, new { @class = "SSendingStatusForm" }))
+    {@Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.SendingStatusId)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <fieldset>
+            <legend>Sending Status</legend>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(model => model.Status)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Status)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Status, "Required")
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Description)
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.Description)
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </fieldset>
+          @Html.Partial("~/Views/Shared/_CustomError.cshtml")
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

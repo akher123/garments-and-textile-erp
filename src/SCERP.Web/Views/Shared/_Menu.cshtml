@@ -1,0 +1,89 @@
+﻿@using SCERP.Model
+
+@model List<ModuleFeatureViewModel>
+
+@{
+    ViewBag.Title = "Simple";
+    Layout = null;
+}
+
+
+
+<div id='cssmenu'>
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <ul>
+            @GetTreeView(Model, Model.FirstOrDefault().ModuleFeature.ParentFeatureId)
+        </ul>
+    }
+</div>
+
+
+
+@helper GetTreeView(List<ModuleFeatureViewModel> siteMenu, int? parentID)
+{
+
+    foreach (var i in siteMenu.Where(a => a.ModuleFeature.ParentFeatureId.Equals(parentID)))
+        {
+
+            <li>
+                @{
+                    var submenu = siteMenu.Count(a => a.ModuleFeature.ParentFeatureId.Equals(i.ModuleFeature.Id));
+                }
+
+                @if (Request.IsAuthenticated)
+                {
+                    if (submenu > 0)
+                    {
+                        <a class="collapse collapsible" style="cursor: pointer" onclick="loadAction('@i.ModuleFeature.NavURL');toggleIcon('@i.ModuleFeature.FeatureName');">
+                            <span class="moduleFeatureColor">@i.ModuleFeature.FeatureName</span>
+                            <span style="margin-right: 6px;float: right;font-size: 16px;padding: 0 4px 1px;text-align: center;">
+                                <i id="down-@i.ModuleFeature.FeatureName" class="fa fa-angle-down" aria-hidden="true"></i>
+                                <i id="up-@i.ModuleFeature.FeatureName" class="fa fa-angle-up" style="display: none" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a id="@i.ModuleFeature.FeatureName" style="cursor: pointer" onclick="loadAction('@i.ModuleFeature.NavURL');activeMenu(this);">
+                            <span class="moduleFeatureColor">@i.ModuleFeature.FeatureName</span>
+                        </a>
+                    }
+                    
+                    if (submenu <= 0)
+                    {
+                        continue;
+                    }
+                    <ul>
+                        @GetTreeView(siteMenu, i.ModuleFeature.Id)
+                    </ul>
+                }
+            </li>
+        }
+}
+
+
+<script>
+    function toggleIcon(id) {
+        var downId = "down-" + id;
+        var upId = "up-" + id;
+        var down = document.getElementById(downId);
+        var up = document.getElementById(upId);
+
+        if (down.style.display === "none") {
+            down.style.display = "block";
+            up.style.display = "none";
+        } else {
+            down.style.display = "none";
+            up.style.display = "block";
+        }
+    }
+
+    function activeMenu(obj) {
+        var $element = $(obj);
+        var $menuDivId = $('#cssmenu');
+        $menuDivId.find("*").removeClass('active-menu');
+        $element.addClass("active-menu");
+    }
+</script>

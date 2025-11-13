@@ -1,0 +1,118 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.DailyFabricReceiveViewModel
+@{
+    ViewBag.Title = "Daily FabricReceive";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div style="width:auto; padding-left:340px;">
+    <h4>Daily Fabric Receive</h4>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 120px;margin-bottom: 5px;">
+            @using (Html.BeginForm("Index", "DailyFabricReceive", FormMethod.Get, new { @class = "DailyFabricReceiveSearchForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>@Html.Label("Date")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ReceivedDate, new { @placeholder = "To date", @class = "datepicker", @style = "width:170px;" })
+                        </td>
+
+                        <td>
+                            @Html.Label("Buyer")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @style = "width:170px;" })
+                        </td>
+                        <td>
+                            @Html.Label("SearchBy")
+
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Style No", @style = "width:170px;" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                            <input type="button" target="_blank" onclick="PrintFabricReceivdSummary(this)" value="PDF"/>
+                        </td>
+                        
+                    </tr>
+
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem" style="overflow-x: auto">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/Production/DailyFabricReceive/Edit">Add New</button>
+        </div>
+        <table class="webgrid-table webgrid" style="justify-content: center">
+            <thead class="webgrid-header">
+            <tr>
+                <th>BUYER</th>
+                <th>ORDER</th>
+                <th>STYLE</th>
+                <th>COLOR</th>
+                <th>USE FOR</th>
+                <th>FABRICATION</th>
+                <th>GSM</th>
+                <th>ORDERQTY</th>
+                <th>FABRIC RQR</th>
+                <th>TODAY RCV</th>
+                <th>TTL RCV</th>
+                <th>RCV BALANCE</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var dailyFabricReceive in Model.ReceivedFabricProductionSummaries)
+            {
+                <tr class="webgrid-alternating-row">
+                    <td>@dailyFabricReceive.BuyerName</td>
+                    <td>@dailyFabricReceive.OrderNo</td>
+                    <td>@dailyFabricReceive.StyleName</td>
+                    <td>@dailyFabricReceive.ColorName</td>
+                    <td>@dailyFabricReceive.ComponentName</td>
+                    <td>@dailyFabricReceive.ItemName</td>
+                    <td>@Math.Round(Convert.ToDecimal(dailyFabricReceive.GSM), 2)</td>
+                    <td>@Math.Round(Convert.ToDecimal(dailyFabricReceive.Quantity), 2)</td>
+                    <td>@Math.Round(Convert.ToDecimal(dailyFabricReceive.ReqFabric), 2)</td>
+                    <td>
+                        <div style="background-color: wheat; cursor: pointer;" onclick="seletRows(this)" class="AjaxPopup" action="@Url.Action("Edit", "DailyFabricReceive", new {dailyFabricReceive.StyleName, dailyFabricReceive.OrderNo, dailyFabricReceive.OrderStyleRefId, dailyFabricReceive.ColorRefId, dailyFabricReceive.ComponentRefId, dailyFabricReceive.ConsRefId, dailyFabricReceive.BuyerRefId, ReceivedDate = Model.ReceivedDate.ToString("dd/MM/yyyy")})"> @Math.Round(Convert.ToDecimal(dailyFabricReceive.ToDayReceived), 2)</div></td>
+                    <td>@Math.Round(Convert.ToDecimal(dailyFabricReceive.TotalFabricQty), 2)</td>
+                    <td>@Math.Round(Convert.ToDecimal(dailyFabricReceive.BalanceQty), 2)</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+
+    </div>
+</section>
+<script type="text/javascript">
+    function seletRows(obj) {
+        var div$ = $(obj);
+        var $tr = div$.closest('tr');
+        $tr.addClass("selected").siblings().removeClass("selected");
+    }
+    function PrintFabricReceivdSummary(obj) {
+        var form = $(obj).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                var data = form.serialize();
+                var searchurl = '/Production/DailyFabricReceive/FabricReceivdSummaryReport?' + data;
+                window.open(searchurl);
+            }
+        }
+
+       
+    }
+</script>

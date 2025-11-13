@@ -1,0 +1,83 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>External Knitting Party Order List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "KnittingOrderProgram", FormMethod.Get, new { @class = "KnittingProgramForm ignore-validation" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        @Html.ValidationSummary(true)
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Date: ")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+    <section class="formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="addButton" onclick="search('/Planning/KnittingOrderProgram/Edit')">Add New</button>
+            </div>
+
+            @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VPrograms, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("ProgramRefId", header: "ProgNo"),
+            grid.Column("PrgDate", header: "PrgDate", format: @<text>@(item.PrgDate == null ? "" : item.PrgDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("ExpDate", header: "ExpDate",format: @<text>@(item.ExpDate == null ? "" : item.ExpDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("PartyName", header: "Party"),
+            grid.Column("Attention", header: "Attention"),
+            grid.Column("CGRID", header: "Style"),
+            grid.Column("ReqYarnQty", header: "ReqYarn"),
+            grid.Column("ReqFabQty", header: "ReqFab"),
+            grid.Column("Edit", canSort: false, format: @<text><input type="button" onclick="search('/Planning/KnittingOrderProgram/Edit?Program.ProgramId=@item.ProgramId')" value="Edit" /></text>),
+            grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Planning/KnittingOrderProgram/Delete?ProgramId=@item.ProgramId"></button></text>),
+            grid.Column(header: "KPP", canSort: false, format: @<text><a href="/Planning/KnittingOrderProgram/KnittingProgramReport?ProgramId=@item.ProgramId" target="_blank">PDF</a></text>)
+      ));
+            }
+        </div>
+    </section>
+
+
+
+  
+

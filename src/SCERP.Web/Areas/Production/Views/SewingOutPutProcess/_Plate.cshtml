@@ -1,0 +1,42 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingOutputProcessViewModel
+@{
+    Layout = null;
+}
+<table>
+    <tr>
+        <td>
+            <input type="button" id="toggoleButton" value="+" />
+            <div id="SewingOutputProcessList">
+                @if (Model.VwSewingOutputProcesses.Any())
+                {
+                    @Html.Partial("~/Areas/Production/Views/SewingOutPutProcess/_SewingOutputParent.cshtml", Model)
+                }
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td id="sewingOutputProcess" class="sewingOutputDetail">
+            @if (Model.PivotDictionary.Any())
+            {
+                @Html.Partial("~/Areas/Production/Views/SewingOutPutProcess/_SewingOutput.cshtml", Model)
+            }
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+
+    $("#toggoleButton").click(function () {
+        var value = $(this).val();
+        if (value == '+') {
+            $(this).val("-");
+        } else {
+            $(this).val("+");
+        }
+        $("#SewingOutputProcessList").toggle("1000");
+
+    });
+    $("#SewingOutputProcessList").hide();
+</script>

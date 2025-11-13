@@ -1,0 +1,54 @@
+﻿@using iTextSharp.tool.xml.html
+@model SCERP.Model.Inventory_Group
+@{
+    ViewBag.Title = Model.GroupId > 0 ? "Edit Group" : "Add Group";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("SaveGroup", "InventoryItem", FormMethod.Post, new { @class = "Sizeform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.GroupId)
+    @Html.HiddenFor(model => model.IsActive)
+    <fieldset>
+        <legend>Group</legend>
+        <table class="tabefont">
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("GroupCode :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupCode, new { @style = "background-color: #40e0d0", @readonly = "readonly" })
+                   
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.GroupCode)
+                </td>
+            </tr>
+          
+            <tr>
+                <td class="fieldTitleCls">
+                    @Html.Label("GroupName :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GroupName)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.GroupName)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+
+
+

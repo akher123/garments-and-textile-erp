@@ -1,0 +1,242 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+
+<style>
+    .webgrid-table tbody tr:last-child {
+        background: lightblue;
+    }
+</style>
+
+<div class="header-title">
+    <h2>MANAGEMENT INFORMATION SYSTEM (DASHBOARD)</h2>
+</div>
+<section class="formCover">
+    <div class="mis-title">BUYER WISE ORDER STATUS</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+        <tr>
+            @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+            {
+                <th>@col.ColumnName</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                {
+                    if (row[col.ColumnName].ToString() == "0")
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        if ((string) col.ColumnName == "Buyer")
+                        {
+                            <td style="text-align: left; width: 16%">
+                                @row[col.ColumnName]
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <a style="color: purple; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/RunningOrderSummary?month=@col.ColumnName&&buyer=@row[0]">@row[col.ColumnName]</a>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+
+        </tbody>
+    </table>
+</section>
+<section class="formCover">
+    <div class="mis-title">BUYER WISE TNA ALERT</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                <th>Buyer</th>
+                <th>Yellow</th>
+                <th>Amber</th>
+                <th>Red</th>
+                <th>DoubleRed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.SummaryDataTable.Rows)
+            {
+                <tr style="font-size: 14px;">
+
+                    <td style="text-align: left; width: 20%; ">
+                        @row["BuyerName"]
+                    </td>
+                    <td style="background-color: yellow; font-weight: bold">
+                     
+                        <a style="color: black; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActionAlert?buyerRefId=@row["BuyerRefId"]&&alertType=Y">@row["Yellow"]</a>
+                    </td>
+                    <td style="background-color: palevioletred; font-weight: bold;">
+                        <a style="color: white; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActionAlert?buyerRefId=@row["BuyerRefId"]&&alertType=A">@row["Amber"]</a>
+                    </td>
+                    <td style="background-color: red; color: white; font-weight: bold">
+                        <a style="color: white; cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/TnaActionAlert?buyerRefId=@row["BuyerRefId"]&&alertType=R">@row["Red"]</a>
+                    </td>
+                    <td style="background-color: #b30000; color: white; font-weight: bold">
+                        @row["DoubleRed"]
+                    </td>
+                </tr>
+            }
+        <tr style="font-weight: bold">
+            <td style="text-align: left;">Total </td>
+            <td>@Model.SummaryDataTable.Compute("Sum(Yellow)", string.Empty)</td>
+            <td>@Model.SummaryDataTable.Compute("Sum(Amber)", string.Empty)</td>
+            <td>@Model.SummaryDataTable.Compute("Sum(Red)", string.Empty)</td>
+            <td>@Model.SummaryDataTable.Compute("Sum(DoubleRed)", string.Empty)</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<section class="formCover">
+    <div class="mis-title">BUYER WISE MONTHLY SEWING PLAN</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                {
+                <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.BuyerOrderMasterDataTable.Rows)
+            {
+            <tr>
+                @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                {
+                if (row[col.ColumnName].ToString() == "0")
+                {
+                <td></td>
+                }
+                else
+                {
+                if ((string)col.ColumnName == "Buyer")
+                {
+                <td style="text-align: left; width: 16%">
+                    @row[col.ColumnName]
+                </td>
+                }
+                else
+                {
+                <td>
+
+                    <a style="color: purple;cursor: pointer" class="AjaxPopup" action="/MIS/MisDashboard/SewingPlanDetail?month=@col.ColumnName&&buyer=@row[0]">@row[col.ColumnName]</a>
+                </td>
+                }
+                }
+
+
+                }
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</section>
+<section class="formCover">
+    <div class="mis-title">MERCHANDISER WISE ORDER STATUS</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.MerchadiserWiseOrderStyleDtable.Columns)
+                {
+                <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.MerchadiserWiseOrderStyleDtable.Rows)
+            {
+            <tr>
+
+
+                @foreach (var cell in row.ItemArray)
+                {
+                if (cell.ToString().Equals("0"))
+                {
+                <td></td>
+                }
+                else
+                {
+                if (row.ItemArray[0].ToString().Equals(cell))
+                {
+                <td style="text-align: left; width:16%">@row.ItemArray[0]</td>
+                }
+                else
+                {
+                <td>@cell.ToString()</td>
+                }
+
+                }
+
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>
+@*<section class="formCover">
+    <div class="mis-title">SUMMARY(Daily Capacity=40000 Pcs)</div>
+    <table class="webgrid-table" style="text-align: center">
+        <thead class="webgrid-header mis-header">
+            <tr>
+                @foreach (DataColumn col in Model.SummaryDataTable.Columns)
+                {
+                <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.SummaryDataTable.Rows)
+            {
+            <tr>
+
+
+                @foreach (var cell in row.ItemArray)
+                {
+                if (cell.ToString().Equals("0"))
+                {
+                <td></td>
+                }
+                else
+                {
+                if (row.ItemArray[0].ToString().Equals(cell))
+                {
+                <td style="text-align:left;width: 16%">@row.ItemArray[0]</td>
+                }
+                else
+                {
+                if (int.Parse(cell.ToString()) < 0)
+                {
+                <td style="background-color: #00B0F0;color: #ffffff">@cell.ToString()</td>
+                }
+                else
+                {
+                <td>@cell.ToString()</td>
+                }
+
+                }
+
+                }
+
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>*@

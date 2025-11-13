@@ -1,0 +1,133 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanReceiveViewModel
+@{
+    Layout = null;
+ 
+}
+
+
+@Html.HiddenFor(model => model.ReturnableChallanReceive.ReturnableChallanDetailId)
+<fieldset>
+    <legend>Returnable Challan Receive</legend>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>@Html.Label("M/S ")</td>
+                            <td>@Html.Label(":")</td>
+                            <td>@Html.TextBoxFor(x => x.ReturnableChallan.Messrs, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Challan Date ")</td>
+                            <td>@Html.Label(":")</td>
+                            <td>@Html.TextBoxFor(x => x.ReturnableChallan.ChallanDate, new { @class = "datepicker", @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Through ")</td>
+                            <td>@Html.Label(":")</td>
+                            <td>@Html.TextBoxFor(x => x.ReturnableChallan.RefferancePerson, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("Designation ")</td>
+                            <td>@Html.Label(":")</td>
+                            <td>@Html.TextBoxFor(x => x.ReturnableChallan.Designation, new { @data_val = "false", @readonly = "readonly", style = "background-color: papayawhip;width: 250px;" })</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="webgrid-table webgrid">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Item</th>
+                                <th>Challan Qty</th>
+                                <th>Total Receive</th>
+                                <th>Total Reject</th>
+                                <th>Balance</th>
+                                <th>Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.VwReturnableChallanReceives.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(x => x.VwReturnableChallanReceives[i].ItemName)
+                                        @Html.HiddenFor(x => x.VwReturnableChallanReceives[i].ReturnableChallanDetailId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(x => x.VwReturnableChallanReceives[i].DeliveryQty)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(x => x.VwReturnableChallanReceives[i].ReceiveQty)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(x => x.VwReturnableChallanReceives[i].RejectQty)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(x => x.VwReturnableChallanReceives[i].RemainingQty)
+                                    </td>
+                                    <td>
+                                        <input type="button" class="btnDetail" targentclass="challanReceive" action="/Maintenance/ReturnableChallanReceive/FindChallanReceive?ReturnableChallanReceive.ReturnableChallanDetailId=@Model.VwReturnableChallanReceives[i].ReturnableChallanDetailId&ReturnableChallan.ReturnableChallanId=@Model.VwReturnableChallanReceives[i].ReturnableChallanId" />
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                            <tr>
+                                <td colspan="6" style="text-align: center">
+                                    @Model.ReturnableChallanDetail.ItemName
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin-top: 5px; margin-bottom: 10px; font-size: 12px; ">
+        @Html.Partial("~/Areas/Maintenance/Views/ReturnableChallanReceive/_Edit.cshtml", Model)
+    </div>
+    <table class="webgrid-table webgrid">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Challan No</th>
+                <th>Item</th>
+                <th>Receive Date</th>
+                <th>Receive Quantity </th>
+                <th>Reject Quantity</th>
+                <th>Amount</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var receive in Model.VwReceiveDetails)
+            {
+                <tr>
+                    <td>
+                        @receive.ChallanNo
+                    </td>
+                    <td>
+                        @receive.ItemName
+                    </td>
+                    <td>
+                        @receive.ReceiveDate.Value.ToString("dd MMM yyyy")
+                    </td>
+                    <td>
+                        @receive.ReceiveQty
+                    </td>
+                    <td>
+                        @receive.RejectQty
+                    </td>
+                    <td>
+                        @receive.Amount
+                    </td>
+                    <td><button class="btnAction" targentclass="challanReceive" action="/Maintenance/ReturnableChallanReceive/Edit?ReturnableChallanReceive.ReturnableChallanReceiveId=@receive.ReturnableChallanReceiveId&ReturnableChallan.ReturnableChallanId=@receive.ReturnableChallanId"></button></td>
+                    <td><button class="deleteAction" targentclass="challanReceive" action="/Maintenance/ReturnableChallanReceive/Delete?ReturnableChallanReceive.ReturnableChallanReceiveId=@receive.ReturnableChallanReceiveId&ReturnableChallanReceive.ReturnableChallanDetailId=@receive.ReturnableChallanDetailId&ReturnableChallanReceive.ReceiveQty=@receive.ReceiveQty&ReturnableChallan.ReturnableChallanId=@receive.ReturnableChallanId"></button></td>
+                </tr>
+            }
+            <tr>
+        </tbody>
+    </table>
+</fieldset>

@@ -1,0 +1,77 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
+using SCERP.BLL.IManager.IProductionManager;
+using SCERP.Common;
+using SCERP.DAL.IRepository.IProductionRepository;
+using SCERP.Model.Production;
+
+namespace SCERP.BLL.Manager.ProductionManager
+{
+    public class RejectAdjustmentManager : IRejectAdjustmentManager
+    {
+        private readonly IRejectAdjustmentRepository _rejectAdjustmentRepository;
+
+        public RejectAdjustmentManager(IRejectAdjustmentRepository rejectAdjustmentRepository)
+        {
+            _rejectAdjustmentRepository = rejectAdjustmentRepository;
+        }
+        public Dictionary<string, List<string>> GetRejectAdjustmentByCuttingBatch(long cuttingBatchId)
+        {
+            var pivotTable = new Dictionary<string, List<string>>();
+            List<SpProdJobWiseRejectAdjusment> rejectAdjusments = _rejectAdjustmentRepository.GetRejectAdjustmentByCuttingBatch(PortalContext.CurrentUser.CompId, cuttingBatchId);
+
+            if (rejectAdjusments.Any())
+            {
+                List<string> sizeList = rejectAdjusments.Select(x => x.SizeName).ToList();
+                sizeList.Add("Total");
+                List<string> quantityList = rejectAdjusments.Select(x => Convert.ToString(x.Quantity)).ToList();
+                quantityList.Add(Convert.ToString(rejectAdjusments.Sum(x => x.Quantity)));
+                List<string> rejectQtyList = rejectAdjusments.Select(x => Convert.ToString(x.RejectQty)).ToList();
+                rejectQtyList.Add(Convert.ToString(rejectAdjusments.Sum(x => x.RejectQty)));
+                List<string> rejectPercent = rejectAdjusments.Select(x => String.Format("{0:0.00}" + " " + "%", (x.RejectQty * 100.00m) / x.Quantity)).ToList();
+                rejectPercent.Add(String.Format("{0:0.00}" + " " + "%", rejectAdjusments.Sum(x => x.RejectQty) * 100.0m / rejectAdjusments.Sum(x => x.Quantity)));
+                List<string> sizeRefIdList = rejectAdjusments.Select(x => Convert.ToString(x.SizeRefId)).ToList();
+                List<string> okQtyList = rejectAdjusments.Select(x => Convert.ToString(x.Quantity - x.RejectQty)).ToList();
+                okQtyList.Add(Convert.ToString(rejectAdjusments.Sum(x => x.Quantity - x.RejectQty)));
+                pivotTable = new Dictionary<string, List<string>>
+            {
+                {"Size", sizeList},
+                {"Quantity", quantityList},
+                {"Reject", rejectQtyList},
+                {"Reject(%)", rejectPercent},
+                {"SizeRefId", sizeRefIdList},
+                {"Final Quantity", okQtyList}
+            };
+            }
+
+            return pivotTable;
+        }
+
+        public int SaveRejectAdjustment(List<PROD_RejectAdjustment> rejectAdjustments)
+        {
+            long cuttingBatchId = rejectAdjustments.First().CuttingBatchId;
+            int saveIndex = 0;
+            using (var transaction=new TransactionScope())
+            {
+                _rejectAdjustmentRepository.Delete( x => x.CompId == PortalContext.CurrentUser.CompId && x.CuttingBatchId == cuttingBatchId);
+                saveIndex= _rejectAdjustmentRepository.SaveList(rejectAdjustments);
+                transaction.Complete();
+            }
+            return saveIndex;
+        }
+
+        public int DeleteRejectAjsustment(long cuttingBatchId)
+        {
+            return
+                _rejectAdjustmentRepository.Delete(
+                    x => x.CompId == PortalContext.CurrentUser.CompId && x.CuttingBatchId == cuttingBatchId);
+        }
+
+  
+    }
+}

@@ -1,0 +1,15 @@
+﻿@{
+    if(!Request.IsAjaxRequest())
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";  
+    }
+}
+
+@RenderSection("styles", required: false)
+<div class="dialog-ontainer" dialog-title="@ViewBag.Title">
+    @RenderBody()
+ 
+</div>
+@RenderSection("scripts", required: false)
+
+

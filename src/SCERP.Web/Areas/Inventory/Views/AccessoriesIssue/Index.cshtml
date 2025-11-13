@@ -1,0 +1,117 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    ViewBag.Title = " Accessories Issue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div class="header-title">
+    <h2>Accessories Issue</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "AccessoriesIssue", FormMethod.Get, new {@class = "AccessoriesIssueForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+         
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Delivery Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                       
+                    </td>
+                    <td>
+                        <div class="addButton-wrapper">
+                            <div class="dropdown">
+                                <button class="dropbtn">REPORT▼</button>
+                                <div class="dropdown-content">
+                                
+                                    <a style="cursor: pointer" target="_blank" onclick="accessoriesIssueDetailStatus(1)">PDF</a>
+                                    <a style="cursor: pointer" target="_blank" onclick="accessoriesIssueDetailStatus(3)">Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <input onclick="search('/Inventory/AccessoriesIssue/Edit')" value="Add New" class="addButton" type="button" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.MaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column("IRefId", canSort: false, header: "RefNo", format: @<text>@(item.IRefId ?? "--")</text>),
+                    grid.Column("BuyerName", canSort: false, header: "Buyer", format: @<text>@(item.BuyerName ?? "--")</text>),
+                    grid.Column("OrderNo", canSort: false, header: "OrderNo ", format: @<text>@(item.OrderNo ?? "")</text>),
+                    grid.Column("StyleNo", canSort: false, header: "StyleNo ", format: @<text>@(item.StyleNo ?? "")</text>),
+                    grid.Column("IRNoteNo", canSort: false, header: "IRNNo", format: @<text>@(item.IRNoteNo ?? "--")</text>),
+                    grid.Column("IRNoteDate", canSort: false, header: "Date", format: @<text>@(item.IRNoteDate == null ? "" : item.IRNoteDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("Amount", canSort: false, header: "Amount ", format: @<text>@(item.Amount ?? "")</text>),
+                    grid.Column("Edit", canSort: false, format: @<text><input type="button" class="addButton" onclick="search('/Inventory/AccessoriesIssue/Edit?MaterialIssue.AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId')" value="Edit" /></text>),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/AccessoriesIssue/Delete?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button></text>, canSort: false),
+                    grid.Column("Report", canSort: false, header: "Challan", format: @<text><a href="/Inventory/AccessoriesIssue/AccessoriesIssueChallan?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId" target="_blank">PDF</a></text>)));
+        }
+
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function accessoriesIssueDetailStatus(reportType) {
+            var form = $('.AccessoriesIssueForm');
+            var data = form.serialize();
+          
+            var searchurl = '/Inventory/AccessoriesIssue/GetAccessoriesIssueDetailStatus?' + data + '&reportType=' + reportType;
+            window.open(searchurl);
+        }
+    </script>
+
+
+}
+

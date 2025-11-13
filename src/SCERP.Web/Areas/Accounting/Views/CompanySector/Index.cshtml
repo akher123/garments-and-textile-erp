@@ -1,0 +1,46 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.CompanySectorViewModel
+
+@{
+    ViewBag.Title = "Company Sector ";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2>Company Sector</h2>
+</div>
+
+<section class="search formCover">
+    <div class="additem">
+        
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup  addButton" action="/Accounting/CompanySector/Edit">Add new</button>
+        </div>
+           
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CompanySector, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+
+                columns: grid.Columns(
+
+                    grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                    grid.Column("SectorCode",header:"Sector Code"),
+                    grid.Column("SectorName",header:"Sector Name"),
+                    grid.Column(header: "Edit", format: @<text><button class="edit" action="/Accounting/CompanySector/Edit/@item.Id"></button></text>),
+                    grid.Column( header:"Delete", format:@<text><button class="delete" action="/Accounting/CompanySector/Delete/@item.Id"></button></text>)
+                    ));
+        }
+    </div>
+</section>

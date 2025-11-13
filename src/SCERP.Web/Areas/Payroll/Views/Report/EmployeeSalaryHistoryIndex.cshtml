@@ -1,0 +1,61 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.ReportSearchViewModel
+
+@{
+    ViewBag.Title = "Salary History Report";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("EmployeeSalaryHistory", "Report", FormMethod.Get, new { @class = "ReportSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Salary History Report</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+       
+            <tr>
+                <td> @Html.DisplayName("Employee Id"): </td>
+                <td>
+                    @Html.EditorFor(p => p.EmployeeCardId)
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                                              
+                <td></td>
+                <td></td>              
+            </tr>
+          
+            <tr>
+                <td> @Html.Label("From Date") </td>                                   
+                <td>                
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+          
+                <td>
+                    @Html.DisplayName("End Date"):
+                </td>
+                <td>                  
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" id="showReport" class="addButton" onclick="search('@Url.Action("EmployeeSalaryHistory", "Report")','ReportSearchForm')" value="Show Report" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+}

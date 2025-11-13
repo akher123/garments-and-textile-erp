@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Production.Models.SewingInputProcessViewModel
+@{
+    Layout = null;
+}
+
+
+<table class="webgrid-table">
+    <thead class="webgrid-header">
+        <tr>
+            <th>Buyer </th>
+            <th>Order</th>
+            <th>Style</th>
+            <th>Color</th>
+            <th>InQty</th>
+            <th>Line</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Report</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.VwSewingInputProcesses)
+        {
+            <tr>
+                <td>@item.BuyerName </td>
+                <td>@item.OrderName </td>
+                <td>@item.StyleName </td>
+                <td>@item.ColorName </td>
+                <td>@item.InputQuantity </td>
+                <td>@item.MachineName </td>
+                <td>@string.Format("{0:dd-MMM-yyyy}", item.InputDate) </td>
+                <td>@string.Format("{0:hh:mm tt}", item.InputDate) </td>
+                <td><a href="/Production/ProductionReport/SweingInputReport?SewingInputProcessId=@item.SewingInputProcessId" target="_blank">PDF</a> </td>
+            </tr>
+
+        }
+    <tr>
+        <td colspan="4">
+            Total :
+        </td>
+        <td >@Model.VwSewingInputProcesses.Sum(x=>x.InputQuantity)</td>
+    </tr>
+    </tbody>
+</table>

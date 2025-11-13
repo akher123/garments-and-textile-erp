@@ -1,0 +1,115 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Payroll.Models.ViewModels.SalaryAdvanceViewModel
+
+@{
+    ViewBag.Title = "Salary Advance";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "SalaryAdvances", FormMethod.Get, new { @class = "SalaryAdvancesSearchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Salary Advance</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="3">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @{ Html.RenderPartial("~/Areas/Payroll/Views/SalaryAdvances/_SearchSalaryAdvance.cshtml", Model); }
+            <tr>
+                <td>
+                    @Html.Label("Section: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentSectionId, Model.DepartmentSectionSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentSection" } })
+                <td>
+                    @Html.Label("Line: ")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByDepartmentLineId, Model.DepartmentLineSelectListItem, "-Select-", new Dictionary<string, object> { { "data-val", false }, { "class", "Hrm_DepartmentLine" } })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.EmployeeCardId, new { htmlAttributes = new { @class = "CardId" } })
+                </td>
+                <td>
+                    @Html.Label("Employee Type:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeTypeId, Model.EmployeeTypeSelectListItems, "-Select-", new Dictionary<string, object> { { "data-val", false } })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("From Date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("To Date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td> <input type="button" class="searchAction" /> </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Payroll/SalaryAdvances/Edit">Add New (Single)</button>
+            <input type="button" class="addButton" onclick="search('@Url.Action("EditBulkAdvance", "SalaryAdvances", new { IsSearch = true })','BulkSalaryAdvanceSearchForm')" value="Add New (Multiple)" />
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.salaryAdvanceView, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+            grid.Column("EmployeeCardId", header: "Employee Card ID", format: @<text>@(item.EmployeeCardId ?? "")</text>),
+            grid.Column("Name", header: "Employee Name", format: @<text>@(item.Name ?? "")</text>),            
+            grid.Column("Amount", header: "Amount", format: @<text>@(item.Amount ?? "")</text>),
+            grid.Column("ReceivedDate", header: "Date", format: @<text>@(item.ReceivedDate == null ? "" : item.ReceivedDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("Detail/Edit", format: @<text><button class="edit" action="/Payroll/SalaryAdvances/Edit?SalaryAdvanceId=@item.SalaryAdvanceId"></button></text>, canSort: false),
+            grid.Column("Delete", format: @<text><button class="delete" action="/Payroll/SalaryAdvances/Delete?SalaryAdvanceId=@item.SalaryAdvanceId"></button></text>, canSort: false)))
+            ;
+        }
+    </div>
+</section>

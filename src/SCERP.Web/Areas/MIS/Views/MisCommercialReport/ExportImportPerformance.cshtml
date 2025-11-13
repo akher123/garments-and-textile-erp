@@ -1,0 +1,40 @@
+﻿@using iTextSharp.text.pdf
+@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.LcViewModel
+
+@{
+    ViewBag.Title = "LC";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    
+}
+
+@using (Html.BeginForm("ExportImportPerformance", "MisCommercialReport", FormMethod.Get, new { @class = "MisCommercialReportForm  ignore-validation" }))
+{
+
+    <div style="width: 400px; padding-left: 340px;">
+        <h2>Export Import Performance</h2>
+    </div>
+
+    <section class="search formCover" >
+        <table class="tabefont" style=" margin-left:250px;">
+
+            <tr>
+                <td> @Html.Label("Buyer Name : ") </td>
+                <td> @Html.DropDownListFor(model => model.BuyerId, Model.BuyerSelectListItem, "-ALL-", new { id = "buyerId" }) </td>
+                <td> </td>
+                <td> <input type="button" value="PDF" class="buttonStyle" onclick=" javascript: ImportExport(); " />  </td>
+            </tr>
+        </table>
+    </section>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function ImportExport() {
+            var buyerId = $('#buyerId').val();
+            window.open("/Commercial/Report/ImportExportPerformance?" + "ExportType=DOC&&buyerId=" + buyerId);
+        }
+    </script>
+}

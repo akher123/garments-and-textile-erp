@@ -1,0 +1,205 @@
+﻿@using SCERP.Web.App_Start
+@model SCERP.Web.Areas.Production.Models.ProductionReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h3>Stylewise Sequence</h3>
+</div>
+
+<section class="search formCover">
+    <div style="margin-bottom: 10px;">
+        @using (Html.BeginForm("StyleWiseReport", "ProductionReport", FormMethod.Get, new { @class = "IndexSearchForm ignore-validation" }))
+        {   
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(x => x.IsSearch)
+            <fieldset>
+                <legend>Stylewise Sequence</legend>
+                <table class="tabefont" style="margin-left: 200px">
+                    <tr>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderNo, Model.OrderSelectListItem, new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                        <td>
+                            @Html.Label("Sequence :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.CuttingBatch.ComponentRefId, Model.ComponentSelectListItem, new { @class = "CuttingBatch_sequence" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        
+                        </td>
+                        <td>
+                            <input type="button" class="showRdlcReport" value="Show"/>
+                        </td>
+                    </tr>
+                </table>
+                </fieldset>
+        }
+</div>
+    <iframe id="reportIfram" width="1000" height="400"></iframe>
+</section>
+@section scripts
+{
+
+    <script type="text/javascript">
+        $('.showRdlcReport').unbind('click').bind('click', function () {
+            var form = $(this).parents('form:first');
+            var data = form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    var searchurl = form.attr('action') + '?' + data;
+                    $('#reportIfram').attr('src', '');
+                    $('#reportIfram').attr('src', searchurl);
+                }
+            }
+
+        });
+
+        $('.CuttingBatch_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/ProductionReport/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+            $('.CuttingBatch_OrderNo').empty();
+            $('.CuttingBatch_StyleNo').empty();
+            $('.CuttingBatch_sequence').empty();
+        }
+
+        function populateDropDown(obj) {
+            $('.CuttingBatch_OrderNo').append(
+                $('<option/>')
+                    .attr('value', obj.OrderNo)
+                    .text(obj.RefNo)
+            );
+        }
+
+        $('.CuttingBatch_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/ProductionReport/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.CuttingBatch_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.CuttingBatch_StyleNo').append(
+                            $('<option/>')
+                                .attr('value', this.OrderStyleRefId)
+                                .text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.CuttingBatch_StyleNo').append(
+                        $('<option/>')
+                            .attr('value', '')
+                            .text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        $('.CuttingBatch_StyleNo').unbind('change').bind('change', function () {
+            var orderStyleRefId = $(this).val();
+            var orderNo = $('#CuttingBatch_OrderNo').val();
+            var buyerRefId = $('#CuttingBatch_buyerRefId').val();
+            $.Ajax({
+                url: '/ProductionReport/GetCuttingSequenceOrderStyle/',
+                data: { buyerRefId: buyerRefId, orderNo: orderNo, orderStyleRefId: orderStyleRefId }
+            }).done(function (model) {
+                $('.CuttingBatch_sequence').empty();
+                $('.CuttingBatch_SizeRefId').empty();
+                if (model.sequenceList.length > 0) {
+                    $('.CuttingBatch_sequence').append(
+                     $('<option/>')
+                         .attr('value', '')
+                         .text("Select")
+                 );
+                    $.each(model.sequenceList, function (sequence) {
+                        $('.CuttingBatch_sequence').append(
+                            $('<option/>')
+                                .attr('value', this.ComponentRefId)
+                                .text(this.ComponentName)
+                        );
+                    });
+
+                } else {
+                    $('.CuttingBatch_sequence').append(
+                        $('<option/>')
+                            .attr('value', "No Order Found")
+                            .text("Select")
+                    );
+                }
+
+
+                if (model.sizeList.length > 0) {
+                    $('.CuttingBatch_SizeRefId').append(
+                     $('<option/>')
+                         .attr('value', '0000')
+                         .text("Select")
+                 );
+                    $.each(model.sizeList, function (size) {
+
+                        $('.CuttingBatch_SizeRefId').append(
+                            $('<option/>')
+                                .attr('value', this.SizeRefId)
+                                .text(this.SizeName)
+                        );
+                    });
+
+                } else {
+                    $('.CuttingBatch_SizeRefId').append(
+                        $('<option/>')
+                            .attr('value', "No Order Found")
+                            .text("Select")
+                    );
+                }
+            });
+        });
+    </script>
+}
+

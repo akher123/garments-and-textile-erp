@@ -1,0 +1,111 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = null;
+}
+
+<table class="webgrid-table">
+    <thead style="text-align: center" class="webgrid-header">
+        <tr>
+            <th>
+                @Html.Label("PrdName")
+            </th>
+            <th>
+                @Html.Label("Color")
+            </th>
+            <th>
+                @Html.Label("Size")
+            </th>
+            <th>
+                @Html.Label("Quantity")
+            </th>
+            <th>
+                @Html.Label("Rate")
+            </th>
+
+            <th>
+                @Html.Label("Unit")
+            </th>
+            <th>
+                @Html.Label("Delete")
+            </th>
+        </tr>
+    </thead>
+    <tbody style="justify-content: center">
+
+        @foreach (var key in Model.Details.Keys)
+        {
+             <tr class="webgrid-row-style">
+                <td>
+                    @Html.HiddenFor(x => x.Details[key].PurchaseOrderId)
+                    @Html.HiddenFor(x => x.Details[key].PurchaseOrderDetailId)
+                    @Html.HiddenFor(x => x.Details[key].ItemCode)
+                    @Html.DisplayFor(x => x.Details[key].ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Details[key].ColorName)
+                    @Html.HiddenFor(x => x.Details[key].ColorRefId)
+                    @Html.HiddenFor(x => x.Details[key].GColorRefId)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Details[key].SizeName)
+                    @Html.HiddenFor(x => x.Details[key].SizeRefId)
+                    @Html.HiddenFor(x => x.Details[key].GSizeRefId)
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Details[key].Quantity, new { @style = "width:150px;border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Details[key].xRate)
+                    @Html.HiddenFor(x => x.Details[key].xRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Details[key].UnitName)
+                    @Html.HiddenFor(x => x.Details[key].UnitName)
+                </td>
+                 <td><input type="button" value="-" onclick="deleteRow(this)"/></td>
+            </tr>
+        }
+
+    @*@for (var index = 0; index < Model.PurchaseOrderDetails.Count(); index++)
+        {
+            <tr class="webgrid-row-style">
+                <td>
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].PurchaseOrderId)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].PurchaseOrderDetailId)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].ItemCode)
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ColorName)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].ColorRefId)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].GColorRefId)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].SizeName)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].SizeRefId)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].GSizeRefId)
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrderDetails[index].Quantity, new { @style = "width:150px;border:none" })
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].xRate)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].xRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.PurchaseOrderDetails[index].UnitName)
+                    @Html.HiddenFor(x => x.PurchaseOrderDetails[index].UnitName)
+                </td>
+
+            </tr>
+        }*@
+    </tbody>
+
+</table>
+
+<script type="text/javascript">
+    function deleteRow(buttonObj) {
+        var $tr = $(buttonObj).closest("tr");
+        $tr.remove();
+    }
+</script>

@@ -1,0 +1,171 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TnaViewModel
+
+@{
+    ViewBag.Title = "TNA";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Tna", FormMethod.Get, new { @class = "tnaSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Time and Action Calendar</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Buyer: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "timeAndAction_buyerRefId", style = "" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("Order No: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-ALL-", new { @class = "timeAndAction_OrderNo", style = "" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("Style No: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new { id = "shipStyleRefId", @class = "timeAndAction_StyleNo", style = "" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td><input type="button" class="searchAction" /> <input type="button" class="addButton" value="Show Report" onclick="PrintReport(); " /> @*<input type="button" value="Send Mail" onclick="sendMail();" />*@</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Planning/Tna/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.TnaReports, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+
+                         grid.Column("Detail/Edit", format: @<text><button class="edit" action="/Planning/tna/Edit/@item.Id"></button></text>, canSort: false),
+                         grid.Column("BuyerName", header: "Buyer Name", canSort: false),
+                         grid.Column("OrderNo", header: "Order No", canSort: false),
+                         grid.Column("OrderDate", header: "Order Date", canSort: false),
+                         grid.Column("StyleName", header: "Style No", canSort: false),               
+                         grid.Column("ActivityName", header: "Activity Name", canSort: false),
+                         grid.Column("LeadTime", header: "Lead Time", canSort: false),
+                         grid.Column("PlannedStartDate", header: "Plan Start Date", canSort: false),
+                         grid.Column("PlannedEndDate", header: "Plan End Date", canSort: false),
+                         grid.Column("ActualStartDate", header: "Actual Start Date", canSort: false),
+                         grid.Column("ActrualEndDate", header: "Actual End Date", canSort: false),
+                         grid.Column("MerchandiserName", header: "Merchandiser", canSort: false),
+                         grid.Column("ResponsiblePersonName", header: "Responsible Person", canSort: false),
+                         grid.Column("NotifyBeforeDays", header: "Notify Before Days", canSort: false),
+                         grid.Column("Remarks", header: "Remarks", canSort: false),                         
+                         grid.Column("Delete",format:@<text><button class="delete" action="/Planning/tna/Delete/@item.Id"></button></text>, canSort: false)));
+        }
+    </div>   
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#OrderStyleRefId').autocomplete(
+            {
+                source: '@Url.Action("TagSearch", "Tna")'
+            });
+
+        function PrintReport() {
+
+            var form = $('.tnaSearchForm');
+            var data = form.serialize();
+            window.open("/Planning/Report/TNAReportPrint?" + data);
+        }
+
+        function sendMail() {
+            window.open("/Planning/Tna/SendMail");
+        }
+        $('.timeAndAction_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.timeAndAction_OrderNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.timeAndAction_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.timeAndAction_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.timeAndAction_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-ALL-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.timeAndAction_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+
+            $('.timeAndAction_OrderNo').empty();
+            $('.timeAndAction_StyleNo').empty();
+        }
+    </script>
+}

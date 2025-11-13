@@ -1,0 +1,84 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.GeneralLedgerViewModel
+
+@{
+    ViewBag.Title = "Income Statement to General Ledger";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<div class="additem" style="margin-top: 20px;margin-bottom: 20px; width: 1015px;">
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.GeneralLedger, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+
+                                grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                                grid.Column("VoucherDateShow", header: "Voucher Date"),
+                                grid.Column("VoucherRefNo", header: "Voucher No"),
+                                grid.Column("GLHeadName", header: "GL Head"),
+                                grid.Column("Particulars", header: "Particulars"),
+                                grid.Column("TotalDebit", header: "Debit"),
+                                grid.Column("TotalCredit", header: "Credit"),
+                                grid.Column("Balance", header: "Balance"),
+                                grid.Column(header: "Voucher", format: @<text> @Html.ActionLink("Voucher", "VoucherFromBalanceSheet", "Report", new { item.VoucherNoShow }, new { @target = "_blank" }) </text>),
+
+
+
+                                grid.Column("Voucher", format:@<text>
+
+                                @if (item.TotalDebit == 0 && item.TotalCredit == 0)
+                                {
+                                }
+                                else if (item.Particulars.Trim() == "Total :")
+                                {
+                                }
+                                else
+                                {
+                                   @Html.ActionLink("Voucher", "VoucherFromBalanceSheet", "Report", new { item.VoucherNoShow }, new { @target = "_blank" })
+                                }
+                                </text>, canSort: false),
+
+                                grid.Column("Entry", format:@<text>
+
+                                @if (item.TotalDebit == 0 && item.TotalCredit == 0)
+                                {
+                                }
+                                else if (item.Particulars.Trim() == "Total :")
+                                {
+                                }
+                                else
+                                {
+                                    <button class="edit" action="/Accounting/VoucherEntry/EditFromBalanceSheetByMasterId?Id=@item.VoucherNoMasterId"></button>
+                                }
+
+                                </text>, canSort: false),
+
+                                grid.Column(header: "Entry", format: @<text><button class="edit" action="/Accounting/VoucherEntry/EditFromBalanceSheetByMasterId?Id=@item.VoucherNoMasterId"></button></text>, canSort: false)
+
+                            ));
+    }
+</div>
+
+
+

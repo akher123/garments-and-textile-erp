@@ -1,0 +1,93 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.YarnConsumptionViewModel
+@{
+    Layout = null;
+}
+
+<div>
+    <fieldset>
+        <legend>YARN LIST </legend>
+        <table class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>
+                        @Html.Label(" ", String.Format("{0}", "Code"))
+                    </th>
+                    <th>
+                        @Html.Label(String.Format("{0}", "Yarn"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Count"))
+                    </th>
+
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Color"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Cons(%)"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Total"))
+                    </th>
+                    <th>
+                        @Html.Label(" ",String.Format("{0}", "P.Loss"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Net"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Unit"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Edit"))
+                    </th>
+                    <th>
+                        @Html.DisplayName(String.Format("{0}", "Delete"))
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cons in Model.VYarnConsumptions)
+                {
+                    <tr class="buyerOrderStyle-row" >
+                        <td>
+                            @cons.YCRef
+                        </td>
+                        <td>
+                            @cons.ItemName
+                        </td>
+                        <td>
+                            @cons.KSizeName
+                        </td>
+                        <td>
+                            @cons.KColorName
+                        </td>
+                        <td>
+                            @cons.CPercent
+                        </td>
+                        <td>
+                            @cons.KQty
+                        </td>
+                        <td>
+                            @cons.PLoss
+                        </td>
+                        <td>
+                            @cons.WMtr
+                        </td>
+                        <td>
+                            @cons.UnitName
+                        </td>
+                        <td>
+                            <button class="btnAction" targentclass="editYarn" action="/Merchandising/YarnConsumption/Edit?YarnConsumptionId=@cons.YarnConsumptionId&TQty=@Model.TQty"></button>
+                        </td>
+                        <td>
+                            <button class="deleteAction" targentclass="yarnListDiv" action="/YarnConsumption/Delete?YarnConsumptionId=@cons.YarnConsumptionId&ConsRefId=@cons.ConsRefId&GrColorRefId=@cons.GrColorRefId"></button>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </fieldset>
+</div>
+

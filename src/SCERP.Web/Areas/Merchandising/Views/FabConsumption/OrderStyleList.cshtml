@@ -1,0 +1,95 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FabConsumptionViewModel
+@{
+    Layout = null;
+}
+
+<div id="buyerOrderStyleInFabricCons">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+            @using (Html.BeginForm("OrderStyleList", "FabConsumption", FormMethod.Get, new { @class = "ConsumptionSearchForm submit-allow" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "From date", @class = "datepicker" })
+                        </td>
+                        <td>@Html.Label("To")</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "To date" ,@class="datepicker" })
+                        </td>
+
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Criteria", @autofocus = "autofocus" })
+                        </td>
+                        <td>
+                            <input type="button" class="buyerOrderStyleFind addButton" value="Find" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+        tableStyle: "webgrid-table webgrid",
+        headerStyle: "webgrid-header",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+                     footerStyle: "webgrid-footer",
+                     firstText: "First",
+                     lastText: "Last",
+                     nextText: "Next",
+                     mode: WebGridPagerModes.All,
+                     previousText: "Previous",
+            columns:
+          grid.Columns(
+          grid.Column("OrderNo", canSort: false, header: "Order Ref."),
+          grid.Column("OrderStyleRefId", canSort: false, header: "Style Ref."),
+          grid.Column("RefNo", canSort: false, header: String.Format("{0}", "Order No")),
+          grid.Column("StyleName", canSort: false, header: String.Format("{0}", "Style No")),
+          grid.Column("ShipDate", canSort: false, header: "ShipDate", format: @<text>@(item.ShipDate == null ? "" : item.ShipDate.ToString("dd-MM-yyyy"))</text>),
+          grid.Column("SeasonName", canSort: false, header: "Season"),
+          grid.Column("Quantity", canSort: false, header: "Quantity"),
+          grid.Column("TotalComponet", "Components", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalComponet > 0 ? "" : "#949ade") + ";font-size:14px;border:1px solid #8d93db;'><text>" + item.TotalComponet + "</text></center>"))),
+          grid.Column("TotalFabQty", "FabQty", (item) => Html.Raw(string.Format("<center style='background-color: " + (item.TotalFabQty > 0 ? "" : "#8d93db") + ";font-size:14px;border:1px solid #949ade;padding: 0 5px;'><text>" + item.TotalFabQty + "</text></center>"))),
+          grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.OrderNo" onclick="selectFabConsBuyerOrderRow('@item.OrderNo','@item.OrderStyleRefId',this)" value="✅" /></text>),
+           grid.Column("Detail", canSort: false, format: @<text><a href="/Merchandising/Report/FabricWorkOrderDetailSheet?OrderStyleRefId=@item.OrderStyleRefId" target="_blank"> PDF</a></text>),
+           grid.Column("Summary", canSort: false, format: @<text><a href="/Merchandising/Report/FabricWorkOrderSheet?OrderStyleRefId=@item.OrderStyleRefId" target="_blank"> PDF</a></text>)));
+    }
+</div>
+<script type="text/javascript">
+
+    function selectFabConsBuyerOrderRow(orderNo, orderStyleRefId, obj) {
+        var button = $(obj);
+        var $tr = button.closest('tr');
+        var $href = $('#styleFabConsumptionTabHref');
+        var url = '/Merchandising/FabConsumption/Index';
+        url += "?OrderStyleRefId=" + orderStyleRefId;
+        url += "&OrderNo=" + orderNo;
+        $tr.addClass("selected").siblings().removeClass("selected");
+        $href.attr('href', url);
+        $("#FabricComplonetTab").tabs('enable', 1);
+        $('#fabOrderStyleListTabHref').attr('href', '#temp');
+    }
+
+    $('.buyerOrderStyleFind').unbind('click').bind('click', function () {
+        var button = $(this);
+        var form = button.parents('form:first');
+        jQuery.Ajax({
+            url: form.attr('action')
+            , type: "GET",
+            data: form.serialize()
+            , container: '#buyerOrderStyleInFabricCons'
+        });
+        $("#FabricComplonetTab").tabs({
+            load: SCERP.AjaxCompleted,
+            disabled: [1, 2,3]
+        });
+    });
+</script>

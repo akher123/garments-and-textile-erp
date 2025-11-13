@@ -1,0 +1,72 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.DistrictViewModel
+    @{
+        Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+        ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    }
+
+    @using (Html.BeginForm("Save", "Districts", FormMethod.Post, new { @class = "districtform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <fieldset>
+            <legend>District</legend>
+            <table class="tabefont">
+                <tr>
+                    <td></td>
+                    <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="fieldTitleCls">Country:</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.CountryId, Model.CountrySelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.CountryId)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="fieldTitleCls">District Name:</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="fieldTitleCls">District Name (In Bengali):</td>
+                    <td>
+                        @Html.TextBoxFor(model => model.NameInBengali)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.NameInBengali)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </fieldset>
+
+    }

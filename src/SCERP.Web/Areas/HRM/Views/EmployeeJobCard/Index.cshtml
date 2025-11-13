@@ -1,0 +1,60 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeJobCardViewModel
+
+@{
+    ViewBag.Title = "Employee Job Card";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class=" additem">
+
+    @using (@Html.BeginForm("Search", "EmployeeJobCard", FormMethod.Post, new { @class = "EmployeeJobCardForm", name = "EmployeeJobCardForm" }))
+    {
+        <div style="width: 500px; padding-left: 240px;">
+            <h2> Employee Job Card </h2>
+        </div>
+
+        <section class="search formCover" style="margin-bottom: 7px; font-size: 12px;">
+
+            <table>             
+                <tr>
+                    <td> @Html.Label("Employee Card Id") </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.EmployeeCardId)                       
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td> @Html.Label("Start Date") </td>
+                    <td>                       
+                        @Html.TextBoxFor(x => x.StardDate, new { @class = "datepicker", @data_val = "false", @placeholder = "Stard Date" })
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("End Date") </td>
+                    <td>                     
+                        @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker", @data_val = "false", @placeholder = "End Date" })
+                    </td>
+                    <td> </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> <button class="search" type="button" onclick=" search('/HRM/EmployeeJobCard/Search', 'EmployeeJobCardForm') " />  </td>
+                    <td>@*<img onclick=" search('/HRM/EmployeeJobCard/CreatePdf', 'EmployeeJobCardForm') " title="Pdf preview" src="~/Content/images/Pdf-icon.png" />*@</td>
+                    <td></td>
+                </tr>
+            </table>
+        </section>
+    }
+</div>

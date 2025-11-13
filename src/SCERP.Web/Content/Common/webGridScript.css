@@ -1,0 +1,173 @@
+﻿.webgrid-table {
+    /*font-family: Tahoma;*/
+    width: 100%;
+    color: #000000;
+    font-size: 0.89em;
+    font-weight: 400;
+    border-width: 1px;
+    border-collapse: collapse;
+}
+.ui-dialog .ui-dialog-titlebar {
+    /*background: #7092be;*/
+    background: #3B5998;
+    color: #ffffff;
+}
+.webgrid button {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: 50% 100%;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+.webgrid-table thead {
+    /*border: 1px solid #0f4475;*/
+    /*padding: 3px 7px 2px;*/
+}
+.webgrid-table th {
+    border: 1px solid #bbb;
+    padding: 5px 10px;
+    /*line-height: 15px;*/
+    white-space: nowrap;
+}
+.webgrid-table td {
+    border: 1px solid #cccccc;
+    padding: 3px 5px;
+}
+.webgrid-table tbody tr:nth-child(2n), .webgrid-alternating-row {
+    /*background-color: #EAF2D3;
+    padding: 3px 7px 2px;*/
+    background: #f7f7f7;
+}
+.webgrid-table tbody tr:hover {
+    /*background-color: #f0e68c;*/
+    background: springgreen;
+    color: #000000;
+}
+.gridSelect .buyerOrderStyle-row tr:hover, .webgrid-table tbody tr.selected {
+    background-color: #20b2aa;
+}
+.webgrid-header {
+    /*background-color: #eaf2d3;
+    color: #000000;*/
+    /*background-color:#d2691e ;*/
+    background-color: #4b66a1;
+    color: #ffffff;
+    padding-bottom: 4px;
+    padding-top: 5px;
+    text-align: center;
+}
+.webgrid-header a {
+    color: #ffffff; /*#b8cdf8*/
+}
+.webgrid-header a:hover {
+    text-decoration: none;
+}
+.webgrid-footer {
+    text-align: center;
+}
+.webgrid-footer td {
+    padding: 20px;
+    font-size: 1.06em;
+    /*background: #f2f2f2;
+    margin-bottom: 20px;
+    font: 14px/24px sans-serif;*/
+}
+.webgrid-footer td a {
+    display: inline-block;
+    margin: 0 -2px;
+    padding: 8px 15px;
+    background: #eeeeee;
+    color: #333333;
+    font-size: .875em;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid #dddddd;
+    border-radius: 0;
+    box-shadow: inset 0px 0px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
+    outline: none;
+}
+.webgrid-footer td a:hover {
+    color: #FFFFFF;
+    background-color: #3b5998;
+    border: 1px solid #2150b4;
+    box-shadow: inset 0 0 0 rgba(255,255,255, .8), 0 1px 3px rgba(0,0,0, 0.1);
+}
+.webgrid-row-style {
+    padding: 3px 7px 2px;
+}
+.additem {
+    overflow-x: auto;
+    margin-left: 0;
+    /*padding-bottom: 20px;*/
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+}
+table.gridtable {
+    font-family: verdana,arial,sans-serif;
+    font-size: 12px;
+    color: #333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+    width: 70%;
+    margin-left: 0px;
+}
+table.gridtable th {
+    border-width: 1px;
+    padding: 5px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+}
+table.gridtable td {
+    border-width: 1px;
+    padding: 5px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+}
+.addButton {
+    padding: 4px 15px;
+    color: #ffffff;
+    background-color: #365899;
+    border: 1px solid #003eb6;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+    /*font: .8em 'Futura', Century Gothic, AppleGothic, sans-serif;*/
+}
+.addButton:active {
+    position: relative;
+    top: 2px;
+}
+.addButton:hover {
+    background-color: #68217a;
+    /*top: 2px;*/
+}
+.exportReport {
+    text-align: center;
+}
+.ui-widget-header {
+    background: #FFF;
+    border: none;
+    border-bottom: 1px solid #d5d5d5;
+}
+.ui-tabs .ui-tabs-nav {
+    padding: 0;
+    margin: 10px 6px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #dedede;
+    background: #eeeeee;
+    color: #333333;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: 1px solid #305093;
+    background: #4B66A1;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: #FFFFFF;
+}
+

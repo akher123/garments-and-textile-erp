@@ -1,0 +1,31 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.BankAdviceViewModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var t in Model.BankAdvices)
+{
+    <tr id="row-@Model.BankAdvices[t.Key].AccHeadId">
+
+        <td>
+            @Html.HiddenFor(x => x.BankAdvices[t.Key].AccHeadName)
+            @Html.DisplayFor(x => x.BankAdvices[t.Key].AccHeadName)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.BankAdvices[t.Key].Particulars)
+            @Html.DisplayFor(x => x.BankAdvices[t.Key].Particulars)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.BankAdvices[t.Key].BankRefNo)
+            @Html.DisplayFor(x => x.BankAdvices[t.Key].BankRefNo)
+        </td>
+        <td>
+            @Html.HiddenFor(x => x.BankAdvices[t.Key].Amount)
+            @Html.DisplayFor(x => x.BankAdvices[t.Key].Amount)
+        </td>
+        <td>
+            <input type="button" value="-" onclick=" ViewModel.DeleteTR(this) " />
+        </td>
+    </tr>
+}

@@ -1,0 +1,625 @@
+﻿@model SCERP.Web.Areas.Production.Models.DyeingJobOrderViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var diplayText = Model.JobOrder.JobType == "IN" ? "none" : "";
+    var diplayDr = Model.JobOrder.JobType == "EX" ? "none" : "";
+
+
+}
+
+<div class="header-title">
+    <h2>@(Model.JobOrder.DyeingJobOrderId > 0 ? "Edit " : "Add ")Dyeing Job Order</h2>
+</div>
+
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+
+<section class="search formCover tabefont">
+    @using (Html.BeginForm("Save", "DyeingJobOrder", FormMethod.Post, new { @class = "DyeingJobOrderEditForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.JobOrder.DyeingJobOrderId)
+        @Html.ValidationSummary(true)
+        <div class="additem">
+            <div style="font-size:12px; margin-bottom: 10px;">
+                <fieldset>
+                    <legend>Job Order</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Job No")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobOrder.JobRefId, new { @readonly = "readonly", @style = "background-color: #EEEEEE" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Job Date")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobOrder.JobDate, new { @class = "datepicker" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Job Type")
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.JobOrder.JobType, Model.JobTypeSelectListItem, new
+                                            {
+                                                id = "jobTypedr"
+                                            })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Process")
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.JobOrder.ProcessRefId, Model.ProcessSelectListItem, "-Select-", new { id = "partyDropdown" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Exp Date")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobOrder.DeliveryDate, new { @class = "datepicker" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Party")
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.JobOrder.PartyId, Model.PartySelectListItem, "-Select-", new { id = "partyDropdown" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Buyer")
+                                        </td>
+                                        <td style="display:@diplayDr" class="internal">
+                                            @Html.DropDownListFor(x => x.JobOrder.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "jobOrder_BuyerRefId" })
+                                        </td>
+                                        <td style="display:@diplayText" class="external">
+                                            @Html.TextBoxFor(x => x.JobOrder.BuyerName, new { id = "buyerTextBox" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Order")
+                                        </td>
+                                        <td style="display:@diplayDr" class="internal">
+                                            @Html.DropDownListFor(x => x.JobOrder.OrderNo, Model.OrderSelectListItem, new { @class = "jobOrder_OrderNo" })
+                                        </td>
+                                        <td style="display:@diplayText" class="external">
+
+                                            @Html.TextBoxFor(x => x.JobOrder.OrderName, new { id = "orderNameTextBox" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Style")
+                                        </td>
+                                        <td style="display:@diplayDr" class="internal">
+                                            @Html.DropDownListFor(x => x.JobOrder.OrderStyleRefId, Model.StylesSelectListItem, new { @class = "jobOrder_StyleNo" })
+                                        </td>
+                                        <td style="display:@diplayText" class="external">
+                                            @Html.TextBoxFor(x => x.JobOrder.StyleName, new { id = "styleNameTextBox" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Job Order No")
+                                        </td>
+                                        <td style="display:@diplayDr" class="internal">
+                                            @Html.DropDownListFor(x => x.JobOrder.WorkOrderNo, Model.ChallanNoSelectListItem, "-SELECT-", new { id = "WorkOrderNoText" })
+                                        </td>
+                                        <td style="display:@diplayText" class="external">
+                                            @Html.TextBoxFor(x => x.ChallanNo)
+                                        </td>
+                                        <td style="display:@diplayDr" class="internal">
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                            <input type="button"  class="addButton"   onclick="loadKnittingRollChallan()" value="+"  />
+                                        </td>
+                                    </tr>
+                                    <tr style="width: 100%">
+                                        <td>
+                                            @Html.Label("", "Remarks")
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(x => x.JobOrder.Remarks)
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="display: block;">
+                                <div style="margin-bottom: 10px;">
+                                    <table id="JobOrderDetailContent">
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "Fabric")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.ItemName, new { @placeholder = "Fabric type", id = "fabricItemName", @class = "itemautocompliteItem", @data_target = "#fabricItemId", @action = "/Consumption/AutocompliteItem" })
+                                                @Html.HiddenFor(x => x.JobOrderDetail.ItemId, new { id = "fabricItemId" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("", "GSM")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.Gsm, new { @placeholder = "GSM", id = "fabricGsm" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "Component")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.ComponentName, new { @onkeyup = "componentAutocomplite(this)", id = "ComponentName", @placeholder = "Component Name" })
+                                                @Html.HiddenFor(x => x.JobOrderDetail.ComponentRefId, new { @class = "Component_ComponentRefId" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("", "Color")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.ColorName, new { @placeholder = "Color", id = "fabricColorName", @class = "autocompliteColorSerach", @data_target = "#fabricColorRefId", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                                                @Html.HiddenFor(x => x.JobOrderDetail.ColorRefId, new { id = "fabricColorRefId" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "M/C Dial/Size")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.MdName, new { @placeholder = "Machine DIA", id = "MdName", @class = "autocompliteSizeSerach", @data_target = "#MdSizeRefId", @action = "/BuyerOrderColorSize/SizeAutoComplite?typeId=01" })
+                                                @Html.HiddenFor(x => x.JobOrderDetail.MdSizeRefId, new { id = "MdSizeRefId" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("", "F/Dia")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.FdName, new { @placeholder = "Finish DIA", id = "FdName", @class = "autocompliteSizeSerach", @data_target = "#FdSizeRefId", @action = "/BuyerOrderColorSize/SizeAutoComplite?typeId=01" })
+                                                @Html.HiddenFor(x => x.JobOrderDetail.FdSizeRefId, new { id = "FdSizeRefId" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "Quantity")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.Quantity, new { @data_val = "false", id = "fabricQty" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("", "Rate")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.Rate, new { @data_val = "false", id = "fabricRate" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.Label("", "Grey Wit")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.GreyWit, new { id = "GreyWit" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("*", new { @class = "labelInstruction" })
+                                            </td>
+                                            <td>
+                                                @Html.Label("", "Remarks")
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobOrderDetail.Remarks, new { id = "Remarks" })
+                                            </td>
+                                            <td style="display:@diplayText" class="external">
+                                                <button value="+" class="addButton"   id="btnJobOrderDetail">+</button>
+                                            </td>
+                                    </table>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <table class="webgrid-table" id="tableJobOrderDetail">
+                                        <thead class="webgrid-header">
+                                            <tr>
+                                                <th>Fabric Type</th>
+                                                <th>GSM</th>
+                                                <th>Component</th>
+                                                <th>Color</th>
+                                                <th>M/C Dia</th>
+                                                <th>F/Dia</th>
+                                                <th>Rate</th>
+                                                <th>Qty</th>
+                                                <th>Grey Wt</th>
+                                                <th>Remarks</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @Html.Partial("~/Areas/Production/Views/DyeingJobOrder/_NewRow.cshtml", Model)
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="float: left">
+                                    <input onclick="search('/Production/DyeingJobOrder/Index')" value="Back" class="addButton" type="button" />
+                                </div>
+                                <div style="float: right">
+                                    <input type="submit" class="addButton" id="btnsSveJobOrder" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    }
+
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#jobTypedr').on('change', function () {
+            $('#buyerTextBox,#orderNameTextBox,#styleNameTextBox').val('');
+            $('.jobOrder_OrderNo,.jobOrder_StyleNo').empty();
+            var jobtype = $(this).val();
+            if (jobtype === 'EX') {
+                $(".external").css("display", "");
+                $(".internal").css("display", "none");
+                $('#partyDropdown').val('');
+            } else {
+                $(".internal").css("display", "");
+
+                $(".external").css("display", "none");
+
+                $('#partyDropdown').val(1);
+            }
+        });
+
+
+        $('.jobOrder_BuyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            var buyerName = $(".jobOrder_BuyerRefId option:selected").text();
+
+            $.Ajax({
+                url: '/KnittingProgram/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('#buyerTextBox').val(buyerName);
+                $('.jobOrder_OrderNo').empty();
+                if (orderList.length > 0) {
+                    $('#buyerTextBox').val(buyerName);
+                    populateDropDown({ OrderNo: "", RefNo: "Select" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.jobOrder_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.jobOrder_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            var orderName = $(".jobOrder_OrderNo option:selected").text();
+
+            $.Ajax({
+                url: '/KnittingProgram/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.jobOrder_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('#orderNameTextBox').val(orderName);
+                    $('.jobOrder_StyleNo').append(
+                        $('<option/>').attr('value', '').text("Select")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.jobOrder_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.jobOrder_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        $('.jobOrder_StyleNo').unbind('change').bind('change', function () {
+            var styleName = $(".jobOrder_StyleNo option:selected").text();
+            $('#styleNameTextBox').val(styleName);
+            populateChallanRefId($(this).val());
+        });
+
+        $('.autocompliteColorSerach').autocomplete({
+            source: function (request, response) {
+                var datatarget = this.element.attr('data-target');
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    data: { serachString: request.term },
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        $(datatarget).val('');
+                        response($.map(data, function (color) {
+                            return { label: color.ColorName, value: color.ColorName, ColorRefId: color.ColorRefId, datatarget: datatarget };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var colorRefId = ui.item.ColorRefId;
+                $(ui.item.datatarget).val(colorRefId);
+            },
+
+        });
+
+
+        $('.autocompliteSizeSerach').autocomplete({
+            source: function (request, response) {
+                var datatarget = this.element.attr('data-target');
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    datatype: "json",
+                    data: { serachString: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        $(datatarget).val('');
+                        response($.map(data, function (size) {
+                            return { label: size.SizeName, value: size.SizeName, SizeRefId: size.SizeRefId, datatarget: datatarget };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var sizeRefId = ui.item.SizeRefId;
+                $(ui.item.datatarget).val(sizeRefId);
+            },
+
+        });
+
+        $('.itemautocompliteItem').autocomplete({
+            source: function (request, response) {
+                var datatarget = this.element.attr('data-target');
+                var url = this.element.attr('action');
+                var option = {
+                    url: url,
+                    type: "GET",
+                    data: { SearchItemKey: request.term },
+                };
+                $.Ajax(option)
+                    .done(function (data) {
+                        $(datatarget).val('');
+                        response($.map(data, function (item) {
+                            return { label: item.ItemName, value: item.ItemName, ItemId: item.ItemId, datatarget: datatarget };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var itemId = ui.item.ItemId;
+                $(ui.item.datatarget).val(itemId);
+
+            },
+        });
+
+        function componentAutocomplite(obj) {
+            $('.Component_ComponentRefId').val('');
+            $(obj).autocomplete({
+                source: function (request, response) {
+                    var option = {
+                        url: "/Batch/AutoCompliteComponent",
+                        type: "GET",
+                        data: { searchString: request.term }
+                    };
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ComponentRefId + "_" + item.ComponentName, value: item.ComponentName, ComponentRefId: item.ComponentRefId };
+                            }));
+                        });
+                },
+                select: function (event, ui) {
+                    var componentRefId = ui.item.ComponentRefId;
+                    $('.Component_ComponentRefId').val(componentRefId);
+                },
+            });
+        }
+
+        $('#btnJobOrderDetail').unbind('click').bind('click', function () {
+
+            var dataContent = $('#JobOrderDetailContent :input');
+            var table = $('table#tableJobOrderDetail tbody');
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                dataContent.validate();
+                if (!dataContent.valid()) {
+                    return false;
+                } else {
+                    $.Ajax({
+                        url: '/DyeingJobOrder/AddJobDetailRow',
+                        type: 'POST',
+                        data: dataContent.serialize(),
+                    }).done(function (resp) {
+                        // var itemCode = $('#fabricItemCode').val();
+                        //$('table#outputProgramDtlTable tbody tr#OutRow-' + itemCode).remove();
+                        table.append(resp);
+                        dataContent.val('');
+                    });
+                }
+
+            }
+
+
+        });
+
+
+        $('#btnsSveJobOrder').unbind('click').bind('click', function () {
+            var button = $(this);
+            var form = button.parents("form:first");
+            var url = form.attr('action');
+            var data = form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                } else {
+                    jQuery.Ajax({
+                        url: url,
+                        type: "POST",
+                        data: data,
+                        container: "#contentRight"
+                    });
+                }
+
+            }
+        });
+
+        function removeRow(btnObj) {
+            var $btnObj = $(btnObj);
+            var cltr = $btnObj.closest('tr');
+            jQuery.Confirm(SCERP.Messages.DeleteConfirmation, function (r) {
+                if (r) {
+                    cltr.remove();
+                }
+            });
+
+        }
+
+
+        function editFabric(key) {
+            $('#JobOrderDetailContent :input').val('');
+            $('#fabricItemName').val($.trim($('#ItemName_' + key).text()));
+            $('#fabricItemId').val($('#ItemId_' + key).val());
+
+            $('#fabricColorName').val($.trim($('#ColorName_' + key).text()));
+            $('#fabricColorRefId').val($('#ColorRefId_' + key).val());
+
+            $('#ComponentName').val($.trim($('#ComponentName_' + key).text()));
+            $('.Component_ComponentRefId').val($('#ComponentRefId_' + key).val());
+
+            $('#FdName').val($.trim($('#FdName_' + key).text()));
+            $('#FdSizeRefId').val($('#FdSizeRefId_' + key).val());
+
+            $('#MdName').val($.trim($('#MdName_' + key).text()));
+            $('#MdSizeRefId').val($('#MdSizeRefId_' + key).val());
+
+            $('#fabricGsm').val($('#GSM_' + key).val());
+
+            $('#fabricRate').val($('#Rate_' + key).val());
+            $('#fabricQty').val($('#Quantity_' + key).val());
+            $('#GreyWit').val($('#GreyWit_' + key).val());
+
+            $('#Remarks').val($('#Remarks_' + key).val());
+
+
+        }
+
+        function loadKnittingRollChallan() {
+            var challanRefId = $('#WorkOrderNoText').val();
+            var table = $('table#tableJobOrderDetail tbody');
+            $.Ajax({
+                url: '/DyeingJobOrder/LoadKnittingRollIssueChallan',
+                type: 'POST',
+                data: { challanRefId: challanRefId },
+            }).done(function (resp) {
+                table.empty();
+                table.append(resp);
+            });
+        }
+        function populateChallanRefId(orderStyleRefId) {
+            $.Ajax({
+                url: '/DyeingJobOrder/GetKnittingRollIssueChallan/',
+                data: { orderStyleRefId: orderStyleRefId }
+            }).done(function (challans) {
+                var $drd = $('#WorkOrderNoText');
+                $drd.empty();
+                  $drd.append(
+                       $('<option/>').attr('value', "").text("-SELECT-")
+                    );
+                if (challans.length > 0) {
+                    $.each(challans, function (order) {
+                        $drd.append(
+                            $('<option/>').attr('value', this.Id).text(this.Value)
+                        );
+                    });
+                } else {
+                     $drd.append(
+                       $('<option/>').attr('value', "").text("Challan Not Found")
+                    );
+                
+                }
+            });
+        }
+    </script>
+
+
+}

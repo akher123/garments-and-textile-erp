@@ -1,0 +1,78 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.BulkBooking.BulkBookingId > 0) ? "Edit" : "Add";
+}
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "BulkBooking", FormMethod.Post, new { @class = "BulkBookingSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BulkBooking.BulkBookingId)
+        <fieldset>
+            <legend>Bulk Booking </legend>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("", String.Format("{0}", "BK Ref."))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBooking.BulkBookingRefId, new { @style = "background-color: #778899", @readonly = "readonly" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Bk Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.BulkBooking.BookingDate, new { @class = "datepicker", @placeholder = "Booking Date" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Merchandiser")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.BulkBooking.MerchadiserId, Model.MerchandisersSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Attention")
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.BulkBooking.Attention)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Note")
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(model => model.BulkBooking.Note)
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="addButton" value="Save"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+    }
+</div>

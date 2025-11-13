@@ -1,0 +1,194 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.SalarySetupViewModel
+@{
+    ViewBag.Title = Model.Id > 0 ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<style type="text/css">
+    .text-readony {
+        background-color: #b0c4de;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+</style>
+@using (Html.BeginForm("Save", "SalarySetup", FormMethod.Get, new { @class = "salarysetupEdit" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    <fieldset>
+        <legend>Salary Setup </legend>
+
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Employee Type: ") </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeGrade.EmployeeTypeId, Model.EmployeeTypeSelectListItem, "-Select-", new { @class = "EmployeeType employee_type", @action = "/HRM/SalarySetup/GetAllGradeByTypeId", @TargetClass = "EmployeeGrade" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.EmployeeGrade.EmployeeTypeId)
+                </td>
+
+
+            </tr>
+            <tr>
+                <td> @Html.Label("Employee Grade: ") </td>
+                <td>
+                    @Html.DropDownListFor(x => x.EmployeeGradeId, Model.EmployeeGradeSelectListItem, "-Select-", new { @class = "EmployeeGrade employee_grade", @action = "/HRM/SalarySetup/GetEmployeeGradeSalaryPercentangeByEmployeeGradeAndTypeId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.EmployeeGrade.EmployeeTypeId)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Gross Salary: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.GrossSalary, new { htmlAttributes = new { @class = "grossSalary", @action = "/HRM/SalarySetup/GetEmployeeGradeSalaryPercentangeForBasicAndHouseRent" } })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.GrossSalary)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Basic Salary: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.BasicSalary, new { htmlAttributes = new { @class = " basicSalary" } })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.BasicSalary)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("House Rent: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.HouseRent, new { htmlAttributes = new { @class = " houseRent" } })
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Medical Allowance: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.MedicalAllowance, new { htmlAttributes = new { @class = "medicalAllowance"} })
+
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Conveyance: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.Conveyance, new { htmlAttributes = new { @class = " conveyance" } })
+
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Food Allowance: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.FoodAllowance, new { htmlAttributes = new { @class = " foodAllowance" } })
+
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Entertainment Allowance: ") </td>
+                <td>
+                    @Html.EditorFor(x => x.EntertainmentAllowance, new { htmlAttributes = new { @class = " entertainmentAllowance" } })
+
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("From: ") </td>
+                <td>             
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.FromDate)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("To: ") </td>
+                <td>           
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Description: ") </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Description)
+
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/EmployeeSalarySetup.js"></script>
+    <script type="text/javascript">
+        $('.EmployeeGrade').unbind("change").bind("change", changeEventHendeler);
+        $('.grossSalary').focusout(focusoutEventHendeler);
+        function focusoutEventHendeler() {
+            var $this = $(this);
+            var option = {
+                url: $this.attr('action'),
+                data: { employeeGradeId: $('.employee_grade').val(), employeeTypeId: $('.employee_type').val(), grossSalary: $('.grossSalary').val() }
+            };
+            getEmployeeGradeSalaryPercentange(option).done(function (data) {
+
+                var basicSalary = $('.basicSalary');
+                var houseRent = $('.houseRent');
+
+                if (data.Status == true) {
+                    basicSalary.val(data.BasicSalary);
+                    houseRent.val(data.HouseRent);
+                    basicSalary.addClass('text-readony');
+                    houseRent.addClass('text-readony');
+                } else {
+                    basicSalary.val('').removeClass('text-readony');
+                    houseRent.val('').removeClass('text-readony');
+                }
+            });
+        }
+
+        function changeEventHendeler() {
+            var $this = $(this);
+            var option = {
+                url: $this.attr('action'),
+                data: { employeeGradeId: $this.val(), employeeTypeId: $('.employee_type').val() }
+            };
+            getEmployeeGradeSalaryPercentange(option).done(function (respons) {
+                var medica = $('.medicalAllowance');
+                var conveyance = $('.conveyance');
+                var food = $('.foodAllowance');
+                if (respons.Status == true) {
+                    var data = respons.employeeGradeSalaryPercentage;
+                    medica.val(data.Medical);
+                    conveyance.val(data.Conveyance);
+                    food.val(data.Food);
+                    medica.addClass('text-readony');
+                    conveyance.addClass('text-readony');
+                    food.addClass('text-readony');
+                } else {
+                    medica.val('').removeClass('text-readony');
+                    conveyance.val('').removeClass('text-readony');
+                    food.val('').removeClass('text-readony');
+                }
+
+            });
+        }
+
+        function getEmployeeGradeSalaryPercentange(option) {
+            return $.Ajax({
+                url: option.url,
+                type: "get",
+                data: option.data
+            });
+        }
+
+    </script>
+}

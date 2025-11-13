@@ -1,0 +1,63 @@
+﻿@model  SCERP.Model.CompanyOrganogram
+
+@{
+    ViewBag.Title = "Company Organogram";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@section styles
+{
+    <style type="text/css">
+        .node {
+            cursor: pointer;
+        }
+    </style>
+    <link href="~/Content/jquery.jOrgChart.css" rel="stylesheet" />
+    <link href="~/Content/prettify.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>Company Organogram</h2>
+</div>
+
+@using (Html.BeginForm("Add", "CompanyOrganogram", FormMethod.Post, new { @class = "submit-allow ignore-validation" }))
+{
+    <div style="margin-top: 10px;">
+        <button class="AjaxPopup  btn btn-primary" action="/HRM/CompanyOrganogram/Add/">Add Hierarchy</button>
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "CompanyOrganogram", FormMethod.Post, new { @class = "submit-allow ignore-validation" }))
+{
+    <div style="margin-top: 10px;">
+        <button class="AjaxPopup  btn btn-primary" action="/HRM/CompanyOrganogram/Edit/">Edit Hierarchy</button>
+    </div>
+}
+
+<div style="width: 1010px; overflow: auto;">
+    <div id="chart"></div>
+</div>
+<ul id="org" style="display:none">
+    <li>
+        @Model.EmployeeDesignation.Title
+        <ul>
+            @Html.Partial("Childrens", Model)
+        </ul>
+    </li>
+</ul>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.jOrgChart.js"></script>
+    <script src="~/Scripts/prettify.js"></script>
+    <script>
+
+        $("#org").jOrgChart({
+            chartElement: '#chart',
+            dragAndDrop: false
+        });
+    </script>
+}
+
+
+

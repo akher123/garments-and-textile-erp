@@ -1,0 +1,200 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.StorePurchaseRequisitionViewModel
+@{
+    Layout = null;
+    var sprdetails = Model.InventoryStorePurchaseRequisitionDetails;
+}
+<table id="StorePurchaseRequisitionDetail" class="tabefont webgrid-table webgrid" style="width: auto;">
+    <thead class="webgrid-header" style="text-align: center">
+        <tr>
+            <th colspan="14">This Section for Store </th>
+            <th colspan="3">This Section for Approval </th>
+            <th colspan="4">This Section for Purchase </th>
+            <th colspan="2">Operation</th>
+        </tr>
+        <tr>
+
+            <th>
+                @Html.Label("Item")
+            </th>
+
+            <th>
+                @Html.Label("Description")
+            </th>
+            <th>
+                @Html.Label("Size")
+            </th>
+            <th>
+                @Html.Label("Brand")
+            </th>
+            <th>
+                @Html.Label("Origin")
+            </th>
+            <th>
+                @Html.Label("Qantity")
+            </th>
+         
+            <th>
+                @Html.Label("Desired Date")
+            </th>
+            <th>
+                @Html.Label("Uses Area")
+            </th>
+            <th>
+                @Html.Label("Supplied UptoDate")
+            </th>
+
+            <th>
+                @Html.Label("StockInHand")
+            </th>
+            <th>
+                @Html.Label("LastUnitPrice")
+            </th>
+            <th>
+                @Html.Label("Estimated YearlyRequirement")
+            </th>
+            <th>
+                @Html.Label("Modified Qty")
+            </th>
+            <th>
+                @Html.Label("Approved Qty")
+            </th>
+            <th>
+                @Html.Label("Approval Date")
+            </th>
+            <th>
+                @Html.Label("Approval Status")
+            </th>
+            <th>
+                @Html.Label("Remarks")
+            </th>
+            <th>
+                @Html.Label("Quotation")
+            </th>
+            <th>
+                @Html.Label("Present Rate")
+            </th>
+            <th>
+                @Html.Label("Approved Purchase")
+            </th>
+            <th>
+                @Html.Label("Remarks")
+            </th>
+
+            <th>
+                @Html.Label("Edit")
+            </th>
+
+            <th>
+                @Html.Label("Delete")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.InventoryStorePurchaseRequisitionDetails) { 
+      
+            <tr class="webgrid-alternating-row">
+                <td>
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ItemId, new { @class = "ItemHiddenField-" + item.Key })
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StorePurchaseRequisitionDetailId)
+                    @Html.HiddenFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StorePurchaseRequisitionId)
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Item.ItemName)</span>
+                    <input class="edit-mode " data-val="true" onkeyup="itemAutocomplite(this,'@item.Key')" type="text" value="@sprdetails[item.Key].Inventory_Item.ItemName" style="width:150px" />
+                </td>
+                <td>
+
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Description)</span>
+                    @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Description, new { @class = "edit-mode" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Size.Title)</span>
+                    @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", sprdetails[item.Key].SizeId), "-Select-", new { @class = "edit-mode", @onchange = "SizePresentStockInfo(this)", @style = "width:80px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_Brand.Name)</span>
+                    @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", sprdetails[item.Key].BrandId), "-Select-", new { @class = "edit-mode", @onchange = "BrandPresentStockInfo(this)", @style = "width:80px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Country.CountryName)</span>
+                    @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].OriginId, new SelectList(Model.Countries, "Id", "CountryName", sprdetails[item.Key].OriginId), "-Select-", new { @onchange = "OriginPresentStockInfo(this)", @class = "edit-mode", @style = "width:100px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quantity)</span>
+                    @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quantity, new { @class = "edit-mode", @style = "width:100px" })
+                </td>
+
+           
+                <td>
+                    <span class="display-mode">@Html.ValueFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].DesiredDate, "{0:dd/MM/yyyy}")</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].DesiredDate, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].FunctionalArea)</span>
+                    @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].FunctionalArea, new { @class = "edit-mode", @style = "width:150px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SuppliedUptoDate)</span>
+                    @Html.TextBoxFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].SuppliedUptoDate, new { @class = "edit-mode", @style = "background-color: #b0c4de; width:80px ", @readonly = "readonly" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StockInHand)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].StockInHand, new { htmlAttributes = new { @class = "edit-mode", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].LastUnitPrice)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].LastUnitPrice, new { htmlAttributes = new { @class = "edit-mode", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].EstimatedYearlyRequirement)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].EstimatedYearlyRequirement, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ModifiedRequiredQuantity)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ModifiedRequiredQuantity, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedQuantity)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedQuantity, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">   @Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalDate)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalDate, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Inventory_ApprovalStatus.StatusName)</span>
+                    @Html.DropDownListFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovalStatusId, new SelectList(Model.InventoryApprovalStatuses, "ApprovalStatusId", "StatusName", sprdetails[item.Key].ApprovalStatusId), "--Select--", new { @class = "edit-mode", @style = "width:150px" })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfRequisitionApprovalPerson)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfRequisitionApprovalPerson, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quotation)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].Quotation, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].PresentRate)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].PresentRate, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedPurchase)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].ApprovedPurchase, new { htmlAttributes = new { @class = "edit-mode", @style = "width:80px" } })
+                </td>
+                <td>
+                    <span class="display-mode">@Html.DisplayFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfPurchaseApprovalPerson)</span>
+                    @Html.EditorFor(x => x.InventoryStorePurchaseRequisitionDetails[item.Key].RemarksOfPurchaseApprovalPerson, new { htmlAttributes = new { @class = "edit-mode", @style = "width:150px" } })
+                </td>
+                <td>
+                    <input type="button" class="edit-button " value="Edit" />
+                </td>
+                @if (Model.AuthonticatedProcessId == (int)StorePurchaseRequisition.Store)
+                {
+                    <td>
+                        <button class="delete" action="/Inventory/StorePurchaseRequisition/DeletePurchaseRequisitionDetail?StorePurchaseRequisitionDetailId=@Model.InventoryStorePurchaseRequisitionDetails[item.Key].StorePurchaseRequisitionDetailId" />
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

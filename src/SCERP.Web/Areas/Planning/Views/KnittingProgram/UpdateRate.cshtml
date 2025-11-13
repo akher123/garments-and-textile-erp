@@ -1,0 +1,173 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<section class="search formCover tabefont">
+    @using (Html.BeginForm("SaveUpdatedRate", "KnittingProgram", FormMethod.Post, new { @class = "KnittingProgramForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Program.ProgramId)
+        @Html.ValidationSummary(true)
+        <div class="additem">
+            <div style="font-size:12px; margin-bottom: 10px;">
+                <fieldset>
+                    <legend>Program No: @Model.Program.ProgramRefId</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <h2>Input Program</h2>
+                                <div>
+                                    <table class="webgrid-table" id="inputProgramDtlTable">
+                                        <thead style="background-color: #9370db">
+                                            <tr>
+
+                                                <th>
+                                                    Yarn
+                                                </th>
+                                                <th>
+                                                    Color
+                                                </th>
+                                                <th>
+                                                    Count
+                                                </th>
+                                                <th>
+                                                    Lot#
+                                                </th>
+                                                <th>
+                                                    Qty(Kg)
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var inDt in Model.InputDataTable)
+                                            {
+                                                <tr>
+                                                    <td>
+
+                                                        @Html.DisplayFor(x => x.InputDataTable[inDt.Key].ItemName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.InputDataTable[inDt.Key].ColorName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.InputDataTable[inDt.Key].SizeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.InputDataTable[inDt.Key].LotName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.InputDataTable[inDt.Key].Quantity)
+                                                    </td>
+
+                                                </tr>
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h2>Output Program</h2>
+                                <div>
+                                    <table class="webgrid-table" id="outputProgramDtlTable">
+                                        <thead style="background-color: #9370db">
+                                            <tr>
+                                                <th>
+                                                    Fabric
+                                                </th>
+
+                                                <th>
+                                                    GSM
+                                                </th>
+                                                <th>
+                                                    Color
+                                                </th>
+                                                <th>
+                                                    M/C DIA
+                                                </th>
+                                                <th>
+                                                    Finish DIA
+                                                </th>
+                                                <th>
+                                                    Stitch Length
+                                                </th>
+                                                <th>
+                                                  <input type="text" id="billRateTex" placeholder="Rate"/>
+                                                </th>
+                                                <th>
+                                                    Qty(Kg)
+                                                </th>
+                                                <th>Remarks</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var outDt in Model.OutputDataTable)
+                                            {
+                                                <tr>
+
+                                                    <td>
+                                                        @Html.HiddenFor(x => x.OutputDataTable[outDt.Key].ProgramDetailId)
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ItemName)
+                                                    </td>
+                                                    <td>
+
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].GSM)
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].ColorName)
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].SizeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].FinishSizeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].SleeveLength)
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.OutputDataTable[outDt.Key].Rate,new { @class="prgramRate"})
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Quantity)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.OutputDataTable[outDt.Key].Remarks)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="float:right;padding-top:10px;">
+                                    <input type="submit" class="SubmitConfirmButton" value="Update Rate" />
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>
+            </div>
+
+        </div>
+    }
+
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#billRateTex').on('keyup', function () {
+
+            $('.prgramRate').val($(this).val());
+        })
+    </script>
+}

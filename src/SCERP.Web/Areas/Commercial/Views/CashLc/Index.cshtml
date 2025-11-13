@@ -1,0 +1,139 @@
+﻿@using System.Data
+@using SCERP.Common
+
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.CashLcViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="header-title">
+    <h2> Cash LC Machineries </h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "CashLc", FormMethod.Get, new { @class = "taskForm ignore-validation" }))
+        {        
+            @Html.HiddenFor(x => x.IsSearch)
+
+            <table class="tabefont">
+
+                <tr>
+                    <td> @Html.Label("Supplier Name : ") </td>
+                    <td> @Html.TextBoxFor(x => x.SupplierName, new { @placeholder = "SupplierName" }) </td>
+
+                    <td> @Html.Label("Cash LC No : ") </td>
+                    <td> @Html.TextBoxFor(x => x.CashLcNo, new { @placeholder = "CashLcNo" }) </td>
+
+                    <td> </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("LC From Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From" }) </td>
+
+                    <td> @Html.Label("LC To Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>
+
+                    <td> </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td> @Html.Label("Shipment Mode : ")  </td>
+                    <td> @Html.TextBoxFor(x => x.WayOfEntry, new { @placeholder = "Shipment Mode" }) </td>
+
+                    <td> @Html.Label("Port Of Develary: ") </td>
+                    <td> @Html.TextBoxFor(p => p.PortOfDelivery, new { @placeholder = "Port" }) </td>
+
+                    <td> </td>
+                    <td> </td>
+                </tr>
+             
+                <tr>
+                    <td> @Html.Label("Item Name : ") </td>
+                    <td> @Html.TextBoxFor(p => p.Item, new { @placeholder = "Item" }) </td>
+                    <td> @Html.Label("Print Format: ") </td>
+                    <td> @Html.DropDownListFor(x => x.PrintFormatId, Model.PrintFormatStatusSelectListItems) </td>
+                    <td> </td>
+                    <td> 
+                        <input type="button" class="searchAction" /> 
+                        <input type="button" value="Show Report" class="addButton" onclick="javascript: PrintReport(); " />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Commercial/CashLc/Edit">Add New</button>
+        </div>
+
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CommCashLcs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                    grid.Columns(
+                    grid.Column("File", format: @<text><input type="button" class="Edit_Button" action="/Commercial/CommFileUpload/Index?RefId=@item.CashLcId&SrcType=@Convert.ToInt32(FileSource.CashLc)" value="Upload" /></text>, canSort: false),
+                    grid.Column("CashLcId", header: "Cash LC Id(Mac.)"),
+                    grid.Column("CashLcNo", header: "Cash LC No"),
+                    grid.Column("LcValue", header: "LC Value"),
+                    grid.Column("LcDate", header: "Lc Date", format: @<text>@(item.LcDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.LcDate)))</text>),
+                    grid.Column("SupplierName", header: "Supplier Name"),
+                    grid.Column("Item", header: "Item"),
+                    grid.Column("QuantitySetMultiple", header: "Quantity"),
+                    grid.Column("PortOfDelivery", header: "Port Of Delivery"),
+                    //grid.Column("DateOfBL", header: "DateOfBL"),
+                    //grid.Column("CountryOfOrigin", header: "CountryOfOrigin"),
+                    grid.Column("PaymentTerms", header: "Payment Terms"),
+                    grid.Column("PaymentDate", header: "Payment Date", format: @<text>@(item.PaymentDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.PaymentDate)))</text>),
+                    //grid.Column("ShipmentDate", header: "Shipment Date", format: @<text>@(item.ShipmentDate == null ? "---" : (String.Format("{0:dd/MM/yyyy}", item.ShipmentDate)))</text>),
+                    //grid.Column("BankRef", header: "BankRef"),
+                    //grid.Column("BankRef", format: @item => Html.DropDownListFor(m => Model.CommCashLc.BankRef, new SelectList(Model.BankSelectListItem, "BankId", "BankName", @item.BankRef), new { style = "width: 150px; background-color:gray"})),
+                    grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Commercial/CashLc/Edit?CashLcId=@item.CashLcId"></button></text>),
+                    grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Commercial/CashLc/Delete?CashLcId=@item.CashLcId"></button></text>)))
+                        ;
+        }
+
+    </div>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var supplierName = $('#SupplierName').val();
+            var cashLcNo = $('#CashLcNo').val();
+            var lcFromDate = $('#FromDate').val();
+            var lcToDate = $('#ToDate').val();
+            var shipmentMode = $('#WayOfEntry').val();
+            var portOfDelivery = $('#PortOfDelivery').val();
+            var itemName = $('#Item').val();     
+            var printFormat = $('#PrintFormatId').val();
+
+            window.open("/Commercial/Report/CashLcReport?&supplierName=" + supplierName + "&cashLcNo=" + cashLcNo + "&lcFromDate=" + lcFromDate + "&lcToDate=" + lcToDate + "&shipmentMode=" + shipmentMode + "&portOfDelivery=" + portOfDelivery + "&itemName=" + itemName + "&printFormatId=" + printFormat + "&ExportType=DOC");
+        }
+    </script>
+}

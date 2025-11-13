@@ -1,0 +1,73 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessorViewModel
+@{
+    ViewBag.Title = Model.ProcessorId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+@using (Html.BeginForm("Save", "Processor", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x=>x.ProcessorId)
+    <fieldset>
+        <legend>Processor</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Ref No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProcessorRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Process:")
+                </td>
+                <td>
+
+                    @Html.DropDownListFor(x => x.ProcessRefId, Model.ProcessesSeasonsSelectListItem, "-select-")
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Processor :")
+                </td>
+                <td>
+
+                    @Html.EditorFor(x => x.ProcessorName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+    
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}

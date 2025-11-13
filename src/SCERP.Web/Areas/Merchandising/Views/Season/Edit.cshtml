@@ -1,0 +1,110 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.SeasonViewModel
+@{
+    ViewBag.Title = Model.SeasonId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "Season", FormMethod.Post, new { @class = "Seasonform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SeasonId)
+        @Html.HiddenFor(model => model.IsSearch)
+    <fieldset>
+        <legend>Season </legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SeasonRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Season Name:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.SeasonName)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.SeasonName)
+                </td>
+            </tr>
+        
+            <tr>
+                <td></td>
+                <td>
+                    @if (!Model.IsSearch)
+                    {
+                        @Html.SaveButton()
+                    }
+                    else
+                    {
+                        <input type="button" value="Save" id="seasonSaveButton" />
+                    }
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+     
+        $('#seasonSaveButton').unbind('click').bind('click', function () {
+            var $form = $(this).parents('form:first');
+            var data = $form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                $form.validate();
+                if (!$form.valid()) {
+                    e.preventDefault();
+                    return false;
+                } else {
+                    $.Ajax({
+                        url: $form.attr('action'),
+                        dataType: 'json',
+                        type: 'post',
+                        data: data,
+                    }).done(function (seasonLsit) {
+                        $('#seasonDropdownId').empty();
+                        if (seasonLsit.length > 0) {
+                            $('#seasonDropdownId').append(
+
+                          $('<option/>')
+                              .attr('value', '')
+                              .text("-Select-")
+                      );
+                            $.each(seasonLsit, function (season) {
+                                $('#seasonDropdownId').append(
+                                    $('<option/>')
+                                        .attr('value', this.SeasonRefId)
+                                        .text(this.SeasonName)
+                                );
+                            });
+                            $form.DialogClose();
+                        }
+
+
+                    });
+                }
+            }
+        });
+    </script>
+
+
+}

@@ -1,0 +1,144 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.BbLcViewModel
+
+@{
+    ViewBag.Title = "Back to Back LC";
+    Layout = "~/Views/Shared/_CashBbLcLayout.cshtml";
+    var displayStyle = (Model.BbLcInfos.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "BbLc", FormMethod.Get, new { @class = "bblcSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div class="header-title">
+        <h2>Back to Back LC Information</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td> @Html.Label("Supplier Name : ") </td>
+                    <td> @Html.DropDownListFor(model => model.SupplierCompanyRefId, Model.SupplierSelectListItem, "-Select-") </td>
+
+                    <td> @Html.Label("BBLC Type : ") </td>
+                    <td> @Html.DropDownListFor(model => model.BbLcType, Model.BbLcTypeSelectListItems, "-Select-") </td>
+
+                    <td> @Html.Label("LC No : ") </td>
+                    <td> @Html.DropDownListFor(model => model.LcRefId, Model.LcSelectListItem, "-Select-") </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("LC From Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>
+
+                    <td> @Html.Label("LC To Date : ") </td>
+                    <td> @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" }) </td>
+
+                    <td> @Html.Label("BB LC No : ")  </td>
+                    <td> @Html.TextBoxFor(x => x.BbLcNo) </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Maturity Date From : ") </td>
+                    <td> @Html.TextBoxFor(x => x.MaturityDateFrom, new { @class = "datepicker", @data_val = "false", @placeholder = "Maturity Date From" }) </td>
+
+                    <td> @Html.Label("Maturity Date To : ") </td>
+                    <td> @Html.TextBoxFor(x => x.MaturityDateTo, new { @class = "datepicker", @data_val = "false", @placeholder = "Maturity Date To" }) </td>
+
+                    <td></td>
+                    <td> @Html.CheckBox("DonothaveMaturityDate", false) @Html.Label("Do not have Maturity Date") </td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Expiry Date From : ") </td>
+                    <td> @Html.TextBoxFor(x => x.ExpiryDateFrom, new { @class = "datepicker", @data_val = "false", @placeholder = "Expiry Date From" }) </td>
+
+                    <td> @Html.Label("Expiry Date To : ") </td>
+                    <td> @Html.TextBoxFor(x => x.ExpiryDateTo, new { @class = "datepicker", @data_val = "false", @placeholder = "Expiry Date To" }) </td>
+
+                    <td></td>
+                    <td> @Html.CheckBox("DonothaveExpiryDate", false) @Html.Label("Do not have Expiry Date") </td>
+                </tr>
+                <tr>
+                   
+                    <td>@Html.Label("Issuing Bank : ")</td>
+                    <td>@Html.DropDownListFor(model => model.IssuingBankId, Model.BankSelectListItem, "-Select-", new { @action = "/Commercial/Lc/GetBankAddressById" })</td>
+                    <td>@Html.Label("Print Format: ")</td>
+                    <td>@Html.DropDownListFor(x => x.PrintFormatId, Model.PrintFormatStatusSelectListItems)</td>
+                    <td></td>
+                    <td>
+                        <input type="button" class="searchAction" />
+                        <input type="button" value="Show Report" class="addButton" onclick=" javascript: PrintReport(); " />
+                    </td>                  
+                </tr>
+            </table>       
+        </div>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Commercial/BbLc/Edit/0">Add New</button>
+            @*<input onclick="search('/Commercial/BbLc/Edit/0')" value="Add New" class="addButton" type="button" />*@
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.BbLcInfos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    grid.Column("File", format: @<text><input type="button" class="Edit_Button" action="/Commercial/CommFileUpload/Index?RefId=@item.BbLcId&SrcType=@Convert.ToInt32(FileSource.BbLc)" value="Upload" /></text>, canSort: false),
+                    
+                     grid.Column(header: "Print", format: @<text>@Html.ActionLink("Print", "BbLcIndividual", "Report", new { item.BbLcId }, new { @target = "_blank" })   </text>),
+                     grid.Column("COMMLcInfo.LcNo", header: "Master LC", format: @<text>@(item.COMMLcInfo == null ? "" : item.COMMLcInfo.LcNo)</text>, canSort: false),
+                     grid.Column("BbLcNo", header: "BBLC No", canSort: false),
+                     grid.Column("BbLcDate", "Date", format: @<text>@(item.BbLcDate == null ? "" : item.BbLcDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("BbLcAmount", header: "Amount", canSort: false),
+                     grid.Column("Mrc_SupplierCompany.CompanyName", header: "Supplier", format: @<text>@(item.Mrc_SupplierCompany == null ? "" : item.Mrc_SupplierCompany.CompanyName)</text>, canSort: false),
+                     grid.Column("MatureDate", "Mature Date", format: @<text>@(item.MatureDate == null ? "" : item.MatureDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("ExpiryDate", "Expiry Date", format: @<text>@(item.ExpiryDate == null ? "" : item.ExpiryDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     @*grid.Column("IfdbcNo", header: "IFDBC No", canSort: false),
+                     grid.Column("IfdbcDate", "IFDBC Date", format: @<text>@(item.IfdbcDate == null ? "" : item.IfdbcDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                     grid.Column("IfdbcValue", header: "IFDBC Value", canSort: false),*@
+                    grid.Column("Edit", format: @<text><button class="edit" action="/Commercial/BbLc/Edit/@item.BbLcId"></button></text>, canSort: false),
+                     grid.Column("Delete", format: @<text><button class="delete" action="/Commercial/BbLc/Delete/@item.BbLcId"></button></text>, canSort: false)))
+        }
+    </div>
+</section>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function PrintReport() {
+
+            var supplierId = $('#SupplierCompanyRefId').val();
+            var bbLcType = $('#BbLcType').val();
+            var lcRefId = $('#LcRefId').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+
+            var maturityDateFrom = $('#MaturityDateFrom').val();
+            var maturityDateTo = $('#MaturityDateTo').val();
+            var expiryDateFrom = $('#ExpiryDateFrom').val();
+            var expiryDateTo = $('#ExpiryDateTo').val();
+            var bbLcNo = $('#BbLcNo').val();
+            var issuingBankId = $('#IssuingBankId').val();
+            var printFormat = $('#PrintFormatId').val();
+
+            window.open("/Commercial/Report/BbLcListReport?&supplierId=" + supplierId + "&bbLcType=" + bbLcType + "&lcRefId=" + lcRefId + "&fromDate=" + fromDate + "&toDate=" + toDate + "&maturityDateFrom=" + maturityDateFrom + "&maturityDateTo=" + maturityDateTo + "&expiryDateFrom=" + expiryDateFrom + "&expiryDateTo=" + expiryDateTo + "&printFormatId=" + printFormat + "&bbLcNo=" + bbLcNo + '&issuingBankId=' + issuingBankId + "&ExportType=DOC");
+        }
+    </script>
+}

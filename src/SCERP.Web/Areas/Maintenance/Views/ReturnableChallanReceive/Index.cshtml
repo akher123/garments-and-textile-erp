@@ -1,0 +1,55 @@
+﻿@model SCERP.Web.Areas.Maintenance.Models.ReturnableChallanReceiveViewModel
+@{
+    ViewBag.Title = "ReturnableChallanReceive";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Returnable Challan Receive</h2>
+</div>
+<section class="search formCover">
+    <div style="margin-bottom: 20px; ">
+        <div style="margin-left: 250px;">
+            @using (Html.BeginForm("Index", "ReturnableChallanReceive", FormMethod.Get, new { @class = "ReturnableChallanReceiveForm submit-allow" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Ref Id")
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.ReturnableChallan.ReturnableChallanId, new { @class = "txtReturnableChallanId" })
+                            @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key", @class = "txtSearchString" })
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div style="background-color: papayawhip;">
+        @using (Html.BeginForm("Save", "ReturnableChallanReceive", FormMethod.Post, new { @class = "ReturnableChallanReceiveForm ignore-validation" }))
+        {
+            if (Model.ReturnableChallan != null)
+             {
+                 <div class="challanReceive" style="background-color: white">
+                     @Html.Partial("~/Areas/Maintenance/Views/ReturnableChallanReceive/_FindChallanReceive.cshtml", Model)
+                 </div>
+             }
+        }
+    </div>
+
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Maintenance/ReturnableChallanReceive.js"></script>
+}
+
+
+
+
+

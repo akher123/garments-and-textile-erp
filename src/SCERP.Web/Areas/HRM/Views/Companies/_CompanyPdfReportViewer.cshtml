@@ -1,0 +1,147 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.CompanyViewModel
+@{
+    Layout = null;
+    int rowCount = 1;
+}
+
+<div>
+    <link href="~/Content/Common/PdfReport.css" rel="stylesheet" />
+    <table class="pdfReportTable" style="border: 0;margin-bottom:5px">
+        <thead class="reportHeader">
+            <tr class="reportTitle">
+                <td colspan="15" align="center">Company List</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 10px;">Date:@DateTime.Now.Date.ToString("dd-MM-yyyy")</td>
+            </tr>
+        </thead>
+    </table>
+
+    <div>
+        <table class="pdfReportTable" border="1">
+            <thead class="reportThead">
+                <tr class="reportTR">
+                    <td align="center">
+                        SL. No
+                    </td>
+
+                    <td align="center">
+                        Company
+                    </td>
+
+                    <td align="center">
+                        District
+                    </td>
+                    <td align="center">
+                        Police Station
+                    </td>
+                    <td align="center">
+                        Address
+                    </td>
+
+                    <td align="center">
+                        Post Office
+                    </td>
+                    <td align="center">
+                        Post Code
+                    </td>
+                    <td class="reportTH">
+                        Phone
+                    </td>
+                    <td align="center">
+                        Email
+                    </td>
+                    <td align="center">
+                        Fax
+                    </td>
+                    <td align="center">
+                        Web
+                    </td>
+                    <td align="center">
+                        TIN
+                    </td>
+                    <td align="center">
+                        VAT Registration No
+                    </td>
+                    <td align="center">
+                        Contact Person
+                    </td>
+                    <td align="center">
+                        Contact Person Designation
+                    </td>
+                    <td align="center">
+                        Contact Person Mobile
+                    </td>
+                    <td align="center">
+                        Contact Person Email
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="reportBody">
+
+                @foreach (var company in Model.Companies)
+                {
+                    <tr class="reportTR">
+                        <td class="reportTD">
+                            @rowCount
+                        </td>
+                        <td class="reportTD">
+                            @company.Name
+                        </td>
+                        <td class="reportTD">
+                            @(company.District == null ? "" : company.District.Name)
+                        </td>
+                        <td class="reportTD">
+                            @(company.PoliceStation == null ? "" : company.PoliceStation.Name)
+                        </td>
+                        <td class="reportTD">
+                            @company.FullAddress
+                        </td>
+
+                        <td class="reportTD">
+                            @company.PostOffice
+                        </td>
+                        <td class="reportTD">
+                            @company.PostCode
+                        </td>
+                        <td class="reportTD">
+                            @company.Phone
+                        </td>
+                        <td class="reportTD">
+                            @company.Email
+                        </td>
+                        <td class="reportTD">
+                            @company.Fax
+                        </td>
+                        <td class="reportTD">
+                            @company.Website
+                        </td>
+                        <td class="reportTD">
+                            @company.TinNo
+                        </td>
+                        <td class="reportTD">
+                            @company.VatRegNo
+                        </td>
+                        <td class="reportTD">
+                            @company.ContactPerson
+                        </td>
+                        <td class="reportTD">
+                            @company.ContactPersonDesignation
+                        </td>
+                        <td class="reportTD">
+                            @company.ContactPersonMobile
+                        </td>
+                        <td class="reportTD">
+                            @company.ContactPersonEmail
+                        </td>
+                    </tr>
+                    rowCount += 1;
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+

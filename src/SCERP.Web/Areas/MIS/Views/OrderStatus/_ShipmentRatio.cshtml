@@ -1,0 +1,46 @@
+﻿@using System.Data
+@model DataTable
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <section class="formCover">
+            <div class="mis-title">SHIPMENT RATIO</div>
+            <table class="webgrid-table" style="text-align: center">
+                <thead class="webgrid-header mis-header">
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            <th>@col.ColumnName</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.Rows)
+                    {
+                        <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                <td style="text-align: left; width: 16%">
+                                    @row[col.ColumnName]
+                                </td>
+                            }
+                            
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

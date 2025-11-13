@@ -1,0 +1,303 @@
+﻿@model SCERP.Web.Areas.Commercial.Models.ViewModel.ExportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.CommExport.ExportId > 0) ? "Edit" : "Add";
+}
+
+<div style="font-size: 12px;">
+
+    @using (Html.BeginForm("Save", "Export", FormMethod.Post, new {@class = "ExportSearchForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.CommExport.ExportId)
+
+        <fieldset>
+            <legend>Export(EXP)</legend>
+            <table class="tabefont">
+                <tr>
+                    <td> </td>
+                    <td colspan="4"> @Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" }) </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> @Html.Label("Exp Id") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.ExportRefId, new { @style = "background-color: #778899", @readonly = "readonly" }) </td>
+
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>  </td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+
+                    <td>  </td>
+                    <td> @Html.Label("MasterLC/Sales Contact")</td>
+                    <td> @Html.DropDownListFor(model => model.CommExport.LcId, Model.LcSelectListItem, "-Select-", new { @class = "SearchByLcId", @action = "/Commercial/Export/GetSalesContacByLcId", @TargetClass = "SalesContactId" }) </td>
+                    <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+
+
+                    <td> @Html.Label("", "LC") </td>
+                    <td> @Html.DropDownListFor(model => model.CommExport.SalseContactId, Model.SalesContactSelectListItem, "-Select-", new { @class = "SalesContactId" }) </td>
+                    <td>@Html.Label("*", new { @class = "labelInstruction" }) </td>
+
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td> @Html.Label("", "Invoice No") </td>
+                    <td> @Html.EditorFor(model => model.CommExport.InvoiceNo) </td>
+                    <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+                    <td> @Html.Label("Invoice Date")  </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.InvoiceDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+                    <td>  </td>
+                </tr>
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("", "Invoice Quantity")  </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.InvoiceQuantity) </td>
+                    <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+                    <td> @Html.Label("", "Invoice Value")  </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.InvoiceValue, new { @id = "invoiceValue" }) </td>
+                    <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+                </tr>
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label(" ", "FDBC/FDBP No") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.BankRefNo) </td>
+                    <td>  </td>
+                    <td> @Html.Label("", "FDBC/FDBP Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.BankRefDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>  </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("Realized Value") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.RealizedValue, new { @id = "realizedValue" }) </td>
+                    <td>  </td>
+                    <td> @Html.Label("Realized Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.RealizedDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>  </td>
+                </tr>
+
+                @*<tr>
+            <td>  </td>
+            <td> @Html.Label("Shortfall Amount") </td>
+            <td> @Html.TextBoxFor(model => model.CommExport.ShortFallAmount,new { @id= "shortFallAmount" }) </td>
+            <td>  </td>
+            <td> @Html.Label("Shortfall Reason") </td>
+            <td>
+                @Html.TextBoxFor(x => x.CommExport.ShortFallReason)
+            </td>
+
+            <td>  </td>
+        </tr>*@
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("B/L No") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.BillOfLadingNo) </td>
+                    <td>  </td>
+                    <td> @Html.Label("B/L Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.BillOfLadingDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>  </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("", "U/D No") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.UdNoLocal) </td>
+                    <td>  </td>
+                    <td> @Html.Label("", "U/D Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.UdDateLocal, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>  </td>
+
+                </tr>
+
+
+
+                <tr>
+
+
+
+                    <td>  </td>
+                    @*<td> @Html.Label("", "U/D No (Foreign)") </td>
+            <td> @Html.TextBoxFor(model => model.CommExport.UdNoForeign) </td>
+            <td>  </td>
+            <td> @Html.Label("", "U/D Date (Foreign)") </td>
+            <td>
+                @Html.TextBoxFor(x => x.CommExport.UdDateForeign, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+            </td>*@
+                    <td>  </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>  </td>
+                    <td> @Html.Label("Exp No") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.ExportNo) </td>
+                    <td> @Html.Label("*", new { @class = "labelInstruction" }) </td>
+                    <td> @Html.Label("Exp Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.ExportDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+                    <td>  </td>
+
+
+                </tr>
+
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("SB No") </td>
+                    <td> @Html.EditorFor(model => model.CommExport.SBNo) </td>
+                    <td>  </td>
+
+                    <td> @Html.Label("SB Date") </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CommExport.SBNoDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+                    <td>  </td>
+                </tr>
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("", "FC Amount") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.FcAmount) </td>
+                    <td>  </td>
+                    <td> @Html.Label("Payment Mode") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.PaymentMode) </td>
+                    <td>  </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("Shipment Mode") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.ShipmentMode) </td>
+                    <td>  </td>
+                    <td> @Html.Label("IncoTerm") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.IncoTerm) </td>
+                    <td>  </td>
+                </tr>
+
+
+
+                <tr>
+
+                    <td>  </td>
+                    <td> @Html.Label("Port Of Landing") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.PortOfLanding) </td>
+                    <td>  </td>
+                    <td> @Html.Label("Port Of Discharge") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.PortOfDischarge) </td>
+                    <td>  </td>
+                </tr>
+
+
+                <tr>
+                    <td>  </td>
+                    <td> @Html.Label("Final Destination") </td>
+                    <td> @Html.TextBoxFor(model => model.CommExport.FinalDestination) </td>
+                    <td>  </td>
+                    <td> </td>
+                    <td> <input type="submit" value="Save" /> </td>
+                </tr>
+
+
+
+
+            </table>
+        </fieldset>
+    }
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+       
+
+        $('.SearchByLcId').unbind('change').bind('change', function () {
+            var LcId = $(this).val();
+            $.Ajax({
+                url: '/Commercial/Export/GetSalesContacByLcId',
+                data: { LcId: LcId }
+            }).done(function (salseContact) {
+                $('.SalesContactId').empty();
+                if (salseContact.length > 0) {
+                    $('.SalesContactId').append(
+
+                            $('<option/>')
+                                .attr('value', '')
+                                .text("-Select-")
+                        );
+                    $.each(salseContact, function (salseContact) {
+                        $('.SalesContactId').append(
+
+                            $('<option/>')
+                                .attr('value', this.SalseContactId)
+                                .text(this.LcNo)
+                        );
+                    });
+                } else {
+                    $('.SalesContactId').append(
+                        $('<option/>')
+                            .attr('value', "")
+                            .text("No SalesContact Found")
+                    );
+                }
+
+            });
+
+
+        });
+
+        //$('.SearchByLcId').unbind('change').bind('change', function () {
+        //    var LcId = $(this).val();
+            
+
+
+        //});
+        //$(document).keypress(function (e) {
+        //    //$("#shortFall").val(parseFloat($("#invoiceValue").val()) + parseFloat($("#realizedValue").val()));
+        //    var total = parseFloat($("#invoiceValue").val()) - parseFloat($("#realizedValue").val());
+        //    //alert(total.toString());
+        //    $("#shortFallAmount").val(total);
+        //});
+
+        //$(document).click(function (e) {
+        //    //$("#shortFall").val(parseFloat($("#invoiceValue").val()) + parseFloat($("#realizedValue").val()));
+        //    var total = parseFloat($("#invoiceValue").val()) - parseFloat($("#realizedValue").val());
+        //    //alert(total.toString());
+        //    $("#shortFallAmount").val(total);
+        //});
+
+    </script>
+}

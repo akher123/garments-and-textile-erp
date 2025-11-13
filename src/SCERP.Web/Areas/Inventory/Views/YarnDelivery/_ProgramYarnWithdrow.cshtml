@@ -1,0 +1,59 @@
+﻿
+@model IEnumerable<SCERP.Model.InventoryModel.ProgramYarnWithdrow>
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend> Program</legend>
+
+    <table class="webgrid-table">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Select</th>
+                <th>Yarn</th>
+                <th>Color</th>
+                <th>Lot</th>
+                <th>Count</th>
+                <th>Prog Qty</th>
+                <th>Issue Qty</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pgy in Model.ToList())
+            {
+            <tr>
+                <td>
+                    <input type="checkbox" onchange="javascript:SelectYarnLot('@pgy.LotRefId','@pgy.LotName',this)"  />
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.ItemName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(x => pgy.ColorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.LotName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.SizeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.PgQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.Totalissue)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => pgy.Balance)
+                </td>
+            </tr>
+            }
+        </tbody>
+
+    </table>
+    <hr />
+
+</fieldset>
+

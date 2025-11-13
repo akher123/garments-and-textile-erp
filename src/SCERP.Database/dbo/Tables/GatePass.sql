@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[GatePass] (
+    [GatePassId]  INT              IDENTITY (1, 1) NOT NULL,
+    [RefId]       VARCHAR (10)     NOT NULL,
+    [BillNo]      VARCHAR (50)     NULL,
+    [ChallanNo]   VARCHAR (50)     NULL,
+    [ChallanDate] DATETIME         NULL,
+    [PartyName]   VARCHAR (150)    NULL,
+    [Through]     VARCHAR (150)    NULL,
+    [Designation] VARCHAR (50)     NULL,
+    [Address]     VARCHAR (150)    NULL,
+    [Remarks]     VARCHAR (150)    NULL,
+    [CreatedBy]   UNIQUEIDENTIFIER NULL,
+    [CreatedDate] DATETIME         NULL,
+    [EditedBy]    UNIQUEIDENTIFIER NULL,
+    [EditedDate]  DATETIME         NULL,
+    [CompId]      VARCHAR (3)      NULL,
+    [ApprovedBy]  UNIQUEIDENTIFIER NULL,
+    [IsApproved]  BIT              NOT NULL,
+    [BuyerName]   VARCHAR (100)    NULL,
+    [OrderName]   VARCHAR (100)    NULL,
+    [StyleName]   VARCHAR (100)    NULL,
+    [DriverName]  VARCHAR (100)    NULL,
+    [VehicleNo]   VARCHAR (100)    NULL,
+    [TypeId]      CHAR (1)         NULL,
+    CONSTRAINT [PK_GatePass] PRIMARY KEY CLUSTERED ([GatePassId] ASC)
+);
+

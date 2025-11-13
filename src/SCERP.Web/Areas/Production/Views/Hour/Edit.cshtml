@@ -1,0 +1,50 @@
+﻿@model SCERP.Web.Areas.Production.Models.HourViewModel
+@{
+
+    ViewBag.Title = Model.Hour.HourId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "Hour", FormMethod.Post, new { @class = "HourForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Hour.HourId)
+    <fieldset>
+        <legend>Hour</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Hour.HourRefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7;" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Hour :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Hour.HourName, new { @placeholder = "Hour" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

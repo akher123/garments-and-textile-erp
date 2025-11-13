@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[EmployeeCompanyInfo] (
+    [EmployeeCompanyInfoId]  INT              IDENTITY (1, 1) NOT NULL,
+    [EmployeeId]             UNIQUEIDENTIFIER NOT NULL,
+    [BranchUnitDepartmentId] INT              NOT NULL,
+    [DesignationId]          INT              NOT NULL,
+    [DepartmentSectionId]    INT              NULL,
+    [DepartmentLineId]       INT              NULL,
+    [JobTypeId]              INT              NULL,
+    [PunchCardNo]            NVARCHAR (100)   NULL,
+    [IsEligibleForOvertime]  BIT              CONSTRAINT [DF_EmployeeCompanyInfo_IsEligibleForOvertime] DEFAULT ((0)) NOT NULL,
+    [FromDate]               DATETIME         NOT NULL,
+    [ToDate]                 DATETIME         NULL,
+    [CreatedDate]            DATETIME         NULL,
+    [CreatedBy]              UNIQUEIDENTIFIER NULL,
+    [EditedDate]             DATETIME         NULL,
+    [EditedBy]               UNIQUEIDENTIFIER NULL,
+    [IsActive]               BIT              NOT NULL,
+    CONSTRAINT [PK_EmployeeCompanyInfo] PRIMARY KEY CLUSTERED ([EmployeeCompanyInfoId] ASC),
+    CONSTRAINT [FK_EmployeeCompanyInfo_BranchUnitDepartment] FOREIGN KEY ([BranchUnitDepartmentId]) REFERENCES [dbo].[BranchUnitDepartment] ([BranchUnitDepartmentId]),
+    CONSTRAINT [FK_EmployeeCompanyInfo_DepartmentLine] FOREIGN KEY ([DepartmentLineId]) REFERENCES [dbo].[DepartmentLine] ([DepartmentLineId]),
+    CONSTRAINT [FK_EmployeeCompanyInfo_DepartmentSection] FOREIGN KEY ([DepartmentSectionId]) REFERENCES [dbo].[DepartmentSection] ([DepartmentSectionId]),
+    CONSTRAINT [FK_EmployeeCompanyInfo_Employee] FOREIGN KEY ([EmployeeId]) REFERENCES [dbo].[Employee] ([EmployeeId]),
+    CONSTRAINT [FK_EmployeeCompanyInfo_EmployeeDesignation] FOREIGN KEY ([DesignationId]) REFERENCES [dbo].[EmployeeDesignation] ([Id])
+);
+

@@ -1,0 +1,77 @@
+﻿@model SCERP.Web.Areas.Accounting.Models.ViewModels.VoucherEntryViewModel
+
+@{
+    ViewBag.Title = "Active Company Sectory for Employee";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+<style type="text/css">
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+</style>
+
+<div class="header-title">
+    <h2>Active Company Sector</h2>
+</div>
+
+<section class="search formCover">
+    <div class="additem">
+
+        @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.CompanySectors, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+
+        @grid.GetHtml(htmlAttributes: new {id = "grid"},
+
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns: grid.Columns(
+
+                                 grid.Column(header: "Index", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                                 grid.Column("SectorName", header: "SectorName"),
+                                 grid.Column(header: "Active", format: @<text><input name="chkActive" type="radio" value="@item.Id" checked="@item.IsActive" /></text>),
+                                 grid.Column("Id", header: "Company Id")
+                                 
+                 ))    
+        }
+
+        <div style="margin-top: 10px;">
+            <input type="submit" class="AjaxPopup  addButton" value="Save" id="save" name="save" onclick="Save()" />
+        </div>
+    </div>
+</section>
+
+    @section scripts
+{
+        <script type="text/javascript">
+
+            function Save(response) {
+
+                $('#grid input:radio:checked').each(function () {
+
+                    var costCentreId = this.value;
+
+                    var url = "/ActiveCompanySectory/Save";
+
+                    $.Ajax({
+                        url: url,
+                        type: "get",
+                        data: { "companySectorId": costCentreId }
+                    });
+                });
+            }
+
+        </script>
+    }
+

@@ -1,0 +1,20 @@
+﻿CREATE TABLE [dbo].[CRMDocumentationOperation] (
+    [Id]                INT              IDENTITY (1, 1) NOT NULL,
+    [RefNo]             NVARCHAR (100)   NOT NULL,
+    [FormName]          NVARCHAR (200)   NULL,
+    [Description]       NVARCHAR (MAX)   NULL,
+    [ModuleId]          INT              NULL,
+    [ResponsiblePerson] UNIQUEIDENTIFIER NULL,
+    [LastUpdateDate]    DATETIME         NULL,
+    [LastUpdateBy]      UNIQUEIDENTIFIER NULL,
+    [CreatedDate]       DATETIME         NULL,
+    [CreatedBy]         UNIQUEIDENTIFIER NULL,
+    [EditedDate]        DATETIME         NULL,
+    [EditedBy]          UNIQUEIDENTIFIER NULL,
+    [IsActive]          BIT              NOT NULL,
+    CONSTRAINT [PK_DocumentationFormInput] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_CRMDocumentationOperation_CRMCollaborator] FOREIGN KEY ([ResponsiblePerson]) REFERENCES [dbo].[CRMCollaborator] ([CollaboratorId]),
+    CONSTRAINT [FK_CRMDocumentationOperation_CRMCollaborator1] FOREIGN KEY ([LastUpdateBy]) REFERENCES [dbo].[CRMCollaborator] ([CollaboratorId]),
+    CONSTRAINT [FK_CRMDocumentationOperation_Module] FOREIGN KEY ([ModuleId]) REFERENCES [dbo].[Module] ([Id])
+);
+

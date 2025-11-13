@@ -1,0 +1,67 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetTemplateViewModel
+@{ ViewBag.Title = "CostSheetTemplate";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <div>SUPPLIER RATE ASSIGN </div>
+</div>
+<section class="search formCover">
+    <div style="background-color: #46B9AF; ">
+        <div style="margin-left: 250px;">
+            @using (Html.BeginForm("Index", "CostSheetTemplate", FormMethod.Get, new { @class = "CostSheetTemplateForm" }))
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Particular ")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.CostSheetTemplate.Particular)
+                        </td>
+                        <td>
+                            <input type="button" class="searchAction" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup" action="/Merchandising/CostSheetTemplate/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.CostSheetTemplates, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("Particular", header: "Particular"),
+                  grid.Column("OM_ItemType.Title", header: "Title"),
+                  grid.Column("OM_TempGroup.TempGroupName", header: "Template Group"),
+                  grid.Column("UnitName", header: "Unit"),
+                  grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/CostSheetTemplate/Edit?CostSheetTemplate.TemplateId=@item.TemplateId"></button></text>),
+                  grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/CostSheetTemplate/Delete?TemplateId=@item.TemplateId"></button></text>)));
+        }
+    </div>
+</section>
+
+
+
+
+
+
+

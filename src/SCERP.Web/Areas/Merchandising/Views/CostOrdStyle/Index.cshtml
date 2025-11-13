@@ -1,0 +1,176 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostOrdStyleViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Pre Cost Sheet</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("Index", "CostOrdStyle", FormMethod.Get, new { @class = "CostOrdStyleSearchForm" }))
+        {
+
+            @Html.HiddenFor(x => x.IsSearch)
+            <table>
+                <tr>
+                  
+                    <td>
+                        @Html.Label("", "Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select Buyer-", new {id = "CostOrderStyle_BuyerId"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+
+                    <td>
+                        @Html.Label("", "Order")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-Select Order-", new {id = "CostOrderStyle_OrderNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        @Html.Label("", "Style")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-Select Style-", new {id = "CostOrderStyle_StyleNo"})
+                    </td>
+                    <td>
+                        @Html.Label("*", new {@class = "labelInstruction"})
+                    </td>
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.OmBuyOrdStyles, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid gridSelect",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "buyerOrderStyle-row",
+            selectedRowStyle: "buyerOrderStyle-row",
+            footerStyle: "webgrid-footer",
+            rowStyle: "buyerOrderStyle-row",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                    grid.Column("RefNo", canSort: false, header: "Order."),
+                    grid.Column("StyleName", canSort: false, header: String.Format("{0}", "Style")),
+                    grid.Column("Quantity", canSort: false, header: "Quantity"),
+                     grid.Column("Copy",canSort:false,format:@<text><button class="edit" action="/Merchandising/CostOrdStyle/CopyCostOrdStyleList?OrderStyleRefId=@item.OrderStyleRefId&OrderNo=@item.OrderNo&BuyerRefId=@item.BuyerRef"></button></text>),
+                    grid.Column("Detail", format: @<text><button class="btnDetail" targentclass="CostOrdStyleLsit" action="/CostOrdStyle/CostOrdStyleList?OrderStyleRefId=@item.OrderStyleRefId"></button></text>),
+                    grid.Column("CostSheet", format:@<text><a href="/Merchandising/Report/CostSheet?OrderStyleRefId=@item.OrderStyleRefId&&isMail=false" target="_blank">PDF</a></text>, canSort: false),
+               grid.Column("CostSheet", format:@<text><a href="/Merchandising/Report/CostSheet?OrderStyleRefId=@item.OrderStyleRefId&&isMail=true" target="_blank">SEND MAIL</a></text>, canSort: false)))
+        
+    }
+
+    <div class="title-tag">
+        PRE COSTING
+    </div>
+
+    <div class="CostOrdStyleLsit"></div>
+</section>
+
+
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        function GetCostDefinationByCostGroup(obj) {
+            var costGroupId = $(obj).val();
+            $.Ajax({
+                url: '/Merchandising/CostOrdStyle/GetCostDefinationByCostGroup/',
+                data: { costGroupId: costGroupId }
+            }).done(function (costDefinations) {
+                $('#CostDefinationId').empty();
+                if (costDefinations.length > 0) {
+                    $('#CostDefinationId').append($('<option/>').attr('value', "").text("-Select-"));
+                    $.each(costDefinations, function (costDef) {
+                        $('#CostDefinationId').append($('<option/>').attr('value', this.CostRefId).text(this.CostName));
+                    });
+                } else {
+                    $('#CostDefinationId').append($('<option/>').attr('value',"").text("No Item Found"));
+                  
+                }
+            });
+        }
+
+     
+        $('#CostOrderStyle_BuyerId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+
+                removeDependentDropdown();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-Select Order-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+        function populateDropDown(obj) {
+            $('#CostOrderStyle_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+        $('#CostOrderStyle_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('#CostOrderStyle_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-Select Style-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('#CostOrderStyle_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('#CostOrderStyle_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+        function removeDependentDropdown() {
+
+            $('#CostOrderStyle_OrderNo').empty();
+            $('#CostOrderStyle_StyleNo').empty();
+        }
+    </script>
+}
+
+

@@ -1,0 +1,85 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerOrderColorSizeViewModel
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("SaveColor", "BuyerOrderColorSize", FormMethod.Post, new { @class = "BuyerOrderColorSizeForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Color.OrderStyleRefId)
+    @Html.HiddenFor(model => model.Color.OrderStyleColorId, new { @class = "Color_OrderStyleStyleColor" })
+    @Html.HiddenFor(model => model.Color.OrderStyleRefId, new { @class = "Order_StyleRefId" })
+    <table>
+        <tr>
+            <td>
+                @Html.HiddenFor(model => model.Color.ColorRefId, new { @class = "Color_ColorRef" })
+                @Html.TextBoxFor(x => x.ColorSearchSetring, new { @placeholder = "Color", @class = "Color_SearchString" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                <input type="submit" id="SaveStyleColor" class="addButton" value="@Model.ButtonName" />
+            </td>
+            <td>
+                <input type="button" onclick="ClearStyleColor()" class="addButton" value="Clear" />
+            </td>
+
+        </tr>
+    </table>
+
+}
+
+
+<script type="text/javascript">
+    $('.Color_SearchString').autocomplete({
+        source: function (request, response) {
+            var option = {
+                url: "/BuyerOrderColorSize/ColorAutoComplite",
+                type: "POST",
+                datatype: "html",
+                data: { serachString: request.term },
+            };
+
+            $.Ajax(option)
+                .done(function (data) {
+                    $('.Color_ColorRef').val('');
+                    response($.map(data, function (color) {
+                        return { label: color.ColorName, value: color.ColorName, ColorRefId: color.ColorRefId };
+                    }));
+                });
+        },
+        select: function (event, ui) {
+            var colorRefId = ui.item.ColorRefId;
+            $('.Color_ColorRef').val(colorRefId);
+        },
+
+    });
+    $('#SaveStyleColor').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var option = {
+            url: form.attr('action'),
+            type: "POST",
+            data: form.serialize(),
+            load: SCERP.AjaxCompleted
+        };
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                // e.preventDefault();
+                return false;
+            }
+            $.Ajax(option).done(function (htmlResult) {
+                if (htmlResult.Success == false) {
+                    return false;
+                } else {
+                    $('#StyleColorContainer').html(htmlResult);
+                    $('.Color_ColorRef').val('');
+                    $('.Color_SearchString').val('');
+                }
+            });
+        }
+
+    });
+
+</script>

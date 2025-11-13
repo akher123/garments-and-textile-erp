@@ -1,0 +1,81 @@
+﻿@model SCERP.Web.Areas.CRM.Models.ViewModels.FeedbackViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+}
+
+@using (Html.BeginForm("Save", "Feedback", FormMethod.Post, new { @class = "feedbackform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.PhotographPath)
+
+    <fieldset>
+        <legend> Feed back </legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Subject:</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Subject)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Subject)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="fieldTitleCls">Description:</td>
+                <td>
+                    @Html.TextAreaFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(m => m.Description)
+                </td>
+            </tr>   
+                                                                                           
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <fieldset>
+                        <legend> Upload File </legend>
+                        <div id="uploadFile">Upload</div>
+                    </fieldset> 
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+                                     
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section scripts
+{        
+    <script src="~/Scripts/jQuery-File-Upload/jquery.uploadfile.min.js"></script>
+    <script src="~/Scripts/SCERP/CRM/Feedback.js"></script>     
+}

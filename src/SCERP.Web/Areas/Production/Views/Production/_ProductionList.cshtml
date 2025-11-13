@@ -1,0 +1,66 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = null;
+}
+<table class="webgrid-table webgrid" style="width: 100%;">
+    <tbody class="webgrid-header">
+        <tr>
+            <th>
+                ItemCode
+            </th>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Unit
+            </th>
+            <th>
+                Entry Quty
+            </th>
+        </tr>
+    </tbody>
+    @for (int index = 0; index < Model.ProductionDetails.Count; index++)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(x => Model.ProductionDetails[index].PType)
+                @Html.DisplayFor(x => Model.ProductionDetails[index].ItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.ProductionDetails[index].ItemName)
+                @Html.HiddenFor(x => Model.ProductionDetails[index].ItemCode)
+            </td>
+
+            <td>
+                @Html.DisplayFor(x => Model.ProductionDetails[index].ColorName)
+                @Html.HiddenFor(x => Model.ProductionDetails[index].ColorRefId)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.ProductionDetails[index].SizeName)
+                @Html.HiddenFor(x => Model.ProductionDetails[index].SizeRefId)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.ProductionDetails[index].Qty)
+                @Html.HiddenFor(x => Model.ProductionDetails[index].Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(x => Model.ProductionDetails[index].UnitName)
+                @Html.HiddenFor(x => Model.ProductionDetails[index].MeasurementUinitId)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => Model.ProductionDetails[index].EntryQty)
+            </td>
+
+        </tr>
+    }
+
+</table>

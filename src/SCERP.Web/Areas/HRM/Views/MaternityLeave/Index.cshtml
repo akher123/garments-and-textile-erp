@@ -1,0 +1,81 @@
+﻿@using SCERP.Common
+
+@model SCERP.Web.Areas.HRM.Models.ViewModels.MaternityLeaveViewModel
+@{
+    ViewBag.Title = "Maternity Leave";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@using (Html.BeginForm("Index", "MaternityLeave", FormMethod.Get, new {@class = "MaternityLeaveSearchForm ignore-validation"}))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3> Maternity Leave </h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+
+            @{ Html.RenderPartial("~/Areas/HRM/Views/MaternityLeave/_CompanyInfo.cshtml", Model); }
+
+            <tr>
+                <td> @Html.Label("Employee ID:") </td>                                    
+                <td> @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new {@class = "SearchByEmployeeCardId"}) </td>                                    
+                <td> @Html.Label("Status: ") </td>                                   
+                <td> @Html.DropDownListFor(x => x.SearchFieldModel.SearchByEmployeeStatus, ViewBag.EmployeeStatus as SelectList, "-Select-") </td>                                   
+                <td> <input type="button" class="searchAction" />  </td>                                    
+            </tr>
+        </table>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            @Html.Button("Add New", "button", new Dictionary<string, object> { { "class", "AjaxPopup addButton" }, { "action", "/HRM/MaternityLeave/Edit" } })            
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.maternityLeaveInfos, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                
+                                        grid.Column("EmployeeName", header: "Employee Name "),
+                                        grid.Column("EmployeeCardId", header: "Employee ID "),
+                                        grid.Column("Designation", header: "Designation"),
+                                        grid.Column("DepartmentName", header: "DepartmentName"),
+                                        grid.Column("SectionName", header: "SectionName"),
+                                        grid.Column("LineName", header: "LineName"),
+                                        grid.Column("LeaveDayStart", header: "LeaveDayStart", format: @<text>@(item.LeaveDayStart == null ? "" : item.LeaveDayStart.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                                        grid.Column("LeaveDayEnd", header: "LeaveDayEnd", format: @<text>@(item.LeaveDayEnd == null ? "" : item.LeaveDayEnd.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                                        grid.Column("FirstPaymentDate", header: "FirstPaymentDate", format: @<text>@(item.FirstPaymentDate == null ? "" : item.FirstPaymentDate.ToString("dd-MM-yyyy"))</text>, canSort: false),                                      
+                                        grid.Column("FirstPaymentAmount", header: "FirstPaymentAmount"),                                      
+                                        grid.Column("SecondPaymentDate", header: "SecondPaymentDate", format: @<text>@(item.SecondPaymentDate == null ? "" : item.SecondPaymentDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                                        grid.Column("SecondPaymentAmount", header: "SecondPaymentAmount"),
+                                        grid.Column("Edit", format: @<text><button class="edit" action="/HRM/MaternityLeave/Edit?MaternityPaymentId=@item.MaternityPaymentId"></button></text>, canSort: false)
+
+                    @*grid.Column("Delete", format: @<text><button class="delete" action="/HRM/EmployeeDailyAttendance/Delete/@item.EmployeeDailyAttendanceId"></button></text>, canSort: false)*@
+
+                    ))
+            ;
+        }
+    </div>
+</section>
+
+
+

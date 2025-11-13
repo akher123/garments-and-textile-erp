@@ -1,0 +1,333 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ItemStoreViewModel
+@{
+    Layout = null;
+    var itemStoreDetails = Model.InventoryItemStoreDetails;
+    var readonlyStatus = (Model.IsProcessRequsition) ? @"readonly" :"";
+  
+    var style = (Model.IsProcessRequsition) ? @"background-color: cornflowerblue" : @"";
+}
+
+<fieldset>
+    <legend>Item Receive</legend>
+    <table class="tabefont">
+        <tr>
+
+            <td>
+                @Html.LabelFor(x => x.PurchaseReferencePerson)
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.PurchaseReferencePerson, Model.AuthorizedPersonSelectListItem, "--Select--", new { @class = "form_dropdown" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+
+            <td>
+                @Html.Label("Supplier")
+            </td>
+
+            <td>
+                @Html.DropDownListFor(x => x.SupplierId, Model.SupplierSelectListItem, "--Select--", new { @class = "form_dropdown" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+
+            <td>
+
+                @Html.LabelFor(x => x.InvoiceNo)
+            </td>
+
+            <td>
+                @Html.TextBoxFor(x => x.InvoiceNo)
+            </td>
+
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+        </tr>
+
+        <tr>
+
+
+            <td>
+
+                @Html.LabelFor(x => x.InvoiceDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "datepicker" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+
+            <td>
+
+                @Html.LabelFor(x => x.GateEntry)
+            </td>
+            <td>
+                @Html.EditorFor(x => x.GateEntry)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+
+                @Html.LabelFor(x => x.GateEntryDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.GateEntryDate, new { @class = "datepicker" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+        </tr>
+
+        <tr>
+
+
+            <td>
+                @Html.LabelFor(x => x.RequisitionNo)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.RequisitionNo, new { @class = "RequisitionNumber", @style = style, @readonly = readonlyStatus })
+            
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+
+            <td>
+
+                @Html.LabelFor(x => x.ReceivedRegisterNo)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.ReceivedRegisterNo)
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.LabelFor(x => x.ReceivedDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.ReceivedDate, new { @class = "datepicker" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+
+                @Html.LabelFor(x => x.LCNo)
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.LCNo)
+            </td>
+            <td></td>
+            <td>
+                @Html.Label("Receive Type")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.ReceiveType, Model.ReceiveTypeSelectListItem, "-select-", new { @class = "form_dropdown ReceiveType-dropDown" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+            <td>
+                @Html.Label("Supplied Status")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.SuppliedStatus, Model.SuppliedStatusSelectListItem, "-select-", new { @class = "form_dropdown" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Is Processed")
+            </td>
+            <td>
+                @Html.CheckBoxFor(x => x.IsProcessRequsition, new { @class = "IsProcessRequsition" })
+            </td>
+            <td></td>
+            <td>
+                @Html.Label("Requisitor")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.RequisitorName, new { @class = "autocompliteEmployeeInfo", @placeholder = "Card ID or Name" })
+                @Html.HiddenFor(x => x.Requisitor, new { @class = "RequsitionPerson" })
+            </td>
+            <td>
+                @Html.Label("*", new { @class = "labelInstruction" })
+            </td>
+        </tr>
+    </table>
+</fieldset>
+<fieldset>
+    <legend>Item Detail Information</legend>
+    <input type="button" onclick="addNewRow()" value="+" />
+    <div style="width: 1024px; overflow: auto">
+        <table id="ItemStoreDetail" class="tabefont gridtable" style="width: auto">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.Label("Item")
+                    </th>
+                    <th>
+                        @Html.Label("Size")
+                    </th>
+                    <th>
+                        @Html.Label("Brand")
+                    </th>
+                    <th>
+                        @Html.Label("Origin")
+                    </th>
+
+                    <th>
+                        @Html.Label("Specification")
+                    </th>
+                    <th>
+                        @Html.Label("Supplied Qty")
+                    </th>
+                    <th>
+                        @Html.Label("Received Qty")
+                    </th>
+                    <th>
+                        @Html.Label("Unit Price")
+                    </th>
+                    <th>
+                        @Html.Label("Currency")
+                    </th>
+
+                    <th>
+                        @Html.Label("ManufDate")
+                    </th>
+                    <th>
+                        @Html.Label("ExpDate")
+                    </th>
+                    <th>
+                        @Html.Label("Edit")
+                    </th>
+                    <th>
+                        @Html.Label("Delete")
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in itemStoreDetails)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.HiddenFor(x => x.InventoryItemStoreDetails[item.Key].ItemStoreDetailId)
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].ItemName)</span>
+                            @Html.HiddenFor(x => x.InventoryItemStoreDetails[item.Key].ItemId, new { @class = "ItemHiddenField-" + item.Key })
+                            <input class="edit-mode " data-val="true" onkeyup="itemAutocomplite(this,'@item.Key')" type="text" value="@itemStoreDetails[item.Key].ItemName" style="width:100px" />
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].SizeName)</span>
+                            @Html.DropDownListFor(x => x.InventoryItemStoreDetails[item.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", itemStoreDetails[item.Key].SizeId), "--Select--", new { @class = "edit-mode", @style = "width:80px" })
+
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].BrandName)</span>
+                            @Html.DropDownListFor(x => x.InventoryItemStoreDetails[item.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", itemStoreDetails[item.Key].BrandId), "--Select--", new { @class = "edit-mode", @style = "width:80px" })
+
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].OriginName)</span>
+                            @Html.DropDownListFor(x => x.InventoryItemStoreDetails[item.Key].OriginId, new SelectList(Model.InventoryOrigins, "Id", "CountryName", itemStoreDetails[item.Key].OriginId), "--Select--", new { @class = "edit-mode", @style = "width:80px" })
+
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].Specification)</span>
+                            @Html.TextBoxFor(x => x.InventoryItemStoreDetails[item.Key].Specification, new { @class = "edit-mode", @style = "width:80px" })
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].SuppliedQuantity)</span>
+                            @Html.TextBoxFor(x => x.InventoryItemStoreDetails[item.Key].SuppliedQuantity, new { @class = "edit-mode", @style = "width:80px" })
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].ReceivedQuantity)</span>
+                            @Html.TextBoxFor(x => x.InventoryItemStoreDetails[item.Key].ReceivedQuantity, new { @class = "edit-mode", @style = "width:80px" })
+                        </td>
+
+
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].UnitPrice)</span>
+                            @Html.TextBoxFor(x => x.InventoryItemStoreDetails[item.Key].UnitPrice, new { @class = "edit-mode", @style = "width:80px" })
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.DisplayFor(x => x.InventoryItemStoreDetails[item.Key].CurrencyName)</span>
+                            @Html.DropDownListFor(x => x.InventoryItemStoreDetails[item.Key].CurrencyId, new SelectList(Model.Currencies, "CurrencyId", "Name", itemStoreDetails[item.Key].CurrencyId), new { @class = "edit-mode comboxbox", @style = "width:80px" })
+
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.ValueFor(x => x.InventoryItemStoreDetails[item.Key].ManufacturingDate, "{0:dd/MM/yyyy}")</span>
+                            @Html.EditorFor(x => x.InventoryItemStoreDetails[item.Key].ManufacturingDate, new { htmlAttributes = new { @class = "edit-mode comboxbox", @style = "width:100px" } })
+                        </td>
+                        <td>
+                            <span class="display-mode">@Html.ValueFor(x => x.InventoryItemStoreDetails[item.Key].ExpirationDate, "{0:dd/MM/yyyy}")</span>
+                            @Html.EditorFor(x => x.InventoryItemStoreDetails[item.Key].ExpirationDate, new { htmlAttributes = new { @class = "edit-mode comboxbox", @style = "width:100px" } })
+                        </td>
+
+                        <td>
+                            <input type="button" class="edit-button" value="Edit" />
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.InventoryItemStoreDetails[item.Key].StorePurchaseRequisitionDetailId)
+                            <input type="button" data="" class="delete-button" onclick="deleteRow(this)" value="-" />
+                        </td>
+
+                    </tr>
+                }
+
+     
+            </tbody>
+        </table>
+  
+    </div>
+
+</fieldset>
+
+
+
+<script type="text/javascript">
+
+    $('.edit-mode').hide();
+    $('.edit-button').on('click', function () {
+        var tr = $(this).parents('tr:first');
+        tr.find('.edit-mode, .display-mode').toggle();
+    });
+    
+
+    $('.autocompliteEmployeeInfo').autocomplete({
+        source: function (request, response) {
+            var option = {
+                url: "/MaterialIssueRequisition/AutocompliteGetEmployeeInfo",
+                type: "GET",
+                data: { employeeCardId: request.term},
+            };
+          
+                    $.Ajax(option)
+                        .done(function (data) {
+                            response($.map(data, function (employeeInfo) {
+                                return { label: employeeInfo.EmployeeCardId + "_" + employeeInfo.EmployeeName, value: employeeInfo.EmployeeName, EmployeeId: employeeInfo.EmployeeId };
+                            }));
+                        });
+        },
+        select: function (event, ui) {
+            $('.RequsitionPerson').val(ui.item.EmployeeId);
+            $("#autocompliteEmployeeInfo").val(ui.item.value);
+        },
+
+    });
+
+
+</script>

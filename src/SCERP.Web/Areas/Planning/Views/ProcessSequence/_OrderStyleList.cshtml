@@ -1,0 +1,45 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProcessSequenceViewModel
+@{
+    Layout = null;
+}
+<div>
+    <table class="webgrid-table webgrid gridSelect">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Order Ref.</th>
+                <th>Style Ref.</th>
+                <th>Style</th>
+                <th>Quantity</th>
+                <th>P.Sequence</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var style in Model.BuyOrdStyles)
+            {
+                <tr class="buyerOrderStyle-row">
+                    <td>@style.OrderNo</td>
+                    <td>@style.OrderStyleRefId</td>
+                    <td>@style.StyleName</td>
+                    <td>@style.Quantity</td>
+                    <td><button class="btnDetail" targentclass="StyleProcessSequence" action="/Planning/ProcessSequence/ProcessSequenceList?OrderStyleRefId=@style.OrderStyleRefId"></button></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="title-tag">STYLE WISE PROCESS</div>
+<div class="StyleProcessSequence">
+    @{
+        Html.RenderPartial("~/Areas/Planning/Views/ProcessSequence/_ProcessSequenceList.cshtml", Model);
+    }
+</div>
+<script type="text/javascript">
+    $('.buyerOrderStyle-row').unbind('click').bind('click', function (e) {
+        e.preventDefault();
+        var $tr = $(this);
+        $tr.addClass("selected").siblings().removeClass("selected");
+    });
+
+</script>

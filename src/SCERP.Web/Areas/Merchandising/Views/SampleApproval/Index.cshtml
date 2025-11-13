@@ -1,0 +1,97 @@
+﻿@model IEnumerable<SCERP.Model.Mrc_SampleApproval>
+@{
+    ViewBag.Title = "Sample Approval";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class=" additem">
+    @using (@Html.BeginForm("Search", "SampleApproval", FormMethod.Post, new { @class = "SampleApprovalSearchForm", name = "SampleApprovaltForm" }))
+    {
+        <div style="width: 500px; padding-left: 340px;">
+            <h2>Sample Approval</h2>
+        </div>
+        <section class="search formCover" style="margin-bottom: 7px;font-size: 12px;">
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownList("buyerId", null, "--select--", new { @class = "mrc_Buyer", @action = "/Merchandising/SampleApproval/GetSepcSheetByBuyerId", @TargetClass = "mrc_StyleNo" })
+
+                    </td>
+
+                    <td></td>
+
+                    <td>
+                        @Html.Label("Style No")
+                    </td>
+                    <td>
+                        @Html.DropDownList("StyleNo", null, "--select--", new { @class = "mrc_StyleNo", @action = "/Merchandising/SampleApproval/GetJobNumberByStyleNo", @TargetClass = "mrc_JobNumber" })
+
+                    </td>
+                <tr>
+                    <td>
+                        @Html.Label("Job No")
+                    </td>
+                    <td>
+                        @Html.DropDownList("SpecSheetId", null, "--select--", new { @class = "mrc_JobNumber" })
+
+                    </td>
+
+                    <td></td>
+                    <td>
+                        <button class="search" type="button" onclick=" search('/Merchandising/SampleApproval/Search', 'SampleApprovalSearchForm') " />
+                    </td>
+
+                </tr>
+
+            </table>
+        </section>
+    }
+    <section class="search formCover">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Merchandising/SampleApproval/Edit">Add new</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: 10, canSort: false, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model, rowCount: Model.Count(), autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+             grid.Column("Mrc_SampleApproval.Mrc_SampleType.SampleName", header: "Sample Name", format: @<text>@(item.Mrc_SampleType == null ? "" : item.Mrc_SampleType.SampleName)</text>),
+                                          grid.Column("Mrc_SampleApproval.Mrc_ApprovalStatus.ApprovalStatusTitle", header: "Approval Status", format: @<text>@(item.Mrc_ApprovalStatus == null ? "" : item.Mrc_ApprovalStatus.ApprovalStatusTitle)</text>),
+                                          grid.Column("BuyerComment", header: "Comment"),
+                                          grid.Column("BuyerCommentDate", header: "Comment date", format: @<text>@(item.BuyerCommentDate == null ? "" : item.BuyerCommentDate.ToString("dd-MM-yyyy"))</text>),
+                grid.Column("Size&Color", format:
+                @<text><input type="button" class=" addButton AjaxPopup" action="/Merchandising/SampleApprovalSizeNColor/Index?sampleApprovalId=@item.SampleApprovalId" value="Details" /></text>),
+
+                grid.Column("Edit", format:
+                @<text><button class="edit" action="/Merchandising/SampleApproval/Edit?SampleApprovalId=@item.SampleApprovalId"></button></text>),
+                grid.Column("Delete",format:
+                @<text><button class="delete" action="/Merchandising/SampleApproval/Delete/@item.SampleApprovalId"></button></text>
+         )));
+        }
+    </section>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Merchandising/SampleApproval.js"></script>
+}
+
+
+
+

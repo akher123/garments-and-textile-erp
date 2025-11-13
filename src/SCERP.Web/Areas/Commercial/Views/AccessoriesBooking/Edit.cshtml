@@ -1,0 +1,195 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Commercial.Models.ViewModel.PurchaseOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.PurchaseOrder.PurchaseOrderId > 0 ? "Edit" : "Add");
+}
+
+@using (Html.BeginForm("Save", "AccessoriesBooking", FormMethod.Post, new { @class = "AccessoriesBookingForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.PurchaseOrder.PurchaseOrderId )
+    <fieldset>
+        <legend>Accessories Booking</legend>
+        <table class="tabefont">
+
+            <tr>
+                <td>
+                    @Html.DisplayName("Order Ref#:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.OrderNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.DisplayName("StyleRef#:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.OrderStyleRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly", @id = "OrderStyleRefIdTextBox" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+               
+                <td>
+                    @Html.DisplayName("PO No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.PurchaseOrderNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("PO Ref #:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.PurchaseOrderRefId, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "PO. Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.PurchaseOrderDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("", "Exp. Date")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PurchaseOrder.ExpDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("", "Supplier:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PurchaseOrder.SupplierId, Model.SupplierSelectListItem,"-Select-",new{@id="suplierDrdId"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+                 
+                </td>
+                <td>
+                    
+                </td>
+             
+            </tr>
+
+        </table>
+        <hr/>
+        <div id="purchaseOrderDetailContainer" style="overflow-y:scroll; height:150px;">
+
+            <table class="webgrid-table">
+                <thead style="text-align: center" class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("PrdName")
+                        </th>
+
+                        <th>
+                            @Html.Label("Color")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Quantity")
+                        </th>
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+
+                        <th>
+                            @Html.Label("Unit")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody style="justify-content: center">
+
+                    @for (var index = 0; index < Model.PurchaseOrderDetails.Count(); index++)
+                    {
+                        <tr class="webgrid-row-style">
+                            <td>
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].PurchaseOrderId)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].PurchaseOrderDetailId)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].ItemCode)
+                                @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.PurchaseOrderDetails[index].ColorName)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].ColorRefId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.PurchaseOrderDetails[index].SizeName)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].SizeRefId)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.PurchaseOrderDetails[index].Quantity, new { @style = "width:150px; border:none" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.PurchaseOrderDetails[index].xRate)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].xRate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.PurchaseOrderDetails[index].UnitName)
+                                @Html.HiddenFor(x => x.PurchaseOrderDetails[index].UnitName)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <hr />
+        <div style="float: left">
+            <div>
+                @Html.Label("Terms and Conditions:")
+            </div>
+            <div >
+                @Html.TextAreaFor(x => x.PurchaseOrder.Rmks, new { @style = "height:150px; width:400px;font-size:14px;" })
+            </div>
+        </div>
+        <div style="float: right">
+
+            @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "accessoriesBookingContainer" } })
+
+        </div>
+     
+</fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+    $('#suplierDrdId').unbind('change').bind('change', function () {
+        var orderStyleRefId = $('#OrderStyleRefIdTextBox').val();
+        var supplierId = $(this).val();
+        jQuery.Ajax({
+            url: '/AccessoriesBooking/GetBookedAccessoriesBySupplier/',
+            type: "GET",
+            data: { OrderStyleRefId: orderStyleRefId, SupplierId: supplierId }
+           , container: '#purchaseOrderDetailContainer'
+        });
+
+    });
+</script>
+}

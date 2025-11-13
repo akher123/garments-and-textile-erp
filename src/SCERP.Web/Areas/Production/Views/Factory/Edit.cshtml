@@ -1,0 +1,124 @@
+﻿@model SCERP.Web.Areas.Common.Models.ViewModel.PartyViewModel
+    @{
+        ViewBag.Title = Model.PartyId > 0 ? "Edit " : "Add ";
+        Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    }
+    @using (Html.BeginForm("Save", "Factory", FormMethod.Post, new { @class = "Factoryform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.PartyId)
+        <fieldset>
+            <legend>Factory</legend>
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Name :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Name)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Address :")
+                    </td>
+                    <td>
+
+                        @Html.TextAreaFor(x => x.Address)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.Address)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Phone :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.Phone)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.Phone)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Email :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.Email)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Contact Person :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ContactPersonName)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.ContactPersonName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Contact Phone:")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ContactPhone)
+
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(x => x.ContactPhone)
+                    </td>
+                </tr>
+              
+                <tr>
+                    
+
+                    <td></td>
+                    <td>
+                        @Html.SaveButton()
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+        </fieldset>
+    }
+
+

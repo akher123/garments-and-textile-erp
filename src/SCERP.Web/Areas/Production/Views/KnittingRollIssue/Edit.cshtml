@@ -1,0 +1,138 @@
+﻿@model SCERP.Web.Areas.Production.Models.KnittingRollIssueViewModel
+@{
+    ViewBag.Title = "Batch";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>@(Model.KnittingRollIssue.KnittingRollIssueId > 0 ? "Edit " : "Add ")Roll Issue Chalan </h2>
+</div>
+@section styles
+{
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<section class="search formCover">
+    <div class="additem">
+        @using (Html.BeginForm("Save", "KnittingRollIssue", FormMethod.Post, new {@class = "KnittingRollIssueAddForm"}))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.KnittingRollIssue.KnittingRollIssueId)
+            @Html.HiddenFor(x => x.KnittingRollIssue.BuyerRefId, new { id = "KnittingRollIssue_BuyerRefId" })
+            @Html.HiddenFor(x => x.KnittingRollIssue.OrderNo, new { id = "KnittingRollIssue_OrderNo" })
+            @Html.HiddenFor(x => x.KnittingRollIssue.OrderStyleRefId, new { id = "KnittingRollIssue_OrderStyleRefId" })
+            <div style="font-size: 12px; margin-bottom: 10px;">
+                <table s>
+                    <tr>
+                        <td style="width: 20%">
+                            <fieldset>
+                                <legend>Roll Issue</legend>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("", "Ref No")
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.KnittingRollIssue.IssueRefNo, new {@readonly = "readonly", @style = "background-color: #EEEEEE"})
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("", "Challan No")
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.KnittingRollIssue.BatchNo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("*", new {@class = "labelInstruction"})
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("", "Challan Type")
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(x => x.KnittingRollIssue.ChallanType, Model.ChallanTypesSelectListItem, "--select--", new { id = "ChallanTypeId" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("*", new { @class = "labelInstruction" })
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("Program:")
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.KnittingRollIssue.ProgramRefId, new { @placeholder = "Program No", @class = "knittingProgrmAutocomplite", @data_target = "#KnittingProgramId", @action = "/KnittingRoll/ProgramAutocomplite" })
+                                                        @Html.HiddenFor(x => x.KnittingRollIssue.ProgramRefId, new { id = "KnittingProgramId" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("*", new { @class = "labelInstruction" })
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("", "Issue Date")
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.KnittingRollIssue.IssueDate, new {@class = "datepicker"})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("*", new {@class = "labelInstruction"})
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.Label("", "Remarks")
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextAreaFor(x => x.KnittingRollIssue.Remarks)
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("*", new {@class = "labelInstruction"})
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td style="float: right">
+                                                        <input type="button" class="FindPartial addButton" action="/KnittingRollIssue/GetKnittingRolls/" target="#knittingRollIssueDetailContainner" value="Find"/>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                        <td style="width: 80%">
+                                            <div id="knittingRollIssueDetailContainner" style="overflow-x: auto; height: 325px;">
+                                                @{
+                                                    Html.RenderPartial("/Areas/Production/Views/KnittingRollIssue/_KnittingRollDts.cshtml", Model);
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="float: left">
+                            <input onclick=" search('/Production/KnittingRollIssue/Index') " value="Back" class="addButton" type="button"/>
+                        </td>
+                        <td style="float: right">
+                            <input type="button" class="FindPartial addButton" action="/KnittingRollIssue/Save/" target="#contentRight" value="Save"/>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        }
+    </div>
+
+</section>
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Production/knittingRollIssue.js"></script>
+}

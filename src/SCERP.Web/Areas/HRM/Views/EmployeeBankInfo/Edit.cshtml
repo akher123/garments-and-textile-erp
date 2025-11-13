@@ -1,0 +1,123 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeBankInfoViewModel
+
+@{
+    ViewBag.Title = (Model.Id > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "EmployeeBankInfo", FormMethod.Post, new { @class = "EmployeeBankInfoform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Bank Information</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Bank Name:</td>
+                <td>
+                    @Html.EditorFor(m => m.BankName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.BankName)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Branch Name:</td>
+                <td>
+                    @Html.EditorFor(m => m.BranchName)
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.BranchName)
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldTitleCls">Account Type:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.AccountTypeId, Model.BankAccountTypeSelectListItem, "--Select--")
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Account Name:</td>
+                <td>
+                    @Html.EditorFor(m => m.AccountName)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.AccountName)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">Account Number:</td>
+                <td>
+                    @Html.EditorFor(m => m.AccountNumber)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.AccountNumber)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="fieldTitleCls">From Date:</td>
+                <td>                    
+                    @Html.TextBoxFor(x => x.FromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "From date" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fieldTitleCls">To Date:</td>
+                <td>            
+                    @Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To date" })
+                </td>
+                <td>
+                   &nbsp;
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ToDate)
+                </td>
+            </tr>        
+            <tr>
+                <td></td>
+                <td>
+                    @Html.Button("Save", "button", new Dictionary<string, object> { { "class", "addButton innerTabSaveButton" }, { "TargentClass", "EmployeeBankInfoDetailContainner" } })
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

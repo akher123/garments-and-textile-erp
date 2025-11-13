@@ -1,0 +1,123 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BuyerTnaTemplateViewModel
+
+@{
+    ViewBag.Title = "Buyer Tna Template";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "BuyerTnaTemplate", FormMethod.Get, new { @class = "buyerTnaTemplateSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    <div class="header-title">
+        <h2>Buyer Tna Template</h2>
+    </div>
+
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("Buyer: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new { @class = "timeAndAction_buyerRefId", onchange = "showBuyerTnaTemplate()" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("Template Type: ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.TemplateTypeId, Model.TemplateTypeStatusSelectListItems, "-ALL-", new { @class = "timeAndAction", onchange = "showBuyerTnaTemplate()" })
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm("Save", "BuyerTnaTemplate", FormMethod.Get, new { @class = "DailyLineLayoutSearchForm ignore-validation" }))
+{
+
+    <section class="formCover">
+        <div class="additem">
+
+            <table class="webgrid-table tableFocusInputText">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Buyer</th>
+                        <th>Activity</th>
+                        <th>Order</th>
+                        <th>Duration</th>
+                        <th>Parent Order</th>
+                        <th>Buffer Duration</th>
+                        <th>S/E</th>
+                        <th>Remarks</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var key in Model.Templates.Keys)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(x => x.Templates[key].BuyerName)
+                                @Html.HiddenFor(x => x.Templates[key].BuyerRefId)
+                                @Html.HiddenFor(x => x.Templates[key].CompId)
+                                @Html.HiddenFor(x => x.Templates[key].TemplateTypeId)
+                                @Html.HiddenFor(x => x.Templates[key].TemplateId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.Templates[key].Activity)
+                                @Html.HiddenFor(x => x.Templates[key].ActivityId)
+
+                            </td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].SerialNo, new { @style = "width:97%"})</td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].Duration, new {@style = "width:97%"})</td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].RSerialNo, new {@style = "width:97%"})</td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].FDuration, new {@style = "width:97%"})</td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].RType, new { @style = "width:97%" })</td>
+                            <td>@Html.TextBoxFor(x => x.Templates[key].Remarks, new { @style = "width:97%" })</td>
+                            <td>
+                                <input type="button" value="X" class="deleteRow" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+            <div style="margin-top: 10px;" class="pull-right">
+                <input type="submit" class="SubmitButton addButton" value="Save" />
+            </div>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script>
+        $('.deleteRow').unbind('click').bind('click', function () {
+            var $button = $(this);
+            var $tr = $button.closest('tr');
+            $tr.remove();
+        });
+
+        function showBuyerTnaTemplate() {
+            var form = $('.buyerTnaTemplateSearchForm');
+            var url = form.attr('action');
+            var data = form.serialize();
+            if (jQuery.validator && jQuery.validator.unobtrusive) {
+                form.validate();
+                if (!form.valid()) {
+                    return false;
+                }
+                SearchResult(url, data);
+            }
+
+        }
+    </script>
+}

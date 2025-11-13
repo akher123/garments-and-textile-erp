@@ -1,0 +1,60 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitWorkShiftViewModel
+@{
+    ViewBag.Title = "Branch Unit and WorkShift";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.BranchUnitWorkShifts.Count > 0) ? "" : "none";
+}
+@using (Html.BeginForm("Index", "BranchUnitWorkShift", FormMethod.Get, new { @class = "BranchUnitWorkShiftSearchForm ignore-validation" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="header-title">
+        <h2>Branch Unit and Workshift</h2>
+    </div>
+    { Html.RenderPartial("~/Areas/HRM/Views/BranchUnitWorkShift/_SearchBranchUnitWorkShift.cshtml", Model); }
+
+}
+
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/HRM/BranchUnitWorkShift/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.BranchUnitWorkShifts, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                 grid.Column("BranchUnit.Branch.Company.Name", header: "Company ", format: @<text>@(item.BranchUnit.Branch.Company == null ? "" : item.BranchUnit.Branch.Company.Name)</text>),
+                 grid.Column("BranchUnit.Branch.Name", header: "Branch ", format: @<text>@(item.BranchUnit.Branch == null ? "" : item.BranchUnit.Branch.Name)</text>),
+                 grid.Column("BranchUnit.Unit.Name", header: "Unit ", format: @<text>@(item.BranchUnit.Unit == null ? "" : item.BranchUnit.Unit.Name)</text>),
+                 grid.Column("WorkShift.Name", header: "WorkShift ", format: @<text>@(item.WorkShift == null ? "" : item.WorkShift.NameDetail)</text>),
+                 grid.Column("FromDate", header: "From Date", format: @<text>@(item.FromDate == null ? "" : item.FromDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                 grid.Column("ToDate", header: "ToDate", format: @<text>@(item.ToDate == null ? "" : item.ToDate.ToString("dd-MM-yyyy"))</text>,canSort: false),
+                 grid.Column("Detail/Edit",canSort:false,format:@<text><button class="edit" action="/HRM/BranchUnitWorkShift/Edit?BranchUnitWorkShiftId=@item.BranchUnitWorkShiftId"></button></text>),
+                 grid.Column("Delete",format:
+                    @<text><button class="delete" action="/HRM/BranchUnitWorkShift/Delete?BranchUnitWorkShiftId=@item.BranchUnitWorkShiftId"></button></text>, canSort: false)));
+        }
+    </div>
+    <div class="exportReport">
+        <a style="display:@displayStyle;" href="@Url.Action("GetExcel", "BranchUnitWorkShift", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByWorkShiftId = Model.SearchFieldModel.SearchByWorkShiftId })"><img src="~/Content/images/Excel-icon.png" width="30" height="30" title="Export to Excel" /></a>
+        <img style="display:@displayStyle;" class="printspecificpagereport" action="@Url.Action("Print", "BranchUnitWorkShift", new { SearchByCompanyId = Model.SearchFieldModel.SearchByCompanyId, SearchByBranchId = Model.SearchFieldModel.SearchByBranchId, SearchByBranchUnitId = Model.SearchFieldModel.SearchByBranchUnitId, SearchByWorkShiftId = Model.SearchFieldModel.SearchByWorkShiftId })" title="print" src="~/Content/images/print-icon.png" />
+    </div>
+
+</section>

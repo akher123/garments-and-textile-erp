@@ -1,0 +1,59 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.MerchandisingReportViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Daily Fabric Received Statement</h2>
+</div>
+<section class="search formCover">
+    <div style="margin-bottom: 10px;margin-left: 100px;">
+        @using (Html.BeginForm("FabricCosnumption", "Report", FormMethod.Get, new { @class = "FabricCosnumptionSearchForm" }))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont" style="background-color: gray;">
+                <tr>
+                    <td>@Html.Label("Date")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.RecevedDate, new { @placeholder = "To date", @class = "datepicker" })
+                    </td>
+                    <td>@Html.Label("Buyer")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-Select-")
+                    </td>
+
+                    <td>
+                        <input type="button" class="showRdlcReport" value="Show" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+    <iframe id="reportIfram" width="1000" height="400"></iframe>
+</section>
+@section scripts
+{
+   <script type="text/javascript">
+    $('.showRdlcReport').unbind('click').bind('click', function (e) {
+        var form = $(this).parents('form:first');
+        if (jQuery.validator && jQuery.validator.unobtrusive) {
+            form.validate();
+            if (!form.valid()) {
+                e.preventDefault();
+                return false;
+            } else {
+                var data = form.serialize();
+                var searchurl = '/Merchandising/Report/FabricCosnumption?' + data;
+                $('#reportIfram').attr('src', '');
+                $('#reportIfram').attr('src', searchurl);
+            }
+        }
+
+    });
+</script>
+ 
+}
+
+

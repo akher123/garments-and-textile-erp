@@ -1,0 +1,185 @@
+﻿@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = Model.Batch.BatchId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Update", "Batch", FormMethod.Post, new { @class = "UpdateBatchform ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.BatchId)
+    <fieldset>
+        <legend>Batch Loading</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Batch Ref ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.BtRefNo, new { @readonly = "readonly", @placeholder = "Batch Ref", @style = "background-color: #EEEEEE" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+        
+                <td>
+                    @Html.Label("Party ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.PartyName, new { @readonly = "readonly", @placeholder = "Batch Ref", @style = "background-color: #EEEEEE" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Machine ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineName, new { @readonly = "readonly", @placeholder = "Batch Ref", @style = "background-color: #EEEEEE" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            
+                <td>
+                    @Html.Label("Batch Status ")
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.DropDownListFor(x => x.BatchStatus, Model.BatchStatuSelectListItem, "-Select-", new { @class = "batchStatus" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Shade% ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.ShadePerc, new { @placeholder = "Shade %" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+          
+                <td>
+                    @Html.Label("Rate/Kg ", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.BillRate, new { @placeholder = "Rat/Kg" ,id="billRate"})
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Loading", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.LoadingDateTime, new { @style = "width: 100%;max-width:91px;", @class = "datepicker", @placeholder = "Load Date" })
+                    @Html.TextBoxFor(x => x.LoadingTime, new { @style = "width: 100%;max-width:91px;", @class = "timePicker", @placeholder = "Load Time" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+           
+                <td>
+                    @Html.Label("UnLoading", new { @class = "cus-label-width1" })
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.TextBoxFor(x => x.UnLoadingDateTime, new { @style = "width: 100%;max-width:91px;", @class = "datepicker", @placeholder = "UnLoad Date" })
+
+                    @Html.TextBoxFor(x => x.UnLoadingTime, new { @style = "width: 100%;max-width:91px;", @class = "timePicker", @placeholder = "UnLoad Time" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+
+        </table>
+        <hr />
+        <table class="tabefont webgrid-table">
+            <thead style="text-align: center" class="webgrid-header">
+            <tr>
+                <th>Fabric Type</th>
+                <th>Component</th>
+                <th>M/C Dia</th>
+                <th>Finish Dia</th>
+                <th>GSM</th>
+                <th>Quantity</th>
+
+                <th>Rate</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var m in Model.BatchDetailDictionary)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].ItemName)
+                        @Html.HiddenFor(x => x.BatchDetailDictionary[m.Key].BatchDetailId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].ComponentName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].MdiaSizeName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].FdiaSizeName)
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].GSM)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x.BatchDetailDictionary[m.Key].Quantity)
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.BatchDetailDictionary[m.Key].Rate, new {@style = "width: 50px;", @class = "rateDetail"})
+                    </td>
+
+                </tr>
+            }
+
+
+            </tbody>
+        </table>
+        <br/>
+        <div>
+           @Html.SaveButton()
+        </div>
+    </fieldset>
+}
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#billRate').on('keyup', function () {
+
+            $('.rateDetail').val($(this).val());
+        })
+    </script>
+}

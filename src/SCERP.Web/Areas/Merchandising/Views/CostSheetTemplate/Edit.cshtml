@@ -1,0 +1,58 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.CostSheetTemplateViewModel
+@{
+
+    ViewBag.Title = Model.CostSheetTemplate.TemplateId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "CostSheetTemplate", FormMethod.Post, new { @class = "CostSheetTemplateForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => Model.CostSheetTemplate.TemplateId)
+    <fieldset>
+        <legend>Item Type</legend>
+        <table class="tabefont">
+            <tr>
+                <td>@Html.Label("Srila No ")</td>
+                <td>@Html.TextBoxFor(x => x.CostSheetTemplate.SerialNo)</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Particular ")</td>
+                <td>@Html.TextBoxFor(x=>x.CostSheetTemplate.Particular)</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Template Group")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CostSheetTemplate.TempGroupId, Model.TempGroupSelectListItem, "-Select-", new {@class = "tempGroupSelectListItem" }) 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Item Name :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.CostSheetTemplate.ItemTypeId, Model.ItemTypeSelectListItem, "-Select-", new {@class = "itemTypeSelectListItem"})
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("UnitName ")</td>
+                <td>@Html.TextBoxFor(x=>x.CostSheetTemplate.UnitName)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+
+
+
+

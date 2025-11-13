@@ -1,0 +1,201 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style type="text/css">
+  
+    #table-section .mis-header tr th {
+        font-size: 13px;
+        border: 1px solid #15c2ff;
+    }
+
+    #table-section .table-section-head thead {
+        background-color: transparent;
+    }
+
+        #table-section .table-section-head thead tr th {
+            font-size: 13px;
+            border: 1px solid transparent;
+            border-top-color: #ffffff;
+        }
+</style>
+<div class="header-title">
+    <h2>MONTHLY BUYER WISE ORDER STATUS</h2>
+</div>
+<section class="formCover" style="overflow: auto;">
+
+    <table class="webgrid-table" id="table-section">
+        <thead class="webgrid-header mis-header" style="text-align: center">
+            <tr>
+                <th> Buyer </th>
+
+                <th colspan="2">
+                    <p>Jan-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Fab-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Mar-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>App-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>May-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Jun-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Jul-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Aug-20</p>
+
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Sep-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Oct-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Nov-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+                <th colspan="2">
+                    <p>Dec-20</p>
+                    <table class="webgrid-table table-section-head">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.BuyerWiseOrderStyleDtable.Rows)
+            {
+                <tr style="text-align: left">
+                    @foreach (DataColumn col in Model.BuyerWiseOrderStyleDtable.Columns)
+                    {
+                        if (row[col.ColumnName].ToString() == "0")
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                           <td>@row[col.ColumnName]</td>
+
+                        }
+
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

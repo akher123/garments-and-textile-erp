@@ -1,0 +1,163 @@
+﻿@using System.Data
+@using SCERP.Common
+@model SCERP.Web.Areas.Accounting.Models.ViewModels.StylePaymentViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+<div style="text-align: center">
+    <h4>STYLE PAYMENTS</h4>
+</div>
+<div style="margin-left: 150px;">
+    @using (Html.BeginForm("Index", "StylePayment", FormMethod.Get, new {@class = "taskForm ignore-validation"}))
+    {
+        @Html.HiddenFor(x => x.IsSearch)
+
+        <table class="tabefont" style="margin-left: 150px;">
+            <tr>
+                <td>
+                    @Html.Label("Buyer :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem, "-ALL-", new {@class = "timeAndAction_buyerRefId", style = "width: 150px;"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.DisplayName("Order No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderNo, Model.OrderSelectListItem, "-ALL-", new {@class = "timeAndAction_OrderNo", style = "width: 150px;"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+                <td>
+                    @Html.DisplayName("Style No:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.OrderStyleRefId, Model.StylesSelectListItem, "-ALL-", new {id = "shipStyleRefId", @class = "timeAndAction_StyleNo", style = "width: 150px;"})
+                </td>
+                <td>
+                    @Html.Label("*", new {@class = "labelInstruction"})
+                </td>
+
+                <td> <input type="button" class="searchAction"/></td>
+
+
+            </tr>
+        </table>
+
+    }
+</div>
+<div class="additem">
+
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+        <button class="AjaxPopup" action="/Accounting/StylePayment/Edit">Add New</button>
+        
+    </div>
+
+
+
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.VwStylePayments, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        
+                        grid.Column("StylePaymentRefId", header: "StylePaymentRef Id"),
+                        grid.Column("PayDate", header: "PayDate"),
+                        grid.Column("BuyerName", header: "Buyer Name"),
+                        grid.Column("OrderName", header: "Order Name"),
+                        grid.Column("StyleName", header: "Style Name"),
+                        grid.Column("CostGroup", header: "CostGroup"),
+                        grid.Column("PayAount", header: "Pay Amount"),
+                        grid.Column("Remarks", header: "Remarks"),
+                        grid.Column("Detail/ Edit", canSort: false, format: @<text><button class="edit" action="/Accounting/StylePayment/Edit?StylePaymnetId=@item.StylePaymnetId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Accounting/StylePayment/Delete?StylePaymnetId=@item.StylePaymnetId"></button></text>)))
+        ;
+    }
+</div>
+
+
+
+
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.timeAndAction_buyerRefId').unbind('change').bind('change', function () {
+            var buyerRefId = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetOrderByBuyer/',
+                data: { buyerRefId: buyerRefId }
+            }).done(function (orderList) {
+                $('.timeAndAction_OrderNo').empty();
+                $('.timeAndAction_StyleNo').empty();
+                if (orderList.length > 0) {
+                    populateDropDown({ OrderNo: "", RefNo: "-ALL-" });
+                    $.each(orderList, function (order) {
+                        populateDropDown({ OrderNo: this.OrderNo, RefNo: this.RefNo });
+                    });
+                } else {
+                    populateDropDown({ RefNo: "No Order Found", OrderNo: "" });
+                }
+            });
+        });
+
+
+        function populateDropDown(obj) {
+            $('.timeAndAction_OrderNo').append(
+                $('<option/>').attr('value', obj.OrderNo).text(obj.RefNo)
+            );
+        }
+
+        $('.timeAndAction_OrderNo').unbind('change').bind('change', function () {
+            var orderNo = $(this).val();
+            $.Ajax({
+                url: '/Inventory/StyleShipment/GetStyleByOrderNo/',
+                data: { orderNo: orderNo }
+            }).done(function (styleList) {
+                $('.timeAndAction_StyleNo').empty();
+                if (styleList.length > 0) {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("-ALL-")
+                    );
+                    $.each(styleList, function (style) {
+                        $('.timeAndAction_StyleNo').append(
+                            $('<option/>').attr('value', this.OrderStyleRefId).text(this.StyleNo)
+                        );
+                    });
+                } else {
+                    $('.timeAndAction_StyleNo').append(
+                        $('<option/>').attr('value', '').text("No Order Found")
+                    );
+                }
+            });
+        });
+
+        function removeDependentDropdown() {
+
+            $('.timeAndAction_OrderNo').empty();
+            $('.timeAndAction_StyleNo').empty();
+        }
+    </script>
+}

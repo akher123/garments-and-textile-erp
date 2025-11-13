@@ -1,0 +1,56 @@
+﻿@model SCERP.Web.Areas.MIS.Models.ViewModel.UserActivityViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+@section styles
+{
+    <link href="~/Content/Common/userActivity.css" rel="stylesheet" />
+}
+
+<div class="header-title">
+    <h2>Activity Status</h2>
+</div>
+
+@foreach (var dic in Model.Dictionary)
+{
+
+    <fieldset>
+        <legend class="user-activities-legend">@dic.Key</legend>
+
+        @foreach (var activity in dic.Value)
+        {
+
+        <div class="col-md-item">
+            <div class="account-section">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="account-header">
+                    <h4 style="margin: 0 0 2px 0; font-size: 16px;"><i class="fa fa-bar-chart-o"></i> (@activity.ActivityName)</h4>
+                    <p>
+                        <small></small>
+                    </p>
+                </div>
+
+                <div class="user-activity-details">
+                    <ul>
+                        <li>
+                            Today: <p class="user-activity-process">@activity.ToDayData</p>
+                        </li>
+                        <li>
+                            This Month: <p class="user-activity-process">@activity.MonthlyData</p>
+                        </li>
+                        <li>
+                            This Year: <p class="user-activity-process">@activity.YearlyData</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        }
+
+    </fieldset>
+
+}

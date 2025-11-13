@@ -1,0 +1,67 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Tracking.Models.ViewModels.MachineLogViewModel
+@{
+    ViewBag.Title = "Machine Log List";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Machine Log List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "MachineLog", FormMethod.Get, new { @class = "MachineLogSearchForm ignore-validation" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Criteria ")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Tracking/MachineLog/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.MachineLogs, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("Production_Machine.Name", header: "Machine Name"),
+                  grid.Column("Employee.Name", header: "Operator Name"),
+                  grid.Column("TrackMachineAction.MachineActionName", header: "Action Name", canSort: false),
+                  grid.Column(format: (item) => string.Format("{0:dd-MMM-yyyy}", item.ActionDate??""), header: "Action Date"),
+                  grid.Column(format: (item) => string.Format("{0:hh:mm tt}", item.ActionDate??""), header: "Action Time"),
+                  grid.Column("Remarks", header: "Remarks", canSort: false),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Tracking/MachineLog/Edit?MachineLogId=@item.MachineLogId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Tracking/MachineLog/Delete?MachineLogId=@item.MachineLogId"></button></text>)));
+        }
+    </div>
+</section>
+
+

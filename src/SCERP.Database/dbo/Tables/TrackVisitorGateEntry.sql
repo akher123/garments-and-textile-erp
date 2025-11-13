@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[TrackVisitorGateEntry] (
+    [VisitorGateEntryId]  BIGINT           IDENTITY (1, 1) NOT NULL,
+    [EmployeeId]          UNIQUEIDENTIFIER NULL,
+    [CompanyId]           NVARCHAR (3)     NOT NULL,
+    [ConfirmationMediaId] INT              NOT NULL,
+    [VisitorName]         NVARCHAR (100)   NOT NULL,
+    [Phone]               NVARCHAR (25)    NOT NULL,
+    [Address]             NVARCHAR (MAX)   NULL,
+    [Purpose]             NVARCHAR (MAX)   NULL,
+    [ConfirmedBy]         NVARCHAR (50)    NULL,
+    [VisitorCardId]       NVARCHAR (25)    NULL,
+    [CheckOutStatus]      INT              NOT NULL,
+    [EntryDate]           DATETIME         NOT NULL,
+    [ExitDate]            DATETIME         NULL,
+    [Remarks]             NVARCHAR (MAX)   NULL,
+    [CreatedBy]           UNIQUEIDENTIFIER NULL,
+    [CreatedDate]         DATETIME         NULL,
+    [EditedBy]            UNIQUEIDENTIFIER NULL,
+    [EditedDate]          DATETIME         NULL,
+    [IsActive]            BIT              NOT NULL,
+    [ImagePath]           VARCHAR (300)    NULL,
+    CONSTRAINT [PK_Visitor] PRIMARY KEY CLUSTERED ([VisitorGateEntryId] ASC),
+    CONSTRAINT [FK_TrackVisitorGateEntry_TrackConfirmationMedia] FOREIGN KEY ([ConfirmationMediaId]) REFERENCES [dbo].[TrackConfirmationMedia] ([ConfirmationMediaId])
+);
+

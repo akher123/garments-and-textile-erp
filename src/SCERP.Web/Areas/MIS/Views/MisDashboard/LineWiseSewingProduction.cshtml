@@ -1,0 +1,109 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+
+}
+<div class="header-title">
+    <h2>LINE WISE MONTHLY SEWING PRODUCTION (DASHBOARD)</h2>
+</div>
+<style type="text/css">
+    .showcase {
+        position: relative;
+    }
+
+        .showcase .showcasetext {
+
+            visibility: hidden;
+            background-color: lightsteelblue;
+            border-radius: 0;
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+            top: 100%;
+            left: 27px;
+            list-style: none;
+            display: block;
+            white-space: nowrap;
+
+        }
+        .showcase:last-child:hover .showcasetext {
+            left: -45px;
+        }
+
+        .showcase:hover .showcasetext {
+            visibility: visible;
+        }
+
+            .showcase:hover .showcasetext li {
+                padding: 0px 20px;
+                border-bottom: 1px solid #eeeeee;
+            }
+
+                .showcase:hover .showcasetext li a {
+                    display: inline-block;
+                    padding: 3px 0;
+                    color: purple;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer
+                }
+    .formCover {
+        overflow: inherit;
+    }
+</style>
+<section class="formCover" >
+    <table class="webgrid-table" style="text-align: center">
+            <thead class="webgrid-header mis-header">
+                <tr>
+                    @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                    {
+                        if ((string) col.ColumnName != "LineId")
+                        {
+                            <th>
+                                <a class="AjaxPopup" span style="color: #FFFFFF;cursor: pointer" action="/MIS/MisDashboard/StyleSewingProduction?CurrentMonth=@col.ColumnName&&CurrentYear=@Model.CurrentYear&&LineId=0&&ViewType=L">@col.ColumnName</a>
+                            </th>
+                        }
+                    
+                    }
+                </tr>
+            </thead>
+            <tbody class="mis-tbody">
+                @foreach (DataRow row in Model.BuyerOrderMasterDataTable.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                        {
+
+                            if ((string)col.ColumnName == "LineId")
+                            {
+
+                            }
+                            else if (row[col.ColumnName].ToString() == "0")
+                            {
+                                <td></td>
+                            }
+                            else if ((string) col.ColumnName == "Line")
+                            {
+                                <td style="text-align: left">
+                                    @row[col.ColumnName]
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="showcase"><span style="cursor: pointer">@row[col.ColumnName]</span> 
+                                    <ul class="showcasetext">
+                                        <li><a class="AjaxPopup" action="/MIS/MisDashboard/StyleSewingProduction?CurrentMonth=@col.ColumnName&&CurrentYear=@Model.CurrentYear&&LineId=@row["LineId"]&&ViewType=S">Summary</a></li>
+                                        <li><a class="AjaxPopup" action="/MIS/MisDashboard/StyleSewingProduction?CurrentMonth=@col.ColumnName&&CurrentYear=@Model.CurrentYear&&LineId=@row["LineId"]&&ViewType=D">Detail</a></li>
+                                    </ul>
+                               
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+</section>

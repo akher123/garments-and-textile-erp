@@ -1,0 +1,68 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Common.Models.ViewModel.StateViewModel
+@{
+    ViewBag.Title = "State";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>State Information</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "State", FormMethod.Get, new { @class = "StateSearchForm  ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+
+          
+                 <table class="tabefont">
+                        <tr>
+                            <td>
+                                @Html.Label("Criteria")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.StateName, new { @data_val = "false", @placeholder = "Search key" })
+                            </td>
+                            <td>
+                                <input type="button" class="searchAction" />
+                            </td>
+                        </tr>
+                    </table>
+              
+        }
+    </div>
+</section>
+
+
+
+<section class="search formCover">
+    <div class="additem">
+        <div style="margin-bottom: 3px;">
+            <button class="AjaxPopup addButton" action="/Common/State/Edit">Add New</button>
+        </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.States, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("StateName", header: "State"),
+                        grid.Column("Country.CountryName", header: "Country"),
+                        grid.Column("Latitude", header: "Latitude"),
+                        grid.Column("Longitude", header: "Longitude"),
+                        grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Common/State/Edit?StateId=@item.StateId"></button></text>),
+                        grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Common/State/Delete?StateId=@item.StateId"></button></text>)));
+            }
+        </div>
+    </section>

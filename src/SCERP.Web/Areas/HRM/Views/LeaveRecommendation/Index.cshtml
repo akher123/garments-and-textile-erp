@@ -1,0 +1,109 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeLeaveViewModel
+
+@{
+    ViewBag.Title = "Employee Leave Recommendation";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeLeaves.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "LeaveRecommendation", FormMethod.Get, new { @class = "LeaveRecommendationSearchForm " }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>Leave Recommendation</h2>
+    </div>
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.Label("From Date (Applied): ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchByAppliedDateFrom, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("To Date (Applied): ")
+                    </td>
+                    <td>         
+                        @Html.TextBoxFor(x => x.SearchByAppliedDateTo, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("From Date (Recommended): ")
+                    </td>
+                    <td> 
+                        @Html.TextBoxFor(x => x.SearchByRecommendedDateFrom, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("To Date (Recommended): ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchByRecommendedDateTo, new { @class = "datepicker", @data_val = "false", @placeholder = "To" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Employee Id: ")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchByEmployeeCardId)
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+}
+
+<section class="search formCover">
+    <div class="additem">
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.EmployeeLeaves, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+                grid.Columns(
+                        grid.Column("Employee.Name", header: "Name", format: @<text>@(item.Employee == null ? "" : item.Employee.Name)</text>),
+                        grid.Column("Employee.EmployeeCardId", header: "Card Id", format: @<text>@(item.Employee == null ? "" : item.Employee.EmployeeCardId)</text>),
+                        grid.Column("LeaveType.Title", header: "Type", format: @<text>@(item.LeaveType == null ? "" : item.LeaveType.Title)</text>),
+                        grid.Column("AppliedFromDate", header: "Applied From ", format: @<text>@(item.AppliedFromDate == null ? "" : item.AppliedFromDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("AppliedToDate", header: "Applied To ", format: @<text>@(item.AppliedToDate == null ? "" : item.AppliedToDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("AppliedTotalDays", header: "Applied Days"),
+                        grid.Column("RecommendedFromDate", header: "Recommended From ", format: @<text>@(item.RecommendedFromDate == null ? "" : item.RecommendedFromDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("RecommendedToDate", header: "Recommended To ", format: @<text>@(item.RecommendedToDate == null ? "" : item.RecommendedToDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("RecommendedTotalDays", header: "Recommended Days"),
+                        grid.Column("RecommendationStatus", header: "Recommendation Status", format: @<text>@(item.RecommendationStatus == null ? "" : Enum.GetName(typeof(LeaveRecommendation), item.RecommendationStatus))</text>),
+                        grid.Column("ApprovedFromDate", header: "Approved From ", format: @<text>@(item.ApprovedFromDate == null ? "" : item.ApprovedFromDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ApprovedToDate", header: "Approved To ", format: @<text>@(item.ApprovedToDate == null ? "" : item.ApprovedToDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ApprovedTotalDays", header: "Approved Days"),
+                        grid.Column("ApprovalStatus", header: "Approval Status", format: @<text>@(item.ApprovalStatus == null ? "" : Enum.GetName(typeof(LeaveStatusHR), item.ApprovalStatus))</text>),
+                        grid.Column("ConsumedFromDate", header: "Consumed From", format: @<text>@(item.ConsumedFromDate == null ? "" : item.ConsumedFromDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ConsumedToDate", header: "Consumed To", format: @<text>@(item.ConsumedToDate == null ? "" : item.ConsumedToDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("ConsumedTotalDays", header: "Consumed Days"),
+                        grid.Column("Action", format: @<text><button class="edit" action="/HRM/LeaveRecommendation/Edit/@item.Id"></button></text>, canSort: false)
+
+                ));
+        }
+    </div>
+</section>

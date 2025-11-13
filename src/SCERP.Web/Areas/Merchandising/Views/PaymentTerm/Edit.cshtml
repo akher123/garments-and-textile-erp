@@ -1,0 +1,114 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.PaymentTermViewModel
+@{
+    ViewBag.Title = Model.PayentTermId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "PaymentTerm", FormMethod.Post, new { @class = "PaymentTermform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.PayentTermId)
+    <fieldset>
+        <legend>PaymentTerm </legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Ref No:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.PayTermRefId, new { @style = "background-color:#708090", @readonly = "readonly" })
+                </td>
+                <td></td>
+
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Payment Term :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.PayTerm)
+
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(x => x.PayTerm)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("ECGC(%):")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ECGCPerc)
+
+                </td>
+                <td>
+                  
+                </td>
+                <td>
+               
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Pay Type:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.PayType)
+
+                </td>
+                <td>
+             
+                </td>
+                <td>
+                
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Insurance(%):")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.InsurancePerc)
+
+                </td>
+                <td>
+                   
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Credit Days:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.CreditDays)
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+

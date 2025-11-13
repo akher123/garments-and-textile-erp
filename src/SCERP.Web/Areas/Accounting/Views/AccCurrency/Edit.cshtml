@@ -1,0 +1,157 @@
+﻿@model SCERP.Model.AccountingModel.Acc_Currency
+@{
+    ViewBag.Title = Model.CurrencyId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "AccCurrency", FormMethod.Post, new { @class = "AccCurrencyform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CurrencyId)
+    @Html.HiddenFor(model => model.ActiveStatus)
+
+    <table class="tabefont">
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>First Currency</legend>
+
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Name")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.FirstCurName, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Value")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.FirstCurValue, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Symbol")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.FirstCurSymbol, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+            <td>
+                <fieldset>
+                    <legend>Second Currency</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Name")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.SecendCurName, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Value")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.SecendCurValue, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Symbol")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.SecendCurSymbol, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>Third Currency</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("Name")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.ThirdCurName, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Value")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.ThirdCurValue, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Symbol")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.ThirdCurSymbol, new { htmlAttributes = new { @style = "width:200px;" } })
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>
+            </td>
+            <td>
+                <fieldset>
+                    <legend>Currency Date</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Label("CurDate")
+                            </td>
+                            <td>              
+                                @Html.TextBoxFor(x => x.CurDate, new { @class = "datepicker", @data_val = "false", @style = "width:200px;", @placeholder = "To" }) 
+                            </td>
+                       
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.SaveButton()
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                       
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+
+        </tr>
+
+    </table>
+
+
+}
+
+
+
+
+

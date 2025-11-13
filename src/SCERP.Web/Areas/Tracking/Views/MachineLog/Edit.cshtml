@@ -1,0 +1,130 @@
+﻿@model SCERP.Web.Areas.Tracking.Models.ViewModels.MachineLogViewModel
+@{
+
+    ViewBag.Title = Model.MachineLog.MachineLogId > 0 ? "Edit " : "Add ";
+    bool isReadOnly = Model.MachineLog.MachineLogId > 0;
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+
+@using (Html.BeginForm("Save", "MachineLog", FormMethod.Post, new { @class = "MachineLogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.MachineLog.MachineLogId)
+    <fieldset>
+        <legend>Machine Log</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Machine Log Ref Id :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineLog.MachineLogRefId, new { @readonly = "readonly", @style = "background-color: #F0ECE7" })
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Machine Name :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MachineLog.MachineId, Model.ProductionMachineSelectListItem, "-Select-", new { @class = "MachineIdDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Action Name :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MachineLog.MachineActionId, Model.MachineActionListSelectListItem, "-Select-", new { @class = "ActionIdDropDownList" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Operator Name :")
+                </td>
+                <td>
+                    @Html.HiddenFor(x => x.MachineLog.EmployeeId, new { @class = "EmployeeIdHiddenFor" })
+                    @Html.TextBoxFor(x => x.EmployeeName, new { @class = "EmployeeNameTextBoxFor", @placeholder = "Machine Operator Name" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Action Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineLog.ActionDate, new { @class = "datepicker", @data_val = "false"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Action Time:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.MachineLog.ActionTime, new { @class = "timePicker"})
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.MachineLog.Remarks)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('.EmployeeNameTextBoxFor').autocomplete({
+            source: function (request, response) {
+                var option = {
+                    url: '/MachineLog/GetEmployeesBySearchCharacter/',
+                    type: "GET",
+                    datatype: "html",
+                    data: { searchCharacter: request.term },
+                };
+
+                $.Ajax(option)
+                    .done(function (data) {
+                        $('.EmployeeIdHiddenFor').val('');
+                        response($.map(data, function (employee) {
+                            return { label: employee.Name, value: employee.Name, EmployeeId: employee.EmployeeId };
+                        }));
+                    });
+            },
+            select: function (event, ui) {
+                var employeedI = ui.item.EmployeeId;
+                $('.EmployeeIdHiddenFor').val(employeedI);
+            },
+
+        });
+    </script>
+}
+
+
+
+
+
+

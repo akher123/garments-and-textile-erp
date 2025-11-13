@@ -1,0 +1,95 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeCardPrintViewModel
+
+@{
+    ViewBag.Title = "Employee Card Print";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.EmployeeCardInfos.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "EmployeeCardPrint", FormMethod.Get, new { @class = "EmployeeCardPrintSearchForm" }))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="width: 500px; padding-left: 340px;">
+        <h3>Employee Id Card Print</h3>
+    </div>
+
+    <section class="search formCover" style="margin-bottom: 3px;">
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="2">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            @{ Html.RenderPartial("~/Areas/HRM/Views/EmployeeCardPrint/_SearchCardPrintView.cshtml", Model); }
+
+            <tr>
+                <td>
+                    @Html.Label("Employee ID:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.SearchFieldModel.SearchByEmployeeCardId, new { @class = "SearchByEmployeeCardId" })
+                </td>
+                <td>
+                    @Html.Label("Language:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SearchFieldModel.SearchLanguageId, Model.LanguageSelectListItem, "-Select-")
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </section>
+
+    <section class="search formCover">
+        <div class="additem">
+            <fieldset>
+                <legend>Employees</legend>
+                <div style="overflow: auto;">
+                    <div style="height: 200px;">
+                        @{
+             var grid = new WebGrid(canPage: false, canSort: true, ajaxUpdateContainerId: "grid");
+             grid.Bind(Model.EmployeeCardInfos, autoSortAndPage: false);
+             //grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                            tableStyle: "webgrid-table webgrid",
+                            headerStyle: "webgrid-header",
+                            footerStyle: "webgrid-footer",
+                            alternatingRowStyle: "webgrid-alternating-row",
+                            selectedRowStyle: "webgrid-selected-row",
+                            rowStyle: "webgrid-row-style",
+                            firstText: "First",
+                            lastText: "Last",
+                            nextText: "Next",
+                            mode: WebGridPagerModes.All,
+                            previousText: "Previous",
+                            columns: grid.Columns(
+                                grid.Column(header: "", format: @<input type="checkbox" name="employeeIdList" value="@item.EmployeeId" />),
+           grid.Column("EmployeeCardId", header: "Employee Id"),
+           grid.Column("Name", header: "Name"),
+           grid.Column("Designation", header: "Designation"),
+           grid.Column("Department", header: "Department"),
+           grid.Column("JoiningDate", header: "JoiningDate")))
+                        }
+                    </div>
+                </div>
+            </fieldset>
+
+            @if (Model.EmployeeCardInfos != null && Model.EmployeeCardInfos.Count > 0)
+            {
+                <input type="button" class="addButton" onclick="search('@Url.Action("EmployeeCardPrint", "EmployeeCardPrint")','EmployeeCardPrintSearchForm')" value="Show Card" />
+            }
+        </div>
+    </section>
+}

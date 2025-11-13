@@ -1,0 +1,74 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.BranchUnitDepartmentViewModel
+@{
+    ViewBag.Title = (Model.BranchUnitDepartmentId > 0) ? "Edit" : "Add";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "BranchUnitDepartment", FormMethod.Post, new { @class = "BranchUnitDepartmentform" }))
+{  @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsActive)
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.EditedDate)
+    @Html.HiddenFor(model => model.BranchUnitDepartmentId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.EditedBy)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Branch Unit and Department</legend>
+        <table class="tabefont">
+            <tr>
+                <td></td>
+                <td align="left" colspan="4">@Html.Label("Fields with asterisk(*) mark are mandatory", new { @class = "labelInstruction" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Company :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SerchCompanyId, Model.CompanySelectListItem, "--Select--", new { @class = "Hrm_CompanyId", @action = "/HRM/BranchUnitDepartment/GetAllBranchesByCompanyId", @TargetClass = "SearchByBranchId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.SerchCompanyId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Branch :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.SerchBranchId, Model.BranchSelectListItem, "--Select--", new { @class = "SearchByBranchId", @action = "/HRM/BranchUnitDepartment/GetAllBranchUnitByBranchId", @TargetClass = "SearchUnitDepartmentByBranchUnitId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.SerchBranchId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Unit :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.BranchUnitId, Model.UnitSelectListItem, "--Select--", new { @class = "SearchUnitDepartmentByBranchUnitId", @action = "/HRM/BranchUnitDepartment/GetAllUnitDepatmeByBranchUnitId", @TargetClass = "SearchByUnitDepartmentId" })
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                    @Html.ValidationMessageFor(x => x.BranchUnitId)
+                </td>
+            </tr>
+            <tr>
+
+            <td>
+                @Html.Label("Department :")
+            </td>
+            <td>
+                @Html.DropDownListFor(x => x.UnitDepartmentId, Model.DepartmentSelectListItem, "--Select--", new { @class = "SearchByUnitDepartmentId" })
+                @Html.Label("*", new { @class = "labelInstruction" })
+                @Html.ValidationMessageFor(x => x.UnitDepartmentId)
+            </td>
+            <tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+

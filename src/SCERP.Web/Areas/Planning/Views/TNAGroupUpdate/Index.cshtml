@@ -1,0 +1,115 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Planning.Models.ViewModels.TNAHorizontalViewModel
+
+@{
+    ViewBag.Title = "TNA By Activity";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var displayStyle = (Model.tnaHorizon.Count > 0) ? "" : "none";
+}
+
+@using (Html.BeginForm("Index", "TnaGroupUpdate", FormMethod.Get, new {@class = "tnaHorizontalSearchForm submit-allow ignore-validation"}))
+{
+    @Html.HiddenFor(x => x.IsSearch)
+
+    <div class="header-title">
+        <h2>TNA By Activity</h2>
+    </div>
+     
+    <section class="common-search-section">
+        <div class="search formCover common-search-wrapper">
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("Season: ")</td>
+                    <td>@Html.DropDownListFor(x => x.SearchBySeasonId, null, "--Select--")</td>
+                    
+                    <td>@Html.Label("Buyer: ")</td>
+                    <td>@Html.DropDownListFor(x => x.SearchByBuyerId, null, "--Select--")</td>
+
+                    <td>@Html.Label("Merchandiser: ")</td>
+                    <td>@Html.DropDownListFor(x => x.SearchByMerchandiserId, null, "--Select--")</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Particulars: ")</td>
+                    <td>@Html.DropDownListFor(model => model.SearchByStyleUfId, Model.ParticularsSelectListItem, "-Select-")</td>
+
+                    <td>@Html.Label("From Date: ")</td>
+                    <td>@Html.TextBoxFor(x => x.FromDate,new{@class="datepicker"})</td>
+
+                    <td>@Html.Label("To Date: ")</td>
+                    <td>@Html.TextBoxFor(x => x.ToDate, new { @class = "datepicker" })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right"><input type="button" class="searchAction" /> <input type="button" class="addButton" value="Show Report" onclick=" javascript: PrintReport(); " /></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.tnaHorizon, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns: grid.Columns(
+                    
+                    grid.Column("BuyerName", header: "Buyer Name", canSort: false),
+                    grid.Column("SeasonRefId", header: "Season Name", canSort: false),
+                    grid.Column("StyleName", header: "Style No", canSort: false),           
+                    grid.Column("OrderNo", header: "Order No", canSort: false),
+                    grid.Column("Quantity", header: "Quantity", canSort: false),
+                    grid.Column("MerchandiserName", header: "Merchandiser", canSort: false),
+                    grid.Column("OrderDate", header: "Order Date", format: @<text>@(item.OrderDate == null ? "" : item.OrderDate.ToString("dd-MM-yyyy"))</text>, canSort: false),
+                    grid.Column("ItemName", header: "Item", canSort: false),
+                    grid.Column("NoOfColor", header: "NoOfColor", canSort: false),
+                    grid.Column("LCSTID", header: "LC Status", format: @<text>@(item.LCSTID == "2" ? "Received" : "Not Received")</text>, canSort: false),
+                    grid.Column("YBD", header: "Particulars", format: @<text>@(item.YBD == null ? "" : item.YBD.ToString("dd-MM-yyyy"))</text>, canSort: false)
+                    ))
+            ;
+        }
+    </div>
+</section>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        //var particulars = $('#SearchByStyleUfId option:selected').text();
+        //var selectedElements = $("th:last");
+        //selectedElements.html(particulars);
+
+        function PrintReport() {
+            var seasonId = $('#SearchBySeasonId option:selected').val();
+            var buyerId = $('#SearchByBuyerId option:selected').val();
+            var merchandiserId = $('#SearchByMerchandiserId option:selected').val();
+            var styleUfId = $('#SearchByStyleUfId option:selected').val();
+            var styleUfName = $('#SearchByStyleUfId option:selected').text();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+
+            window.open('/Planning/Report/TnaGroupUpdatePrint?&seasonId=' + seasonId + '&buyerId=' + buyerId + '&merchandiserId=' + merchandiserId + '&styleUfId=' + styleUfId + '&styleUfName=' + styleUfName + '&fromDate=' + fromDate + '&toDate=' + toDate + '&ExportType=DOC');
+        }
+    </script>   
+}

@@ -1,0 +1,176 @@
+﻿@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = Model.BatchId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+@using (Html.BeginForm("Save", "KnittingRoll", FormMethod.Post, new { @class = "KnittingRollform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.BatchId)
+
+    <fieldset>
+        <legend>Knitting Roll</legend>
+
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.Label("Roll Ref:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BtRefNo, new { @readonly = "readonly", @style = "background-color: #EEEEEE" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("RollNo:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BatchNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Roll Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BatchDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Party:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PartyId, Model.PartySelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Program:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ProgramId, new { @onkeyup = "itemAutocomplite(this)", @placeholder = "Program No" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Machine :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.MachineId, Model.MachineSelectListItem, "-select-")
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("M/C DIA:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GSizeName, new { @class = "Size_GSizeName", @placeholder = "M/C DIA" })
+                    @Html.HiddenFor(x => x.GSizeRefId, new { @class = "Size_GSizeRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Fabric Type:")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ItemName, new { @onkeyup = "itemAutocomplite(this)", @placeholder = "Fabric Type" })
+                    @Html.HiddenFor(x => x.ItemId, new { @class = "Item_ItemId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("GSM:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.Gsm)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Fabric Color:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.GColorName, new { @class = "Color_GColorName", @placeholder = "Fabric Color" })
+                    @Html.HiddenFor(x => x.GrColorRefId, new { @class = "Color_GrColorRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+     
+         
+            <tr>
+                <td>
+                    @Html.Label("Finish DIA:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.FSizeName, new { @class = "Size_FSizeName", @placeholder = "Finish DIA" })
+                    @Html.HiddenFor(x => x.FSizeRefId, new { @class = "Size_FSizeRefId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Quantity:")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.BatchQty)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.SaveButton()
+                </td>
+
+            </tr>
+        </table>
+    </fieldset>
+}
+
+
+@section scripts
+{
+
+    <script src="~/Scripts/SCERP/Production/batch.js"></script>
+
+}

@@ -1,0 +1,96 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.EmbWorkOrderViewModel
+@{ ViewBag.Title = "Work Order";
+ Layout = null;
+}
+<div class="embworkorderlist">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+
+            @using (Html.BeginForm("EmbWorkOrderList", "EmbWorkOrder", FormMethod.Get, new { @class = "EmbWorkOrderForm ignore-validation" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("Factory:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmbWorkOrder.PartyId, Model.PartySelectListItem, "-ALL-",new{@data_val=false})
+                        </td>
+
+
+                        <td>
+                            @Html.Label("Criteria")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                        </td>
+                        <td>
+                            @Html.Button("Find", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "embworkorderlist" } })
+                        </td>
+                    </tr>
+                </table>
+            }
+
+        </div>
+    </div>
+
+    <section class="search formCover">
+        <div class="additem">
+            <div class="addButton-wrapper">
+                <button class="AjaxPopup addButton" action="/Merchandising/EmbWorkOrder/Edit">Add New</button>
+            </div>
+            @{
+                var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+                grid.Bind(Model.EmbWorkOrders, rowCount: Model.TotalRecords, autoSortAndPage: false);
+                grid.Pager(WebGridPagerModes.All);
+                @grid.GetHtml(htmlAttributes: new {id = "grid"},
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns:
+                        grid.Columns(
+                            grid.Column("RefId", header: "RefId"),
+                            grid.Column("Party.Name", header: "Party"),
+                            grid.Column("BookingDate", canSort: false, header: "Booking Date", format: @<text>@(item.BookingDate == null ? "" : item.BookingDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("ExpectedDate", canSort: false, header: "Expected Date", format: @<text>@(item.ExpectedDate == null ? "" : item.ExpectedDate.ToString("dd-MM-yyyy"))</text>),
+                            grid.Column("Attention", header: "Attention"),
+                            grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.EmbWorkOrderId" onclick=" selectWorkOrderRow('@item.EmbWorkOrderId', this) " value="✅"/></text>),
+                            grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/EmbWorkOrder/Edit?EmbWorkOrder.EmbWorkOrderId=@item.EmbWorkOrderId"></button></text>),
+
+                            grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Merchandising/EmbWorkOrder/Delete?EmbWorkOrderId=@item.EmbWorkOrderId"></button></text>),
+                            grid.Column(columnName: "Export", format: @<text><a href="@Url.Action("PrintEmbWorkOrderReport", "EmbWorkOrder", new { EmbWorkOrderId = item.EmbWorkOrderId })" target="_blank">PDF</a></text>)))
+                ;
+            }
+        </div>
+    </section>
+
+
+
+
+</div>
+
+
+    <script type="text/javascript">
+        function selectWorkOrderRow(bulkBookingId, obj) {
+            var button = $(obj);
+            var value = bulkBookingId;
+            var $tr = button.closest('tr');
+            $tr.addClass("selected").siblings().removeClass("selected");
+            var $tab = $("#bulkBookingTab");
+            var tabAction = $('#bulkBookingDetailHref').attr("href").split('=')[0];
+            tabAction += "=" + value;
+            $('#bulkBookingDetailHref').attr('href', tabAction);
+            $tab.tabs('enable', 1);
+            //  $('#bulkBookingHref').attr('href', '#temp');
+        }
+    </script>

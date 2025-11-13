@@ -1,0 +1,258 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReceiveAgainstPo.MaterialReceiveAgstPoId > 0 ? "Edit" : "Add");
+}
+@using (Html.BeginForm("Save", "AccessoriesReceive", FormMethod.Post, new { @class = "AccessoriesReceiveForm ignore-validation" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ReceiveAgainstPo.MaterialReceiveAgstPoId)
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(x => x.ReceiveAgainstPo.OrderStyleRefId,new{id="orderStyleRefId"})
+    <fieldset>
+        <legend>Accessories Received Against(PI/Booking)</legend>
+      
+        <table class="tabefont" >
+            <tr>
+                <td>
+                    @Html.DisplayName("RefNo:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+              
+                <td>
+                    @Html.Label("RType :")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.ReceiveAgainstPo.RType, new SelectList(new[] { new { RType = SCERP.Common.RType.PI, Text = "PI" }, new { RType = SCERP.Common.RType.BOOKING, Text = "Booking" }}, "RType", "Text"), "-Select-", new { id = "accReceiveType" })
+                </td>
+                <td></td>
+                <td>
+                    @Html.Label("LC No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.LcNo, new { @class = "booKing_remarks" })
+                </td>
+                <td></td>
+            </tr>
+            <tr id="dropdownPiBookingContainner">
+                @Html.Partial("~/Areas/Inventory/Views/AccessoriesReceive/_RType.cshtml", Model)
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Buyer:")
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.ReceiveAgainstPo.BuyerId, Model.BuyerSelectListItem, "-Select-", new { id = "receiveBuyerId" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Order No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.OrderNo, new { id = "receiveOrderNo" })
+                </td>
+                <td></td>
+            
+                <td>
+                    @Html.DisplayName("Style:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.StyleNo, new { id = "receiveStyleNo" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+             
+            </tr>
+            <tr>
+            
+                <td>
+
+                    @Html.Label("Invoice No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Invoice Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.Label("Remarks :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.Remarks, new { @class = "booKing_remarks" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+               
+
+                <td>
+                    @Html.Label("Rcv Reg No :")
+                </td>
+                <td>
+                    @Html.EditorFor(x => x.ReceiveAgainstPo.ReceiveRegNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+                <td>
+                    @Html.DisplayName("Rcv Reg Date :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.ReceiveRegDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+            
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("GEN :")
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryNo)
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+
+                <td>
+                    @Html.DisplayName("GE Date:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryDate, new { @class = "datepicker" })
+                </td>
+                <td>
+                    @Html.Label("*", new { @class = "labelInstruction" })
+                </td>
+              
+            </tr>
+       
+        </table>
+
+        <hr />
+        <div style="overflow-x: auto; height: 525px;">
+
+            <table id="ReceivedAgstPoDetail" class="webgrid-table">
+                <thead style="text-align: center" class="webgrid-header">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("GRM Color")
+                        </th>
+                        <th>
+                            @Html.Label("GRM Size")
+                        </th>
+                        <th>
+                            @Html.Label("Product Color")
+                        </th>
+                        <th>
+                            @Html.Label("Prouct Size")
+                        </th>
+
+                        <th>
+                            @Html.Label("Rate")
+                        </th>
+                        <th>
+                            @Html.Label("TRcvQty")
+                        </th>
+                        <th>
+                            @Html.Label("TBQty")
+                        </th>
+                        <th>
+                            @Html.Label("Qty")
+                        </th>
+
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var m in Model.Dictionary)
+                    {
+                        <tr id="newRow-@Model.Dictionary[m.Key].ItemId">
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].PurchaseOrderDetailId)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoId)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoDetailId)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ItemId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].FColorName)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].FColorRefId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].GSizeName)
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].GSizeRefId)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ColorRefId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ColorName)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].SizeRefId)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+                            </td>
+                            <td style="width: 65px;">
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedRate)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedRate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].TotalRcvQty)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].BalanceQty)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedQty)
+                                @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedQty)
+                            </td>
+                            <td>
+                                <input type="button" value="-" onclick="deleteRow(this)" />
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="custom-modal-btn">
+                <input type="submit" class="addButton" value="Save" />
+            </div>
+        </div>
+
+    </fieldset>
+    
+ 
+}
+@section scripts
+{
+<script src="~/Scripts/SCERP/Inventory/accessoriesReceive.js"></script>
+
+}

@@ -1,0 +1,139 @@
+﻿@using iTextSharp.text.pdf.qrcode
+@model SCERP.Web.Areas.Production.Models.CuttingBatchViewModel
+@{
+    Layout = null;
+    var btnText = Model.CuttingBatch.CuttingBatchId > 0 ? "Update " : "Save ";
+}
+<table class="webgrid-table webgrid" style="align-content: center">
+    <thead>
+        @foreach (var row in Model.SpCuttingJobCards.Where(x => x.Key != "Ratio"))
+        {
+            <tr>
+                <td>
+                    @row.Key
+                </td>
+                @foreach (var col in @row.Value)
+                {
+                    <td>
+                        @col
+                    </td>
+                }
+            </tr>
+        }
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="@(Model.RatioDictionary.Count+2)" class="cuttBacthList">
+                <input type="button" id="toggoleButton" value="+" />
+                <div id="cuttingBatchToggle">
+                    @Html.Partial("~/Areas/Production/Views/JobCard/_CuttingJobList.cshtml", Model)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Job No :")
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.CuttingBatch.JobNo, new { @class = "TextBoxStyle", @style = "width:135px;" })
+            </td>
+            <td>
+                @Html.Label("Table:")
+            </td>
+            <td colspan="@(Model.RatioDictionary.Count+1)">
+                @Html.DropDownListFor(x => x.CuttingBatch.MachineId, Model.MachineSelectListItem, "-Select-", new { @class = "TextBoxStyle", @style = "width:135px;" })
+           
+                @Html.TextBoxFor(x => x.CuttingBatch.ConsPerDzn, new { @class = "TextBoxStyle", @style = "width:100px;" ,@placeholder="Cons/Dzn"})
+           
+                @Html.TextBoxFor(x => x.CuttingBatch.MarkerEffPct, new { @class = "TextBoxStyle", @style = "width:100px;",@placeholder="Marker Eff %" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Ratio :")
+            </td>
+            @foreach (var row in Model.RatioDictionary)
+            {
+                <td>
+                    @Html.TextBoxFor(x => Model.RatioDictionary[row.Key].Ratio, new { @style = "width:85%;", @class = "TextBoxStyle ratioTextBox" })
+                    @Html.HiddenFor(x => Model.RatioDictionary[row.Key].SizeRefId)
+                    @Html.HiddenFor(x => Model.RatioDictionary[row.Key].CuttingBatchRefId)
+                    @Html.HiddenFor(x => Model.RatioDictionary[row.Key].CompId)
+                    @Html.HiddenFor(x => Model.RatioDictionary[row.Key].LaySl)
+                </td>
+            }
+            <td>
+                <span id="totlaRatio">@Model.RatioDictionary.Sum(x => x.Value.Ratio)</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <div id="rollCutting" style="margin-top: 10px;float: left">
+        @if (Model.SpCuttingJobCards.Any())
+        {
+            @Html.Partial("~/Areas/Production/Views/JobCard/_RollCutting.cshtml", Model)
+        }
+    </div>
+    <div style="float: right;margin-top: 47px;" >
+        <input type="submit" class="SubmitButton buttonStyle addButton" value="@btnText" />
+    </div>
+  
+</div>
+<script type="text/javascript">
+
+    function calculateTotalRatio() {
+        var sum = 0;
+        $(".ratioTextBox").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseInt(this.value);
+            }
+        });
+        $("#totlaRatio").html(sum);
+    }
+    $(".ratioTextBox").each(function () {
+        $(this).keyup(function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            calculateTotalRatio();
+        });
+    });
+    $('.allowNumeric').keyup(function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 0) {
+            $('#btnAddRollCutting').prop('disabled', false);
+        } else {
+            $('#btnAddRollCutting').prop('disabled', true);
+        }
+    });
+    $("#toggoleButton").click(function () {
+        var value=$(this).val();
+        if (value=='+') {
+            $(this).val("-");
+        } else {
+            $(this).val("+");
+        }
+        $("#cuttingBatchToggle").toggle("1000");
+        
+    });
+    $("#cuttingBatchToggle").hide();
+
+    $('#cutting_batch_no').autocomplete({
+    source: function (request, response) {
+        var url = this.element.attr('action');
+        var option = {
+            url: url,
+            type: "GET",
+            datatype: "json",
+            data: { searchString: request.term},
+        };
+   
+            $.Ajax(option)
+            .done(function (data) {
+                response($.map(data, function (batch) {
+                    return { label: batch.Text, value: batch.Text };
+                }));
+            });
+      
+    },
+});
+</script>

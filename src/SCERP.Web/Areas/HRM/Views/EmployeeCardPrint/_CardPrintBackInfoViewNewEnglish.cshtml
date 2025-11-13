@@ -1,0 +1,51 @@
+﻿@model SCERP.Model.Custom.EmployeeCardPrintModel
+
+@{
+    Layout = null;
+}
+
+<style type="text/css">
+    .image {
+        position: relative;
+    }
+
+        .image .text {
+            position: absolute;
+            top: 45px;
+            left: 20px;
+        }
+</style>
+
+<table>
+    <tr>
+        <td>
+            <div class="image" style="width: 192px; height: 306px;">
+                <img alt="" src="~/Content/images/IdCardBack.jpg" />
+                <div class="text">
+
+                    <table style="font-size: 9px; font-family: Verdana; margin-top: 20px;" cellpadding="0px" cellspacing="0px">
+
+                        <tr><td style="padding-top: 0px; padding-left: 0px;"> @Model.CardValidity </td></tr>
+                        <tr><td style="padding-top: 0px; padding-left: 0px;font-weight: bold;font-size:125%;"> @Model.CompanyName </td></tr>
+                        <tr><td style="padding-top: 0px; padding-left: 10px;"> @Model.CompanyAddress1 </td></tr>
+                        <tr><td style="padding-top: 0px; padding-left: 15px;"> @Model.CompanyAddress2 </td></tr>
+                        <tr><td style="padding-top: 0px; padding-left: 5px;">@Model.MobileNo</td></tr>
+                        <tr><td style="padding-top:0px; height: 5px;"></td></tr>
+                        <tr><td style="padding-top:0px;">@Model.BloodGroup</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.FatherName</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.Village</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.PostOffice</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.PoliceStation</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.District</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.EmergencyContactNo</td></tr>
+                        <tr><td style="padding-top:0px;">@Model.NationalIdNo</td></tr>
+                        <tr><td style="padding-top: 0px;">@Model.BirthCertificateNo</td></tr>                       
+                        <tr><td style="padding-top: 0px; font-weight: bold; font-size: larger; ">@Model.Notice1</td></tr>
+                        <tr><td style="padding-top: 0px; font-weight: bold; font-size: larger;">@Model.Notice2</td></tr>
+                        <tr><td style="padding-top: 10px;">Employee Signature:</td></tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

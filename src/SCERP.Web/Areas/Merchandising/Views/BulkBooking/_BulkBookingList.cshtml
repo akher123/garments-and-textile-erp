@@ -1,0 +1,75 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.BulkBookingViewModel
+@{
+    Layout = null;
+}
+<div class="BulkBookingList">
+    <div class="top-categories-section">
+        <div class="top-categories-wrapper">
+            @using (Html.BeginForm("BulkBookingList", "BulkBooking", FormMethod.Get, new { @class = "BulkBookingSearchForm" }))
+            {
+                @Html.HiddenFor(x => x.IsSearch)
+                <table class="tabefont">
+                    <tr>
+                        <td>
+                            @Html.Label("Ref No:")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.SerarchString)
+                        </td>
+                        <td>
+                            @Html.Button("Find", "button", new Dictionary<string, object> { { "class", "innerTabSaveButton addButton" }, { "TargentClass", "BulkBookingList" } })
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Merchandising/BulkBooking/Edit">Create</button>
+        </div>
+    </div>
+    @{
+        var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.BulkBookings, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            tableStyle: "webgrid-table webgrid",
+            headerStyle: "webgrid-header",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            firstText: "First",
+            lastText: "Last",
+            nextText: "Next",
+            mode: WebGridPagerModes.All,
+            previousText: "Previous",
+            columns:
+            grid.Columns(
+            grid.Column("BulkBookingRefId", canSort: false, header: "BkRef."),
+            grid.Column("BookingDate", canSort: false, header: "Booking Date", format: @<text>@(item.BookingDate == null ? "" : item.BookingDate.ToString("dd-MM-yyyy"))</text>),
+            grid.Column("Attention", canSort: false, header: String.Format("{0}", "Attention")),
+            grid.Column("OM_Merchandiser.EmpName", canSort: false, header: String.Format("{0}", "Merchandiser")),
+            grid.Column("Note", canSort: false, header: "Note"),
+                grid.Column("Select", canSort: false, format: @<text> <input type="button" id="@item.BulkBookingId" onclick="selectBulkBookingRow('@item.BulkBookingId',this)" value="✅" /></text>),
+                grid.Column("Edit", canSort: false, format: @<text><button class="edit" action="/Merchandising/BulkBooking/Edit?BulkBooking.BulkBookingId=@item.BulkBookingId"></button></text>),
+                grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Merchandising/BulkBooking/Delete?BulkBookingId=@item.BulkBookingId"></button></text>),
+                grid.Column("Total", canSort: false, header: "Report", format: @<text><a href="/Merchandising/Report/BulkYarnBooking?bulkBookingId=@item.BulkBookingId" target="_blank">PDF</a></text>)));
+    } 
+</div>
+
+<script type="text/javascript">
+    function selectBulkBookingRow(bulkBookingId, obj) {
+        var button = $(obj);
+        var value = bulkBookingId;
+        var $tr = button.closest('tr');
+        $tr.addClass("selected").siblings().removeClass("selected");
+        var $tab = $("#bulkBookingTab");
+        var tabAction = $('#bulkBookingDetailHref').attr("href").split('=')[0];
+        tabAction += "=" + value;
+        $('#bulkBookingDetailHref').attr('href', tabAction);
+        $tab.tabs('enable', 1);
+      //  $('#bulkBookingHref').attr('href', '#temp');
+    }
+</script>

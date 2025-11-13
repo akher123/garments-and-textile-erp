@@ -1,0 +1,421 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.MaterialIssueViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+    var issuedetails = Model.MaterialIssueDetails;
+}
+<div style="width:500px; padding-left:340px;">
+    <h2>Inventory Material Issue </h2>
+</div>
+
+@using (Html.BeginForm("Save", "MaterialIssue", FormMethod.Post, new { @class = "MaterialIssue ignore-validation", @title = "Material Issue" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.MaterialIssueId)
+    @Html.HiddenFor(x => x.MaterialIssueRequisitionId)
+    @Html.HiddenFor(x => x.IsSearch)
+    @Html.HiddenFor(x => x.BranchId, new { @class = "brandchHiddenId" })
+    <section class="search formCover">
+        <span style="font-size: 12px;  color: #191970; padding: 5px;">General details</span><hr>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    @Html.DisplayName("Company:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.CompanyName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DisplayName("Branch:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.BranchName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Unit:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.UnitName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DisplayName("Department:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.DepartmentName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayName("Section:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SectionName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DisplayName("Line:")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.LineName, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Issue Req Note No :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteNo, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+                <td>
+
+                    @Html.Label("Issue Req Note Date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNoteDate, "{0:dd/MM/yyyy}", new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Issue ReqNo :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveNo, new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.Label("Req date :")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.IssueReceiveDate, "{0:dd/MM/yyyy}", new { @style = "background-color: #b0c4de", @readonly = "readonly" })
+                </td>
+
+            </tr>
+
+        </table>
+        <span style="font-size: 12px; color: #191970; padding: 5px;">Material Issue Requisition Detail </span>
+        <hr />
+        <div>
+            @{Html.RenderPartial("~/Areas/Inventory/Views/MaterialIssue/_MaterialIssueRequisitionDetail.cshtml", Model.MaterialIssueRequisitionDetails);}
+        </div>
+        <span style="font-size: 12px; color: #191970; padding: 5px;">Material Issue Detail</span>
+        <hr />
+        <div>
+            <input type="button" onclick="addNewRow()" value="+" />
+        </div>
+        <div style="width: 1024px; overflow: auto">
+            <table id="MaterialIssueDetail" class="tabefont webgrid-table webgrid" style="width: auto;">
+                <thead class="webgrid-header" style="text-align: center">
+                    <tr>
+                        <th>
+                            @Html.Label("Item")
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+                        </th>
+                        <th>
+                            @Html.Label("Brand")
+                        </th>
+                        <th>
+                            @Html.Label("Origin")
+                        </th>
+                        <th>
+                            @Html.Label("StockInHand")
+                        </th>
+                        <th>
+                            @Html.Label("Required Qantity")
+                        </th>
+                        <th>
+                            @Html.Label("Issue Qantity")
+                        </th>
+                        <th>
+                            @Html.Label("Isssue Rate")
+                        </th>
+                     
+                        <th>
+                            @Html.Label("Currency")
+                        </th>
+
+                        <th>
+                            @Html.Label("Machine Name")
+                        </th>
+                        <th>
+                            @Html.Label("Transaction Date")
+                        </th>
+                        <th>
+                            @Html.Label("Remarks")
+                        </th>
+                        <th>
+                            @Html.Label("Edit")
+                        </th>
+
+                        <th>
+                            @Html.Label("Delete")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var m in Model.MaterialIssueDetails) { 
+                    <tr class="webgrid-alternating-row">
+                        <td>
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].ItemId, new { @class = "ItemHiddenField-" + m.Key })
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueDetailId)
+                            @Html.HiddenFor(x => x.MaterialIssueDetails[m.Key].MaterialIssueId)
+                            <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].ItemName)</span>
+                            <input class="edit-mode " data-val="true" onkeyup="itemAutocomplite(this,'@m.Key')" type="text" value="@issuedetails[m.Key].ItemName" style="width:150px" />
+                        </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].SizeName)</span>
+                                @Html.DropDownListFor(x => x.MaterialIssueDetails[m.Key].SizeId, new SelectList(Model.InventorySizes, "SizeId", "Title", issuedetails[m.Key].SizeId), "-Select-", new { @class = "edit-mode", @onchange = "SizeWizeStockInHand(this)", @style = "width:150px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].BrandName)</span>
+                                @Html.DropDownListFor(x => x.MaterialIssueDetails[m.Key].BrandId, new SelectList(Model.InventoryBrands, "BrandId", "Name", issuedetails[m.Key].BrandId), "-Select-", new { @class = "edit-mode", @onchange = "BrandWizeStockInHand(this)", @style = "width:150px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].OriginName)</span>
+                                @Html.DropDownListFor(x => x.MaterialIssueDetails[m.Key].OriginId, new SelectList(Model.Countries, "Id", "CountryName", issuedetails[m.Key].OriginId), "-Select-", new { @class = "edit-mode", @onchange = "OriginWizeStockInHand(this)",@style = "width:150px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].StockInHand)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].StockInHand, new { @class = "edit-mode StockInHand", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].RequiredQuantity, new { @class = "edit-mode", @style = "width:100px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].IssuedQuantity, new { @class = "edit-mode IssuedQuantity",onkeyup="Replace(this)", @style = "width:100px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate)</span>
+                                @Html.TextBoxFor(x => x.MaterialIssueDetails[m.Key].IssuedItemRate, new { @class = "edit-mode", @style = "background-color: #b0c4de; width:100px ", @readonly = "readonly" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.DisplayFor(x => x.MaterialIssueDetails[m.Key].CurrencyName)</span>
+                                @Html.DropDownListFor(x => x.MaterialIssueDetails[m.Key].CurrencyId, new SelectList(Model.Currencies, "CurrencyId", "Name", issuedetails[m.Key].CurrencyId), new { @class = "edit-mode", @style = "width:150px" })
+
+                            </td>
+
+                            <td >
+                                <span class="display-mode">@Html.ValueFor(x => x.MaterialIssueDetails[m.Key].MachineName, "{0:dd/MM/yyyy}")</span>
+                                @Html.DropDownListFor(x => x.MaterialIssueDetails[m.Key].MachineId, new SelectList(Model.Machines, "MachineId", "Name", issuedetails[m.Key].MachineId), "-Select-", new { @class = "edit-mode", @style = "width:150px" })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.ValueFor(x => x.MaterialIssueDetails[m.Key].TransactionDate, "{0:dd/MM/yyyy}")</span>
+                                @Html.EditorFor(x => x.MaterialIssueDetails[m.Key].TransactionDate, new { htmlAttributes = new { @class = "edit-mode", @style = "width:100px" } })
+                            </td>
+                            <td>
+                                <span class="display-mode">@Html.ValueFor(x => x.MaterialIssueDetails[m.Key].Remarks, "{0:dd/MM/yyyy}")</span>
+                                @Html.EditorFor(x => x.MaterialIssueDetails[m.Key].Remarks, new { htmlAttributes = new { @class = "edit-mode", @style = "width:100px" } })
+                            </td>
+                            <td>
+                                <input type="button" class="edit-button " value="Edit" />
+                            </td>
+                            <td>
+                                <button class="delete" action="/Inventory/MaterialIssue/DeleteMaterialIssueDetail?MaterialIssueDetailId=@Model.MaterialIssueDetails[m.Key].MaterialIssueDetailId" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+     
+        <hr />
+        <table>
+            <tr>
+                <td>
+
+                    @Html.Label("Note")
+                </td>
+                <td>
+                    @Html.TextAreaFor(x => x.Note)
+                </td>
+            </tr>
+        </table>
+        <div>
+            @if (Model.IsComeFromIssueRequsition)
+            {
+                <input type="button" onclick="search('@Url.Action("Index", "MaterialIssueRequisition")','MaterialIssue')" value="Back" />
+            }
+            else
+            {
+                <input type="button" onclick="search('@Url.Action("Index", "MaterialIssue")','MaterialIssue')" value="Back" />
+            }
+            @*<input type="submit" class="SubmitButton" value="Save" />*@ 
+            <input type="submit" class="SubmitConfirmButton" value="Send To Product Ledger" />
+        </div>
+        <hr>
+      
+    </section>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('.edit-mode').hide();
+        $('.edit-button').on('click', function() {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        function addNewRow() {
+            var $table = $('table#MaterialIssueDetail tbody');
+            var rowCount = $('#MaterialIssueDetail tr').length;
+            var option = {
+                url: '@Url.Action("AddRow", "MaterialIssue")',
+                type: "get",
+                dataType: "html",
+                data: { Key: rowCount },
+            };
+            $.Ajax(option).done(function(htmResult) {
+                $table.append(htmResult);
+                RefrashModelState();
+            });
+        }
+
+        function itemAutocomplite(obj, index) {
+            
+            var $brandchHiddenId = $('.brandchHiddenId');
+            var branchId = $brandchHiddenId.val();
+            var $tr = $(obj).closest("tr");
+            $(obj).autocomplete({
+                source: function(request, response) {
+                  
+                    var option = {
+                        url: "/MaterialIssue/AutocompliteItemByBranch",
+                        type: "POST",
+                        data: { itemName: request.term, branchId: branchId },
+                    };
+                    if (jQuery.validator && jQuery.validator.unobtrusive) {
+                        $brandchHiddenId.validate();
+                        if (!$brandchHiddenId.valid()) {
+                            return false;
+                        } else {
+                            $.Ajax(option)
+                                .done(function(data) {
+                                    response($.map(data, function(item) {
+                                        return { label: "Item Name :"+item.ItemName + ", ROL :" + item.ReorderLevel, value: item.ItemName, ItemId: item.ItemId };
+                                    }));
+                                });
+                        }
+                    }
+                },
+                select: function(event, ui) {
+                  var  itemId=ui.item.ItemId;
+                  $('.ItemHiddenField-' + index).val(itemId);
+                    $.Ajax({
+                        type: 'GET',
+                        dataType: "json",
+                        url: '/MaterialIssue/StockStatys',
+                        data: {itemId: itemId},
+                        success: function (result) {
+                            $tr.find('td:eq(4)').find("input").val(result.StockInHand);
+                            $tr.find('td:eq(7)').find("input").val(result.Rate);
+                        },onError: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                },
+            });
+        }
+
+        function RefrashModelState() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+
+        function deleteRow(buttonObj) {
+            var $tr = $(buttonObj).closest("tr");
+            $tr.remove();
+        }
+
+        function SizeWizeStockInHand(obj) {
+            var $sizeDropdown = $(obj);
+            var $tr = $sizeDropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var sizeId = $sizeDropdown.val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/MaterialIssue/SizeWizeStockInHand',
+                data: { itemId: itemId, sizeId: sizeId },
+                success: function (result) {
+                    $tr.find('td:eq(4)').find("input").val(result.stockInHand);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function BrandWizeStockInHand(obj) {
+            var $brandDropdown = $(obj);
+            var $tr = $brandDropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var brandId = $brandDropdown.val();
+            var sizeId = $tr.find('td:eq(1)').find("select").val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/MaterialIssue/BrandWizeStockInHand',
+                data: { itemId: itemId, sizeId: sizeId, brandId: brandId },
+                success: function (result) {
+                    $tr.find('td:eq(4)').find("input").val(result.stockInHand);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function OriginWizeStockInHand(obj) {
+            var $originDropdown = $(obj);
+            var $tr = $originDropdown.closest('tr');
+            var itemId = $tr.find('td:eq(0)').find("input").val();
+            var originId = $originDropdown.val();
+            var sizeId = $tr.find('td:eq(1)').find("select").val();
+            var brandId = $tr.find('td:eq(2)').find("select").val();
+            $.Ajax({
+                type: 'GET',
+                dataType: "json",
+                url: '/MaterialIssue/OriginWizeStockInHand',
+                data: { itemId: itemId, sizeId: sizeId, brandId: brandId, originId: originId },
+                success: function (result) {
+                    $tr.find('td:eq(4)').find("input").val(result.stockInHand);
+                }, onError: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function Replace(obj) {
+            $(obj).val($(obj).val().replace(/[^0-9\.]/g, ''));
+            $(obj).each(function () {
+                var $this = $(this);
+                $this.keyup(function () {
+                    CheckStockInHand($this);
+                });
+            });
+        }
+        function CheckStockInHand($this) {
+            var result = 0;
+            var $tr = $this.closest("tr");
+            var $IssuedQuantityTextBox = $tr.find('td:eq(4)').find("input[type=text]");
+            var $StockInHandTextBox = $tr.find('.StockInHand');
+           var receivedQuantity = $StockInHandTextBox.val();
+            $this.each(function () {
+                if (!isNaN($this.val()) && $this.val().length != 0) {
+
+                    result = parseFloat(receivedQuantity) - parseFloat((this.value));
+                }
+                if (result >= 0) {
+                 
+                    $IssuedQuantityTextBox.css('background-color', '#b0e0e6');
+                } else {
+                  
+                    $IssuedQuantityTextBox.css('background-color', 'red');
+                }
+            });
+
+        }
+    </script>
+}

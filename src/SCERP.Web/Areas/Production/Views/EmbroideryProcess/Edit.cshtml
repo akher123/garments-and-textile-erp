@@ -1,0 +1,137 @@
+﻿@model SCERP.Web.Areas.Production.Models.ProcessDeliveryViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div style="width:500px; padding-left:340px;">
+    <h2>@(Model.Delivery.ProcessDeliveryId > 0 ? "Edit " : "Add ") Embroidery Delivery </h2>
+</div>
+<section class="search formCover">
+    @using (Html.BeginForm("Save", "EmbroideryProcess", FormMethod.Post, new { @class = "EmbroideryProcessForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Delivery.ProcessDeliveryId)
+        <div id="findAssignedFactoryCuttingJob">
+            <fieldset>
+                <legend>Embroidery Delivery</legend>
+                <table style="margin-left: 100px;">
+                    <tr>
+                        <td>@Html.Label("Factory  :")</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.PartyId, Model.PartySelectListItem, "-Select-", new { @class = "CuttingBatch_factory" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Buyer :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.BuyerRefId, Model.BuyerSelectListItem, "-Select-", new { @class = "CuttingBatch_buyerRefId" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayName("Order No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.OrderNo, Model.OrderSelectListItem, "-Select-", new { @class = "CuttingBatch_OrderNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+
+                        <td>
+                            @Html.DisplayName("Style No:")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Delivery.OrderStyleRefId, Model.StylesSelectListItem, "-Select-", new { @class = "CuttingBatch_StyleNo" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Color :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.ColorRefId, Model.ColorSelectListItem, "-Select-", new { @class = "CuttingBatch_Color" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            @Html.Label("Sequence :")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.ComponentRefId, Model.ComponentSelectListItem, "-Select-", new { @class = "CuttingBatch_sequence" })
+                        </td>
+                        <td>
+                            @Html.Label("*", new { @class = "labelInstruction" })
+                        </td>
+                        <td>
+                            <input type="button" id="findButtion" action="/EmbroideryProcess/GetPartyWiseCuttingProcess" class="addButton" value="Find" />
+                        </td>
+                        <td>
+                            <input onclick="search('/Production/EmbroideryProcess/Index')" class="addButton" value="Back" type="button" />
+                        </td>
+                    </tr>
+                </table>
+                </fieldset>
+</div>
+        <input type="button" id="toggoleButton" value="+" />
+        <div id="cuttingBatchToggle">
+            @Html.Partial("~/Areas/Production/Views/EmbroideryProcess/_PartyWiseCuttingProcess.cshtml", Model)
+        </div>
+
+        <table style="background-color: seashell">
+            <tr>
+                <td style="width:30%">
+                    <table class="tableFont">
+                        <tr>
+                            <td>@Html.Label("REF NO:")</td>
+                            <td>
+                                @Html.TextBoxFor(x => x.Delivery.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                                @Html.HiddenFor(x => x.Delivery.PartyId)
+                            </td>
+                        </tr>
+                     
+                        <tr>
+                            <td>@Html.Label("DELIVERY DATE:")</td>
+                            <td>@Html.TextBoxFor(x => x.Delivery.InvDate, new { @class = "datepicker",@data_val="false" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.Label("REMARKS:")</td>
+                            <td>@Html.TextAreaFor(x => x.Delivery.Remarks)</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 70%" class="processDelivery"></td>
+
+            </tr>
+        </table>
+        <div id="processDeliveryDetail" style="margin-bottom: 15px">
+            @if (Model.DoDictionary.Any())
+            {
+                @Html.Partial("~/Areas/Production/Views/EmbroideryProcess/_ProcessDeliveryDetail.cshtml", Model)
+            }
+        </div>
+        <div style="padding-left:90%;">
+            <input type="button" class="FindPartial buttonStyle" action="/EmbroideryProcess/Save" target="#contentRight" value="Save" />
+        </div>
+
+    }
+
+
+
+</section>
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Production/processDeliver.js"></script>
+}

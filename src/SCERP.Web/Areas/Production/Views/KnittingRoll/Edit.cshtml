@@ -1,0 +1,257 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.KnittingRollViewModel
+@{
+    ViewBag.Title = Model.KnittingRoll.KnittingRollId > 0 ? "Edit " : "Add ";
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm("Save", "KnittingRoll", FormMethod.Post, new { @class = "KnittingRollform" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.KnittingRoll.KnittingRollId)
+
+                <fieldset>
+                    <legend>Knitting Roll</legend>
+
+                    <table class="tabefont tableFocusInputText">
+                        <tr>
+                            <td>
+                                @Html.Label("Roll Ref:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.RollRefNo, new { @readonly = "readonly", id = "RollRefNo", @style = "background-color: #EEEEEE" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Roll Date :")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.RollDate, new { @class = "datepicker" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Program:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.ProgramRefId, new { @placeholder = "Program No", @class = "knittingProgrmAutocomplite", @data_target = "#KnittingProgramId", @action = "/KnittingRoll/ProgramAutocomplite" })
+                                @Html.HiddenFor(x => x.KnittingRoll.ProgramId, new { id = "KnittingProgramId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Party:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.PartyName, new { @readonly = "readonly", id = "KnittingPartyName" })
+                                @Html.HiddenFor(x => x.KnittingRoll.PartyId, new { id = "KnittingPartyId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                   
+                        <tr>
+                            <td>
+                                @Html.Label("M/C DIA:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.SizeName, new { id = "sizeNameId", @placeholder = "M/C DIA", @class = "autocompliteSizeSerach", @data_target = "#machineDial", @action = "/BuyerOrderColorSize/SizeAutoComplite" })
+                                @Html.HiddenFor(x => x.KnittingRoll.SizeRefId, new { id = "machineDial" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Fabric Type:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.ItemName, new { id = "fabricTypeNameId", @placeholder = "Fabric", @class = "itemautocompliteItem", @data_target = "#fabricItemCode", @action = "/Consumption/AutocompliteItem" })
+                                @Html.HiddenFor(x => x.KnittingRoll.ItemCode, new { id = "fabricItemCode" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("GSM:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.GSM, new { id = "gsmId" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Fabric Color:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.ColorName, new { id = "colorNameId", @placeholder = "Color", @class = "autocompliteColorSerach", @data_target = "#fabricColorName", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01" })
+                                @Html.HiddenFor(x => x.KnittingRoll.ColorRefId, new { id = "fabricColorName" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @Html.Label("Finish DIA:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.FinishSizeName, new {id = "finishSizeNameId", @placeholder = "Finish DIA", @class = "autocompliteSizeSerach", @data_target = "#finishDial", @action = "/BuyerOrderColorSize/SizeAutoComplite"})
+                                @Html.HiddenFor(x => x.KnittingRoll.FinishSizeRefId, new {id = "finishDial"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Machine :")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(x => x.KnittingRoll.MachineId, Model.MachineSelectListItem, "-select-")
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+
+                        </tr>
+                     
+                        <tr>
+                            <td>
+                                @Html.Label("Challan No:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.CharllRollNo)
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("", "S.Length:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.StLength,new{id="Roll_StLength"})
+                            </td>
+                            <td>
+                                @Html.Label("*", new {@class = "labelInstruction"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("", "Role Length:")
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => x.KnittingRoll.RollLength)
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Wt(Kg):")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.KnittingRoll.Quantity)
+                                @Html.ValidationMessageFor(x => x.KnittingRoll.Quantity)
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.Label("Remarks:")
+                            </td>
+                            <td>
+                                @Html.EditorFor(x => x.KnittingRoll.Rmks)
+                            </td>
+                        </tr>
+                        <tr>
+                            @if (Model.KnittingRoll.KnittingRollId > 0)
+                            {
+                                <td></td>
+                                <td>
+                                    <input type="submit" class="addButton" id="RollSubmitButton" value="Save"/>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>Continue</td>
+                                <td>
+                                    @Html.CheckBoxFor(x => x.IsContinue, new { id = "IsContinueAdd" })
+                                    <input type="button" id="RollSaveButton" class="addButton" value="Continue" />
+                                    <input type="submit" class="addButton" id="RollSubmitButton" value="Save"/>
+                                    @*<input type="button" class="printReport" action="pdt-contetId" value="Print" />*@
+                             
+                                </td>
+                            }
+
+
+                        </tr>
+                    </table>
+                </fieldset>
+            }
+        </td>
+    <td id="rolpdf">
+        <div class="pdfobject-container">
+            @if (Model.KnittingRoll.KnittingRollId>0)
+            {
+                 @Html.Partial("~/Areas/Production/Views/KnittingRoll/_rollSticker.cshtml", (IEnumerable<dynamic>) Model.DataTable.Todynamic())
+            }
+           
+        </div>
+    </td>
+    </tr>
+</table>
+
+@section scripts
+{
+
+ <script src="~/Scripts/SCERP/Production/KnittingRoll.js"></script>
+}
+<style>
+    .pdfobject-container {
+        height: 500px;
+        border: 1px solid #666;
+        width: 400px;
+    }
+    @@media print {
+        .myDivToPrint {
+            background-color: white;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+</style>

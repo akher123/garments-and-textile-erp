@@ -1,0 +1,141 @@
+﻿@model SCERP.Web.Areas.Planning.Models.ViewModels.ProgramViewModel
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div style="width:500px; padding-left:340px;">
+    <h4>@(Model.Program.ProgramId > 0 ? "Edit " : "Add ") Knitting Order Program </h4>
+</div>
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+
+<section class="search formCover tabefont">
+    @using (Html.BeginForm("Save", "KnittingOrderProgram", FormMethod.Post, new { @class = "KnittingOrderProgramForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Program.ProgramId)
+        @Html.ValidationSummary(true)
+        <div class="additem">
+            <div style="font-size:12px; margin-bottom: 10px;">
+                <fieldset>
+                    <legend>Program</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Prog.No")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.Program.ProgramRefId, new { @readonly = "readonly", @style = "background-color: #EEEEEE" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Prg Date")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.Program.PrgDate, new { @class = "datepicker" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Exp Date")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.Program.ExpDate, new { @class = "datepicker" })
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                 
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Party")
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.Program.PartyId, Model.PartySelectListItem)
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Processor")
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.Program.ProcessorRefId, Model.ProcessorSelectListItem)
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Style/Order")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.Program.CGRID)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.Label("", "Attention")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.Program.Attention)
+                                        </td>
+                                        <td>
+                                            @Html.Label("*", new { @class = "labelInstruction" })
+                                        </td>
+                                    </tr>
+                                    <tr style="width: 100%">
+                                        <td>
+                                            @Html.Label("", "Remarks")
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(x => x.Program.Rmks)
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                </table>
+                            </td>
+                            <td>
+                                <div>
+                                    @Html.Partial("~/Areas/Planning/Views/KnittingOrderProgram/_KnitingInputProgramDetail.cshtml", Model)
+                                </div>
+                                <div>
+                                    @Html.Partial("~/Areas/Planning/Views/KnittingOrderProgram/_KnitingOutputProgramDetail.cshtml", Model)
+                                </div>
+                                <div>
+                                    <input type="submit" class="addButton" id="btnsSveKnittingProgram" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>
+            </div>
+
+        </div>
+    }
+
+</section>
+
+
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Planning/KnittingOrderProgram.js"></script>
+
+}

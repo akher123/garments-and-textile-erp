@@ -1,0 +1,33 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.MIS.Models.ViewModel.MisDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+}
+<div>
+    <div style="margin:5px;"></div>
+    <fieldset>
+        <legend>SHIPMENT LIST</legend>
+        <table id="tableid" class="webgrid-table webgrid">
+            <thead class="webgrid-header">
+            <tr>
+                @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (DataRow row in Model.BuyerOrderMasterDataTable.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.BuyerOrderMasterDataTable.Columns)
+                    {
+
+                        <td>@(row[col.ColumnName] ?? "")</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </fieldset>
+</div>

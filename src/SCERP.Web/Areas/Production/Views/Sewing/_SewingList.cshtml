@@ -1,0 +1,23 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.ProductionViewModel
+@{
+    Layout = null;
+}
+  <div class="additem">
+
+    <fieldset >
+        <legend>Input</legend>
+        <div class="SewingInputList">
+            @Html.Partial("~/Areas/Production/Views/Sewing/_SInList.cshtml")
+        </div>
+    </fieldset>
+</div>
+<div class="additem">
+    <fieldset >
+        <legend>Output</legend>
+        <div class="SewingOutputList">
+            @Html.Partial("~/Areas/Production/Views/Sewing/_SOutList.cshtml")
+        </div>
+    </fieldset>
+</div>
+

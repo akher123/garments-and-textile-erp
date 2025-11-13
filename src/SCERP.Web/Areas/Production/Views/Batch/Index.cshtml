@@ -1,0 +1,99 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Production.Models.BatchViewModel
+@{
+    ViewBag.Title = "Batch";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+<div class="header-title">
+    <h2>Dyeing Batch List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+
+        @using (Html.BeginForm("Index", "Batch", FormMethod.Get, new { @class = "BatchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            <table class="tabefont">
+                <tr>
+                    <td>@Html.Label("From")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new { @data_val = "false", @placeholder = "Date", @class = "datepicker" })
+                    </td>
+
+                    <td>@Html.Label("To")</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new { @data_val = "false", @placeholder = "Date", @class = "datepicker" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Criteria")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Batch Type ")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BtType, Model.BatchTypeSelectListItem, new { @class = "batchTypeDdl" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BatchStatus, Model.BatchStatuSelectListItem, "-ALL-")
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction" />
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Production/Batch/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.VProBatches, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                    grid.Columns(
+                        grid.Column("BtRefNo", header: "Ref No"),
+                        grid.Column("BatchNo", header: "Batch No"),
+                        grid.Column("BatchDate", header: "Date", format: @<text>@(item.BatchDate == null ? "" : item.BatchDate.ToString("dd-MM-yyyy"))</text>),
+                        grid.Column("PartyName", header: "Party "),
+                        grid.Column("MachineName", header: "Machine"),
+                        grid.Column("GColorName", header: "Color"),
+                        grid.Column("BatchQty", header: "Qty"),
+                        grid.Column("ShadePerc", header: "Shade %"),
+                        grid.Column(header: "Status", format: (item) => (BatchStatus) item.BatchStatus),
+                         grid.Column("Add Roll", canSort: false, format:@<text><button class="edit" action="/Production/BatchRoll/Edit?BatchId=@item.BatchId"></button></text>),
+                        grid.Column("Edit", canSort: false, format:@<text><button class="edit" action="/Production/Batch/Edit?Batch.BatchId=@item.BatchId"></button></text>),
+                        grid.Column("Delete", canSort: false, format:@<text><button class="delete" action="/Production/Batch/Delete?BatchId=@item.BatchId"></button></text>),
+                        grid.Column("Report", canSort: false, header: "REPORT", format: @<text><a href="/Production/ProductionReport/GetBatchDetail?BatchId=@item.BatchId" target="_blank">PDF</a></text>)))
+            ;
+        }
+    </div>
+</section>

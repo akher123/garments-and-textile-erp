@@ -1,0 +1,84 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Inventory.Models.ViewModels.AdvanceMaterialIssueViewModel
+@{
+    ViewBag.Title = "Advance MaterialIssue";
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+}
+
+<div class="header-title">
+    <h2>Yarn Return</h2>
+</div>
+
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        
+        @using (Html.BeginForm("Index", "YarnReturn", FormMethod.Get, new {@class = "YarnReturnForm ignore-validation"}))
+        {
+            @Html.HiddenFor(x => x.IsSearch)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Issue Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.FromDate, new {@class = "datepicker", @data_val = "false", @placeholder = "From date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.ToDate, new {@class = "datepicker", @data_val = "false", @placeholder = "To date"})
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => x.SearchString, new {@data_val = "false", @placeholder = "Search key"})
+                    </td>
+
+                    <td>
+                        <input type="button" class="searchAction"/>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Inventory/YarnReturn/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.MaterialIssues, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                    tableStyle: "webgrid-table webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    firstText: "First",
+                    lastText: "Last",
+                    nextText: "Next",
+                    mode: WebGridPagerModes.All,
+                    previousText: "Previous",
+                    columns: grid.Columns(
+                    grid.Column("Challan", format:@<text> <a href="/Inventory/YarnReturn/YarnReturnDeliveryChallanReport?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId" target="_blank">Print</a> </text>, canSort: false),
+                    grid.Column("IRefId", canSort: false, header: "RefNo", format: @<text>@(item.IRefId ?? "--")</text>),
+                    grid.Column("IRNoteNo", canSort: false, header: "Challan", format: @<text>@(item.IRNoteNo ?? "--")</text>),
+                    grid.Column("IRNoteDate", canSort: false, header: "Challan Date", format: @<text>@(item.IRNoteDate == null ? "" : item.IRNoteDate.ToString("dd-MM-yyyy"))</text>),
+                    grid.Column("SlipNo", canSort: false, header: "Lot No ", format: @<text>@(item.SlipNo ?? "")</text>),
+                    grid.Column("Edit", format:@<text> <button class="edit" action="/Inventory/YarnReturn/Edit?MaterialIssue.AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button> </text>, canSort: false),
+                    grid.Column("Delete", format:@<text> <button class="delete" action="/Inventory/YarnReturn/Delete?AdvanceMaterialIssueId=@item.AdvanceMaterialIssueId"></button></text>, canSort: false)));
+        }
+    </div>
+</section>
+
+
+
+
+

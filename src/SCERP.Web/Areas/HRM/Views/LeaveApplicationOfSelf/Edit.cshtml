@@ -1,0 +1,375 @@
+﻿@model SCERP.Web.Areas.HRM.Models.ViewModels.EmployeeLeaveViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.Id > 0) ? "Edit Leave Application (Self)" : "Create Leave Application (Self)";
+}
+
+@using (Html.BeginForm("Save", "LeaveApplicationOfSelf", FormMethod.Post, new { @class = "LeaveApplicationOfSelfform" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Leave Application (Self)</legend>
+        <table class="tabefont">
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td colspan="4">
+                    <span style="color: red">Fields with asterisk (*) sign are mandatory</span>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 530px; margin-top: 15px; border-style: solid; border-color: lightblue; border-width: thin;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Employee Id:</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.EmployeeCardId, new { @class = "employeeCardId", style = "width: 150px;" })
+                            </td>
+                            <td>@Html.Label("*", new { @class = "labelInstruction" })</td>
+                            <td>
+                                Year:
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Year, new { @class = "year", style = "width: 150px;" })
+                            </td>
+                            <td>
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>                       
+                        <tr>
+                            <td></td>
+                            <td>Name:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Name" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Company:
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Company" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Branch:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Branch" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Unit:
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Unit" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Department:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Department" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Section:
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Section" />
+
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Line:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Line" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Type:
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Type" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Grade:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Grade" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Designation:
+                            </td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="Designation" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Joining Date:</td>
+                            <td>
+                                <input type="text" readonly="readonly" style="background-color: #F2F2F2; width: 150px;" class="JoiningDate" />
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+                </td>
+
+                <td align="left">
+                    <table width="450px">
+                        <tr>
+                            <td><div id="tab"></div> </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <table style="width: 530px; border-style: solid; border-color: lightblue; border-width: thin;" class="auto-style1">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                Leave Type
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DropDownListFor(x => x.LeaveTypeId, Model.LeaveTypeSelectListItem, "- Select Leave -")
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Applied Period:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("From:")                                
+                                @Html.TextBoxFor(x => x.AppliedFromDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "DayCalculation()" })
+                                @Html.Label("*", new { @class = "labelInstruction" })
+
+                                @Html.DisplayName("To:")                               
+                                @Html.TextBoxFor(x => x.AppliedToDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px", @onchange = "DayCalculation()" })
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Submit Date:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>                             
+                                @Html.TextBoxFor(x => x.SubmitDate, new { @class = "datepicker", @data_val = "false", @placeholder = "To", style = "width:100px" })
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Total Day(s):")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.AppliedTotalDays, new { @readonly = "readonly", @style = "background-color: #F2F2F2;" })
+
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Leave Purpose:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.LeavePurpose)
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Address During Leave:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.AddressDuringLeave)
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Emergency Phone No:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.EditorFor(model => model.EmergencyPhoneNo)
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td>@Html.SaveButton()</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td style="vertical-align: top">
+                    <table style="width: 550px; border-style: solid; border-color: lightblue; border-width: thin;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Recommendation Person:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DropDownListFor(x => x.RecommendationPerson, Model.RecommendationPersonSelectListItem, "- Select-")
+                                @Html.Label("*", new { @class = "labelInstruction" })
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DisplayName("Approval Person:")
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @Html.DropDownListFor(x => x.ApprovalPerson, Model.ApprovalPersonSelectListItem, "- Select-")
+                                @Html.Label("*", new { @class = "labelInstruction" })
+
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+
+    </fieldset>
+}
+
+<script src="~/Scripts/SCERP/EmployeeLeaveForStaff.js"></script>

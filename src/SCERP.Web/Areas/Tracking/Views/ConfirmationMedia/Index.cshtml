@@ -1,0 +1,62 @@
+﻿@using SCERP.Common
+@model SCERP.Web.Areas.Tracking.Models.ViewModels.ConfirmationMediaViewModel
+@{ ViewBag.Title = "ConfirmationMedia";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="header-title">
+    <h2>Confirmation Media List</h2>
+</div>
+<section class="common-search-section">
+    <div class="search formCover common-search-wrapper">
+        @using (Html.BeginForm("Index", "ConfirmationMedia", FormMethod.Get, new { @class = "ConfirmationMediaForm" }))
+        {
+        @Html.HiddenFor(x => x.IsSearch)
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Criteria")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.SearchString, new { @data_val = "false", @placeholder = "Search key" })
+                </td>
+                <td>
+                    <input type="button" class="searchAction" />
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</section>
+
+<section class="search formCover">
+    <div class="additem">
+        <div class="addButton-wrapper">
+            <button class="AjaxPopup addButton" action="/Tracking/ConfirmationMedia/Edit">Add New</button>
+        </div>
+        @{
+            var grid = new WebGrid(canPage: true, rowsPerPage: AppConfig.PageSize, canSort: true, ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.ConfirmationMediaList, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                tableStyle: "webgrid-table webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                firstText: "First",
+                lastText: "Last",
+                nextText: "Next",
+                mode: WebGridPagerModes.All,
+                previousText: "Previous",
+                columns:
+                  grid.Columns(
+                  grid.Column("ConfirmationMedia", header: "Confirmation Media"),
+                  grid.Column("Remarks", header: "Remarks", canSort: false),
+                  grid.Column("Detail/Edit", canSort: false, format: @<text><button class="edit" action="/Tracking/ConfirmationMedia/Edit?ConfirmationMediaId=@item.ConfirmationMediaId"></button></text>),
+                  grid.Column("Delete",canSort:false,format:@<text><button class="delete" action="/Tracking/ConfirmationMedia/Delete?ConfirmationMediaId=@item.ConfirmationMediaId"></button></text>)));
+        }
+    </div>
+</section>
+
+

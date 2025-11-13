@@ -1,0 +1,57 @@
+﻿@using System.Data
+@model SCERP.Web.Areas.Merchandising.Models.ViewModel.FollowUpViewModel
+@{
+    Layout = "~/Views/Shared/_InventoryLayout.cshtml";
+
+}
+<div class="header-title">
+    <h2>Shipment Status</h2>
+</div>
+<section class="common-search-section">
+    <div class="search common-search-wrapper">
+        @using (Html.BeginForm("ShipmentStatus", "FollowUp", FormMethod.Get, new { @class = "FollowUpSearchForm ignore-validation" }))
+        {
+            @Html.HiddenFor(x => x.IsShowReport)
+            <table class="tabefont">
+                <tr>
+                    <td>
+                        @Html.DisplayName("Season")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SeasonRefId, Model.SeasonSelectListItem, "ALL")
+                    </td>
+                    <td>
+                        @Html.DisplayName("Buyer")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.BuyerRefId, Model.BuyerSelectListItem,"ALL")
+                    </td>
+                    <td>
+                        @Html.DisplayName("Merchandiser")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.MerchandiserId, Model.MerchandisersSelectListItem,"ALL")
+                    </td>
+                    <td>
+                        <input type="button" class="showRdlcReport addButton" value="Show" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+    <div class="custom-iframe-wrapper">
+        <iframe id="reportIfram" width="98%" height="400"></iframe>
+    </div>
+</section>
+
+<script>
+    $('.showRdlcReport').unbind('click').bind('click', function () {
+        var form = $(this).parents('form:first');
+        var data = form.serialize();
+        var searchurl = form.attr('action')+'?' + data;
+        $('#reportIfram').attr('src', '');
+        $('#reportIfram').attr('src', searchurl);
+    });
+</script>
+

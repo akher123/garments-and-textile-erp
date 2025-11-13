@@ -1,0 +1,92 @@
+﻿@model SCERP.Web.Areas.Merchandising.Models.ViewModel.ConsumptionDetailViewModel
+@{
+    Layout = null;
+}
+<link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+<div style="font-size: 12px;background-color:gainsboro">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateColor">Particular</a>
+            <a href="#" class="AjaxPopup" class="AjaxPopup" action="/Merchandising/BuyerOrderColorSize/CreateSize">specification</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Update", "ConsumptionDetail", FormMethod.Post, new { @class = "ConsumptionDetailSearchForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ConsumptionId)
+        @Html.HiddenFor(model => model.ConsumptionDetailId)
+        @Html.HiddenFor(model => model.OrderStyleRefId)
+        @Html.HiddenFor(model => model.ConsRefId)
+        <fieldset>
+            <legend>Consumtion Detail</legend>
+            <p style="color: purple">@Html.Label(String.Empty, String.Format("{0}", "Component :")) @Html.DisplayFor(x => x.ComponentName)</p>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Update Type"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ConsTypeRefId, Model.ConsTypeSelectListItem)
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Cons/DZ"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PDzCons, new { @class = "consDetailUpdateButton" ,@placeholder="Consumption/Dzn"})
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Color"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PColorName, new { @class = "Color_SearchString", @id = "UpdateProductionColor" ,@placeholder="Product Color"})
+                        @Html.HiddenFor(x => x.PColorRefId, new { @class = "Color_ColorRef" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Color"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.GColorRefId, Model.GColorSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Allow.(%)"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PAllow, new { @class = "consDetailUpdateButton", @placeholder = "Allowance(%)" })
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Spec/Art No"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PSizeName, new { @class = "Size_SearchString", @id = "UpdateProductionSize", @placeholder = "Spec/Art No" })
+                        @Html.HiddenFor(x => x.PSizeRefId, new { @class = "Size_SizeRef" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Size"))
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.GSizeRefId, Model.GSizeSelectListItem, "-Select-")
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Quantity"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.QuantityP,new{id="UpdateProductQty",@placeholder="Product Qty"})
+                    </td>
+                    <td>
+                        @Html.Label(String.Empty, String.Format("{0}", "Code"))
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Remarks, new { @id = "UpdateRemarks", @placeholder = "Code" })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+
+</div>

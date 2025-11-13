@@ -1,0 +1,311 @@
+﻿@model SCERP.Web.Areas.Inventory.Models.ViewModels.ReceiveAgainstPoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Dialog.cshtml";
+    ViewBag.Title = (Model.ReceiveAgainstPo.MaterialReceiveAgstPoId > 0 ? "Edit" : "Add");
+}
+@section styles
+{
+  
+    <link href="~/Content/Common/SingleDropdownMenu.css" rel="stylesheet" />
+}
+<div style="font-size: 12px; min-height: 500px;">
+    <div class="dropdown" style="float: right">
+        <button class="dropbtn">Dropdown▼</button>
+        <div class="dropdown-content">
+            <a href="#" class="AjaxPopup" action="/Inventory/Lot/Edit?IsSearch=true">Lot</a>
+            <a href="#" class="AjaxPopup" action="/Inventory/YarnCount/Edit?IsSearch=true">Count</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Save", "YarnReceive", FormMethod.Post, new { @class = "YarnReceiveForm ignore-validation" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ReceiveAgainstPo.MaterialReceiveAgstPoId)
+        @Html.HiddenFor(x => x.ReceiveAgainstPo.OrderStyleRefId , new {id="hdnOrderStyleRefId" })
+        @Html.HiddenFor(x => x.IsSearch)
+        <fieldset>
+            <legend>Material Received Against(PI/Booking)</legend>
+
+            <table class="tabefont" style="max-height: 250px;">
+                <tr>
+                    <td>
+                        @Html.DisplayName("RefNo:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.RefNo, new { @style = "background-color: #b0c4de;", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.Label("RType :")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReceiveAgainstPo.RType, Model.RTypeSelectListItem, "-Select-", new { id = "YarnReceiveType" })
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.Label("LC No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.LcNo, new { @class = "booKing_remarks" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr id="dropdownPiBookingContainner">
+                    @Html.Partial("~/Areas/Inventory/Views/YarnReceive/_RType.cshtml", Model)
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Buyer:")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ReceiveAgainstPo.BuyerId, Model.BuyerSelectListItem, "-Select-", new { id = "receiveBuyerId" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Order Ref :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.OrderNo, new { id = "receiveOrderNo" })
+                    </td>
+                    <td></td>
+
+                    <td>
+                        @Html.DisplayName("Style:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.StyleNo, new { id = "receiveStyleNo" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+
+                        @Html.Label("Invoice No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Invoice Date :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.InvoiceDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Order No :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.VoucherNo, new { id = "ActualOrderNo" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+
+
+                    <td>
+                        @Html.Label("Rcv Reg No :")
+                    </td>
+                    <td>
+                        @Html.EditorFor(x => x.ReceiveAgainstPo.ReceiveRegNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("Rcv Reg Date :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.ReceiveRegDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("GEN :")
+                    </td>
+                    <td>
+
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryNo)
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+
+                    <td>
+                        @Html.DisplayName("GEDate:")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.GateEntryDate, new { @class = "datepicker" })
+                    </td>
+                    <td>
+                        @Html.Label("*", new { @class = "labelInstruction" })
+                    </td>
+                    <td>
+                        @Html.Label("Remarks :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ReceiveAgainstPo.Remarks, new { @class = "booKing_remarks" })
+                    </td>
+                    <td></td>
+                </tr>
+
+            </table>
+            <div id="batchInfo" style="font-size: 12px;"></div>
+            <hr />
+            <table class="tabefont" id="ReceivedDetailTable">
+                <tr>
+                    <td>
+                        @Html.DisplayName("Item :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.ItemName, new { @onkeyup = "itemAutocomplite(this)", @class = "itemName", @data_val = "false", @placeholder = "Serach Item" })
+                        @Html.HiddenFor(x => x.PoDetail.ItemId, new { @class = "ReceivedtemHiddenField" })
+                    </td>
+
+                    <td>
+                        @Html.Label("Lot No")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.ColorName, new { @class = "Color_SearchString", @placeholder = "Serach Key" })
+                        @Html.HiddenFor(x => x.PoDetail.ColorRefId, new { @class = "Color_ColorRef" })
+                    </td>
+                    <td>
+                        @Html.Label("Count")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.SizeName, new { @class = "Size_SearchString", @placeholder = "Serach key" })
+                        @Html.HiddenFor(x => x.PoDetail.SizeRefId, new { @class = "Size_SizeRef" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Color")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.FColorName, new { @class = "autocompliteColorSerach", @data_target = "#Color_FColorRef", @action = "/BuyerOrderColorSize/ColorAutoComplite?typeId=01", @placeholder = "Finsh Color" })
+                        @Html.HiddenFor(x => x.PoDetail.FColorRefId, new { @id = "Color_FColorRef" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("Rate :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.ReceivedRate, new { @class = "Received_Rat", Value = "", @data_val = "false" })
+                    </td>
+                    <td>
+                        @Html.DisplayName("Qty :")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.PoDetail.ReceivedQty, new { @class = "Received_QuantityEnterEvent", Value = "", @data_val = "false" })
+                        <input type="button" id="btn_add_item" value="+" />
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <div>
+                <table id="ReceivedAgstPoDetail" class="webgrid-table">
+                    <thead style="text-align: center" class="webgrid-header">
+                        <tr>
+                            <th>
+                                @Html.Label("Yarn")
+                            </th>
+                            <th>
+                                @Html.Label("Color")
+                            </th>
+                            <th>
+                                @Html.Label("Lot No")
+                            </th>
+                            <th>
+                                @Html.Label("Count")
+                            </th>
+                            <th>
+                                @Html.Label("Rate")
+                            </th>
+                            <th>
+                                @Html.Label("Qty")
+                            </th>
+                            <th>
+                                @Html.Label("Delete")
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var m in Model.Dictionary)
+                        {
+                            <tr id="newRow-@Model.Dictionary[m.Key].ItemId">
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoId)
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].MaterialReceiveAgstPoDetailId)
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].ItemId)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].ItemName)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].FColorRefId)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].FColorName)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].ColorRefId)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].ColorName)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].SizeRefId)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].SizeName)
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedRate)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedRate)
+                                </td>
+
+
+                                <td>
+                                    @Html.HiddenFor(x => x.Dictionary[m.Key].ReceivedQty)
+                                    @Html.DisplayFor(x => x.Dictionary[m.Key].ReceivedQty)
+                                </td>
+                                <td>
+                                    <input type="button" value="-" onclick="deleteRow(this)" />
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <div style="float: right">
+                    <table class="tabefont">
+                        <tr>
+
+                            <td>
+                                <input type="submit" value="Save" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </fieldset>
+
+
+    }
+</div>
+@section scripts
+{
+    <script src="~/Scripts/SCERP/Inventory/yarnReceive.js"></script>
+}
